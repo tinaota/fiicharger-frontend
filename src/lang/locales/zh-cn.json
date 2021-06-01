@@ -1,0 +1,50 @@
+{
+    "app_name": "Fii EV 充电站管理系统",
+    "app_name_short": "Fiicharging系统",
+    "error_network": "网路异常!",
+    "menu": {
+        "home": "首页",
+        "dashboard": "首页",
+        "map": "地图",
+        "statistics": "统计",
+        "chargingStation": "充电站资讯",
+        "stationList": "充电站列表",
+        "chargeBoxList": "充电桩列表",
+        "chargingSession": "充电纪录",
+        "stationAlert": "充电站警示",
+        "setting": "设定",
+        "userAccount": "用户帐号资讯",
+        "accountList": "帐号列表",
+        "billingLog": "帐单资讯"
+    },
+    "login": {
+        "login": "登入",
+        "logout": "登出",
+        "pls_input_account": "请输入帐号",
+        "pls_input_pwd": "请输入密码",
+        "remember_data": "记住登入资讯",
+        "hint_logout": "你确定要登出?",
+        "err_logout": "登出错误!"
+    },
+    "general": {
+        "billing": "费用"
+    },
+    "dashboard": {
+        "energyUsedUnit": "电耗(kWh)",
+        "nAccount": "帐户数量",
+        "nStation": "充电站数量",
+        "nSession": "充电纪录数量",
+        "nConnector": "充电枪数量",
+        "powerUsedTop10": "用电量前十名",
+        "revenueTop10": "收入前十名",
+        "sessionTop10": "充电数据前十名",
+        "faultsTypeTop5": "故障类型前五名",
+        "daySelectList": {
+            "7": "最近七天",
+            "14": "最近14天",
+            "30": "最近一个月",
+            "90": "最近一季",
+            "365": "最近一年"
+        }
+    }
+}

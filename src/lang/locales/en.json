@@ -1,0 +1,50 @@
+{
+    "app_name": "Fii EV Charging System",
+    "app_name_short": "Fiicharging System",
+    "error_network": "Network request error!",
+    "menu": {
+        "home": "Home",
+        "dashboard": "Dashboard",
+        "map": "Map",
+        "statistics": "Statistics",
+        "chargingStation": "Charging Station",
+        "stationList": "Station List",
+        "chargeBoxList": "ChargeBox List",
+        "chargingSession": "Charging Session",
+        "stationAlert": "Station Alert",
+        "setting": "Setting",
+        "userAccount": "User Account",
+        "accountList": "Account List",
+        "billingLog": "Billing Log"
+    },
+    "login": {
+        "login": "Login",
+        "logout": "Logout",
+        "pls_input_account": "Please enter the account number",
+        "pls_input_pwd": "Please input a password",
+        "remember_data": "Remember the login data",
+        "hint_logout": "Are you sure to log out?",
+        "err_logout": "Log out error!"
+    },
+    "general": {
+        "billing": "Billing"
+    },
+    "dashboard": {
+        "energyUsedUnit": "Energy Used(kWh)",
+        "nAccount": "Number of Account",
+        "nStation": "Number of Station",
+        "nSession": "Number of Session",
+        "nConnector": "Number of Connector",
+        "powerUsedTop10": "Power Used Top 10",
+        "revenueTop10": "Revenue Top 10",
+        "sessionTop10": "Session Top 10",
+        "faultsTypeTop5": "Faults Type Top 5",
+        "daySelectList": {
+            "7": "Last 7 days",
+            "14": "Last 14 days",
+            "30": "Last month",
+            "90": "Last season",
+            "365": "Last year"
+        }
+    }
+}

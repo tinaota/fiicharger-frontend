@@ -1,0 +1,123 @@
+.mapboxgl-popup-close-button {
+    top: 4px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    color: #818387;
+}
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    // background: rgba(23,24,25,0.90);
+    border-right-color: rgba(23,24,25,0.90);
+}
+.mapboxgl-popup-content {
+    padding: 8px 0px 8px 12px;
+    background: rgba(23,24,25,0.90);
+    border: unset;
+    box-shadow: 0 1px 4px 0 rgba(21,34,50,0.08);
+    .info-tite {
+        font-size: 16px;
+        font-weight: bold;
+        color: #FFF;
+        letter-spacing: 0.35px;
+        margin-bottom: 12px
+    }
+    .info-msg {
+        max-height: 400px;
+        overflow-y: scroll;
+        ul {
+            padding-left: 0;
+            padding-right: 16px;
+            margin: 0;
+            li {
+                list-style: none;
+                min-height: 18px;
+                line-height: 18px;
+                font-size: 12px;
+                display: flex;
+                + li {
+                    margin-top: 8px;
+                }
+                .item-title-img {
+                    display: inline-block;
+                    width: 50%;
+                    color: #959692;
+                    letter-spacing: 0;
+                    float: left;
+                    img {
+                        margin-right: 6px;
+                        width: 18px;
+                        height: auto;
+                        vertical-align: middle;
+                    }
+                    + .item-msg {
+                        width: 50%;
+                    }
+                }
+                .item-title {
+                    display: inline-block;
+                    width: calc(50% - 24px);
+                    padding-left: 24px;
+                    color: #9EA7AC;
+                    letter-spacing: 0;
+                    + .item-msg {
+                        width: calc(50% + 20px);
+                    }
+                }
+                .item-msg {
+                    display: inline-block;
+                    color: #FFFFFF;
+                    letter-spacing: 0;
+                    text-align: right;
+                    img {
+                        width: 52px;
+                        height: 92px;
+                    }
+                }
+            }
+        }
+        .mCustomScrollBox {
+            .mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+                background-color: #686A68;
+            }
+        }
+    }
+}
+
+#mapboxBox {
+    .marker {
+        background-size: cover;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        cursor: pointer;
+        &.pos0 {
+            background-image: url('~imgs/ic_green_dot.png');
+        }
+        &.pos1 {
+            background-image: url('~imgs/ic_red_dot.png');
+        }
+        &.pos2 {
+            background-image: url('~imgs/ic_gray_dot.png');
+        }
+        &.pos3 {
+            background-image: url('~imgs/ic_blue_dot.png');
+        }
+        &.loading {
+            position: relative;
+            &:before {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                border-radius: 50%;
+                animation: rotating 2s linear infinite;
+                border: 2px solid #9EA7AC;
+                top: -2px;
+                left: -2px;
+                border-right: 2px solid transparent;
+            }
+        }
+    }
+}

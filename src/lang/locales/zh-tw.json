@@ -1,0 +1,50 @@
+{
+    "app_name": "Fii EV 充電站管理系統",
+    "app_name_short": "Fiicharging系統",
+    "error_network": "網路異常!",
+    "menu": {
+        "home": "首頁",
+        "dashboard": "首頁",
+        "map": "地圖",
+        "statistics": "統計",
+        "chargingStation": "充電站資訊",
+        "stationList": "充電站列表",
+        "chargeBoxList": "充電樁列表",
+        "chargingSession": "充電紀錄",
+        "stationAlert": "充電站警示",
+        "setting": "設定",
+        "userAccount": "用戶帳號資訊",
+        "accountList": "帳號列表",
+        "billingLog": "帳單資訊"
+    },
+    "login": {
+        "login": "登入",
+        "logout": "登出",
+        "pls_input_account": "請輸入帳號",
+        "pls_input_pwd": "請輸入密碼",
+        "remember_data": "記住登入資訊",
+        "hint_logout": "你確定要登出?",
+        "err_logout": "登出錯誤!"
+    },
+    "general": {
+        "billing": "費用"
+    },
+    "dashboard": {
+        "energyUsedUnit": "電耗(kWh)",
+        "nAccount": "帳戶數量",
+        "nStation": "充電站數量",
+        "nSession": "充電紀錄數量",
+        "nConnector": "充電槍數量",
+        "powerUsedTop10": "用電量前十名",
+        "revenueTop10": "收入前十名",
+        "sessionTop10": "充電數據前十名",
+        "faultsTypeTop5": "故障類型前五名",
+        "daySelectList": {
+            "7": "最近七天",
+            "14": "最近14天",
+            "30": "最近一個月",
+            "90": "最近一季",
+            "365": "最近一年"
+        }
+    }
+}
