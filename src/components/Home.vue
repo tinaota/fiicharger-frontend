@@ -89,7 +89,7 @@ export default {
         };
     },
     created() {
-        // if (window.sessionStorage.getItem('fevc-accId')) {
+        // if (window.sessionStorage.getItem('fiics-accId')) {
         //     this.sysUserName = this.userData.name;
         // } else {
         //     this.$store.commit(types.LOGOUT, JSON.stringify({}));
@@ -129,7 +129,7 @@ export default {
                 this.routerParent = this.routerName;
             }
         }
-        this.lang = window.sessionStorage.getItem('fevc-lang') || 'en';
+        this.lang = window.sessionStorage.getItem('fiics-lang') || 'en';
         this.$store.dispatch('setLang', this.lang);
     },
     activated() {
@@ -141,7 +141,7 @@ export default {
         handleChangeLang(lang) {
             if(this.lang !== lang) {
                 this.lang = lang;
-                window.sessionStorage.setItem("fevc-lang", lang);
+                window.sessionStorage.setItem("fiics-lang", lang);
                 this.$router.go(0);
             }
         },

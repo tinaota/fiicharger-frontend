@@ -169,72 +169,82 @@
         border-radius: 8px;
         margin-bottom: 24px;
         padding: 14px;
-        @media only screen and (max-width: 950px) and (min-width: 721px) {
-            width: calc(50% - 12px - 28px);
-            margin-right: 24px;
-            &:nth-child(2n + 1) {
-                margin-right: 0px;
-            }
-        }
-        @media only screen and (max-width: 1200px) and (min-width: 951px) {
-            width: calc(33.33% - 16px - 28px);
-            margin-right: 24px;
-            &:nth-child(3n + 1) {
-                margin-right: 0px;
-            }
-        }
-        @media only screen and (max-width: 1500px) and (min-width: 1201px) {
-            width: calc(25% - 18px - 28px);
-            margin-right: 24px;
-            &:nth-child(4n + 1) {
-                margin-right: 0px;
-            }
-        }
-        @media only screen and (min-width: 1501px) {
-            width: calc(20% - 19.2px - 28px);
-            margin-right: 24px;
-            &:nth-child(5n + 1) {
-                margin-right: 0px;
-            }
-        }
-        .item {
-            .header {
-                font-size: 1.25rem;
-                color: #FBFBFB;
-                margin-left: 36px;
-                margin-bottom: 12px;
-            }
-            .info {
-                + .info {
-                    margin-top: 8px;
+        .filter {
+            margin-bottom: 20px;
+            height: 40px;
+            width: 100%;
+            .el-range-editor {
+                width: 300px;
+                border: unset;
+                background: #131414;
+                border-radius: 4px;
+                height: 40px;
+                margin-right: 10px;
+                vertical-align: top;
+                .el-range__icon {
+                    color: #9EA7AC;
                 }
-                div.img {
-                    display: inline-block;
-                    width: 20px;
-                    // height: 44px;
-                    margin-right: 12px;
-                    vertical-align: top;
-                    text-align: center;
-                    img {
-                        max-width: 20px;
-                    }
+                &.is-active, &.is-active:hover {
+                    border: unset;
                 }
-                div.msg {
-                    display: inline-block;
-                    width: calc(100% - 40px);
-                    .label {
-                        font-size: 0.875rem;
-                        color: #929292;
-                    }
-                    .content {
-                        color: #FBFBFB;
-                        font-size: 1.5rem;
-                        .unit {
-                            color: #FFFFFF;
-                            font-size: 0.875rem;
-                        }
-                    }
+                &.el-range-editor--mini .el-range-input {
+                    width: 100px;
+                    font-size: 1rem;
+                    color: #9EA7AC;
+                    line-height: 20px;
+                    background-color: transparent;
                 }
+                .el-range-separator {
+                    font-size: 1rem;
+                    color: #9EA7AC;
+                    line-height: 20px;
+                    height: 20px;
+                    vertical-align: middle;
+                }
+            }
+            .dark.el-input {
+                width: 350px;
+                height: 40px;
+                background: #131414;
+                border-radius: 4px;
+                input {
+                    background: transparent;
+                    border: unset;
+                    color: #9EA7AC;
+                    font-size: 1rem;
+                    height: 40px;
+                    line-height: 40px;
+                }
+                input::-webkit-input-placeholder {
+                    color: #979797;
+                }
+            }
+            .el-button {
+                width: 40px;
+                height: 40px;
+                padding: 8px;
+                background: #131414;
+                border-radius: 4px;
+                border: unset;
+                .el-icon-plus {
+                    color: #1E5EFF;
+                    font-size: 1.25rem;
+                }
+            }
+        }
+        .circle-status {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 16px;
+            &.green {
+                background: #29CB97;
+            }
+            &.orange {
+                background: #FFA10B;
+            }
+            &.gray {
+                background: #929292;
             }
         }
     }

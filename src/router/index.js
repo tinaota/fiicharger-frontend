@@ -88,8 +88,8 @@ const router = new Router({
 /**
  * @description 页面刷新时重新对token 进行赋值操作
  */
-// if (window.sessionStorage.getItem('fevc-token')) {
-//     store.commit(types.LOGIN, window.sessionStorage.getItem('fevc-token'));
+// if (window.sessionStorage.getItem('fiics-token')) {
+//     store.commit(types.LOGIN, window.sessionStorage.getItem('fiics-token'));
 // }
 
 
@@ -98,7 +98,7 @@ const router = new Router({
  */
 router.beforeEach((to, from, next) => {
     if (from.path === '/' && to.path === '/') {
-        next({ path: '/map' });
+        next({ path: '/statistics' });
     } else {
         next();
     }

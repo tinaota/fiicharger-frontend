@@ -1,0 +1,36 @@
+{
+    "chargeboxList": [
+        {
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "chargeBoxName": "Charge-1",
+            "status": 1,
+            "power": 7.7,
+            "connector": ["Type1"],
+            "location": "42°40′38.7″N, 87°55′01.2″W",
+            "loc": {
+                "lat": 42.677411,
+                "lng": -87.916993
+            },
+            "stationId": "C000001",
+            "stationName": "Fii-WL campus 53177"
+        },
+        {
+            "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
+            "chargeBoxName": "Charge-2",
+            "status": 0,
+            "power": 30,
+            "connector": ["CHAdeMO", "CCS1"],
+            "location": "42°40′35.1″N, 87°55′01.2″W",
+            "loc": {
+                "lat": 42.676411,
+                "lng": -87.916993
+            },
+            "stationId": "C000001",
+            "stationName": "Fii-WL campus 53177"
+        }
+    ],
+    "stationList": {
+        "C000001": "Fii-WL campus 53177",
+        "C000002": "Fii-MS campus 236044"
+    }
+}

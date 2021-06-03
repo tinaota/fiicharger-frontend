@@ -1,0 +1,50 @@
+{
+    "stationList": [
+        {
+            "stationId": "C000001",
+            "stationName": "Fii-WL campus 53177",
+            "location": "42°40′38.7″N, 87°55′01.2″W",
+            "sDate": "2021/05/10 08:30:00",
+            "connector": {
+                "AC": 2,
+                "DC": 2
+            },
+            "electricityRate": {
+                "AC On-Pick": "$0.3/kWh",
+                "AC Off-Pick": "$0.1/kWh",
+                "DC On-Pick": "$3/kWh",
+                "DC Off-Pick": "$1/kWh"
+            },
+            "electricityRateId": "E001"
+        },
+        {
+            "stationId": "C000002",
+            "stationName": "Fii-MS campus 236044",
+            "location": "24°57′39.9″N, 121°24′53.0″E",
+            "sDate": "2021/04/30 08:30:00",
+            "connector": {
+                "AC": 1,
+                "DC": 1
+            },
+            "electricityRate": {
+                "AC On-Pick": "$0.3/kWh",
+                "AC Off-Pick": "$0.1/kWh",
+                "DC On-Pick": "$3/kWh",
+                "DC Off-Pick": "$1/kWh"
+            },
+            "electricityRateId": "rateId"
+        }
+    ],
+    "connectorKey": ["AC", "DC"],
+    "electricityRateKey": ["AC On-Pick", "AC Off-Pick", "DC On-Pick", "DC Off-Pick"],
+    "electricityRateList": [
+        {
+            "rateId": "E001",
+            "rateName": "Midwest-53177"
+        },
+        {
+            "rateId": "E002",
+            "rateName": "APT-236044"
+        }
+    ]
+}

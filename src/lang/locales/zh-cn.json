@@ -27,7 +27,26 @@
         "err_logout": "登出错误!"
     },
     "general": {
-        "billing": "费用"
+        "billing": "费用",
+        "location": "位置",
+        "latestModification": "最新修改时间",
+        "action": "动作",
+        "detail": "详情",
+        "modify": "编辑",
+        "delete": "删除",
+        "create": "新增",
+        "result": "{item}笔结果",
+        "ok": "确定",
+        "cancel": "取消",
+        "normal": "正常",
+        "abnormal": "异常",
+        "lng": "经度",
+        "lat": "纬度",
+        "active": "启用",
+        "unactive": "未启用",
+        "repair": "维修",
+        "clickAddMarker": "在地图上点击加入标签",
+        "dragMarker": "在地图上拖移标签改变位置"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -46,5 +65,17 @@
             "90": "最近一季",
             "365": "最近一年"
         }
+    },
+    "chargingStation": {
+        "station": "充电站",
+        "stationID": "充电站ID",
+        "stationName": "充电站名称",
+        "connector#": "充电枪#",
+        "elecRate": "电费率",
+        "chargeBoxID": "充电桩ID",
+        "chargeBoxName": "充电桩名称",
+        "power": "电耗",
+        "connector": "充电枪",
+        "serviceStatus": "服务状态"
     }
 }

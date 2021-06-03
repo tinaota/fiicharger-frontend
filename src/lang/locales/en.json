@@ -27,7 +27,26 @@
         "err_logout": "Log out error!"
     },
     "general": {
-        "billing": "Billing"
+        "billing": "Billing",
+        "location": "Location",
+        "latestModification": "Latest Modification",
+        "action": "Action",
+        "detail": "Detail",
+        "modify": "Modify",
+        "delete": "Delete",
+        "create": "Create",
+        "result": "{item} Results",
+        "ok": "Ok",
+        "cancel": "Cancel",
+        "normal": "Normal",
+        "abnormal": "Abnormal",
+        "lng": "Longitude",
+        "lat": "Latitude",
+        "active": "Active",
+        "unactive": "Unactive",
+        "repair": "Repair",
+        "clickAddMarker": "Please click on the map to add a marker",
+        "dragMarker": "Drag the marker on the map to change its position"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",
@@ -46,5 +65,17 @@
             "90": "Last season",
             "365": "Last year"
         }
+    },
+    "chargingStation": {
+        "station": "Station",
+        "stationID": "Station ID",
+        "stationName": "Station Name",
+        "connector#": "Connector #",
+        "elecRate": "Electricity Rate",
+        "chargeBoxID": "ChargeBox ID",
+        "chargeBoxName": "ChargeBox Name",
+        "power": "Power",
+        "connector": "Connector",
+        "serviceStatus": "Service Status"
     }
 }

@@ -27,7 +27,26 @@
         "err_logout": "登出錯誤!"
     },
     "general": {
-        "billing": "費用"
+        "billing": "費用",
+        "location": "位置",
+        "latestModification": "最近修改時間",
+        "action": "動作",
+        "detail": "詳情",
+        "modify": "編輯",
+        "delete": "刪除",
+        "create": "新增",
+        "result": "{item}筆結果",
+        "ok": "確定",
+        "cancel": "取消",
+        "normal": "正常",
+        "abnormal": "異常",
+        "lng": "經度",
+        "lat": "緯度",
+        "active": "啟用",
+        "unactive": "未啟用",
+        "repair": "維修",
+        "clickAddMarker": "在地圖上點擊加入標籤",
+        "dragMarker": "在地圖上拖移標籤改變位置"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -46,5 +65,17 @@
             "90": "最近一季",
             "365": "最近一年"
         }
+    },
+    "chargingStation": {
+        "station": "充電站",
+        "stationID": "充電站ID",
+        "stationName": "充電站名稱",
+        "connector#": "充電槍#",
+        "elecRate": "電費率",
+        "chargeBoxID": "充電樁ID",
+        "chargeBoxName": "充電樁名稱",
+        "power": "電耗",
+        "connector":"充電槍",
+        "serviceStatus": "服務狀態"
     }
 }
