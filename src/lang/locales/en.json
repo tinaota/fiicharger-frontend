@@ -50,7 +50,8 @@
         "startDate": "Start date",
         "endDate": "End date",
         "startTime": "Start time",
-        "endTime": "End time"
+        "endTime": "End time",
+        "time": "Time"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",
@@ -86,6 +87,10 @@
         "billingID": "Billing ID",
         "userID": "User ID",
         "powerUsed": "Power Used",
-        "totalPrice": "Total Price"
+        "totalPrice": "Total Price",
+        "alertID": "Alert ID",
+        "alert": "Alert",
+        "workeOrder": "Work Order",
+        "workeOrderStatus": "Work Order Status"
     }
 }

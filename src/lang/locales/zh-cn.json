@@ -50,7 +50,8 @@
         "startDate": "开始日期",
         "endDate": "结束日期",
         "startTime": "开始时间",
-        "endTime": "结束时间"
+        "endTime": "结束时间",
+        "time": "时间"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -86,6 +87,10 @@
         "billingID": "帐单ID",
         "userID": "用户名",
         "powerUsed": "使用功率",
-        "totalPrice": "总价"
+        "totalPrice": "总价",
+        "alertID": "警报ID",
+        "alert": "警报",
+        "workeOrder": "工单",
+        "workeOrderStatus": "工单状态"
     }
 }

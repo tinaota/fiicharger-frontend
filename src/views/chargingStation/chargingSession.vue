@@ -151,3 +151,21 @@ export default {
     },
 }
 </script>
+<style lang = "scss" scoped>
+.card-8 {
+    padding: 28px;
+    width: calc(100% - 56px);
+    position: relative;
+    .total {
+        position: absolute;
+        right: 28px;
+        bottom: 28px;
+        height: 36px;
+        line-height: 36px;
+        vertical-align: middle;
+        font-size: 1rem;
+        color: #5A607F;
+        letter-spacing: 0;
+    }
+}
+</style>
