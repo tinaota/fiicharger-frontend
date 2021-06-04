@@ -46,7 +46,11 @@
         "unactive": "未启用",
         "repair": "维修",
         "clickAddMarker": "在地图上点击加入标签",
-        "dragMarker": "在地图上拖移标签改变位置"
+        "dragMarker": "在地图上拖移标签改变位置",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "startTime": "开始时间",
+        "endTime": "结束时间"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -76,6 +80,12 @@
         "chargeBoxName": "充电桩名称",
         "power": "电耗",
         "connector": "充电枪",
-        "serviceStatus": "服务状态"
+        "serviceStatus": "服务状态",
+        "sessionID": "充电纪录ID",
+        "billing": "帐单",
+        "billingID": "帐单ID",
+        "userID": "用户名",
+        "powerUsed": "使用功率",
+        "totalPrice": "总价"
     }
 }

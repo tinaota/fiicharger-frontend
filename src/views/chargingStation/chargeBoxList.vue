@@ -39,10 +39,15 @@
                             {{scope.row.power + "kWh"}}
                         </template>
                     </el-table-column>
+                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+                        <template slot-scope="scope">
+                            <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="location" :label="$t('general.location')" :min-width="2"></el-table-column>
-                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('general.action')" :min-width="1">
+                    <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column> -->
+                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="1"></el-table-column>
+                    <el-table-column :label="$t('general.action')" :width="104">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
                             <el-button @click="deleteCheckBox(scope.row.chargeBoxId)">{{ $t('general.delete') }}</el-button>
@@ -265,7 +270,7 @@ export default {
                 let data = Object.assign({}, this.dialog.info);
                 data.chargeBoxId = "";
                 data.power = 0;
-                data.connector = [];
+                data.connector = {};
                 data.location = this.dialog.info.loc.lng + ', '+ this.dialog.info.loc.lat;
                 data.stationName = this.dialog.stationList[this.dialog.info.loc.stationId];
                 this.tableData.push(data);

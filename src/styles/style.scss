@@ -661,6 +661,9 @@ button:disabled {
                 &.is-leaf {
                     border-bottom: none;
                 }
+                .cell {
+                    word-break: break-word;
+                }
             }
             td {
                 padding: 0;

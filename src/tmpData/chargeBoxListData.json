@@ -5,7 +5,9 @@
             "chargeBoxName": "Charge-1",
             "status": 1,
             "power": 7.7,
-            "connector": ["Type1"],
+            "connector": {
+                "1":"Type1"
+            },
             "location": "42°40′38.7″N, 87°55′01.2″W",
             "loc": {
                 "lat": 42.677411,
@@ -19,7 +21,10 @@
             "chargeBoxName": "Charge-2",
             "status": 0,
             "power": 30,
-            "connector": ["CHAdeMO", "CCS1"],
+            "connector": {
+                "1":"CHAdeMO",
+                "2":"CCS1"
+            },
             "location": "42°40′35.1″N, 87°55′01.2″W",
             "loc": {
                 "lat": 42.676411,

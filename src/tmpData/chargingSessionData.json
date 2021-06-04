@@ -1,0 +1,61 @@
+{
+    "chargingSession": [
+        {
+            "sessionId": "S00000001",
+            "stationId": "C000001",
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "power": 7.7,
+            "connector": {
+                "1":"Type1"
+            },
+            "sTime": "2021/05/10 08:30:00",
+            "eTime": "2021/05/10 09:30:00",
+            "price": 100,
+            "billingId": "B000000001",
+            "billingInfo": [{
+                "billingId": "B000000001",
+                "userId": "U00000001",
+                "price": 100,
+                "power": 100
+            }]
+        },
+        {
+            "sessionId": "S00000003",
+            "stationId": "C000001",
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "power": 30,
+            "connector": {
+                "1":"Type1"
+            },
+            "sTime": "2021/05/01 09:30:00",
+            "eTime": "2021/05/01 10:30:00",
+            "price": 300,
+            "billingId": "B000000007",
+            "billingInfo": [{
+                "billingId": "B000000007",
+                "userId": "U00000002",
+                "price": 300,
+                "power": 300
+            }]
+        },
+        {
+            "sessionId": "S00000004",
+            "stationId": "C000001",
+            "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
+            "power": 10,
+            "connector": {
+                "2":"CCS1"
+            },
+            "sTime": "2021/05/01 08:30:00",
+            "eTime": "2021/05/01 09:30:00",
+            "price": 50,
+            "billingId": "B000000008",
+            "billingInfo": [{
+                "billingId": "B000000008",
+                "userId": "U00000001",
+                "price": 50,
+                "power": 50
+            }]
+        }
+    ]
+}

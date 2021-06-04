@@ -46,7 +46,11 @@
         "unactive": "未啟用",
         "repair": "維修",
         "clickAddMarker": "在地圖上點擊加入標籤",
-        "dragMarker": "在地圖上拖移標籤改變位置"
+        "dragMarker": "在地圖上拖移標籤改變位置",
+        "startDate": "開始日期",
+        "endDate": "結束日期",
+        "startTime": "開始時間",
+        "endTime": "結束時間"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -76,6 +80,12 @@
         "chargeBoxName": "充電樁名稱",
         "power": "電耗",
         "connector":"充電槍",
-        "serviceStatus": "服務狀態"
+        "serviceStatus": "服務狀態",
+        "sessionID": "充電紀錄ID",
+        "billing": "帳單",
+        "billingID": "帳單ID",
+        "userID": "用戶名",
+        "powerUsed": "使用功率",
+        "totalPrice": "總價"
     }
 }

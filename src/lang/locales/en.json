@@ -46,7 +46,11 @@
         "unactive": "Unactive",
         "repair": "Repair",
         "clickAddMarker": "Please click on the map to add a marker",
-        "dragMarker": "Drag the marker on the map to change its position"
+        "dragMarker": "Drag the marker on the map to change its position",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "startTime": "Start time",
+        "endTime": "End time"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",
@@ -76,6 +80,12 @@
         "chargeBoxName": "ChargeBox Name",
         "power": "Power",
         "connector": "Connector",
-        "serviceStatus": "Service Status"
+        "serviceStatus": "Service Status",
+        "sessionID": "Session ID",
+        "billing": "Billing",
+        "billingID": "Billing ID",
+        "userID": "User ID",
+        "powerUsed": "Power Used",
+        "totalPrice": "Total Price"
     }
 }
