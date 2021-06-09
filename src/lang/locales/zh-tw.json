@@ -9,6 +9,7 @@
         "statistics": "統計",
         "chargingStation": "充電站資訊",
         "stationList": "充電站列表",
+        "stationListDetail": "充電站資訊",
         "chargeBoxList": "充電樁列表",
         "chargingSession": "充電紀錄",
         "stationAlert": "充電站警示",
@@ -91,6 +92,25 @@
         "alertID": "警報ID",
         "alert": "警報",
         "workeOrder": "工單",
-        "workeOrderStatus": "工單狀態"
+        "workeOrderStatus": "工單狀態",
+        "nChargeBox": "充電樁數量",
+        "accumCharging": "累積功耗",
+        "avgPrice": "均價",
+        "daySelectList": {
+            "7": "最近七天",
+            "14": "最近14天",
+            "30": "最近一個月",
+            "365": "最近一年"
+        },
+        "chargingStationAnalysis": "充電紀錄分析",
+        "powerUsedAnalysis": "使用功率分析",
+        "rateID": "費率ID",
+        "rateName": "費率名稱",
+        "elecRateList": {
+            "AC On-Pick": "交流電-尖峰",
+            "AC Off-Pick": "交流電-離峰",
+            "DC On-Pick": "直流電-尖峰",
+            "DC Off-Pick": "直流電-離峰"
+        }
     }
 }

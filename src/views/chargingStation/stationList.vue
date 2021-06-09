@@ -37,7 +37,6 @@
                     <el-table-column :label="$t('general.action')" :min-width="2">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
-                            <!-- <el-button>{{ $t('general.detail') }}</el-button> -->
                             <el-button @click="deleteStation(scope.row.stationId)">{{ $t('general.delete') }}</el-button>
                         </template>
                     </el-table-column>
@@ -114,7 +113,7 @@ export default {
     mounted() {
         this.fetchData();
     },
-    methods : {
+    methods: {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.tableData = StationListData.stationList.slice();
@@ -147,7 +146,13 @@ export default {
             this.page = page;
         },
         handleRowClick(row) {
-            console.log(row)
+            const stationData = {
+                stationId: row.stationId,
+                stationName: row.stationName,
+                location: row.location
+            }
+            window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
+            this.$router.push({ name: "stationListDetail", params: stationData }).catch();
         },
         openDialog(type, data) {
             const that = this;

@@ -44,6 +44,7 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/stationList', component: () => import('@/views/chargingStation/stationList.vue'), name: 'menu.stationList', hidden: false },
+                    { path: '/stationListDetail', component: () => import('@/views/chargingStation/stationListDetail.vue'), name: 'stationListDetail', hidden: true },
                     { path: '/chargeBoxList', component: () => import('@/views/chargingStation/chargeBoxList.vue'), name: 'menu.chargeBoxList', hidden: false },
                     { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: false },
                     { path: '/stationAlert', component: () => import('@/views/chargingStation/stationAlert.vue'), name: 'menu.stationAlert', hidden: false },

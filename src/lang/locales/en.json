@@ -9,6 +9,7 @@
         "statistics": "Statistics",
         "chargingStation": "Charging Station",
         "stationList": "Station List",
+        "stationListDetail": "Statistic Detail",
         "chargeBoxList": "ChargeBox List",
         "chargingSession": "Charging Session",
         "stationAlert": "Station Alert",
@@ -91,6 +92,26 @@
         "alertID": "Alert ID",
         "alert": "Alert",
         "workeOrder": "Work Order",
-        "workeOrderStatus": "Work Order Status"
+        "workeOrderStatus": "Work Order Status",
+        "nChargeBox": "Number of ChargeBox",
+        "accumCharging": "Accumulative Charging",
+        "avgPrice": "Avg Price",
+        "daySelectList": {
+            "7": "Last 7 days",
+            "14": "Last 14 days",
+            "30": "Last month",
+            "365": "Last year"
+        },
+        "chargingStationAnalysis": "Charging Station Analysis",
+        "powerUsedAnalysis": "Power Used Analysis",
+        "rateID": "Rate ID",
+        "rateName": "Rate Name",
+        "elecRateList": {
+            "AC On-Pick": "AC On-Pick",
+            "AC Off-Pick": "AC Off-Pick",
+            "DC On-Pick": "DC On-Pick",
+            "DC Off-Pick": "DC Off-Pick"
+        }
+
     }
 }

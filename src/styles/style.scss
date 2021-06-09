@@ -37,27 +37,6 @@
         }
     }
 }
-// .el-menu {
-//     border-right: unset;
-//     .el-menu-item {
-//         height:  auto;
-//         min-height: 23px;
-//         line-height: 23px;
-//         color: #FFF;
-//         font-size: 1rem;
-//         white-space: break-spaces;
-//         padding: 7px 15px;
-//         color: #888888;
-//         letter-spacing: -0.3px;
-//         &:focus, &:hover {
-//             background-color: transparent;
-//         }
-//         &.is-active {
-//             color: #0C83FF;
-//             background-color: transparent;
-//         }
-//     }
-// }
 .scroll {
     height: calc(100vh - 68px);
     .mCSB_scrollTools .mCSB_draggerContainer {
@@ -129,35 +108,6 @@
         .el-input--mini .el-input__inner {
             height: 46px;
             line-height: 46px;
-        }
-    }
-    .pole-table {
-        .item {
-            .title {
-                .el-button {
-                    float: right;
-                    background-color: transparent;
-                    border: unset;
-                    margin-top: 16px;
-                }
-                .circle {
-                    display: inline-block;
-                    width: 12px;
-                    height: 12px;
-                    background: #0C83FF;
-                    border-radius: 6px;
-                    border-radius: 6px;
-                    margin-right: 16px;
-                    line-height: 2.25rem;
-                    vertical-align: middle;
-                }
-                color: #FCFCFC;
-                font-size: 2.25rem;
-                margin-bottom: 12px;
-            }
-            .click {
-                cursor: pointer;
-            }
         }
     }
     .card-8 {
@@ -247,50 +197,35 @@
                 background: #929292;
             }
         }
-    }
-    .card-6 {
-        display:inline-block;
-        background: #171819;
-        box-shadow: 0 1px 8px 0 rgba(20,46,110,0.10);
-        border-radius: 6px;
-        border-radius: 6px;
-        margin-bottom: 24px;
-        padding: 14px 18px;
-        .header {
-            color: #FCFCFC;
-            font-size: 1.25rem;
-        }
-        .label {
-            font-size: 0.875rem;
-            color: #929292;
-        }
-        .content {
-            font-size: 1rem;
-            color: #FCFCFC;
-        }
-        .el-carousel {
-            .el-carousel__indicator {
-                line-height: 36px;
-                vertical-align: middle;
-                &:not(.is-active) .el-carousel__button {
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 8px;
+        .el-tabs {
+            .el-tabs__nav-wrap {
+                &::after {
+                    background: #2C2E30;
                 }
-                &.is-active .el-carousel__button {
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 12px;
+                .el-tabs__active-bar {
+                    background: #1E5EFF;
+                }
+                .el-tabs__item {
+                    font-size: 1rem;
+                    color: #6C6C6C;
+                    letter-spacing: 0;
+                    padding: 0 16px;
+                    &.is-active {
+                        color: #1E5EFF;
+                    }
                 }
             }
         }
-        .video-js .vjs-big-play-button {
-            top: calc(50% - 25px);
-            left: calc(50% - 40px);
-        }
-        &.network .el-table .el-table__body-wrapper,
-        &.power .el-table .el-table__body-wrapper {
-            max-height: 200px;
+        &.station-detail {
+            .header {
+                color: #FCFCFC;
+                font-size: 1.25rem;
+            }
+            .sec-header {
+                font-size: 0.875rem;
+                color: #FFFFFF;
+                margin: 12px 0;
+            }
         }
     }
     .card-12 {
@@ -406,25 +341,6 @@
                 }
             }
         }
-        .el-tabs {
-            .el-tabs__nav-wrap {
-                &::after {
-                    background: #2C2E30;
-                }
-                .el-tabs__active-bar {
-                    background: #1E5EFF;
-                }
-                .el-tabs__item {
-                    font-size: 1rem;
-                    color: #6C6C6C;
-                    letter-spacing: 0;
-                    padding: 0 16px;
-                    &.is-active {
-                        color: #1E5EFF;
-                    }
-                }
-            }
-        }
     }
     &.dashboard-statistics .card-12 {
         .header {
@@ -476,105 +392,6 @@
             }
             &.spec .el-progress-bar__outer .el-progress-bar__inner {
                 background-color: #FFA10B;
-            }
-        }
-    }
-    &.support {
-        .vendor {
-            .title {
-                color: #FBFBFB;
-                font-size: 2.25rem;
-                margin-bottom: 12px;
-                .el-button {
-                    float: right;
-                    background-color: transparent;
-                    border: unset;
-                    color: #929292;
-                    font-size: 0.875rem;
-                    margin-top: 16px;
-                }
-            }
-            .card-12 {
-                position: relative;
-                .header {
-                    color: #FBFBFB;
-                    font-size: 1.25rem;
-                    line-height: 28px;
-                    margin-bottom: 16px;
-                    background-color: transparent;
-                    border-bottom: unset;
-                    width: calc(100% - 30px);
-                    .circle {
-                        display: inline-block;
-                        width: 12px;
-                        height: 12px;
-                        border-radius: 6px;
-                        border-radius: 6px;
-                        margin-right: 16px;
-                        line-height: 21px;
-                        vertical-align: middle;
-                        &.green {
-                            background-color: #39DD5A;
-                        }
-                        &.orange {
-                            background-color: #FFA10B;
-                        }
-                        &.red {
-                            background-color: #FD3360;
-                        }
-                    }
-                    .el-button {
-                        float: right;
-                        background-color: transparent;
-                        border: unset;
-                        color: #7E84A3;
-                        font-weight: bold;
-                        font-size: 1.3rem;
-                        position: absolute;
-                        top: 28px;
-                        right: 18px;
-                        i.el-icon-arrow-up,
-                        i.el-icon-arrow-down {
-                            font-weight: bold;
-                        }
-                    }
-                }
-                .sec-header {
-                    font-size: 0.875rem;
-                    color: #929292;
-                    margin-left: 28px;
-                }
-                .content {
-                    margin-top: 18px;
-                }
-                ul.el-timeline {
-                    padding-left: 28px;
-                    max-height: 200px;
-                    .el-timeline-item {
-                        padding-top: 4px;
-                        padding-bottom: 6px;
-                        &:last-child {
-                            padding-bottom: 0px;
-                        }
-                        .el-timeline-item__tail {
-                            left: 3px;
-                            opacity: 0.2;
-                            border: 1px dashed #0C83FF
-                        }
-                        .el-timeline-item__node--normal {
-                            left: 1px;
-                            background: #0C83FF;
-                            width: 6px;
-                            height: 6px;
-                        }
-                        .el-timeline-item__wrapper .el-timeline-item__content {
-                            font-size: 0.875rem;
-                            line-height: 18px;
-                            color: #929292;
-                        }
-                    }
-                }
-
             }
         }
     }
