@@ -1,0 +1,48 @@
+{
+    "billingLogData": [
+        {
+            "userId": "U00000001",
+            "billingId": "B000000001",
+            "billingTime": "2021/05/20 05:30:30",
+            "price": 100,
+            "power": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000001",
+            "sessionInfo": {
+                "sessionId": "S00000001",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 100,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/20 05:30:30",
+                "eTime": "2021/05/20 06:30:30",
+                "price": 100
+            }
+        },
+        {
+            "userId": "U00000001",
+            "billingId": "B000000003",
+            "billingTime": "2021/05/22 08:00:30",
+            "price": 100,
+            "power": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000007",
+            "sessionInfo": {
+                "sessionId": "S00000007",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 100,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/22 08:00:30",
+                "eTime": "2021/05/22 09:00:30",
+                "price": 100
+            }
+        }
+    ]
+}

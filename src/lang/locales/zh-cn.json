@@ -86,6 +86,9 @@
         "sessionID": "充电纪录ID",
         "billing": "帐单",
         "billingID": "帐单ID",
+        "billingType": "帐单类型",
+        "bullingStatus": "帐单状态",
+        "billingLog": "帐单纪录",
         "userID": "用户名",
         "powerUsed": "使用功率",
         "totalPrice": "总价",
@@ -112,5 +115,14 @@
             "DC On-Pick": "直流电-尖峰",
             "DC Off-Pick": "直流电-离峰"
         }
+    },
+    "userAccount": {
+        "userName": "用户名",
+        "countryCode": "国家代码",
+        "phone": "电话号码",
+        "thirdPartyVerification": "第三方验证",
+        "email": "电子邮件",
+        "carType": "车型",
+        "creditCard": "信用卡"
     }
 }

@@ -109,7 +109,7 @@ export default {
     mounted() {
         this.fetchData();
     },
-    methods : {
+    methods: {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.tableData = ChargingSessionData.chargingSession.slice();

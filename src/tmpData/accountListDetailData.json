@@ -1,0 +1,210 @@
+{
+    "U00000001": {
+        "data": [{
+            "userId": "U00000001",
+            "userName": "William Bradley Pitt",
+            "countryCode": "+1",
+            "phone": "(626)555-1212",
+            "thirdPartyVerification": "Google",
+            "email": "U1@mail.foxconn",
+            "carType": "Tesla Model 3",
+            "creditCard": "**** - **** VISA"
+        }],
+        "billingLog": [{
+            "billingId": "B000000001",
+            "billingTime": "2021/05/10 08:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000001",
+            "sessionInfo": {
+                "sessionId": "S00000001",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/10 08:30:00",
+                "eTime": "2021/05/10 09:30:00",
+                "price": 100
+            }
+            },
+            {
+            "billingId": "B000000003",
+            "billingTime": "2021/05/01 09:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000007",
+            "sessionInfo": {
+                "sessionId": "S00000007",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/01 09:30:00",
+                "eTime": "2021/05/01 10:30:00",
+                "price": 100
+            }
+        }]
+    },
+    "U00000002": {
+        "data": [{
+            "userId": "U00000002",
+            "userName": "Mariah Carey",
+            "countryCode": "+1",
+            "phone": "(626)555-2222",
+            "thirdPartyVerification": "FB",
+            "email": "U2@mail.foxconn",
+            "carType": "Tesla Model 3",
+            "creditCard": "**** - **** VISA"
+        }],
+        "billingLog": [{
+            "billingId": "B000000001",
+            "billingTime": "2021/05/10 08:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000001",
+            "sessionInfo": {
+                "sessionId": "S00000001",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/10 08:30:00",
+                "eTime": "2021/05/10 09:30:00",
+                "price": 100
+            }
+            },
+            {
+            "billingId": "B000000003",
+            "billingTime": "2021/05/01 09:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000007",
+            "sessionInfo": {
+                "sessionId": "S00000007",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/01 09:30:00",
+                "eTime": "2021/05/01 10:30:00",
+                "price": 100
+            }
+        }]
+    },
+    "U00000003": {
+        "data": [{
+            "userId": "U00000003",
+            "userName": "Jason Statham",
+            "countryCode": "+1",
+            "phone": "(626)555-3344",
+            "thirdPartyVerification": "FB",
+            "email": "U3@mail.foxconn",
+            "carType": "Tesla Model 3",
+            "creditCard": "**** - **** VISA"
+        }],
+        "billingLog": [{
+            "billingId": "B000000001",
+            "billingTime": "2021/05/10 08:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000001",
+            "sessionInfo": {
+                "sessionId": "S00000001",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/10 08:30:00",
+                "eTime": "2021/05/10 09:30:00",
+                "price": 100
+            }
+            },
+            {
+            "billingId": "B000000003",
+            "billingTime": "2021/05/01 09:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000007",
+            "sessionInfo": {
+                "sessionId": "S00000007",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/01 09:30:00",
+                "eTime": "2021/05/01 10:30:00",
+                "price": 100
+            }
+        }]
+    },
+    "U00000004": {
+        "data": [{
+            "userId": "U00000004",
+            "userName": "Leonardo Wilhelm DiCaprio",
+            "countryCode": "+1",
+            "phone": "(626)555-5678",
+            "thirdPartyVerification": "Google",
+            "email": "U4@mail.foxconn",
+            "carType": "Tesla Model 3",
+            "creditCard": "**** - **** VISA"
+        }],
+        "billingLog": [{
+            "billingId": "B000000001",
+            "billingTime": "2021/05/10 08:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000001",
+            "sessionInfo": {
+                "sessionId": "S00000001",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/10 08:30:00",
+                "eTime": "2021/05/10 09:30:00",
+                "price": 100
+            }
+            },
+            {
+            "billingId": "B000000003",
+            "billingTime": "2021/05/01 09:30:00",
+            "price": 100,
+            "stationId": "C000001",
+            "billingType": "Credit Card",
+            "billingStatus": "Success",
+            "sessionId": "S00000007",
+            "sessionInfo": {
+                "sessionId": "S00000007",
+                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "power": 7.7,
+                "connector": {
+                    "1":"Type1"
+                },
+                "sTime": "2021/05/01 09:30:00",
+                "eTime": "2021/05/01 10:30:00",
+                "price": 100
+            }
+        }]
+    }
+}

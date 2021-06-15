@@ -86,6 +86,9 @@
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
         "billingID": "帳單ID",
+        "billingType": "帳單類型",
+        "bullingStatus": "帳單狀態",
+        "billingLog": "帳單紀錄",
         "userID": "用戶名",
         "powerUsed": "使用功率",
         "totalPrice": "總價",
@@ -112,5 +115,14 @@
             "DC On-Pick": "直流電-尖峰",
             "DC Off-Pick": "直流電-離峰"
         }
+    },
+    "userAccount": {
+        "userName": "用戶名",
+        "countryCode": "國家代碼",
+        "phone": "電話號碼",
+        "thirdPartyVerification": "第三方驗證",
+        "email": "電子郵件",
+        "carType": "車型",
+        "creditCard": "信用卡"
     }
 }

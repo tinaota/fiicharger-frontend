@@ -1,0 +1,32 @@
+{
+    "accountList": [
+        {
+            "userId": "U00000001",
+            "userName": "William Bradley Pitt",
+            "countryCode": "+1",
+            "phone": "(626)555-1212",
+            "thirdPartyVerification": "Google"
+        },
+        {
+            "userId": "U00000002",
+            "userName": "Mariah Carey",
+            "countryCode": "+1",
+            "phone": "(626)555-2222",
+            "thirdPartyVerification": "FB"
+        },
+        {
+            "userId": "U00000003",
+            "userName": "Jason Statham",
+            "countryCode": "+1",
+            "phone": "(626)555-3344",
+            "thirdPartyVerification": "FB"
+        },
+        {
+            "userId": "U00000004",
+            "userName": "Leonardo Wilhelm DiCaprio",
+            "countryCode": "+1",
+            "phone": "(626)555-5678",
+            "thirdPartyVerification": "Google"
+        }
+    ]
+}

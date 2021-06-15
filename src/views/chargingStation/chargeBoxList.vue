@@ -163,7 +163,7 @@ export default {
     beforeDestroy() {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, 'click');
     },
-    methods : {
+    methods: {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.tableData = ChargeBoxListData.chargeboxList.slice();

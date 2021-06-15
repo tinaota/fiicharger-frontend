@@ -145,10 +145,13 @@ export default {
         this.fetchData();
 
     },
+    beforeDestroy() {
+        window.sessionStorage.removeItem("fiics-stationInfo");
+    },
     methods : {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let data = StationDetailData[this.curRouteParam.stationId];
+            let data = Object.assign({}, StationDetailData[this.curRouteParam.stationId]);
             this.getChartSesstionData();
             this.getChartPowerUsedData();
             this.info = data.info;
@@ -161,13 +164,12 @@ export default {
                 timeList = [],
                 time = parseInt(this.chartChargingSesstion.search);
             if (time <= 30) {
-                for(var i = 1; i<=time; i++) {
+                for(var i = time; i>=1; i--) {
                     data.push(50 + Math.floor(Math.random() * 251)); //50-300
                     timeList.push(moment().subtract(i, 'days').format('MM/DD'));
                 }
             } else {
-                timeList.push(moment().format('YYYY-MM'));
-                for(var i = 1; i<12; i++) {
+                for(var i = (12-1); i>=0; i--) {
                     data.push(100 + Math.floor(Math.random() * 8901)); //100-9000
                     timeList.push(moment().subtract(i, 'months').format('YYYY-MM'));
                 }
@@ -180,13 +182,12 @@ export default {
                 timeList = [],
                 time = parseInt(this.chartPowerUsed.search);
             if (time <= 30) {
-                for(var i = 1; i<=time; i++) {
+                for(var i = time; i>=1; i--) {
                     data.push( Math.floor(Math.random() * 21*10)/10); //0-20
                     timeList.push(moment().subtract(i, 'days').format('MM/DD'));
                 }
             } else {
-                timeList.push(moment().format('YYYY-MM'));
-                for(var i = 1; i<12; i++) {
+                for(var i = (12-1); i>=0; i--) {
                     data.push(5 + Math.floor(Math.random() * 295*10)/10); //5-300
                     timeList.push(moment().subtract(i, 'months').format('YYYY-MM'));
                 }

@@ -86,6 +86,9 @@
         "sessionID": "Session ID",
         "billing": "Billing",
         "billingID": "Billing ID",
+        "billingType": "Billing Type",
+        "billingStatus": "Billing Status",
+        "billingLog": "Billing Log",
         "userID": "User ID",
         "powerUsed": "Power Used",
         "totalPrice": "Total Price",
@@ -113,5 +116,14 @@
             "DC Off-Pick": "DC Off-Pick"
         }
 
+    },
+    "userAccount": {
+        "userName": "User Name",
+        "countryCode": "Country Code",
+        "phone": "Phone Number",
+        "thirdPartyVerification": "Third-Party Verification",
+        "email": "E-mail",
+        "carType": "Car Type",
+        "creditCard": "Credit Card"
     }
 }

@@ -59,6 +59,7 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/accountList', component: () => import('@/views/userAccount/accountList.vue'), name: 'menu.accountList', hidden: false },
+                    { path: '/accountListDetail', component: () => import('@/views/userAccount/accountListDetail.vue'), name: 'accountListDetail', hidden: true },
                     { path: '/billingLog', component: () => import('@/views/userAccount/billingLog.vue'), name: 'menu.billingLog', hidden: false },
                 ]
             }
