@@ -145,14 +145,16 @@ export default {
         changePage(page) {
             this.page = page;
         },
-        handleRowClick(row) {
-            const stationData = {
-                stationId: row.stationId,
-                stationName: row.stationName,
-                location: row.location
+        handleRowClick(row, column, event) {
+            if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
+                const stationData = {
+                    stationId: row.stationId,
+                    stationName: row.stationName,
+                    location: row.location
+                }
+                window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
+                this.$router.push({ name: "stationListDetail", params: stationData }).catch();
             }
-            window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
-            this.$router.push({ name: "stationListDetail", params: stationData }).catch();
         },
         openDialog(type, data) {
             const that = this;

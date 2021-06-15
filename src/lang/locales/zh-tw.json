@@ -105,7 +105,7 @@
             "30": "最近一個月",
             "365": "最近一年"
         },
-        "chargingStationAnalysis": "充電紀錄分析",
+        "chargingSessionAnalysis": "充電紀錄分析",
         "powerUsedAnalysis": "使用功率分析",
         "rateID": "費率ID",
         "rateName": "費率名稱",

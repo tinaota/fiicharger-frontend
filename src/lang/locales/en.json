@@ -105,7 +105,7 @@
             "30": "Last month",
             "365": "Last year"
         },
-        "chargingStationAnalysis": "Charging Station Analysis",
+        "chargingSessionAnalysis": "Charging Session Analysis",
         "powerUsedAnalysis": "Power Used Analysis",
         "rateID": "Rate ID",
         "rateName": "Rate Name",

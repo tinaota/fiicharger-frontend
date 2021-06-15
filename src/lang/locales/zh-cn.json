@@ -105,7 +105,7 @@
             "30": "最近一个月",
             "365": "最近一年"
         },
-        "chargingStationAnalysis": "充电纪录分析",
+        "chargingSessionAnalysis": "充电纪录分析",
         "powerUsedAnalysis": "使用功率分析",
         "rateID": "费率ID",
         "rateName": "费率名称",

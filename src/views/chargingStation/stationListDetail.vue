@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="chart">
-                    <div class="header">{{ $t('chargingStation.chargingStationAnalysis') }}
+                    <div class="header">{{ $t('chargingStation.chargingSessionAnalysis') }}
                         <el-select
                             class="select-small dark right"
                             v-model="chartChargingSesstion.search"

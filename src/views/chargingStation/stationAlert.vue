@@ -31,7 +31,7 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol">
                     <el-table-column prop="alertId" :label="$t('chargingStation.alertID')"></el-table-column>
-                    <el-table-column prop="stationId" :label="$t('chargingStation.station')"></el-table-column>
+                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column>
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')"></el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')">
                         <template slot-scope="scope">
