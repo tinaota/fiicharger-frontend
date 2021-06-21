@@ -14,7 +14,7 @@
                     class="moreCol">
                     <el-table-column prop="rateId" :label="$t('chargingStation.rateID')"></el-table-column>
                     <el-table-column prop="rateName" :label="$t('chargingStation.rateName')"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRate')">
+                    <el-table-column :label="$t('chargingStation.elecRate')" label-class-name="center">
                         <el-table-column v-for="(item, key) in $t('chargingStation.elecRateList')" :key="key" :label="item">
                             <template slot-scope="scope">{{ scope.row.electricityRate[item] +"/kWh" }}</template>
                         </el-table-column>

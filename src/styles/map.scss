@@ -11,7 +11,8 @@
     border-right-color: rgba(23,24,25,0.90);
 }
 .mapboxgl-popup-content {
-    padding: 8px 0px 8px 12px;
+    width: 256px;
+    padding: 8px 0px 16px 12px;
     background: rgba(23,24,25,0.90);
     border: unset;
     box-shadow: 0 1px 4px 0 rgba(21,34,50,0.08);
@@ -23,8 +24,8 @@
         margin-bottom: 12px
     }
     .info-msg {
-        max-height: 400px;
-        overflow-y: scroll;
+        max-height: 480px;
+        overflow-y: auto;
         ul {
             padding-left: 0;
             padding-right: 16px;
@@ -34,41 +35,30 @@
                 min-height: 18px;
                 line-height: 18px;
                 font-size: 12px;
-                display: flex;
+                // display: flex;
                 + li {
-                    margin-top: 8px;
+                    margin-top: 20px;
                 }
                 .item-title-img {
-                    display: inline-block;
-                    width: 50%;
-                    color: #959692;
+                    color: #9EA7AC;
                     letter-spacing: 0;
-                    float: left;
                     img {
                         margin-right: 6px;
                         width: 18px;
                         height: auto;
                         vertical-align: middle;
                     }
-                    + .item-msg {
-                        width: 50%;
-                    }
                 }
                 .item-title {
-                    display: inline-block;
-                    width: calc(50% - 24px);
                     padding-left: 24px;
                     color: #9EA7AC;
                     letter-spacing: 0;
-                    + .item-msg {
-                        width: calc(50% + 20px);
-                    }
                 }
                 .item-msg {
-                    display: inline-block;
-                    color: #FFFFFF;
+                    color: #FDFDFD;
                     letter-spacing: 0;
-                    text-align: right;
+                    padding-left: 24px;
+                    margin-top: 4px;
                     img {
                         width: 52px;
                         height: 92px;
@@ -91,17 +81,17 @@
         height: 24px;
         border-radius: 50%;
         cursor: pointer;
-        &.pos0 {
+        &.pos1 {
             background-image: url('~imgs/ic_green_dot.png');
         }
-        &.pos1 {
-            background-image: url('~imgs/ic_red_dot.png');
-        }
         &.pos2 {
-            background-image: url('~imgs/ic_gray_dot.png');
+            background-image: url('~imgs/ic_orange_dot.png');
         }
         &.pos3 {
-            background-image: url('~imgs/ic_blue_dot.png');
+            background-image: url('~imgs/ic_red_dot.png');
+        }
+        &.pos4 {
+            background-image: url('~imgs/ic_gray_dot.png');
         }
         &.loading {
             position: relative;

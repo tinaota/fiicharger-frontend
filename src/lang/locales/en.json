@@ -1,6 +1,6 @@
 {
-    "app_name": "Fii EV Charging System",
-    "app_name_short": "Fiicharging System",
+    "app_name": "Fii Charger System",
+    "app_name_short": "Fiicharger System",
     "error_network": "Network request error!",
     "menu": {
         "home": "Home",
@@ -12,7 +12,7 @@
         "stationListDetail": "Statistic Detail",
         "chargeBoxList": "ChargeBox List",
         "chargingSession": "Charging Session",
-        "stationAlert": "Station Alert",
+        "chargeBoxAlert": "ChargeBox Alert",
         "setting": "Setting",
         "userAccount": "User Account",
         "accountList": "Account List",
@@ -52,7 +52,12 @@
         "endDate": "End date",
         "startTime": "Start time",
         "endTime": "End time",
-        "time": "Time"
+        "time": "Time",
+        "search": "Search...",
+        "alert": "Alert",
+        "connectionLost": "Connection lost",
+        "serviceUnavailable": "Service unavailable",
+        "zipCode": "ZIP code"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",
@@ -70,13 +75,15 @@
             "30": "Last month",
             "90": "Last season",
             "365": "Last year"
-        }
+        },
+        "revenue": "Revenue"
     },
     "chargingStation": {
         "station": "Station",
         "stationID": "Station ID",
         "stationName": "Station Name",
         "connector#": "Connector #",
+        "parkingRate": "Parking Rate",
         "elecRate": "Electricity Rate",
         "chargeBoxID": "ChargeBox ID",
         "chargeBoxName": "ChargeBox Name",

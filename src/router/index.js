@@ -47,7 +47,7 @@ let routes = [
                     { path: '/stationListDetail', component: () => import('@/views/chargingStation/stationListDetail.vue'), name: 'stationListDetail', hidden: true },
                     { path: '/chargeBoxList', component: () => import('@/views/chargingStation/chargeBoxList.vue'), name: 'menu.chargeBoxList', hidden: false },
                     { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: false },
-                    { path: '/stationAlert', component: () => import('@/views/chargingStation/stationAlert.vue'), name: 'menu.stationAlert', hidden: false },
+                    { path: '/chargeBoxAlert', component: () => import('@/views/chargingStation/chargeBoxAlert.vue'), name: 'menu.chargeBoxAlert', hidden: false },
                     { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                 ]
             },
@@ -100,7 +100,7 @@ const router = new Router({
  */
 router.beforeEach((to, from, next) => {
     if (from.path === '/' && to.path === '/') {
-        next({ path: '/statistics' });
+        next({ path: '/map' });
     } else {
         next();
     }

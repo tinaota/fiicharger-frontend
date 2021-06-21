@@ -2,7 +2,7 @@
     <div>
         <el-row class="header">
             <el-col :sm="24" :lg="4" class="sys">
-                <div><img :src="systemLogo" style="margin-top: -8px;"></div>
+                <div><img :src="systemLogo" style="margin-top: -4px;"></div>
             </el-col>
             <el-col :sm="24" :lg="20" class="header-info">
                 <el-dropdown trigger="hover">
@@ -83,7 +83,7 @@ export default {
             userData: {},
             lang: '',
             langList: $GLOBAL_LANG,
-            systemLogo: require("imgs/fiics_logo_130_54.png"),
+            systemLogo: require("imgs/fiics_logo.png"),
             sysUserAvatar: require("imgs/ic_avata.png"),
             sysUserName: 'Developer'
         };

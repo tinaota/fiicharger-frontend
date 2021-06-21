@@ -1,0 +1,66 @@
+{
+    "search": {
+        "53177": {
+            "pos": {
+                "lat": 42.686911,
+                "lng": -87.933411
+            },
+            "zoom": 13
+        },
+        "Wisconsin": {
+            "pos": {
+                "lat": 44.502100,
+                "lng": -89.756188
+            },
+            "zoom": 7
+        },
+        "236044": {
+            "pos": {
+                "lat": 24.960484,
+                "lng": 121.414647
+            },
+            "zoom": 18
+        },
+        "Tuheng": {
+            "pos": {
+                "lat": 24.967377,
+                "lng": 121.444180
+            },
+            "zoom": 14
+        },
+        "土城": {
+            "pos": {
+                "lat": 24.967377,
+                "lng": 121.444180
+            },
+            "zoom": 14
+        }
+
+    },
+    "chargeBoxList": [
+        {
+            "stationId": "C000001",
+            "stationName": "Fii-WL campus 53177",
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "power": "67.7kWh",
+            "revenue": "$300",
+            "loc": {
+                "lat": 42.677411,
+                "lng": -87.916993
+            },
+            "status": 1
+        },
+        {
+            "stationId": "C000002",
+            "stationName": "Fii-MS campus 236044",
+            "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
+            "power": "50kWh",
+            "revenue": "$200",
+            "loc": {
+                "lat": 42.676411,
+                "lng": -87.916993
+            },
+            "status": 4
+        }
+    ]
+}

@@ -3,12 +3,18 @@
         {
             "stationId": "C000001",
             "stationName": "Fii-WL campus 53177",
+            "zipCode": "53177",
             "location": "42°40′38.7″N, 87°55′01.2″W",
+            "loc": {
+                "lat":  42.677417,
+                "lng": -87.917000
+            },
             "sDate": "2021/05/10 08:30:00",
             "connector": {
                 "AC": 2,
                 "DC": 2
             },
+            "parkingRate": "$0.3",
             "electricityRate": {
                 "AC On-Pick": "$0.3/kWh",
                 "AC Off-Pick": "$0.1/kWh",
@@ -20,12 +26,18 @@
         {
             "stationId": "C000002",
             "stationName": "Fii-MS campus 236044",
+            "zipCode": "236044",
             "location": "24°57′39.9″N, 121°24′53.0″E",
+            "loc": {
+                "lat":  24.961083,
+                "lng": 121.414722
+            },
             "sDate": "2021/04/30 08:30:00",
             "connector": {
                 "AC": 1,
                 "DC": 1
             },
+            "parkingRate": "$0.3",
             "electricityRate": {
                 "AC On-Pick": "$0.3/kWh",
                 "AC Off-Pick": "$0.1/kWh",

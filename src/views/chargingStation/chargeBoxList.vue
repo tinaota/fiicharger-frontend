@@ -44,9 +44,14 @@
                             <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="location" :label="$t('general.location')" :min-width="2"></el-table-column>
-                    <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column> -->
-                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="1"></el-table-column>
+                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="2"></el-table-column>
+                    <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
+                        <template slot-scope="scope">
+                            <el-tooltip :content="scope.row.location" placement="top" effect="light" popper-class="custom">
+                                <el-button type="primary" icon="el-icon-map-location" circle></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="104">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>

@@ -1,6 +1,6 @@
 {
-    "app_name": "Fii EV 充電站管理系統",
-    "app_name_short": "Fiicharging系統",
+    "app_name": "Fii充電站管理系統",
+    "app_name_short": "Fiicharger系統",
     "error_network": "網路異常!",
     "menu": {
         "home": "首頁",
@@ -12,7 +12,7 @@
         "stationListDetail": "充電站資訊",
         "chargeBoxList": "充電樁列表",
         "chargingSession": "充電紀錄",
-        "stationAlert": "充電站警示",
+        "chargeBoxAlert": "充電樁警示",
         "setting": "設定",
         "userAccount": "用戶帳號資訊",
         "accountList": "帳號列表",
@@ -52,7 +52,12 @@
         "endDate": "結束日期",
         "startTime": "開始時間",
         "endTime": "結束時間",
-        "time": "時間"
+        "time": "時間",
+        "search": "搜索...",
+        "alert": "異常",
+        "connectionLost": "連線異常",
+        "serviceUnavailable": "暫停服務",
+        "zipCode": "郵遞區號"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -70,13 +75,15 @@
             "30": "最近一個月",
             "90": "最近一季",
             "365": "最近一年"
-        }
+        },
+        "revenue": "收入"
     },
     "chargingStation": {
         "station": "充電站",
         "stationID": "充電站ID",
         "stationName": "充電站名稱",
         "connector#": "充電槍#",
+        "parkingRate": "停車費",
         "elecRate": "電費率",
         "chargeBoxID": "充電樁ID",
         "chargeBoxName": "充電樁名稱",

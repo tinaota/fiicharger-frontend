@@ -17,6 +17,9 @@
             border: none;
             color: #929292;
             letter-spacing: 0;
+            &.center .cell {
+                text-align: center;
+            }
             &.is-leaf {
                 border-bottom: none;
             }
@@ -29,13 +32,16 @@
             font-size: 1rem;
             color: #FCFCFC;
             border: none;
+            &.center .cell {
+                text-align: center;
+            }
             .el-switch {
                 line-height: unset;
                 height: unset;
             }
             .cell {
                 word-break: break-word;
-                .el-button {
+                .el-button:not(.is-circle) {
                     width: 84px;
                 }
             }
@@ -91,7 +97,7 @@
         td {
             font-size: 0.875rem;
             border-bottom: 1px solid #2C2E30;
-            .el-button {
+            .el-button:not(.is-circle) {
                 background: #2D3238;
                 border-radius: 4px;
                 font-size: 0.875rem;

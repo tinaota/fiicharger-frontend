@@ -22,19 +22,29 @@
                     @row-click="handleRowClick">
                     <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
                     <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="1"></el-table-column>
-                    <el-table-column prop="location" :label="$t('general.location')" :min-width="2"></el-table-column>
+                    <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="1"></el-table-column>
                     <el-table-column prop="sDate" :label="$t('general.latestModification')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector#')" :min-width="2">
-                        <el-table-column v-for="item in connectorKey" :key="item" :label="item" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.connector#')" :min-width="2" label-class-name="center">
+                        <el-table-column v-for="item in connectorKey" :key="item" :label="item" :width="56">
                             <template slot-scope="scope">{{ scope.row.connector[item] }}</template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRate')">
+                    <el-table-column :label="$t('chargingStation.parkingRate')" :width="80">
+                        <template slot-scope="scope">{{ scope.row.parkingRate + "/min" }}</template>
+                    </el-table-column>
+                    <el-table-column :label="$t('chargingStation.elecRate')" label-class-name="center">
                         <el-table-column v-for="item in electricityRateKey" :key="item" :label="item" :min-width="1">
                             <template slot-scope="scope">{{ scope.row.electricityRate[item] }}</template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :min-width="2">
+                    <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
+                        <template slot-scope="scope">
+                            <el-tooltip :content="scope.row.location" placement="top" effect="light" popper-class="custom">
+                                <el-button type="primary" icon="el-icon-map-location" circle></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('general.action')" :width="108">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
                             <el-button @click="deleteStation(scope.row.stationId)">{{ $t('general.delete') }}</el-button>
@@ -63,6 +73,14 @@
                     <div class="form-item">
                         <div class="label">{{ $t('chargingStation.stationName') }}</div>
                         <el-input v-model="dialog.info.stationName"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('general.zipCode') }}</div>
+                        <el-input v-model="dialog.info.zipCode"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                        <el-input v-model="dialog.info.parkingRate"></el-input>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('chargingStation.elecRate') }}</div>
@@ -104,6 +122,8 @@ export default {
                 info: {
                     stationId: '',
                     stationName: '',
+                    zipCode: '',
+                    parkingRate: '$0',
                     electricityRateId: ''
                 },
                 electricityRateList: []

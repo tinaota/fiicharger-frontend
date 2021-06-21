@@ -11,22 +11,27 @@
                         :placeholder="$t('chargingStation.userID')+'/'+$t('userAccount.userName')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
+                        @keyup.enter.native="fetchData('s')">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
+                    v-loading="isLoading"
                     class="moreCol">
-                    <el-table-column prop="userId" :label="$t('chargingStation.userID')"></el-table-column>
-                    <el-table-column prop="userName" :label="$t('userAccount.userName')"></el-table-column>
+                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
+                    <el-table-column prop="memberName" :label="$t('userAccount.userName')"></el-table-column>
                     <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')"></el-table-column>
-                    <el-table-column prop="phone" :label="$t('userAccount.phone')" ></el-table-column>
-                    <el-table-column prop="thirdPartyVerification" :label="$t('userAccount.thirdPartyVerification')"></el-table-column>
+                    <el-table-column prop="cellphone" :label="$t('userAccount.phone')" ></el-table-column>
+                    <el-table-column :label="$t('userAccount.thirdPartyVerification')">
+                        <template slot-scope="scope">
+                            <span v-for="(type, idx) in scope.row.loginType" :key="type">{{ type }} <br v-if="idx+1 !== scope.row.loginType.length"/></span>
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="200">
                         <template slot-scope="scope">
-                            <el-button @click="handleAccountDetail(scope.row.userId, scope.row.userName)">{{ $t('general.detail') }}</el-button>
-                            <el-button @click="deleteAccount(scope.row.userId)">{{ $t('general.delete') }}</el-button>
+                            <el-button @click="handleAccountDetail(scope.row.memberCode, scope.row.memberName)">{{ $t('general.detail') }}</el-button>
+                            <el-button @click="deleteAccount(scope.row.memberCode)">{{ $t('general.delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -44,8 +49,8 @@
 </template>
 
 <script>
-import AccountListData from "@/tmpData/accountListData";
 import { setScrollBar } from "@/utils/function";
+import { $HTTP_getAccountList } from "@/api/api";
 export default {
     data() {
         return {
@@ -53,6 +58,7 @@ export default {
                 tmpSearch: '',
                 search: ''
             },
+            isLoading: false,
             tableData: [],
             page: 1,
             total: 0
@@ -62,45 +68,46 @@ export default {
         this.fetchData();
     },
     methods: {
-        fetchData() {
+        fetchData(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = AccountListData.accountList.slice();
-            this.page = 1;
-            this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = AccountListData.accountList.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
+            let param = {};
+            if (type) {
+                this.filter.search = this.filter.tmpSearch;
             }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return (item.userId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-                    || (item.userName.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-            };
+            param.search = this.filter.search;
+            $HTTP_getAccountList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.accountList.slice();
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         changePage(page) {
             this.page = page;
         },
         handleAccountDetail(id, name) {
             const data = {
-                userId: id,
-                userName: name
+                memberCode: id,
+                memberName: name
             }
             window.sessionStorage.setItem('fiics-accountInfo', JSON.stringify(data));
             this.$router.push({ name: "accountListDetail", params: data }).catch();
         },
         deleteAccount(id) {
-            this.tableData = this.tableData.filter(item => item.userId !== id);
+            this.tableData = this.tableData.filter(item => item.memberCode !== id);
             this.total = this.tableData.length;
         },
     }
