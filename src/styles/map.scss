@@ -81,6 +81,9 @@
         height: 24px;
         border-radius: 50%;
         cursor: pointer;
+        &.pos0 {
+            background-image: url('~imgs/ic_blue_dot.png');
+        }
         &.pos1 {
             background-image: url('~imgs/ic_green_dot.png');
         }

@@ -2,7 +2,7 @@
     "stationList": [
         {
             "stationId": "C000001",
-            "stationName": "Fii-WL campus 53177",
+            "stationName": "Fii-WL campus",
             "zipCode": "53177",
             "location": "42°40′38.7″N, 87°55′01.2″W",
             "loc": {
@@ -25,7 +25,7 @@
         },
         {
             "stationId": "C000002",
-            "stationName": "Fii-MS campus 236044",
+            "stationName": "Fii-MS campus",
             "zipCode": "236044",
             "location": "24°57′39.9″N, 121°24′53.0″E",
             "loc": {

@@ -121,7 +121,8 @@
             "AC Off-Pick": "AC Off-Pick",
             "DC On-Pick": "DC On-Pick",
             "DC Off-Pick": "DC Off-Pick"
-        }
+        },
+        "itemPosition": "{item} Position"
 
     },
     "userAccount": {

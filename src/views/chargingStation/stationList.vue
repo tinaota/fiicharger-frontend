@@ -40,7 +40,7 @@
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.location" placement="top" effect="light" popper-class="custom">
-                                <el-button type="primary" icon="el-icon-map-location" circle></el-button>
+                                <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -96,6 +96,7 @@
                     <el-button size="small" type="primary" @click="updateStation">{{ $t('general.ok') }}</el-button>
                 </span>
             </el-dialog>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
         </div>
     </div>
 </template>
@@ -104,7 +105,11 @@
 import StationListData from "@/tmpData/stationListData";
 import { setScrollBar } from "@/utils/function";
 import moment from "moment";
+import ShowPostion from "@/components/chargingStation/showPostion";
 export default {
+    components: {
+        ShowPostion
+    },
     data() {
         return {
             filter: {
@@ -127,6 +132,14 @@ export default {
                     electricityRateId: ''
                 },
                 electricityRateList: []
+            },
+            mapDialog: {
+                visible: false,
+                itemId: '',
+                position: {
+                    lat: '',
+                    lng: ''
+                }
             }
         }
     },
@@ -217,6 +230,11 @@ export default {
                 this.tableData = tmp;
             }
             this.dialog.visible = false;
+        },
+        handleShowDialog(data) {
+            this.mapDialog.itemId = data.stationId;
+            this.mapDialog.position = data.loc;
+            this.mapDialog.visible = true;
         }
     }
 }

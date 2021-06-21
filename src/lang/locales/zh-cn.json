@@ -121,7 +121,8 @@
             "AC Off-Pick": "交流电-离峰",
             "DC On-Pick": "直流电-尖峰",
             "DC Off-Pick": "直流电-离峰"
-        }
+        },
+        "itemPosition": "{item}位置"
     },
     "userAccount": {
         "userName": "用户名",
