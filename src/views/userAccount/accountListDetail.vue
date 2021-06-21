@@ -53,6 +53,7 @@ export default {
         return {
             curRouteParam: {},
             tableData: [],
+            isLoading: false,
             active: 'billingLog',
             billingLogData: []
         }
@@ -97,6 +98,7 @@ export default {
                 this.tableData = [];
                 this.billingLogData = [];
                 this.total = 0;
+                console.log(err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },

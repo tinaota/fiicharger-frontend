@@ -213,10 +213,10 @@ export default {
                 data.sDate = moment().format("YYYY/MM/DD HH:mm:ss");
                 data.connector= { "AC": 0, "DC": 0 };
                 data.electricityRate = {
-                    "AC On-Pick": "$0.3/kWh",
-                    "AC Off-Pick": "$0.1/kWh",
-                    "DC On-Pick": "$3/kWh",
-                    "DC Off-Pick": "$1/kWh"
+                    "AC On-Peak": "$0.3/kWh",
+                    "AC Off-Peak": "$0.1/kWh",
+                    "DC On-Peak": "$3/kWh",
+                    "DC Off-Peak": "$1/kWh"
                 };
                 this.tableData.push(data);
             } else {

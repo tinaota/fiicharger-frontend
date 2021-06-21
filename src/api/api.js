@@ -14,3 +14,8 @@ export const $HTTP_getAccountList = params => { return post(`${base}/Account/get
  * @description 取得帳戶資訊
  */
 export const $HTTP_getAccountInfo = params => { return post(`${base}/Account/getAccountInfo`, qs.stringify(params)) }
+
+/**
+ * @description 刪除帳戶資訊
+ */
+export const $HTTP_deleteAccount = params => { return post(`${base}/Account/deleteAccount`, qs.stringify(params)) }

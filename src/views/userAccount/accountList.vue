@@ -50,7 +50,7 @@
 
 <script>
 import { setScrollBar } from "@/utils/function";
-import { $HTTP_getAccountList } from "@/api/api";
+import { $HTTP_getAccountList, $HTTP_deleteAccount } from "@/api/api";
 export default {
     data() {
         return {
@@ -92,6 +92,7 @@ export default {
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
+                console.log(err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
@@ -109,6 +110,22 @@ export default {
         deleteAccount(id) {
             this.tableData = this.tableData.filter(item => item.memberCode !== id);
             this.total = this.tableData.length;
+            const that = this;
+            this.$confirm(i18n.t('general.deleteItem', { item: id }), i18n.t('general.hint'), {
+                showClose: false,
+                customClass: 'dark',
+                // confirmButtonText: i18n.t('btn.ok'),
+                // cancelButtonText: i18n.t('btn.cancel')
+            }).then(() => {
+                $HTTP_deleteAccount({memberCode: id}).then(data => {
+                    if (!!data.success) {
+                        that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
+                        that.fetchData();
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    }
+                });
+            });
         },
     }
 }

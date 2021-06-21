@@ -57,7 +57,10 @@
         "alert": "异常",
         "connectionLost": "连线异常",
         "serviceUnavailable": "暂停服务",
-        "zipCode": "邮递区号"
+        "zipCode": "邮递区号",
+        "hint": "提示",
+        "deleteItem": "你确定删除 {item}?",
+        "sucDelMsg": "删除完成!"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -117,10 +120,10 @@
         "rateID": "费率ID",
         "rateName": "费率名称",
         "elecRateList": {
-            "AC On-Pick": "交流电-尖峰",
-            "AC Off-Pick": "交流电-离峰",
-            "DC On-Pick": "直流电-尖峰",
-            "DC Off-Pick": "直流电-离峰"
+            "AC On-Peak": "交流电-尖峰",
+            "AC Off-Peak": "交流电-离峰",
+            "DC On-Peak": "直流电-尖峰",
+            "DC Off-Peak": "直流电-离峰"
         },
         "itemPosition": "{item}位置"
     },

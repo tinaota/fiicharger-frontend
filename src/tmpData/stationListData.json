@@ -16,10 +16,10 @@
             },
             "parkingRate": "$0.3",
             "electricityRate": {
-                "AC On-Pick": "$0.3/kWh",
-                "AC Off-Pick": "$0.1/kWh",
-                "DC On-Pick": "$3/kWh",
-                "DC Off-Pick": "$1/kWh"
+                "AC On-Peak": "$0.3/kWh",
+                "AC Off-Peak": "$0.1/kWh",
+                "DC On-Peak": "$3/kWh",
+                "DC Off-Peak": "$1/kWh"
             },
             "electricityRateId": "E001"
         },
@@ -39,16 +39,16 @@
             },
             "parkingRate": "$0.3",
             "electricityRate": {
-                "AC On-Pick": "$0.3/kWh",
-                "AC Off-Pick": "$0.1/kWh",
-                "DC On-Pick": "$3/kWh",
-                "DC Off-Pick": "$1/kWh"
+                "AC On-Peak": "$0.3/kWh",
+                "AC Off-Peak": "$0.1/kWh",
+                "DC On-Peak": "$3/kWh",
+                "DC Off-Peak": "$1/kWh"
             },
             "electricityRateId": "rateId"
         }
     ],
     "connectorKey": ["AC", "DC"],
-    "electricityRateKey": ["AC On-Pick", "AC Off-Pick", "DC On-Pick", "DC Off-Pick"],
+    "electricityRateKey": ["AC On-Peak", "AC Off-Peak", "DC On-Peak", "DC Off-Peak"],
     "electricityRateList": [
         {
             "rateId": "E001",

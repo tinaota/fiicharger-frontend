@@ -82,10 +82,10 @@ export default {
                     rateId: '',
                     rateName: '',
                     electricityRate: {
-                        "AC On-Pick": '$0',
-                        "AC Off-Pick": '$0',
-                        "DC On-Pick": '$0',
-                        "DC Off-Pick": '$0'
+                        "AC On-Peak": '$0',
+                        "AC Off-Peak": '$0',
+                        "DC On-Peak": '$0',
+                        "DC Off-Peak": '$0'
                     }
                 }
             }
