@@ -1,4 +1,5 @@
 {
+    "operatorList": ["Fiicharger", "Midwest", "APT"],
     "statistics": {
         "billing": [112, 1.68],
         "energyUsedUnit": [1680, 1.68],

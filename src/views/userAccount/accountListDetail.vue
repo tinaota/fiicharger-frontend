@@ -51,6 +51,7 @@ export default {
     },
     data() {
         return {
+            lang: '',
             curRouteParam: {},
             tableData: [],
             isLoading: false,
@@ -68,6 +69,7 @@ export default {
                 this.$router.go(-1);
             }
         }
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-accountInfo");

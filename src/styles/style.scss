@@ -187,14 +187,20 @@
             width: 16px;
             height: 16px;
             border-radius: 16px;
-            &.green {
-                background: #29CB97;
+            &.color1 {
+                background: #32d850;
             }
-            &.orange {
-                background: #FFA10B;
+            &.color2 {
+                background: #ffa10b;
             }
-            &.gray {
-                background: #929292;
+            &.color3 {
+                background: #5e3715;
+            }
+            &.color4 {
+                background: #fd2d55;
+            }
+            &.color5 {
+                background: #8e8e9a;
             }
         }
         .el-tabs {
@@ -224,7 +230,14 @@
             .sec-header {
                 font-size: 0.875rem;
                 color: #FFFFFF;
-                margin: 12px 0;
+                &.long {
+                    margin: 12px 0;
+                }
+                &:not(.long) {
+                    width: auto;
+                    display: inline-block;
+                    margin-bottom: 12px;
+                }
             }
         }
     }
@@ -459,7 +472,8 @@ button:disabled {
             }
         }
         .el-input,
-        .el-select {
+        .el-select,
+        .el-input-number {
             width: 100%;
             input {
                 opacity: 0.6;
@@ -488,6 +502,25 @@ button:disabled {
             }
             .el-tag__close.el-icon-close {
                 right: -6px;
+            }
+        }
+        .el-input-number.is-controls-right[class*=mini] [class*=decrease], .el-input-number.is-controls-right[class*=mini] [class*=increase] {
+            line-height: unset;
+        }
+        .el-input-number {
+            .el-input__inner {
+                text-align: left;
+            }
+            .el-input-number__decrease,
+            .el-input-number__increase {
+                border: unset;
+                background-color: #131414;
+                margin-right: 2px;
+                .el-icon-arrow-down,
+                .el-icon-arrow-up {
+                    font-size: 16px;
+                    color: #C0C4CC;
+                }
             }
         }
     }

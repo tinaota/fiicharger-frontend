@@ -5,6 +5,14 @@
                 <el-breadcrumb-item>{{ $t('menu.dashboard') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.statistics') }}</el-breadcrumb-item>
             </el-breadcrumb>
+            <br/>
+            <el-select
+                class="select-small dark-header"
+                v-model="curOperator"
+                @change="changeOption">
+                <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+            </el-select>
+            <br/>
             <div class="card-12 statistics">
                 <div class="header">{{ $t('menu.statistics') }}
                     <el-select
@@ -142,6 +150,8 @@ import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
+            curOperator: '',
+            operatorList: [],
             daySelectList: i18n.t('dashboard.daySelectList'),
             statisticsDay: '7',
             statistics: {
@@ -183,11 +193,16 @@ export default {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.statistics = Object.assign({}, DashboardData.statistics);
+            this.operatorList = DashboardData.operatorList.slice();
+            this.curOperator = this.operatorList[0];
             this.powerUsedTop10 = this.addPercentage(DashboardData.powerUsedTop10);
             this.revenueTop10 = this.addPercentage(DashboardData.revenueTop10);
             this.sessionTop10 = this.addPercentage(DashboardData.sessionTop10);
             this.faultsTypeTop5 = this.addPercentage(DashboardData.faultsTypeTop5);
             setScrollBar('.scroll', this);
+        },
+        changeOption() {
+            // console.log(this.curOperator);
         },
         addPercentage(item) {
             let tmp = Object.assign({}, item);

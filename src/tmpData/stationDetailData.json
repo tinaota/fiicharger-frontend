@@ -1,188 +1,101 @@
 {
-    "C000001": {
-        "info": {
-            "chargeBoxNum": 3,
-            "chargeSessionNum": 266,
-            "powerUsed": 2.7,
-            "avgPrice": 1.5,
-            "electricityRate": "Midwest-53177",
-            "electricityRateInfo": [{
-                "AC On-Pick": "$0.3/kWh",
-                "AC Off-Pick": "$0.1/kWh",
-                "DC On-Pick": "$3/kWh",
-                "DC Off-Pick": "$1/kWh"
-            }],
-            "electricityRateKey": ["AC On-Pick", "AC Off-Pick", "DC On-Pick", "DC Off-Pick"]
-        },
-        "chargeBoxList": [
-            {
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "chargeBoxName": "Charge-1",
-                "status": 1,
-                "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                }
-            },
-            {
-                "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
-                "chargeBoxName": "Charge-2",
-                "status": 0,
-                "power": 30,
-                "connector": {
-                    "1":"CHAdeMO",
-                    "2":"CCS1"
-                }
-            }
-        ],
-        "chargingSession": [
-            {
-                "sessionId": "S00000001",
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "power": 1.7,
-                "connector": {
-                    "1":"Type1"
-                },
-                "sTime": "2021/05/10 08:30:00",
-                "eTime": "2021/05/10 09:30:00",
-                "price": 100,
-                "billingId": "B000000001",
-                "billingInfo": [{
-                    "billingId": "B000000001",
-                    "userId": "U00000001",
-                    "price": 100,
-                    "power": 100
-                }]
-            },
-            {
-                "sessionId": "S00000003",
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "power": 1,
-                "connector": {
-                    "1":"Type1"
-                },
-                "sTime": "2021/05/01 09:30:00",
-                "eTime": "2021/05/01 10:30:00",
-                "price": 300,
-                "billingId": "B000000007",
-                "billingInfo": [{
-                    "billingId": "B000000007",
-                    "userId": "U00000002",
-                    "price": 300,
-                    "power": 300
-                }]
-            },
-            {
-                "sessionId": "S00000004",
-                "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
-                "power": 30,
-                "connector": {
-                    "2":"CCS1"
-                },
-                "sTime": "2021/05/01 09:30:00",
-                "eTime": "2021/05/01 10:30:00",
-                "price": 50,
-                "billingId": "B000000008",
-                "billingInfo": [{
-                    "billingId": "B000000008",
-                    "userId": "U00000001",
-                    "price": 50,
-                    "power": 50
-                }]
-            }
-        ]
+    "info": {
+        "chargeBoxNum": 3,
+        "chargeSessionNum": 266,
+        "powerUsed": 2.7,
+        "avgPrice": 1.5
     },
-    "C000002": {
-        "info": {
-            "chargeBoxNum": 2,
-            "chargeSessionNum": 266,
-            "powerUsed": 2.7,
-            "avgPrice": 1.5,
-            "electricityRate": "Midwest-53177",
-            "electricityRateInfo": [{
-                "AC On-Pick": "$0.3/kWh",
-                "AC Off-Pick": "$0.1/kWh",
-                "DC On-Pick": "$3/kWh",
-                "DC Off-Pick": "$1/kWh"
-            }],
-            "electricityRateKey": ["AC On-Pick", "AC Off-Pick", "DC On-Pick", "DC Off-Pick"]
+    "chargeBoxList": [
+        {
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "chargeBoxName": "Charge-1",
+            "status": 1,
+            "power": 7.7,
+            "connector": {
+                "1":"Type1"
+            },
+            "unitType": 1,
+            "chargeType": "AC",
+            "electricityRateInfo": {
+                "onPeakType": 1,
+                "onPeak": 0.3,
+                "offPeakType": 1,
+                "offPeak": 0.1
+            }
         },
-        "chargeBoxList": [
-            {
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "chargeBoxName": "Charge-1",
-                "status": 1,
-                "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                }
+        {
+            "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
+            "chargeBoxName": "Charge-2",
+            "status": 4,
+            "power": 30,
+            "connector": {
+                "1":"CHAdeMO",
+                "2":"CCS1"
             },
-            {
-                "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
-                "chargeBoxName": "Charge-2",
-                "status": 0,
-                "power": 30,
-                "connector": {
-                    "1":"CHAdeMO",
-                    "2":"CCS1"
-                }
+            "unitType": 1,
+            "chargeType": "DC",
+            "electricityRateInfo": {
+                "onPeakType": 2,
+                "onPeak": 0.3,
+                "offPeakType": 2,
+                "offPeak": 0.1
             }
-        ],
-        "chargingSession": [
-            {
-                "sessionId": "S00000001",
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "power": 1.7,
-                "connector": {
-                    "1":"Type1"
-                },
-                "sTime": "2021/05/10 08:30:00",
-                "eTime": "2021/05/10 09:30:00",
-                "price": 100,
+        }
+    ],
+    "chargingSession": [
+        {
+            "sessionId": "S00000001",
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "power": 1.7,
+            "connector": {
+                "1":"Type1"
+            },
+            "sTime": "2021/05/10 08:30:00",
+            "eTime": "2021/05/10 09:30:00",
+            "price": 100,
+            "billingId": "B000000001",
+            "billingInfo": [{
                 "billingId": "B000000001",
-                "billingInfo": [{
-                    "billingId": "B000000001",
-                    "userId": "U00000001",
-                    "price": 100,
-                    "power": 100
-                }]
+                "userId": "U00000001",
+                "price": 100,
+                "power": 100
+            }]
+        },
+        {
+            "sessionId": "S00000003",
+            "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+            "power": 1,
+            "connector": {
+                "1":"Type1"
             },
-            {
-                "sessionId": "S00000003",
-                "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-                "power": 1,
-                "connector": {
-                    "1":"Type1"
-                },
-                "sTime": "2021/05/01 09:30:00",
-                "eTime": "2021/05/01 10:30:00",
-                "price": 300,
+            "sTime": "2021/05/01 09:30:00",
+            "eTime": "2021/05/01 10:30:00",
+            "price": 300,
+            "billingId": "B000000007",
+            "billingInfo": [{
                 "billingId": "B000000007",
-                "billingInfo": [{
-                    "billingId": "B000000007",
-                    "userId": "U00000002",
-                    "price": 300,
-                    "power": 300
-                }]
+                "userId": "U00000002",
+                "price": 300,
+                "power": 300
+            }]
+        },
+        {
+            "sessionId": "S00000004",
+            "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
+            "power": 30,
+            "connector": {
+                "2":"CCS1"
             },
-            {
-                "sessionId": "S00000004",
-                "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
-                "power": 30,
-                "connector": {
-                    "2":"CCS1"
-                },
-                "sTime": "2021/05/01 09:30:00",
-                "eTime": "2021/05/01 10:30:00",
-                "price": 50,
+            "sTime": "2021/05/01 09:30:00",
+            "eTime": "2021/05/01 10:30:00",
+            "price": 50,
+            "billingId": "B000000008",
+            "billingInfo": [{
                 "billingId": "B000000008",
-                "billingInfo": [{
-                    "billingId": "B000000008",
-                    "userId": "U00000001",
-                    "price": 50,
-                    "power": 50
-                }]
-            }
-        ]
-    }
+                "userId": "U00000001",
+                "price": 50,
+                "power": 50
+            }]
+        }
+    ]
 }

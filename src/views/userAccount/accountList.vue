@@ -54,6 +54,7 @@ import { $HTTP_getAccountList, $HTTP_deleteAccount } from "@/api/api";
 export default {
     data() {
         return {
+            lang: '',
             filter: {
                 tmpSearch: '',
                 search: ''
@@ -63,6 +64,9 @@ export default {
             page: 1,
             total: 0
         }
+    },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();
@@ -108,14 +112,10 @@ export default {
             this.$router.push({ name: "accountListDetail", params: data }).catch();
         },
         deleteAccount(id) {
-            this.tableData = this.tableData.filter(item => item.memberCode !== id);
-            this.total = this.tableData.length;
             const that = this;
             this.$confirm(i18n.t('general.deleteItem', { item: id }), i18n.t('general.hint'), {
                 showClose: false,
-                customClass: 'dark',
-                // confirmButtonText: i18n.t('btn.ok'),
-                // cancelButtonText: i18n.t('btn.cancel')
+                customClass: 'dark'
             }).then(() => {
                 $HTTP_deleteAccount({memberCode: id}).then(data => {
                     if (!!data.success) {

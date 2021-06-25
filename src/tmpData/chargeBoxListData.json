@@ -14,7 +14,7 @@
                 "lng": -87.916993
             },
             "stationId": "C000001",
-            "stationName": "Fii-WL campus 53177"
+            "stationName": "Fii-WL campus"
         },
         {
             "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
@@ -31,11 +31,11 @@
                 "lng": -87.916993
             },
             "stationId": "C000001",
-            "stationName": "Fii-WL campus 53177"
+            "stationName": "Fii-WL campus"
         }
     ],
     "stationList": {
-        "C000001": "Fii-WL campus 53177",
-        "C000002": "Fii-MS campus 236044"
+        "C000001": "Fii-WL campus",
+        "C000002": "Fii-MS campus"
     }
 }

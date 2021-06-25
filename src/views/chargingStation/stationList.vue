@@ -11,7 +11,7 @@
                         :placeholder="$t('chargingStation.stationID')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
+                        @keyup.enter.native="fetchData('s')">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
@@ -19,35 +19,50 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol enable-row-click"
+                    v-loading="isLoading"
                     @row-click="handleRowClick">
                     <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="1"></el-table-column>
+                    <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="2"></el-table-column>
                     <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="1"></el-table-column>
-                    <el-table-column prop="sDate" :label="$t('general.latestModification')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector#')" :min-width="2" label-class-name="center">
-                        <el-table-column v-for="item in connectorKey" :key="item" :label="item" :width="56">
-                            <template slot-scope="scope">{{ scope.row.connector[item] }}</template>
+                    <el-table-column prop="eDate" :label="$t('general.latestModification')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.connector#')" label-class-name="center">
+                        <el-table-column label="AC" :width="60" label-class-name="center" class-name="center">
+                            <template slot-scope="scope">
+                                <el-tooltip placement="top" effect="light" popper-class="custom">
+                                    <div slot="content">
+                                        {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.acAvailable}} <br/>
+                                        {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.acUnavailable}}
+                                    </div>
+                                    <span>{{ scope.row.connectorCountInfo.acTotal }}</span>
+                                </el-tooltip>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="DC" :width="60" label-class-name="center" class-name="center">
+                            <template slot-scope="scope">
+                                <el-tooltip placement="top" effect="light" popper-class="custom">
+                                    <div slot="content">
+                                        {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.dcAvailable}} <br/>
+                                        {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.dcUnavailable}}
+                                    </div>
+                                    <span>{{ scope.row.connectorCountInfo.dcTotal }}</span>
+                                </el-tooltip>
+                            </template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.parkingRate')" :width="80">
-                        <template slot-scope="scope">{{ scope.row.parkingRate + "/min" }}</template>
-                    </el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRate')" label-class-name="center">
-                        <el-table-column v-for="item in electricityRateKey" :key="item" :label="item" :min-width="1">
-                            <template slot-scope="scope">{{ scope.row.electricityRate[item] }}</template>
-                        </el-table-column>
+                    <el-table-column :label="$t('chargingStation.parkingRate')" :min-width="1">
+                        <template slot-scope="scope">{{ scope.row.currency + scope.row.parkingRate + "/min" }}</template>
                     </el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.location" placement="top" effect="light" popper-class="custom">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
                                 <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="108">
+                    <el-table-column :label="$t('general.action')" :width="196">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
-                            <el-button @click="deleteStation(scope.row.stationId)">{{ $t('general.delete') }}</el-button>
+                            <el-button @click="deleteStation(scope.row.stationId, scope.row.stationName)">{{ $t('general.delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -64,7 +79,8 @@
                 :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')"
                 width="600px"
                 :visible.sync="dialog.visible"
-                :show-close="false">
+                :show-close="false"
+                v-loading="dialog.isLoading">
                 <div class="vertial formVertical">
                     <div class="form-item" v-if="dialog.type">
                         <div class="label">{{ $t('chargingStation.stationID') }}</div>
@@ -79,16 +95,58 @@
                         <el-input v-model="dialog.info.zipCode"></el-input>
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                        <el-input v-model="dialog.info.parkingRate"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                        <div class="label">{{ $t('userAccount.countryCode') }}</div>
                         <el-select
                             class="select-small"
-                            v-model="dialog.info.electricityRateId">
-                            <el-option v-for="item in dialog.electricityRateList" :label="item.rateId+' '+item.rateName" :key="item.rateId" :value="item.rateId"></el-option>
+                            v-model="dialog.info.countryCode"
+                            v-loading="countryCode.isLoading" >
+                            <el-option v-for="(item, idx) in countryCode.data" :label="item.countryCode+' ('+item.countryName+')'" :key="idx" :value="item.countryCode"></el-option>
                         </el-select>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('general.telephone') }}</div>
+                        <el-input v-model="dialog.info.phone"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('general.address') }}</div>
+                        <el-input v-model="dialog.info.address"></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('general.businessHours') }}</div>
+                        <div class="timeRange">
+                            <el-time-select
+                                :placeholder="$t('general.startTime')"
+                                v-model="dialog.info.serviceStartTime"
+                                :picker-options="{
+                                    start: '00:00',
+                                    step: '00:15',
+                                    end: '23:45'
+                                }">
+                            </el-time-select>
+                            <span> ~ </span>
+                            <el-time-select
+                                :placeholder="$t('general.endTime')"
+                                v-model="dialog.info.serviceEndTime"
+                                :picker-options="{
+                                    start: '00:00',
+                                    step: '00:15',
+                                    end: '23:45',
+                                    minTime: dialog.info.serviceStartTime
+                                }">
+                            </el-time-select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('general.currency') }}</div>
+                        <el-select
+                            class="select-small"
+                            v-model="dialog.info.unitType">
+                            <el-option v-for="(item, key) in currencyList" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                        </el-select>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                        <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
                     </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
@@ -102,7 +160,8 @@
 </template>
 
 <script>
-import StationListData from "@/tmpData/stationListData";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
+import { $HTTP_getStationList, $HTTP_getCountryCodeSelectList, $HTTP_addStation, $HTTP_updateStation, $HTTP_deleteStation } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import moment from "moment";
 import ShowPostion from "@/components/chargingStation/showPostion";
@@ -112,26 +171,36 @@ export default {
     },
     data() {
         return {
+            lang: '',
             filter: {
                 tmpSearch: '',
                 search: ''
             },
+            isLoading: false,
             tableData: [],
             page: 1,
             total: 0,
-            connectorKey: [],
-            electricityRateKey: [],
+            countryCode: {
+                isLoading: false,
+                data: []
+            },
+            currencyList: $GLOBAL_CURRENCY,
             dialog: {
                 visible: false,
+                isLoading: false,
                 type: 0,
                 info: {
                     stationId: '',
                     stationName: '',
                     zipCode: '',
-                    parkingRate: '$0',
-                    electricityRateId: ''
-                },
-                electricityRateList: []
+                    countryCode: '',
+                    phone: '',
+                    address: '',
+                    serviceStartTime: '',
+                    serviceEndTime: '',
+                    unitType: '',
+                    parkingRate: 0
+                }
             },
             mapDialog: {
                 visible: false,
@@ -143,47 +212,79 @@ export default {
             }
         }
     },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
+    },
     mounted() {
         this.fetchData();
+        this.fetchCountryCodeList();
     },
     methods: {
-        fetchData() {
+        fetchData(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = StationListData.stationList.slice();
-            this.connectorKey = StationListData.connectorKey.slice();
-            this.electricityRateKey = StationListData.electricityRateKey.slice();
-            this.dialog.electricityRateList = StationListData.electricityRateList.slice();
-            this.page = 1;
-            this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = StationListData.stationList.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
+            let param = {};
+            if (type) {
+                this.filter.search = this.filter.tmpSearch;
             }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return (item.stationId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-            };
+            param.search = this.filter.search;
+            $HTTP_getStationList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.stationList.map(item => {
+                        item.connectorCountInfo.acUnavailable = item.connectorCountInfo.acTotal - item.connectorCountInfo.acAvailable;
+                        item.connectorCountInfo.dcUnavailable = item.connectorCountInfo.dcTotal - item.connectorCountInfo.dcAvailable;
+                        item.currency = $GLOBAL_CURRENCY[item.unitType];
+                        return item;
+                    });
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         changePage(page) {
             this.page = page;
+        },
+        fetchCountryCodeList() {
+            const that = this;
+            this.countryCode.isLoading = true;
+            $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
+                this.countryCode.isLoading = false;
+                if (!!data.success) {
+                    this.countryCode.data = data.countryCodeList.slice();
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('countryCode', err);
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         handleRowClick(row, column, event) {
             if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
                 const stationData = {
                     stationId: row.stationId,
                     stationName: row.stationName,
-                    location: row.location
+                    loc: row.loc,
+                    // zipCode: row.zipCode,
+                    countryCode: row.countryCode,
+                    phone: row.phone,
+                    serviceStartTime: row.serviceStartTime,
+                    serviceEndTime: row.serviceEndTime,
+                    currency: row.currency,
+                    parkingRate: row.currency + row.parkingRate + "/min",
+                    address: row.address
                 }
                 window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
                 this.$router.push({ name: "stationListDetail", params: stationData }).catch();
@@ -201,35 +302,57 @@ export default {
                 setScrollBar('.vertial.formVertical', that);
             });
         },
-        deleteStation(id) {
-            this.tableData = this.tableData.filter(item => item.stationId !== id);
-            this.total = this.tableData.length;
+        deleteStation(id, name) {
+            const that = this;
+            this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
+                showClose: false,
+                customClass: 'dark'
+            }).then(() => {
+                $HTTP_deleteStation({stationId: id}).then(data => {
+                    if (!!data.success) {
+                        that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
+                        that.fetchData();
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    }
+                });
+            });
         },
         updateStation() {
-            if (!this.dialog.type) {
-                let data = Object.assign({}, this.dialog.info);
-                data.stationId = "C00000" + (this.tableData.length + 1);
-                data.location = '';
-                data.sDate = moment().format("YYYY/MM/DD HH:mm:ss");
-                data.connector= { "AC": 0, "DC": 0 };
-                data.electricityRate = {
-                    "AC On-Peak": "$0.3/kWh",
-                    "AC Off-Peak": "$0.1/kWh",
-                    "DC On-Peak": "$3/kWh",
-                    "DC Off-Peak": "$1/kWh"
-                };
-                this.tableData.push(data);
+            const that = this;
+            let   $API,
+                  params = {
+                    stationName: that.dialog.info.stationName,
+                    zipCode: that.dialog.info.zipCode,
+                    countryCode: that.dialog.info.countryCode,
+                    phone: that.dialog.info.phone,
+                    address: that.dialog.info.address,
+                    serviceStartTime: that.dialog.info.serviceStartTime,
+                    serviceEndTime: that.dialog.info.serviceEndTime,
+                    unitType: that.dialog.info.unitType,
+                    parkingRate: that.dialog.info.parkingRate,
+                  },
+                  sucMsg = "";
+            if (!that.dialog.type) {
+                $API = $HTTP_addStation;
+                sucMsg = i18n.t('general.sucAddMsg');
             } else {
-                let tmp = [];
-                this.tableData.forEach(item => {
-                    if(item.id === this.dialog.info.id) {
-                        item = Object.assign(item, this.dialog.info);
-                    }
-                    tmp.push(item);
-                });
-                this.tableData = tmp;
+                $API = $HTTP_updateStation;
+                params.stationId = that.dialog.info.stationId;
+                sucMsg = i18n.t('general.sucUpdateMsg');
             }
-            this.dialog.visible = false;
+
+            that.dialog.isLoading = true;
+            $API(params).then(data => {
+                that.dialog.isLoading = false;
+                if (!!data.success) {
+                    that.$message({ type: "success", message: sucMsg });
+                    that.dialog.visible = false;
+                    that.fetchData();
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            });
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.stationId;
@@ -255,5 +378,9 @@ export default {
         color: #5A607F;
         letter-spacing: 0;
     }
+}
+.formVertical .form-item .el-date-editor {
+    width: calc(50% - 9px);
+    display: inline-block;
 }
 </style>

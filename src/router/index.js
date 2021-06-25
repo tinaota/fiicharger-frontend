@@ -44,11 +44,11 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/stationList', component: () => import('@/views/chargingStation/stationList.vue'), name: 'menu.stationList', hidden: false },
-                    { path: '/stationListDetail', component: () => import('@/views/chargingStation/stationListDetail.vue'), name: 'stationListDetail', hidden: true },
+                    { path: '/stationList/stationListDetail', component: () => import('@/views/chargingStation/stationListDetail.vue'), name: 'stationListDetail', hidden: true },
                     { path: '/chargeBoxList', component: () => import('@/views/chargingStation/chargeBoxList.vue'), name: 'menu.chargeBoxList', hidden: false },
                     { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: false },
                     { path: '/chargeBoxAlert', component: () => import('@/views/chargingStation/chargeBoxAlert.vue'), name: 'menu.chargeBoxAlert', hidden: false },
-                    { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
+                    // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                 ]
             },
             {
@@ -59,7 +59,7 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/accountList', component: () => import('@/views/userAccount/accountList.vue'), name: 'menu.accountList', hidden: false },
-                    { path: '/accountListDetail', component: () => import('@/views/userAccount/accountListDetail.vue'), name: 'accountListDetail', hidden: true },
+                    { path: '/accountList/accountListDetail', component: () => import('@/views/userAccount/accountListDetail.vue'), name: 'accountListDetail', hidden: true },
                     { path: '/billingLog', component: () => import('@/views/userAccount/billingLog.vue'), name: 'menu.billingLog', hidden: false },
                 ]
             }

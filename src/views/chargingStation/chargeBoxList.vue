@@ -11,43 +11,67 @@
                         :placeholder="$t('chargingStation.chargeBoxID')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
+                        @keyup.enter.native="fetchData('s')">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
-                    class="moreCol">
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="2"></el-table-column>
-                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargeBoxName')" :min-width="1"></el-table-column>
-                    <el-table-column prop="status" :label="$t('chargingStation.serviceStatus')" :min-width="1">
+                    class="moreCol"
+                    v-loading="isLoading">
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
+                    <el-table-column prop="chargeBoxName" :label="$t('general.name')" :width="64"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.status')" :width="68" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.status==1" class="item" effect="dark" :content="$t('general.active')" placement="right">
-                                <span class="circle-status green"></span>
+                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.status')[0]" placement="top" effect="light" popper-class="item custom">
+                                <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="!scope.row.status" class="item" effect="dark" :content="$t('general.unactive')" placement="right">
-                                <span class="circle-status gray"></span>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.status')[1]" placement="top" effect="light" popper-class="item custom">
+                                <span class="circle-status color2"></span>
                             </el-tooltip>
-                            <el-tooltip v-else class="item" effect="dark" :content="$t('general.repair')" placement="right">
-                                <span class="circle-status orange"></span>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.status')[2]" placement="top" effect="light" popper-class="item custom">
+                                <span class="circle-status color3"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.status')[3]" placement="top" effect="light" popper-class="item custom">
+                                <span class="circle-status color4"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else :content="$t('general.status')[4]" placement="top" effect="light" popper-class="item custom">
+                                <span class="circle-status color5"></span>
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="2">
                         <template slot-scope="scope">
                             {{scope.row.power + "kWh"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.connector')" :width="120">
                         <template slot-scope="scope">
-                            <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
+                            <div v-for="(item, key) in scope.row.connectorTypeInfo" :key="key">{{ "("+ key +") "+ item }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('general.type')" :width="56" class-name="center">
+                        <template slot-scope="scope">
+                            {{ scope.row.chargeType === 1 ? "AC" : "DC" }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('chargingStation.elecRate')">
+                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="2">
+                            <template slot-scope="scope">
+                                {{ scope.row.currency + scope.row.electricityRateInfo.onPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.onPeakType]}}
+                            </template>
+                        </el-table-column>
+                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="2">
+                            <template slot-scope="scope">
+                                {{ scope.row.currency + scope.row.electricityRateInfo.offPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.offPeakType]}}
+                            </template>
+                        </el-table-column>
+                    </el-table-column>
+                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="3"></el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.location" placement="top" effect="light" popper-class="custom">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
                                 <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
@@ -55,7 +79,7 @@
                     <el-table-column :label="$t('general.action')" :width="104">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
-                            <el-button @click="deleteCheckBox(scope.row.chargeBoxId)">{{ $t('general.delete') }}</el-button>
+                            <el-button @click="deleteCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)">{{ $t('general.delete') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,7 +105,7 @@
                         <el-input v-model="dialog.info.chargeBoxId" disabled></el-input>
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.chargeBoxName') }}</div>
+                        <div class="label">{{ $t('general.name') }}</div>
                         <el-input v-model="dialog.info.chargeBoxName"></el-input>
                     </div>
                     <div class="form-item">
@@ -103,7 +127,7 @@
                         </el-select>
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.serviceStatus') }}</div>
+                        <div class="label">{{ $t('chargingStation.status') }}</div>
                         <el-select
                             class="select-small"
                             v-model="dialog.info.status">
@@ -122,9 +146,11 @@
 </template>
 
 <script>
-import ChargeBoxListData from "@/tmpData/chargeBoxListData";
 import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
+import { $HTTP_getStationListForSelect, $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
+
 export default {
     components: {
         ShowPostion
@@ -135,6 +161,8 @@ export default {
                 tmpSearch: '',
                 search: ''
             },
+            isLoading: false,
+            stationList: [],
             tableData: [],
             page: 1,
             total: 0,
@@ -176,37 +204,62 @@ export default {
         }
     },
     mounted() {
-        this.fetchData();
+        const that = this;
+        this.fetchStationList(()=>{ that.fetchData()});
     },
     beforeDestroy() {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, 'click');
     },
     methods: {
-        fetchData() {
+        fetchStationList(callBack) {
+            const that = this;
+            this.isLoading = true;
+            $HTTP_getStationListForSelect().then((data) => {
+                if (!!data.success) {
+                    that.stationList = {};
+                    data.stationList.forEach(item => {
+                        that.stationList[item.stationId] = item.stationName;
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                callBack && callBack();
+            }).catch((err) => {
+                console.log('StationList', err);
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchData(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = ChargeBoxListData.chargeboxList.slice();
-            this.dialog.stationList = Object.assign({}, ChargeBoxListData.stationList);
-            this.page = 1;
-            this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = ChargeBoxListData.chargeboxList.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
+            let param = {};
+            if (type) {
+                this.filter.search = this.filter.tmpSearch;
             }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return (item.chargeBoxId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-            };
+            param.search = this.filter.search;
+            $HTTP_getChargeBoxList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.stationList.map(item => {
+                        item.currency = $GLOBAL_CURRENCY[item.unitType];
+                        item.stationName = that.stationList[item.stationId];
+                        return item;
+                    });
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         changePage(page) {
             this.page = page;
@@ -279,9 +332,21 @@ export default {
                 this.dialog.mapInfo.marker = null;
             }
         },
-        deleteCheckBox(id) {
-            this.tableData = this.tableData.filter(item => item.chargeBoxId !== id);
-            this.total = this.tableData.length;
+        deleteCheckBox(id, name) {
+            const that = this;
+            this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
+                showClose: false,
+                customClass: 'dark'
+            }).then(() => {
+                $HTTP_deleteChargeBox({stationId: this.stationId, chargeBoxId: id}).then(data => {
+                    if (!!data.success) {
+                        that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
+                        that.fetchData();
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    }
+                });
+            });
         },
         updateCheckBox() {
             if (!this.dialog.type) {

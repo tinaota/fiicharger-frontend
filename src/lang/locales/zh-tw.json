@@ -36,6 +36,7 @@
         "modify": "編輯",
         "delete": "刪除",
         "create": "新增",
+        "unbind": "解綁",
         "result": "{item}筆結果",
         "ok": "確定",
         "cancel": "取消",
@@ -54,13 +55,25 @@
         "endTime": "結束時間",
         "time": "時間",
         "search": "搜索...",
+        "available": "可用",
+        "unavailable": "不可用",
+        "maintenance": "維護",
         "alert": "異常",
         "connectionLost": "連線異常",
         "serviceUnavailable": "暫停服務",
         "zipCode": "郵遞區號",
         "hint": "提示",
         "deleteItem": "你確定删除 {item}?",
-        "sucDelMsg": "刪除完成!"
+        "sucAddMsg": "新增成功!",
+        "sucUpdateMsg": "更新完成!",
+        "sucDelMsg": "刪除完成!",
+        "status": ["可用", "不可用", "維護", "異常", "連線異常"],
+        "currency": "幣別",
+        "address": "地址",
+        "telephone": "電話",
+        "businessHours": "營業時間",
+        "type": "類型",
+        "name": "名稱"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -88,11 +101,17 @@
         "connector#": "充電槍#",
         "parkingRate": "停車費",
         "elecRate": "電費率",
+        "onPeak": "尖峰",
+        "offPeak": "離峰",
+        "elecRateUnit": {
+            "1": "分鐘",
+            "2": "kWh",
+            "3": "次"
+        },
         "chargeBoxID": "充電樁ID",
-        "chargeBoxName": "充電樁名稱",
         "power": "電耗",
         "connector":"充電槍",
-        "serviceStatus": "服務狀態",
+        "status": "狀態",
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
         "billingID": "帳單ID",
@@ -119,11 +138,17 @@
         "powerUsedAnalysis": "使用功率分析",
         "rateID": "費率ID",
         "rateName": "費率名稱",
-        "elecRateList": {
+        "elecRateListT": {
             "AC On-Peak": "交流電-尖峰",
             "AC Off-Peak": "交流電-離峰",
             "DC On-Peak": "直流電-尖峰",
             "DC Off-Peak": "直流電-離峰"
+        },
+        "elecRateList": {
+            "acOnPeak": "交流電-尖峰",
+            "acOffPeak": "交流電-離峰",
+            "dcOnPeak": "直流電-尖峰",
+            "dcOffPeak": "直流電-離峰"
         },
         "itemPosition": "{item}位置"
     },

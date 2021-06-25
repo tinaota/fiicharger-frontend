@@ -95,8 +95,6 @@ export default {
         //     this.$store.commit(types.LOGOUT, JSON.stringify({}));
         //     this.$router.push("/login");
         // }
-
-        this.menuList = {};
         this.$router.options.routes.filter(item => item.ename=='Home')[0].children.forEach(item => {
             let temp = {};
             if(item.hidden)  return;
@@ -121,15 +119,17 @@ export default {
                     this.routerParent = key;
                 }
             }
-
-            if (this.routerParent && this.menuList[this.routerParent].iconCls && !this.menuList[this.routerParent].iconCls.includes('_p')) {
+            if (this.routerParent && this.menuList[this.routerParent] && this.menuList[this.routerParent].iconCls && !this.menuList[this.routerParent].iconCls.includes('_p')) {
                 this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace('_o','_p');
-            } else if (this.routerName !== "/" && this.menuList[this.routerName].iconCls && !this.menuList[this.routerName].iconCls.includes('_p')) {
+            } else if (this.routerName !== "/" && this.menuList[this.routerName] && this.menuList[this.routerName].iconCls && !this.menuList[this.routerName].iconCls.includes('_p')) {
                 this.menuList[this.routerName].iconCls = this.menuList[this.routerName].iconCls.replace('_o','_p');
                 this.routerParent = this.routerName;
             }
         }
-        this.lang = window.sessionStorage.getItem('fiics-lang') || 'en';
+        if (!window.sessionStorage.getItem('fiics-lang')) {
+            window.sessionStorage.setItem("fiics-lang", 'en');
+        }
+        this.lang = window.sessionStorage.getItem('fiics-lang');
         this.$store.dispatch('setLang', this.lang);
     },
     activated() {
@@ -153,7 +153,7 @@ export default {
                 this.menuList[indexPath[0]].iconCls = this.menuList[indexPath[0]].iconCls.replace('_o','_p');
                 this.routerParent = indexPath[0];
             }
-            this.routerName = index;
+            // this.routerName = index;
         },
         getImgUrl(iconName) {
             return require('imgs/'+iconName+'.png');

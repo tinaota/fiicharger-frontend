@@ -7,8 +7,17 @@
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 station-detail">
-                <div class="header">{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</div>
-                <div class="sec-header"><i class="el-icon-location-information"></i>{{ curRouteParam.location }}</div>
+                <div class="header">
+                    {{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}
+                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
+                        <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog()"></el-button>
+                    </el-tooltip>
+                </div>
+                <div>
+                    <div class="sec-header long"><i class="el-icon-office-building"></i> {{ curRouteParam.address }}</div>
+                    <div class="sec-header"><i class="el-icon-alarm-clock"></i> {{ curRouteParam.serviceStartTime + ' ~ ' + curRouteParam.serviceEndTime }}</div>
+                    <div class="sec-header" style="margin-left: 16px"><i class="el-icon-phone-outline"></i> {{ curRouteParam.countryCode + " " + curRouteParam.phone }}</div>
+                </div>
                 <div class="s-contain">
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.nChargeBox') }}</div>
@@ -31,18 +40,13 @@
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.avgPrice') }}</div>
                         <div class="content">
-                            <span>{{ "$" + info.avgPrice + "/kWh"}}</span>
+                            <span>{{ curRouteParam.currency + info.avgPrice + "/kWh"}}</span>
                         </div>
                     </div>
                     <div class="item">
-                        <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
                         <div class="content">
-                            <el-popover trigger="click" popper-class="dark" width="420" placement="left" :offset="-10" :visible-arrow="false">
-                                <el-table :data="info.electricityRateInfo">
-                                    <el-table-column v-for="item in info.electricityRateKey" :key="item" :prop="item" :label="item"></el-table-column>
-                                </el-table>
-                                <div slot="reference" class="name-wrapper">{{ info.electricityRate }}</div>
-                            </el-popover>
+                            <span>{{ curRouteParam.parkingRate }}</span>
                         </div>
                     </div>
                 </div>
@@ -71,7 +75,7 @@
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
                         <el-tab-pane :label="$t('menu.chargeBoxList')" name="chargeBoxList">
-                            <ChargeBoxList :tableData="chargeBoxData"></ChargeBoxList>
+                            <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
                             <ChargingSession :tableData="chargingSessionData"></ChargingSession>
@@ -79,6 +83,7 @@
                     </el-tabs>
                 </div>
             </div>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
         </div>
     </div>
 </template>
@@ -90,11 +95,13 @@ import moment from "moment";
 import BarChart from "@/components/charts/barChart";
 import ChargeBoxList from "@/components/chargingStation/chargeBoxList";
 import ChargingSession from "@/components/chargingStation/chargingSession";
+import ShowPostion from "@/components/chargingStation/showPostion";
 export default {
     components: {
         BarChart,
         ChargeBoxList,
-        ChargingSession
+        ChargingSession,
+        ShowPostion
     },
     data() {
         return {
@@ -103,10 +110,7 @@ export default {
                 chargeBoxNum: 0,
                 chargeSessionNum: 0,
                 powerUsed: 0,
-                avgPrice: 0,
-                electricityRate: "",
-                electricityRateInfo: [],
-                electricityRateKey: []
+                avgPrice: 0
             },
             daySelectList: i18n.t('chargingStation.daySelectList'),
             chartChargingSesstion: {
@@ -126,15 +130,24 @@ export default {
                 }
             },
             active: 'chargeBoxList',
-            chargeBoxData: [],
-            chargingSessionData: []
+            chargingSessionData: [],
+            mapDialog: {
+                visible: false,
+                itemId: '',
+                position: {
+                    lat: '',
+                    lng: ''
+                }
+            }
         }
     },
     created() {
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.stationId) {
             let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
-            if (temp && temp.stationId && temp.stationName && temp.location) {
+            if (temp && temp.stationId && temp.stationName && temp.loc && temp.countryCode
+                && temp.phone && temp.serviceStartTime && temp.serviceEndTime
+                && temp.currency && temp.parkingRate && temp.address) {
                 this.curRouteParam = temp;
             } else {
                 this.$router.go(-1);
@@ -145,19 +158,23 @@ export default {
         this.fetchData();
 
     },
-    beforeDestroy() {
+    destroyed() {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods : {
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let data = Object.assign({}, StationDetailData[this.curRouteParam.stationId]);
+            let data = Object.assign({}, StationDetailData);
             this.getChartSesstionData();
             this.getChartPowerUsedData();
             this.info = data.info;
-            this.chargeBoxData = data.chargeBoxList;
             this.chargingSessionData = data.chargingSession;
             setScrollBar('.scroll', this);
+        },
+        handleShowDialog() {
+            this.mapDialog.itemId = this.curRouteParam.stationId;
+            this.mapDialog.position = this.curRouteParam.loc;
+            this.mapDialog.visible = true;
         },
         getChartSesstionData() {
             let data = [],

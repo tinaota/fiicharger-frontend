@@ -1,5 +1,12 @@
 <template>
-    <div>
+    <div class="mainctrl">
+        <el-select
+            class="select-small dark-header"
+            v-model="curOperator"
+            @change="changeOption">
+            <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
+        <br/>
         <div id="mapboxBox" />
         <el-autocomplete
             v-model="searchInput"
@@ -11,8 +18,9 @@
             @select="handleSearch">
         </el-autocomplete>
         <div class="hint-bar">
-            <div class="item"><img :src="icon.normal"><span>{{$t('general.normal')}}</span></div>
-            <div class="item"><img :src="icon.serviceUnavailable"><span>{{$t('general.serviceUnavailable')}}</span></div>
+            <div class="item"><img :src="icon.normal"><span>{{$t('general.available')}}</span></div>
+            <div class="item"><img :src="icon.serviceUnavailable"><span>{{$t('general.unavailable')}}</span></div>
+            <div class="item"><img :src="icon.maintenance"><span>{{$t('general.maintenance')}}</span></div>
             <div class="item"><img :src="icon.abnormal"><span>{{$t('general.alert')}}</span></div>
             <div class="item"><img :src="icon.connectionLost"><span>{{$t('general.connectionLost')}}</span></div>
         </div>
@@ -31,6 +39,8 @@ const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     data() {
         return {
+            curOperator: '',
+            operatorList: [],
             center: {
                 lat: 42.677811124442854,
                 lng: -87.91695010215827
@@ -40,6 +50,7 @@ export default {
             icon: {
                 normal: require("imgs/ic_info_green.png"),
                 abnormal: require("imgs/ic_info_red.png"),
+                maintenance: require("imgs/ic_info_brown.png"),
                 connectionLost: require("imgs/ic_info_gray.png"),
                 serviceUnavailable: require("imgs/ic_info_orange.png"),
                 deviceInfo: require("imgs/ic_device_info.png"),
@@ -60,6 +71,9 @@ export default {
         this.fetchData();
     },
     methods: {
+        changeOption() {
+            // console.log(this.curOperator);
+        },
         initMapboxMap() {
             mapboxgl.accessToken = MAPBOXTOKEN;
             this.MapBoxObject = new mapboxgl.Map({
@@ -189,6 +203,8 @@ export default {
         },
         fetchData() {
             this.searchData = MapData.search;
+            this.operatorList = MapData.operatorList.slice();
+            this.curOperator = this.operatorList[0];
             this.chargeBoxData = {};
             MapData.chargeBoxList.forEach(item => {
                 this.chargeBoxData[item.chargeBoxId] = Object.assign({}, item);
@@ -272,14 +288,17 @@ export default {
 }
 </script>
 <style lang = "scss" scoped>
+.mainctrl {
+    padding: 0;
+}
 #mapboxBox {
     width: 100%;
-    height: calc(100vh - 68px);
+    height: calc(100vh - 68px - 58px);
 }
 .el-autocomplete {
     width: 25vw;
     position:absolute;
-    top: calc(68px + 6%);
+    top: calc(58px + 68px + 4%);
     left: calc(208px + 3%);
 }
 .hint-bar {
@@ -308,7 +327,7 @@ export default {
             width: 24px;
         }
         + .item {
-            margin-left: 30px;
+            margin-left: 24px;
         }
     }
 }

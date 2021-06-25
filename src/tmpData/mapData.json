@@ -1,4 +1,5 @@
 {
+    "operatorList": ["Fiicharger", "Midwest", "APT"],
     "search": {
         "53177": {
             "pos": {
@@ -40,7 +41,7 @@
     "chargeBoxList": [
         {
             "stationId": "C000001",
-            "stationName": "Fii-WL campus 53177",
+            "stationName": "Fii-WL campus",
             "chargeBoxId": "AWLU770001T2P0D2052A169A0",
             "power": "67.7kWh",
             "revenue": "$300",
@@ -52,7 +53,7 @@
         },
         {
             "stationId": "C000002",
-            "stationName": "Fii-MS campus 236044",
+            "stationName": "Fii-MS campus",
             "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
             "power": "50kWh",
             "revenue": "$200",

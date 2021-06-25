@@ -44,6 +44,13 @@
                 .el-button:not(.is-circle) {
                     width: 84px;
                 }
+                span.el-tooltip:not(.circle-status) {
+                    background-color: #409eff;
+                    border-radius: 14px;
+                    padding: 4px 8px;
+                    text-align: center;
+                    line-height: 28px;
+                }
             }
         }
     }
