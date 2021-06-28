@@ -7,6 +7,14 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-select
+                        class="select-small dark"
+                        v-model="filter.status"
+                        :placeholder="$t('general.status')"
+                        @change="fetchData()">
+                        <el-option :label="$t('general.all')" :value="0"></el-option>
+                        <el-option v-for="(item, key) in $t('general.statusList')" :label="item" :key="(key+1)" :value="(key+1)"></el-option>
+                    </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.chargeBoxID')"
                         class="dark"
@@ -22,21 +30,21 @@
                     v-loading="isLoading">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :width="64"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.status')" :width="68" class-name="center">
+                    <el-table-column :label="$t('general.status')" :width="68" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.status')[0]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.statusList')[0]" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.status')[1]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.statusList')[1]" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color2"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.status')[2]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.statusList')[2]" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color3"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.status')[3]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.statusList')[3]" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color4"></span>
                             </el-tooltip>
-                            <el-tooltip v-else :content="$t('general.status')[4]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-else :content="$t('general.statusList')[4]" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color5"></span>
                             </el-tooltip>
                         </template>
@@ -59,12 +67,12 @@
                     <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="2">
                             <template slot-scope="scope">
-                                {{ scope.row.currency + scope.row.electricityRateInfo.onPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.onPeakType]}}
+                                {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
                         <el-table-column :label="$t('chargingStation.offPeak')" :min-width="2">
                             <template slot-scope="scope">
-                                {{ scope.row.currency + scope.row.electricityRateInfo.offPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.offPeakType]}}
+                                {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -72,14 +80,14 @@
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
-                                <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog(scope.row)"></el-button>
+                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="104">
+                    <el-table-column :label="$t('general.action')" :width="96">
                         <template slot-scope="scope">
-                            <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
-                            <el-button @click="deleteCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)">{{ $t('general.delete') }}</el-button>
+                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
+                            <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -110,7 +118,7 @@
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.lng') }}</div>
-                        <el-input v-model="dialog.info.loc.lng" disabled></el-input>
+                        <el-input v-model="dialog.info.loc.lon" disabled></el-input>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.lat') }}</div>
@@ -123,17 +131,45 @@
                         <el-select
                             class="select-small"
                             v-model="dialog.info.stationId">
-                            <el-option v-for="(item, key) in dialog.stationList" :label="key+' '+item" :key="key" :value="key"></el-option>
+                            <el-option v-for="(item, key) in stationList" :label="key+' '+item" :key="key" :value="key"></el-option>
                         </el-select>
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.status') }}</div>
+                        <div class="label">{{ $t('general.status') }}</div>
                         <el-select
                             class="select-small"
                             v-model="dialog.info.status">
                             <el-option v-for="(item, idx) in dialog.serviceStatusList" :label="item" :key="idx" :value="idx"></el-option>
                         </el-select>
                     </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ "● " + $t('chargingStation.onPeak') }}</div>
+                        <div class="elecRateItem">
+                            <el-input-number v-model="dialog.info.onPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+                            /
+                            <el-select
+                                class="select-small"
+                                v-model="dialog.info.onPeakElectricityRateType">
+                                <el-option v-for="(item, key) in $t('chargingStation.elecRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ "● " + $t('chargingStation.offPeak') }}</div>
+                        <div class="elecRateItem">
+                            <el-input-number v-model="dialog.info.offPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+                            /
+                            <el-select
+                                class="select-small"
+                                v-model="dialog.info.offPeakElectricityRateType">
+                                <el-option v-for="(item, key) in $t('chargingStation.elecRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                            </el-select>
+                        </div>
+                    </div>
+
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button size="small" @click="dialog.visible = false">{{ $t('general.cancel') }}</el-button>
@@ -159,13 +195,15 @@ export default {
         return {
             filter: {
                 tmpSearch: '',
-                search: ''
+                search: '',
+                status: ''
             },
             isLoading: false,
-            stationList: [],
+            stationList: {},
             tableData: [],
             page: 1,
             total: 0,
+            currencyList: $GLOBAL_CURRENCY,
             dialog: {
                 visible: false,
                 type: 0,
@@ -174,10 +212,16 @@ export default {
                     chargeBoxName: '',
                     loc: {
                         lng: '',
+                        lon: '',
                         lat: ''
                     },
                     stationId: '',
                     status: 1,
+                    unitType: '',
+                    onPeakElectricityRate: 0,
+                    onPeakElectricityRateType: 1,
+                    offPeakElectricityRate: 0,
+                    offPeakElectricityRateType: 1
                 },
                 initCenter: {
                     lat: 42.677811124442854,
@@ -191,7 +235,6 @@ export default {
                     icon: require('imgs/ic_info_green.png')
                 },
                 serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')],
-                stationList: {}
             },
             mapDialog: {
                 visible: false,
@@ -238,11 +281,16 @@ export default {
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
             }
+            if (this.filter.status === '') {
+                param.status = 0;
+            } else {
+                param.status = this.filter.status;
+            }
             param.search = this.filter.search;
             $HTTP_getChargeBoxList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.stationList.map(item => {
+                    this.tableData = data.chargeBoxList.map(item => {
                         item.currency = $GLOBAL_CURRENCY[item.unitType];
                         item.stationName = that.stationList[item.stationId];
                         return item;
@@ -269,6 +317,7 @@ export default {
             this.dialog.type = type;
             if (type) {
                 this.dialog.info = Object.assign({}, data);
+                this.dialog.info.loc.lng = this.dialog.info.loc.lon;
             }
             this.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar('destroy');
             this.dialog.visible = true;
@@ -349,24 +398,24 @@ export default {
             });
         },
         updateCheckBox() {
-            if (!this.dialog.type) {
-                let data = Object.assign({}, this.dialog.info);
-                data.chargeBoxId = "";
-                data.power = 0;
-                data.connector = {};
-                data.location = this.dialog.info.loc.lng + ', '+ this.dialog.info.loc.lat;
-                data.stationName = this.dialog.stationList[this.dialog.info.loc.stationId];
-                this.tableData.push(data);
-            } else {
-                let tmp = [];
-                this.tableData.forEach(item => {
-                    if(item.id === this.dialog.info.id) {
-                        item = Object.assign(item, this.dialog.info);
-                    }
-                    tmp.push(item);
-                });
-                this.tableData = tmp;
-            }
+            // if (!this.dialog.type) {
+            //     let data = Object.assign({}, this.dialog.info);
+            //     data.chargeBoxId = "";
+            //     data.power = 0;
+            //     data.connector = {};
+            //     data.location = this.dialog.info.loc.lng + ', '+ this.dialog.info.loc.lat;
+            //     data.stationName = this.dialog.stationList[this.dialog.info.loc.stationId];
+            //     this.tableData.push(data);
+            // } else {
+            //     let tmp = [];
+            //     this.tableData.forEach(item => {
+            //         if(item.id === this.dialog.info.id) {
+            //             item = Object.assign(item, this.dialog.info);
+            //         }
+            //         tmp.push(item);
+            //     });
+            //     this.tableData = tmp;
+            // }
             this.dialog.visible = false;
         },
         handleShowDialog(data) {
@@ -407,6 +456,13 @@ export default {
         height: calc(70vh - 75px);
         margin-left: 30px;
         display: inline-block;
+        .form-item .elecRateItem {
+            .el-input-number,
+            .el-select {
+                width: calc(50% - 8px);
+            display: inline-block
+            }
+        }
     }
 
 }

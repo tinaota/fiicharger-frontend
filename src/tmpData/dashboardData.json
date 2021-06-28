@@ -9,58 +9,70 @@
         "nConnector": 200
     },
     "powerUsedTop10": {
-        "most": "29566",
-        "data": {
-            "29566": 20,
-            "29568": 18,
-            "29742": 17,
-            "29745": 15,
-            "53563": 12,
-            "53542": 10,
-            "53537": 6,
-            "53522": 5,
-            "53934": 3,
-            "53910": 1
-        }
+        "most": {
+            "id": "FiiCB18",
+            "val": 20
+        },
+        "data": [
+            { "id": "FiiCB18", "val": 20 },
+            { "id": "FiiCB17", "val": 18 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
     },
     "revenueTop10": {
-        "most": "29566",
-        "data": {
-            "29566": 20,
-            "29568": 18,
-            "29742": 17,
-            "29745": 15,
-            "53563": 12,
-            "53542": 10,
-            "53537": 6,
-            "53522": 5,
-            "53934": 3,
-            "53910": 1
-        }
+        "most": {
+            "id": "FiiCB18",
+            "val": 20
+        },
+        "data": [
+            { "id": "FiiCB18", "val": 20 },
+            { "id": "FiiCB17", "val": 18 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
     },
     "sessionTop10": {
-        "most": "29566",
-        "data": {
-            "29566": 20,
-            "29568": 18,
-            "29742": 17,
-            "29745": 15,
-            "53563": 12,
-            "53542": 10,
-            "53537": 6,
-            "53522": 5,
-            "53934": 3,
-            "53910": 1
-        }
+        "most": {
+            "id": "FiiCB18",
+            "val": 20
+        },
+        "data": [
+            { "id": "FiiCB18", "val": 20 },
+            { "id": "FiiCB17", "val": 18 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
     },
     "faultsTypeTop5": {
-        "most": "Ground Fault",
-        "data": {
-            "Ground Fault": 10,
-            "Handshaking Fault": 6,
-            "Over Voltage": 5,
-            "Under Voltage": 3,
-            "Emergency Stop": 1
-        }
+        "most": {
+            "id": "Ground Fault",
+            "val": 10
+        },
+        "data": [
+            { "id": "Ground Fault", "val": 10 },
+            { "id": "Handshaking Fault", "val": 6 },
+            { "id": "Over Voltage", "val": 5 },
+            { "id": "Under Voltage", "val": 3 },
+            { "id": "Emergency Stop", "val": 1 }
+        ]
     }
 }

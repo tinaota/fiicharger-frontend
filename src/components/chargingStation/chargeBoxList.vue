@@ -5,21 +5,21 @@
             v-loading="isLoading">
             <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="1"></el-table-column>
             <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="1"></el-table-column>
-            <el-table-column :label="$t('chargingStation.status')" :min-width="1">
+            <el-table-column :label="$t('general.status')" :min-width="1">
                 <template slot-scope="scope">
-                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.status')[0]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.statusList')[0]" placement="top" effect="light" popper-class="item custom" >
                         <span class="circle-status color1"></span>
                     </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.status')[1]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.statusList')[1]" placement="top" effect="light" popper-class="item custom" >
                         <span class="circle-status color2"></span>
                     </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.status')[2]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.statusList')[2]" placement="top" effect="light" popper-class="item custom" >
                         <span class="circle-status color3"></span>
                     </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.status')[3]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.statusList')[3]" placement="top" effect="light" popper-class="item custom" >
                         <span class="circle-status color4"></span>
                     </el-tooltip>
-                    <el-tooltip v-else :content="$t('general.status')[4]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-else :content="$t('general.statusList')[4]" placement="top" effect="light" popper-class="item custom" >
                         <span class="circle-status color5"></span>
                     </el-tooltip>
                 </template>
@@ -42,19 +42,19 @@
             <el-table-column :label="$t('chargingStation.elecRate')">
                 <el-table-column :label="$t('chargingStation.onPeak')" :min-width="1">
                     <template slot-scope="scope">
-                        {{ scope.row.currency + scope.row.electricityRateInfo.onPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.onPeakType]}}
+                        {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('chargingStation.offPeak')" :min-width="1">
                     <template slot-scope="scope">
-                        {{ scope.row.currency + scope.row.electricityRateInfo.offPeak + '/' +  $t("chargingStation.elecRateUnit")[scope.row.electricityRateInfo.offPeakType]}}
+                        {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
                     </template>
                 </el-table-column>
             </el-table-column>
-            <el-table-column :label="$t('general.action')" :width="104">
+            <el-table-column :label="$t('general.action')" :width="108">
                 <template slot-scope="scope">
                     <!-- <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button> -->
-                    <el-button @click="unBindCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)">{{ $t('general.unbind') }}</el-button>
+                    <el-button class="unbind" @click="unBindCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)">{{ $t('general.unbind') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>

@@ -18,7 +18,8 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     v-loading="isLoading"
-                    class="moreCol">
+                    class="moreCol enable-row-click"
+                    @row-click="handleRowClick">
                     <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
                     <el-table-column prop="memberName" :label="$t('userAccount.userName')"></el-table-column>
                     <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')"></el-table-column>
@@ -28,10 +29,9 @@
                             <span v-for="(type, idx) in scope.row.loginType" :key="type">{{ type }} <br v-if="idx+1 !== scope.row.loginType.length"/></span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="200">
+                    <el-table-column :label="$t('general.action')" :width="80">
                         <template slot-scope="scope">
-                            <el-button @click="handleAccountDetail(scope.row.memberCode, scope.row.memberName)">{{ $t('general.detail') }}</el-button>
-                            <el-button @click="deleteAccount(scope.row.memberCode)">{{ $t('general.delete') }}</el-button>
+                            <el-button class="no-bg delete" @click="deleteAccount(scope.row.memberCode)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -103,13 +103,15 @@ export default {
         changePage(page) {
             this.page = page;
         },
-        handleAccountDetail(id, name) {
-            const data = {
-                memberCode: id,
-                memberName: name
+        handleRowClick(row, column, event) {
+            if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
+                const data = {
+                    memberCode: row.memberCode,
+                    memberName: row.memberName
+                }
+                window.sessionStorage.setItem('fiics-accountInfo', JSON.stringify(data));
+                this.$router.push({ name: "accountListDetail", params: data }).catch();
             }
-            window.sessionStorage.setItem('fiics-accountInfo', JSON.stringify(data));
-            this.$router.push({ name: "accountListDetail", params: data }).catch();
         },
         deleteAccount(id) {
             const that = this;

@@ -41,9 +41,6 @@
             }
             .cell {
                 word-break: break-word;
-                .el-button:not(.is-circle) {
-                    width: 84px;
-                }
                 span.el-tooltip:not(.circle-status) {
                     background-color: #409eff;
                     border-radius: 14px;
@@ -81,9 +78,6 @@
         .el-button {
             margin-top: 4px;
         }
-        .el-button + .el-button {
-            margin-left: 0;
-        }
         .el-button:last-child() {
             margin-bottom: 4px
         }
@@ -104,15 +98,15 @@
         td {
             font-size: 0.875rem;
             border-bottom: 1px solid #2C2E30;
-            .el-button:not(.is-circle) {
-                background: #2D3238;
-                border-radius: 4px;
-                font-size: 0.875rem;
-                color: #FFFFFF;
-                letter-spacing: 0;
-                padding: 8px 20px;
-                border: unset;
-            }
+            // .el-button:not(.is-circle) {
+            //     background: #2D3238;
+            //     border-radius: 4px;
+            //     font-size: 0.875rem;
+            //     color: #FFFFFF;
+            //     letter-spacing: 0;
+            //     padding: 8px 20px;
+            //     border: unset;
+            // }
             &.el-table__expanded-cell {
                 background: #222222;
                 padding: 20px 60px 10px 60px;

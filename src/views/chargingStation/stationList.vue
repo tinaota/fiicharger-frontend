@@ -55,14 +55,14 @@
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
-                                <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog(scope.row)"></el-button>
+                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="196">
+                    <el-table-column :label="$t('general.action')" :width="96">
                         <template slot-scope="scope">
-                            <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
-                            <el-button @click="deleteStation(scope.row.stationId, scope.row.stationName)">{{ $t('general.delete') }}</el-button>
+                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
+                            <el-button class="no-bg delete" @click="deleteStation(scope.row.stationId, scope.row.stationName)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -94,7 +94,7 @@
                         <div class="label">{{ $t('general.zipCode') }}</div>
                         <el-input v-model="dialog.info.zipCode"></el-input>
                     </div>
-                    <div class="form-item">
+                    <!-- <div class="form-item">
                         <div class="label">{{ $t('userAccount.countryCode') }}</div>
                         <el-select
                             class="select-small"
@@ -106,12 +106,12 @@
                     <div class="form-item">
                         <div class="label">{{ $t('general.telephone') }}</div>
                         <el-input v-model="dialog.info.phone"></el-input>
-                    </div>
+                    </div> -->
                     <div class="form-item">
                         <div class="label">{{ $t('general.address') }}</div>
                         <el-input v-model="dialog.info.address"></el-input>
                     </div>
-                    <div class="form-item">
+                    <!-- <div class="form-item">
                         <div class="label">{{ $t('general.businessHours') }}</div>
                         <div class="timeRange">
                             <el-time-select
@@ -135,7 +135,7 @@
                                 }">
                             </el-time-select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-item">
                         <div class="label">{{ $t('general.currency') }}</div>
                         <el-select
@@ -193,11 +193,11 @@ export default {
                     stationId: '',
                     stationName: '',
                     zipCode: '',
-                    countryCode: '',
-                    phone: '',
+                    // countryCode: '',
+                    // phone: '',
                     address: '',
-                    serviceStartTime: '',
-                    serviceEndTime: '',
+                    // serviceStartTime: '',
+                    // serviceEndTime: '',
                     unitType: '',
                     parkingRate: 0
                 }
@@ -278,10 +278,10 @@ export default {
                     stationName: row.stationName,
                     loc: row.loc,
                     // zipCode: row.zipCode,
-                    countryCode: row.countryCode,
-                    phone: row.phone,
-                    serviceStartTime: row.serviceStartTime,
-                    serviceEndTime: row.serviceEndTime,
+                    // countryCode: row.countryCode,
+                    // phone: row.phone,
+                    // serviceStartTime: row.serviceStartTime,
+                    // serviceEndTime: row.serviceEndTime,
                     currency: row.currency,
                     parkingRate: row.currency + row.parkingRate + "/min",
                     address: row.address
@@ -324,11 +324,11 @@ export default {
                   params = {
                     stationName: that.dialog.info.stationName,
                     zipCode: that.dialog.info.zipCode,
-                    countryCode: that.dialog.info.countryCode,
-                    phone: that.dialog.info.phone,
+                    // countryCode: that.dialog.info.countryCode,
+                    // phone: that.dialog.info.phone,
                     address: that.dialog.info.address,
-                    serviceStartTime: that.dialog.info.serviceStartTime,
-                    serviceEndTime: that.dialog.info.serviceEndTime,
+                    // serviceStartTime: that.dialog.info.serviceStartTime,
+                    // serviceEndTime: that.dialog.info.serviceEndTime,
                     unitType: that.dialog.info.unitType,
                     parkingRate: that.dialog.info.parkingRate,
                   },

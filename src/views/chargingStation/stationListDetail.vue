@@ -15,8 +15,8 @@
                 </div>
                 <div>
                     <div class="sec-header long"><i class="el-icon-office-building"></i> {{ curRouteParam.address }}</div>
-                    <div class="sec-header"><i class="el-icon-alarm-clock"></i> {{ curRouteParam.serviceStartTime + ' ~ ' + curRouteParam.serviceEndTime }}</div>
-                    <div class="sec-header" style="margin-left: 16px"><i class="el-icon-phone-outline"></i> {{ curRouteParam.countryCode + " " + curRouteParam.phone }}</div>
+                    <!-- <div class="sec-header"><i class="el-icon-alarm-clock"></i> {{ curRouteParam.serviceStartTime + ' ~ ' + curRouteParam.serviceEndTime }}</div>
+                    <div class="sec-header" style="margin-left: 16px"><i class="el-icon-phone-outline"></i> {{ curRouteParam.countryCode + " " + curRouteParam.phone }}</div> -->
                 </div>
                 <div class="s-contain">
                     <div class="item">

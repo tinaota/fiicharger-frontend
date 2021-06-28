@@ -75,12 +75,12 @@
                     </el-select>
                 </div>
                 <ul class="rank">
-                    <li v-for="(item, key) in powerUsedTop10.pData" :key="key">
+                    <li v-for="(item, idx) in powerUsedTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ key }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(powerUsedTop10.data[key]) }}</span>
+                            <span class="name">{{ item.id }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(powerUsedTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': key==powerUsedTop10.most}" :percentage="item" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==powerUsedTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -94,12 +94,12 @@
                     </el-select>
                 </div>
                 <ul class="rank">
-                    <li v-for="(item, key) in revenueTop10.pData" :key="key">
+                    <li v-for="(item, idx) in revenueTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ key }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(revenueTop10.data[key]) }}</span>
+                            <span class="name">{{ item.id }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(revenueTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': key==revenueTop10.most}" :percentage="item" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==revenueTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -113,12 +113,12 @@
                     </el-select>
                 </div>
                 <ul class="rank">
-                    <li v-for="(item, key) in sessionTop10.pData" :key="key">
+                    <li v-for="(item, idx) in sessionTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ key }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(sessionTop10.data[key]) }}</span>
+                            <span class="name">{{ item.id }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(sessionTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': key==sessionTop10.most}" :percentage="item" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==sessionTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -132,12 +132,12 @@
                     </el-select>
                 </div>
                 <ul class="rank">
-                    <li v-for="(item, key) in faultsTypeTop5.pData" :key="key">
+                    <li v-for="(item, idx) in faultsTypeTop5.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ key }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(faultsTypeTop5.data[key]) }}</span>
+                            <span class="name">{{ item.id }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(faultsTypeTop5.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': key==faultsTypeTop5.most}" :percentage="item" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==faultsTypeTop5.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -206,12 +206,14 @@ export default {
         },
         addPercentage(item) {
             let tmp = Object.assign({}, item);
-            tmp.pData = {};
-            const basicP = Math.round(tmp.data[tmp.most]/0.9);
-            for(var key in tmp.data) {
-                let val = tmp.data[key];
-                tmp.pData[key] = Math.round(val * 100 / basicP);
-            }
+            tmp.pData = [];
+            const basicP = Math.round(tmp.most.val/0.9);
+            tmp.data.forEach(info => {
+                tmp.pData.push({
+                    id: info.id,
+                    val: Math.round(info.val * 100 / basicP)
+                })
+            });
             return tmp;
         },
         handleSelected(type) {
@@ -269,19 +271,19 @@ export default {
 .rank-area {
     width: calc(100% - 40px);
     height: 70vh;
-    min-height: 760px;
+    min-height: 620px;
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
     ul.rank {
         margin-top: 24px;
         li {
-            margin-bottom: 46px;
+            margin-bottom: 32px;
             &:last-child {
                 margin-bottom: 0;
             }
             .label {
-                margin-bottom: 12px;
+                margin-bottom: 6px;
                 line-height: 20px;
                 font-size: 0.875rem;
                 .name {
@@ -302,22 +304,26 @@ export default {
     .statistics .s-contain .item {
         width: calc(33.33% - 11px);
     }
-    .rank-area {
-        width: calc(50% - 40px - 12px);
-        margin-right: 24px;
-        &:nth-child(2n) {
-            margin-right: 0px;
-        }
-    }
 }
 @media (min-width: 1601px) {
     .statistics .s-contain .item {
         width: calc(16.67% - 5.34px);
     }
+}
+@media only screen and (max-width: 1850px) and (min-width: 1201px) {
+    .rank-area {
+        width: calc(50% - 40px - 12px);
+        margin-right: 24px;
+        &:nth-child(2n+1) {
+            margin-right: 0px;
+        }
+    }
+}
+@media (min-width: 1851px) {
     .rank-area {
         width: calc(25% - 40px - 18px);
         margin-right: 24px;
-        &:nth-child(4n+2) {
+        &:nth-child(4n+1) {
             margin-right: 0px;
         }
     }

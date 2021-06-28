@@ -152,7 +152,8 @@
                     vertical-align: middle;
                 }
             }
-            .dark.el-input {
+            .dark.el-input,
+            .dark.el-select {
                 width: 350px;
                 height: 40px;
                 background: #131414;
@@ -168,6 +169,9 @@
                 input::-webkit-input-placeholder {
                     color: #979797;
                 }
+            }
+            .dark.el-select {
+                width: 200px;
             }
             .el-button {
                 width: 40px;
@@ -252,7 +256,7 @@
         color: #FFF;
         .header {
             color: #FCFCFC;
-            font-size: 1.25rem;
+            font-size: 1rem;
         }
         .content {
             font-size: 0.875rem;
@@ -269,12 +273,12 @@
                     height: 20px;
                     color: #FFF;
                     letter-spacing: 0;
-                    font-size: 1.5rem;
+                    font-size: 1.1rem;
                     line-height: 20px;
                     vertical-align: top;
                 }
                 + li {
-                    margin-top: 14px;
+                    margin-top: 8px;
                 }
             }
         }
@@ -327,7 +331,35 @@ button,
         background-color: transparent;
         background-repeat: no-repeat;
         background-size: contain;
+        background-position: center;
         border: unset;
+    }
+    &.loc {
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_location.png');
+    }
+    &.edit {
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_modify.png');
+    }
+    &.delete {
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_delete.png');
+    }
+    &.unbind {
+            background: #2D3238;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #FFFFFF;
+            letter-spacing: 0;
+            padding: 8px 20px;
+            border: unset;
+    }
+     + .el-button {
+        margin-left: 8px;
     }
 }
 el.button:disabled,
