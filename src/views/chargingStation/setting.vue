@@ -7,6 +7,11 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-select
+                        class="select-small dark"
+                        v-model="operator">
+                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
@@ -72,6 +77,8 @@ import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
+            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operator: 'Fiicharger',
             tableData: [],
             page: 1,
             total: 0,

@@ -103,6 +103,7 @@
         "connector#": "充電槍#",
         "parkingRate": "停車費",
         "elecRate": "電費率",
+        "chargeType": "充電類型",
         "onPeak": "尖峰",
         "offPeak": "離峰",
         "elecRateUnit": {
@@ -113,6 +114,7 @@
         "chargeBoxID": "充電樁ID",
         "power": "電耗",
         "connector":"充電槍",
+        "connectorList": ["", "可用", "充電中", "準備中", "結束", "連線異常", "異常"],
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
         "billingID": "帳單ID",
@@ -151,7 +153,9 @@
             "dcOnPeak": "直流電-尖峰",
             "dcOffPeak": "直流電-離峰"
         },
-        "itemPosition": "{item}位置"
+        "itemPosition": "{item}位置",
+        "connection": "連接",
+        "disconnection": "斷開"
     },
     "userAccount": {
         "userName": "用戶名",

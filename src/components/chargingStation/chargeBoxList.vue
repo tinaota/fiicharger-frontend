@@ -7,19 +7,10 @@
             <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('general.status')" :min-width="1">
                 <template slot-scope="scope">
-                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.statusList')[0]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="top" effect="light" popper-class="item custom">
                         <span class="circle-status color1"></span>
                     </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.statusList')[1]" placement="top" effect="light" popper-class="item custom" >
-                        <span class="circle-status color2"></span>
-                    </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.statusList')[2]" placement="top" effect="light" popper-class="item custom" >
-                        <span class="circle-status color3"></span>
-                    </el-tooltip>
-                    <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.statusList')[3]" placement="top" effect="light" popper-class="item custom" >
-                        <span class="circle-status color4"></span>
-                    </el-tooltip>
-                    <el-tooltip v-else :content="$t('general.statusList')[4]" placement="top" effect="light" popper-class="item custom" >
+                    <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="top" effect="light" popper-class="item custom">
                         <span class="circle-status color5"></span>
                     </el-tooltip>
                 </template>
@@ -104,7 +95,7 @@ export default {
             $HTTP_getChargeBoxList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.stationList.map(item => {
+                    this.tableData = data.chargeBoxList.map(item => {
                         item.currency = $GLOBAL_CURRENCY[item.unitType];
                         return item;
                     });

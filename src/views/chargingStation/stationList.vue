@@ -7,6 +7,11 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-select
+                        class="select-small dark"
+                        v-model="filter.operator">
+                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.stationID')"
                         class="dark"
@@ -33,7 +38,7 @@
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.acAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.acUnavailable}}
                                     </div>
-                                    <span>{{ scope.row.connectorCountInfo.acTotal }}</span>
+                                    <span class="text">{{ scope.row.connectorCountInfo.acTotal }}</span>
                                 </el-tooltip>
                             </template>
                         </el-table-column>
@@ -44,7 +49,7 @@
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.dcAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.dcUnavailable}}
                                     </div>
-                                    <span>{{ scope.row.connectorCountInfo.dcTotal }}</span>
+                                    <span class="text">{{ scope.row.connectorCountInfo.dcTotal }}</span>
                                 </el-tooltip>
                             </template>
                         </el-table-column>
@@ -171,10 +176,12 @@ export default {
     },
     data() {
         return {
+            operatorList: ["Fiicharger", "Midwest", "APT"],
             lang: '',
             filter: {
                 tmpSearch: '',
-                search: ''
+                search: '',
+                operator: 'Fiicharger'
             },
             isLoading: false,
             tableData: [],

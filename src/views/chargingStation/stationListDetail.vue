@@ -145,7 +145,8 @@ export default {
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.stationId) {
             let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
-            if (temp && temp.stationId && temp.stationName && temp.loc && temp.countryCode
+            if (temp && temp.stationId && temp.stationName && temp.loc
+                && temp.loc.lon && temp.loc.lat && temp.countryCode
                 && temp.phone && temp.serviceStartTime && temp.serviceEndTime
                 && temp.currency && temp.parkingRate && temp.address) {
                 this.curRouteParam = temp;

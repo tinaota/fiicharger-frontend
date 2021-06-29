@@ -114,6 +114,7 @@
         "chargeBoxID": "ChargeBox ID",
         "power": "Power",
         "connector": "Connector",
+        "connectorList": ["", "Available", "Charging", "Preparing", "Finishing", "Connection Lost", "Alert"],
         "sessionID": "Session ID",
         "billing": "Billing",
         "billingID": "Billing ID",
@@ -152,7 +153,9 @@
             "dcOnPeak": "DC On-Peak",
             "dcOffPeak": "DC Off-Peak"
         },
-        "itemPosition": "{item} Position"
+        "itemPosition": "{item} Position",
+        "connection": "Connection",
+        "disconnection": "Disconnection"
     },
     "userAccount": {
         "userName": "User Name",

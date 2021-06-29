@@ -41,7 +41,7 @@
             }
             .cell {
                 word-break: break-word;
-                span.el-tooltip:not(.circle-status) {
+                span.el-tooltip.text {
                     background-color: #409eff;
                     border-radius: 14px;
                     padding: 4px 8px;

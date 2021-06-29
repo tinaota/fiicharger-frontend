@@ -4,9 +4,14 @@
             "alertId": "A00000001",
             "stationId": "C000001",
             "chargeBoxId": "AWLU770001T2P0D2052A169A1",
-            "connector": {
-                "1":"Type1"
-            },
+            "connectorList": [
+                {
+                    "id": "1",
+                    "status": 0,
+                    "type": 1,
+                    "typeName": "Type1"
+                }
+            ],
             "alert": "Emergency Stop",
             "time": "2021/05/20 03:22:40",
             "workOrder": {
@@ -19,9 +24,14 @@
             "alertId": "A00000002",
             "stationId": "C000001",
             "chargeBoxId": "DWWU301J0UD1PHD2051A003A0",
-            "connector": {
-                "2":"CCS1"
-            },
+            "connectorList": [
+                {
+                    "id": "2",
+                    "status": 0,
+                    "type": 2,
+                    "typeName": "CCS1"
+                }
+            ],
             "alert": "Under Voltage",
             "time": "2021/05/10 08:30:00",
             "workOrder": {

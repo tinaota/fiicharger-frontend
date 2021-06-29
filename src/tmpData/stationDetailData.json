@@ -11,9 +11,14 @@
             "chargeBoxName": "Charge-1",
             "status": 1,
             "power": 7.7,
-            "connector": {
-                "1":"Type1"
-            },
+            "connectorList": [
+                {
+                    "id": "1",
+                    "status": 0,
+                    "type": 1,
+                    "typeName": "Type1"
+                }
+            ],
             "unitType": 1,
             "chargeType": "AC",
             "electricityRateInfo": {
@@ -28,10 +33,20 @@
             "chargeBoxName": "Charge-2",
             "status": 4,
             "power": 30,
-            "connector": {
-                "1":"CHAdeMO",
-                "2":"CCS1"
-            },
+            "connectorList": [
+                {
+                    "id": "1",
+                    "status": 0,
+                    "type": 3,
+                    "typeName": "CHAdeMO"
+                },
+                {
+                    "id": "2",
+                    "status": 0,
+                    "type": 2,
+                    "typeName": "CCS1"
+                }
+            ],
             "unitType": 1,
             "chargeType": "DC",
             "electricityRateInfo": {
@@ -47,9 +62,14 @@
             "sessionId": "S00000001",
             "chargeBoxId": "AWLU770001T2P0D2052A169A0",
             "power": 1.7,
-            "connector": {
-                "1":"Type1"
-            },
+            "connectorList": [
+                {
+                    "id": "1",
+                    "status": 0,
+                    "type": 1,
+                    "typeName": "Type1"
+                }
+            ],
             "sTime": "2021/05/10 08:30:00",
             "eTime": "2021/05/10 09:30:00",
             "price": 100,
@@ -65,9 +85,14 @@
             "sessionId": "S00000003",
             "chargeBoxId": "AWLU770001T2P0D2052A169A0",
             "power": 1,
-            "connector": {
-                "1":"Type1"
-            },
+            "connectorList": [
+                {
+                    "id": "1",
+                    "status": 0,
+                    "type": 1,
+                    "typeName": "Type1"
+                }
+            ],
             "sTime": "2021/05/01 09:30:00",
             "eTime": "2021/05/01 10:30:00",
             "price": 300,
@@ -83,9 +108,14 @@
             "sessionId": "S00000004",
             "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
             "power": 30,
-            "connector": {
-                "2":"CCS1"
-            },
+            "connectorList": [
+                {
+                    "id": "2",
+                    "status": 0,
+                    "type": 2,
+                    "typeName": "CCS1"
+                }
+            ],
             "sTime": "2021/05/01 09:30:00",
             "eTime": "2021/05/01 10:30:00",
             "price": 50,

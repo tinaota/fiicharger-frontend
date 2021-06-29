@@ -9,9 +9,9 @@
                     {{ scope.row.power + 'kWh' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+            <el-table-column :label="$t('chargingStation.connector')" :min-width="1">
                 <template slot-scope="scope">
-                    <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
+                    <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
                 </template>
             </el-table-column>
             <el-table-column prop="sTime" :label="$t('general.startTime')" :min-width="2"></el-table-column>
@@ -50,12 +50,16 @@
 </template>
 
 <script>
+import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
         tableData: {
             type: Array,
             required: true
         }
+    },
+    components: {
+        Connector
     },
     data() {
         return {

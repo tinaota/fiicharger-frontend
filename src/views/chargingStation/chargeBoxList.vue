@@ -9,6 +9,11 @@
                 <div class="filter">
                     <el-select
                         class="select-small dark"
+                        v-model="filter.operator">
+                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
+                    <el-select
+                        class="select-small dark"
                         v-model="filter.status"
                         :placeholder="$t('general.status')"
                         @change="fetchData()">
@@ -32,19 +37,10 @@
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :width="64"></el-table-column>
                     <el-table-column :label="$t('general.status')" :width="68" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.statusList')[0]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.statusList')[1]" placement="top" effect="light" popper-class="item custom">
-                                <span class="circle-status color2"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.statusList')[2]" placement="top" effect="light" popper-class="item custom">
-                                <span class="circle-status color3"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.statusList')[3]" placement="top" effect="light" popper-class="item custom">
-                                <span class="circle-status color4"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else :content="$t('general.statusList')[4]" placement="top" effect="light" popper-class="item custom">
+                            <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color5"></span>
                             </el-tooltip>
                         </template>
@@ -108,9 +104,9 @@
                 :show-close="false">
                 <div id="map-container" class="google-map"></div>
                 <div class="right-form formVertical">
-                    <div class="form-item" v-if="dialog.type">
+                    <div class="form-item">
                         <div class="label">{{ $t('chargingStation.chargeBoxID') }}</div>
-                        <el-input v-model="dialog.info.chargeBoxId" disabled></el-input>
+                        <el-input v-model="dialog.info.chargeBoxId"></el-input>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.name') }}</div>
@@ -135,11 +131,12 @@
                         </el-select>
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('general.status') }}</div>
+                        <div class="label">{{ $t('chargingStation.chargeType') }}</div>
                         <el-select
                             class="select-small"
-                            v-model="dialog.info.status">
-                            <el-option v-for="(item, idx) in dialog.serviceStatusList" :label="item" :key="idx" :value="idx"></el-option>
+                            v-model="dialog.info.chargeType">
+                            <el-option label="AC" :value="1"></el-option>
+                            <el-option label="DC" :value="2"></el-option>
                         </el-select>
                     </div>
                     <div class="form-item">
@@ -193,10 +190,12 @@ export default {
     },
     data() {
         return {
+            operatorList: ["Fiicharger", "Midwest", "APT"],
             filter: {
                 tmpSearch: '',
                 search: '',
-                status: ''
+                status: '',
+                operator: 'Fiicharger'
             },
             isLoading: false,
             stationList: {},
@@ -216,7 +215,7 @@ export default {
                         lat: ''
                     },
                     stationId: '',
-                    status: 1,
+                    chargeType: 1,
                     unitType: '',
                     onPeakElectricityRate: 0,
                     onPeakElectricityRateType: 1,
@@ -353,6 +352,7 @@ export default {
                 if (!that.dialog.type) {
                     that.removeMarker();
                     that.dialog.info.loc = event.latLng.toJSON();
+                    that.dialog.info.loc.lon = that.dialog.info.loc.lng;
                     that.drawMarker();
                 }
             });
@@ -372,6 +372,7 @@ export default {
             this.dialog.mapInfo.marker = marker;
             google.maps.event.addListener(this.dialog.mapInfo.marker, 'dragend', function(event) {
                 that.dialog.info.loc = event.latLng.toJSON();
+                that.dialog.info.loc.lon = that.dialog.info.loc.lng;
             });
         },
         removeMarker() {
@@ -398,25 +399,41 @@ export default {
             });
         },
         updateCheckBox() {
-            // if (!this.dialog.type) {
-            //     let data = Object.assign({}, this.dialog.info);
-            //     data.chargeBoxId = "";
-            //     data.power = 0;
-            //     data.connector = {};
-            //     data.location = this.dialog.info.loc.lng + ', '+ this.dialog.info.loc.lat;
-            //     data.stationName = this.dialog.stationList[this.dialog.info.loc.stationId];
-            //     this.tableData.push(data);
-            // } else {
-            //     let tmp = [];
-            //     this.tableData.forEach(item => {
-            //         if(item.id === this.dialog.info.id) {
-            //             item = Object.assign(item, this.dialog.info);
-            //         }
-            //         tmp.push(item);
-            //     });
-            //     this.tableData = tmp;
-            // }
-            this.dialog.visible = false;
+            const that = this;
+            let   $API,
+                  params = {
+                    chargeBoxId: that.dialog.info.chargeBoxId,
+                    chargeBoxName: that.dialog.info.chargeBoxName,
+                    lon: that.dialog.info.loc.lon,
+                    lat: that.dialog.info.loc.lat,
+                    stationId: that.dialog.info.stationId,
+                    chargeType: that.dialog.info.chargeType,
+                    unitType: that.dialog.info.unitType,
+                    onPeakElectricityRate: that.dialog.info.onPeakElectricityRate,
+                    onPeakElectricityRateType: that.dialog.info.onPeakElectricityRateType,
+                    offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
+                    offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
+                  },
+                  sucMsg = "";
+            if (!that.dialog.type) {
+                $API = $HTTP_addChargeBox;
+                sucMsg = i18n.t('general.sucAddMsg');
+            } else {
+                $API = $HTTP_updateChargeBox;
+                sucMsg = i18n.t('general.sucUpdateMsg');
+            }
+
+            that.dialog.isLoading = true;
+            $API(params).then(data => {
+                that.dialog.isLoading = false;
+                if (!!data.success) {
+                    that.$message({ type: "success", message: sucMsg });
+                    that.dialog.visible = false;
+                    that.fetchData();
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            });
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.chargeBoxId;

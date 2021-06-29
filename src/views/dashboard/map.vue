@@ -193,12 +193,12 @@ export default {
                                     <div class="item-title-img"><img src='${this.icon.charging}'>${i18n.t('chargingStation.powerUsed')}</div>
                                     <div class="item-msg">${item.power}</div>
                                 </li>
-                                <li>
-                                    <div class="item-title-img"><img src='${this.icon.revenue}'>${i18n.t('dashboard.revenue')}</div>
-                                    <div class="item-msg">${item.revenue}</div>
-                                </li>
                             </ul>
                         </div>`;
+                        // <li>
+                        //             <div class="item-title-img"><img src='${this.icon.revenue}'>${i18n.t('dashboard.revenue')}</div>
+                        //             <div class="item-msg">${item.revenue}</div>
+                        //         </li>
             return info;
         },
         fetchData() {

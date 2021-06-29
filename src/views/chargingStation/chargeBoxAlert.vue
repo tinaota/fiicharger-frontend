@@ -7,6 +7,11 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-select
+                        class="select-small dark"
+                        v-model="filter.operator">
+                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
                     <el-date-picker
                         v-model="filter.dateRange"
                         type="daterange"
@@ -35,7 +40,7 @@
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')"></el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')">
                         <template slot-scope="scope">
-                            <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
+                            <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="alert" :label="$t('chargingStation.alert')"></el-table-column>
@@ -62,13 +67,19 @@
 <script>
 import StationAlertData from "@/tmpData/stationAlertData";
 import { setScrollBar } from "@/utils/function";
+import Connector from "@/components/chargingStation/connector";
 export default {
+    components: {
+        Connector
+    },
     data() {
         return {
+            operatorList: ["Fiicharger", "Midwest", "APT"],
             filter: {
                 tmpSearch: '',
                 search: '',
                 dateRange: [],
+                operator: 'Fiicharger'
             },
             tableData: [],
             page: 1,

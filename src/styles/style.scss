@@ -191,21 +191,41 @@
             width: 16px;
             height: 16px;
             border-radius: 16px;
-            &.color1 {
-                background: #32d850;
+        }
+        .circle-number {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 16px;
+            line-height: 16px;
+            text-align: center;
+            padding: 4px;
+            vertical-align: text-top;
+        }
+        .color0 {
+            background: transparent;
+            border: 1px solid #FFF;
+            &.circle-number {
+                padding: 3px;
             }
-            &.color2 {
-                background: #ffa10b;
-            }
-            &.color3 {
-                background: #5e3715;
-            }
-            &.color4 {
-                background: #fd2d55;
-            }
-            &.color5 {
-                background: #8e8e9a;
-            }
+        }
+        .color1 {
+            background: #32d850;
+        }
+        .color2 {
+            background: #ffa10b;
+        }
+        .color3 {
+            background: #5e3715;
+        }
+        .color4 {
+            background: #fd2d55;
+        }
+        .color5 {
+            background: #8e8e9a;
+        }
+        .color6 {
+            background: #0885ff;
         }
         .el-tabs {
             .el-tabs__nav-wrap {

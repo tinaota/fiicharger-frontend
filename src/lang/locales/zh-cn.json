@@ -103,6 +103,7 @@
         "connector#": "充电枪#",
         "parkingRate": "停车费",
         "elecRate": "电费率",
+        "chargeType": "充电类型",
         "onPeak": "尖峰",
         "offPeak": "离峰",
         "elecRateUnit": {
@@ -113,6 +114,7 @@
         "chargeBoxID": "充电桩ID",
         "power": "电耗",
         "connector": "充电枪",
+        "connectorList": ["", "可用", "充电中", "准备中", "结束", "连线异常", "异常"],
         "sessionID": "充电纪录ID",
         "billing": "帐单",
         "billingID": "帐单ID",
@@ -151,7 +153,9 @@
             "dcOnPeak": "直流电-尖峰",
             "dcOffPeak": "直流电-离峰"
         },
-        "itemPosition": "{item}位置"
+        "itemPosition": "{item}位置",
+        "connection": "连接",
+        "disconnection": "断开"
     },
     "userAccount": {
         "userName": "用户名",
