@@ -85,16 +85,19 @@
             background-image: url('~imgs/ic_blue_dot.png');
         }
         &.pos1 {
-            background-image: url('~imgs/ic_green_dot.png');
+            background-image: url('~imgs/ic_info_green.png');
         }
         &.pos2 {
-            background-image: url('~imgs/ic_orange_dot.png');
+            background-image: url('~imgs/ic_info_orange.png');
         }
         &.pos3 {
-            background-image: url('~imgs/ic_red_dot.png');
+            background-image: url('~imgs/ic_info_brown.png');
         }
         &.pos4 {
-            background-image: url('~imgs/ic_gray_dot.png');
+            background-image: url('~imgs/ic_info_red.png');
+        }
+        &.pos5 {
+            background-image: url('~imgs/ic_info_gray.png');
         }
         &.loading {
             position: relative;

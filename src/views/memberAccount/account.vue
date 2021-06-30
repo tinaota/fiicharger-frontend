@@ -2,8 +2,8 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.userAccount') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.accountList') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.memberAccount') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.account') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
@@ -110,7 +110,7 @@ export default {
                     memberName: row.memberName
                 }
                 window.sessionStorage.setItem('fiics-accountInfo', JSON.stringify(data));
-                this.$router.push({ name: "accountListDetail", params: data }).catch();
+                this.$router.push({ name: "accountDetail", params: data }).catch();
             }
         },
         deleteAccount(id) {

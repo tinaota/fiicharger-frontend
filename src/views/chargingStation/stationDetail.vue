@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/stationList' }">{{ $t('menu.stationList') }}</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/station' }">{{ $t('menu.station') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 station-detail">
@@ -50,6 +50,16 @@
                         </div>
                     </div>
                 </div>
+                <div class="tabs-contain">
+                    <el-tabs v-model="active" @tab-click="handleTabClick">
+                        <el-tab-pane :label="$t('menu.chargeBoxList')" name="chargeBoxList">
+                            <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
+                        </el-tab-pane>
+                        <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
+                            <ChargingSession :tableData="chargingSessionData"></ChargingSession>
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
                 <div class="chart">
                     <div class="header">{{ $t('chargingStation.chargingSessionAnalysis') }}
                         <el-select
@@ -71,16 +81,6 @@
                         </el-select>
                     </div>
                     <BarChart class="barChart" id="chartPowerUsed" :chartData="chartPowerUsed.chartData"></BarChart>
-                </div>
-                <div class="tabs-contain">
-                    <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <el-tab-pane :label="$t('menu.chargeBoxList')" name="chargeBoxList">
-                            <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
-                        </el-tab-pane>
-                        <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
-                            <ChargingSession :tableData="chargingSessionData"></ChargingSession>
-                        </el-tab-pane>
-                    </el-tabs>
                 </div>
             </div>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
@@ -268,10 +268,9 @@ export default {
             height: 30vh;
         }
     }
-    /* .tabs-contain {
-        width: 100%;
-        min-height: 200px;
-    } */
+    .tabs-contain {
+        margin-bottom: 28px;
+    }
 }
 @media only screen and (max-width: 1600px) and (min-width: 1201px) {
     .station-detail {

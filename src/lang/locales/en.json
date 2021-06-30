@@ -5,18 +5,21 @@
     "menu": {
         "home": "Home",
         "dashboard": "Dashboard",
-        "map": "Map",
+        "location": "Location",
         "statistics": "Statistics",
         "chargingStation": "Charging Station",
-        "stationList": "Station List",
-        "stationListDetail": "Statistic Detail",
-        "chargeBoxList": "ChargeBox List",
+        "station": "Station",
+        "stationDetail": "Statistic Detail",
+        "chargeBox": "ChargeBox",
         "chargingSession": "Charging Session",
         "chargeBoxAlert": "ChargeBox Alert",
         "setting": "Setting",
-        "userAccount": "User Account",
-        "accountList": "Account List",
-        "billingLog": "Billing Log"
+        "memberAccount": "Member Account",
+        "account": "Account",
+        "billingLog": "Billing Log",
+        "support": "Support",
+        "workOrder": "Work Order",
+        "accountMgt": "Account Management"
     },
     "login": {
         "login": "Login",

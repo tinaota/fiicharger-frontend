@@ -2,7 +2,7 @@
     "settingList": [
         {
             "rateId": "E001",
-            "rateName": "Midwest-53177",
+            "rateName": "MidwestFiber-53177",
             "electricityRate": {
                 "AC On-Peak": "$0.3",
                 "AC Off-Peak": "$0.1",

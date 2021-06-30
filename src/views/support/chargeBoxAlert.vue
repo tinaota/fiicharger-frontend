@@ -74,7 +74,7 @@ export default {
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             filter: {
                 tmpSearch: '',
                 search: '',

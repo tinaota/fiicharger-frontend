@@ -52,7 +52,7 @@
     "electricityRateList": [
         {
             "rateId": "E001",
-            "rateName": "Midwest-53177"
+            "rateName": "MidwestFiber-53177"
         },
         {
             "rateId": "E002",

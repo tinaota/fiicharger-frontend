@@ -24,17 +24,25 @@
                         :clearable="false"
                         @change="handleDaterange">
                     </el-date-picker>
-                    <el-input
-                        :placeholder="$t('chargingStation.chargeBoxID')+'/'+$t('chargingStation.connector')"
-                        class="dark"
-                        v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
+                    <el-select
+                        class="select-small dark"
+                        v-model="filter.location"
+                        :placeholder="$t('general.location')"
+                        v-loading="isLoading">
+                        <el-option v-for="item in loctionList" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
+                    <el-select
+                        class="select-small dark"
+                        v-model="filter.chargeBoxId"
+                        :placeholder="$t('chargingStation.chargeBoxID')"
+                        v-loading="chargerBoxList.isLoading">
+                        <el-option v-for="item in chargerBoxList.data" :label="item.chargeBoxId" :key="item.chargeBoxId" :value="item.chargeBoxId"></el-option>
+                    </el-select>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
-                    class="moreCol">
+                    class="moreCol"
+                    v-loading="isLoading">
                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="1"></el-table-column>
                     <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="2"></el-table-column>
@@ -94,66 +102,77 @@
 import ChargingSessionData from "@/tmpData/chargingSessionData";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
+import { $HTTP_getChargeBoxList } from "@/api/api";
+
 export default {
     components: {
         Connector
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             filter: {
-                tmpSearch: '',
-                search: '',
+                operator: 'Fiicharger',
                 dateRange: [],
-                operator: 'Fiicharger'
+                chargeBoxId: '',
+                location: ''
             },
+            chargerBoxList: {
+                isLoading: false,
+                data: []
+            },
+            isLoading: true,
+            loctionList: [],
             tableData: [],
             page: 1,
             total: 0,
             pickerOptions: {
                 disabledDate(time) {
                 return time.getTime() > Date.now();
-                },
+                }
             }
         }
     },
     mounted() {
-        this.fetchData();
+        const that = this;
+        that.fetchChargerBoxList(()=>{
+            that.fetchData();
+        });
     },
     methods: {
+        fetchChargerBoxList(callback) {
+            const that = this;
+            let param = {
+                status: 0
+            };
+            this.chargerBoxList.isLoading = true;
+            $HTTP_getChargeBoxList(param).then((data) => {
+                this.chargerBoxList.isLoading = false;
+                if (!!data.success) {
+                    data.chargeBoxList.map(item => {
+                        let tmp = {
+                            chargeBoxId: item.chargeBoxId,
+                            chargeBoxName: item.chargeBoxName
+                        }
+                        this.chargerBoxList.data.push(tmp);
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                callback && callback();
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         fetchData() {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
+            this.isLoading = false;
             this.tableData = ChargingSessionData.chargingSession.slice();
+            this.loctionList = ChargingSessionData.loctionList.slice();
             this.page = 1;
             this.total = this.tableData.length;
             setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = ChargingSessionData.chargingSession.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
-            }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                if (item.chargeBoxId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0) {
-                    return true;
-                } else {
-                    for(var key in item.connector) {
-                        if (item.connector[key].toLowerCase().indexOf(queryString.toLowerCase()) >= 0) {
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            };
         },
         changePage(page) {
             this.page = page;

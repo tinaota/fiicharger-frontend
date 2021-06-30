@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.stationList') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.station') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
@@ -176,7 +176,7 @@ export default {
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             lang: '',
             filter: {
                 tmpSearch: '',
@@ -294,7 +294,7 @@ export default {
                     address: row.address
                 }
                 window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
-                this.$router.push({ name: "stationListDetail", params: stationData }).catch();
+                this.$router.push({ name: "stationDetail", params: stationData }).catch();
             }
         },
         openDialog(type, data) {

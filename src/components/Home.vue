@@ -45,7 +45,8 @@
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children" >
-                                            <el-menu-item v-if="!subChild.hidden" :index="subChild.path" style="padding-left:60px;padding-right: 12px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-if="!subChild.hidden && subChild.name !== 'menu.accountMgt'" :index="subChild.path" style="padding-left:60px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-else-if="!subChild.hidden" :index="subChild.path" class="longItem" style="padding-left:60px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>

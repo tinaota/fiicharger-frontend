@@ -31,6 +31,9 @@
                 &.is-active {
                     color: #0C83FF;
                 }
+                &.longItem {
+                    font-size: 0.9rem;
+                }
                 // background-color: transparent;
             }
             // is-active menuEn subMenu
@@ -129,7 +132,6 @@
                 background: #131414;
                 border-radius: 4px;
                 height: 40px;
-                margin-right: 10px;
                 vertical-align: top;
                 .el-range__icon {
                     color: #9EA7AC;
@@ -154,9 +156,9 @@
             }
             .dark.el-input,
             .dark.el-select {
-                width: 350px;
+                width: 250px;
                 height: 40px;
-                background: #131414;
+                background: #0F1010;
                 border-radius: 4px;
                 input {
                     background: transparent;
@@ -529,11 +531,11 @@ button:disabled {
             width: 100%;
             input {
                 opacity: 0.6;
-                background: #131414;
+                background: #0F1010;
                 border-radius: 4px;
                 border-radius: 4px;
                 border: unset;
-                color: #9EA7AC;
+                color: #D0D0D1;
                 letter-spacing: 0;
                 font-size: 1rem;
                 line-height: 48px;
@@ -541,7 +543,7 @@ button:disabled {
                 vertical-align: middle;
             }
             input::-webkit-input-placeholder {
-                color: #9EA7AC;
+                color: #D0D0D1;
             }
             .el-tag.el-tag--info {
                 background-color: #409EFF;

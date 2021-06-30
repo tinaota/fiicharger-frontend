@@ -5,18 +5,21 @@
     "menu": {
         "home": "首页",
         "dashboard": "首页",
-        "map": "地图",
+        "location": "位置",
         "statistics": "统计",
         "chargingStation": "充电站资讯",
-        "stationList": "充电站列表",
-        "stationListDetail": "充电站资讯",
-        "chargeBoxList": "充电桩列表",
+        "station": "充电站",
+        "stationDetail": "充电站资讯",
+        "chargeBox": "充电桩列表",
         "chargingSession": "充电纪录",
         "chargeBoxAlert": "充电桩警示",
         "setting": "设定",
-        "userAccount": "用户帐号资讯",
-        "accountList": "帐号列表",
-        "billingLog": "帐单资讯"
+        "memberAccount": "会员帐号",
+        "account": "帐号列表",
+        "billingLog": "帐单资讯",
+        "support": "支援",
+        "workOrder": "工单",
+        "accountMgt": "帐户管理"
     },
     "login": {
         "login": "登入",

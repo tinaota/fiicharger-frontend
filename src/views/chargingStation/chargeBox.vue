@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.chargeBoxList') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargeBox') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
@@ -11,14 +11,6 @@
                         class="select-small dark"
                         v-model="filter.operator">
                         <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
-                    </el-select>
-                    <el-select
-                        class="select-small dark"
-                        v-model="filter.status"
-                        :placeholder="$t('general.status')"
-                        @change="fetchData()">
-                        <el-option :label="$t('general.all')" :value="0"></el-option>
-                        <el-option v-for="(item, key) in $t('general.statusList')" :label="item" :key="(key+1)" :value="(key+1)"></el-option>
                     </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.chargeBoxID')"
@@ -33,9 +25,9 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
-                    <el-table-column prop="chargeBoxName" :label="$t('general.name')" :width="64"></el-table-column>
-                    <el-table-column :label="$t('general.status')" :width="68" class-name="center">
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="7"></el-table-column>
+                    <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
+                    <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="top" effect="light" popper-class="item custom">
                                 <span class="circle-status color1"></span>
@@ -45,34 +37,34 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="4">
                         <template slot-scope="scope">
                             {{scope.row.power + "kWh"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :width="120">
+                    <el-table-column :label="$t('chargingStation.connector')" :min-width="6">
                         <template slot-scope="scope">
                             <div v-for="(item, key) in scope.row.connectorTypeInfo" :key="key">{{ "("+ key +") "+ item }}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.type')" :width="56" class-name="center">
+                    <el-table-column :label="$t('general.type')" :min-width="3" class-name="center">
                         <template slot-scope="scope">
                             {{ scope.row.chargeType === 1 ? "AC" : "DC" }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.elecRate')">
-                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="2">
+                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="4">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="2">
+                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="4">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="3"></el-table-column>
+                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
@@ -190,11 +182,10 @@ export default {
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             filter: {
                 tmpSearch: '',
                 search: '',
-                status: '',
                 operator: 'Fiicharger'
             },
             isLoading: false,
@@ -279,11 +270,6 @@ export default {
             let param = {};
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
-            }
-            if (this.filter.status === '') {
-                param.status = 0;
-            } else {
-                param.status = this.filter.status;
             }
             param.search = this.filter.search;
             $HTTP_getChargeBoxList(param).then((data) => {

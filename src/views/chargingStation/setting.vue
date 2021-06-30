@@ -77,7 +77,7 @@ import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
-            operatorList: ["Fiicharger", "Midwest", "APT"],
+            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             operator: 'Fiicharger',
             tableData: [],
             page: 1,

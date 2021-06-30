@@ -5,18 +5,21 @@
     "menu": {
         "home": "首頁",
         "dashboard": "首頁",
-        "map": "地圖",
+        "location": "位置",
         "statistics": "統計",
         "chargingStation": "充電站資訊",
-        "stationList": "充電站列表",
-        "stationListDetail": "充電站資訊",
-        "chargeBoxList": "充電樁列表",
+        "station": "充電站",
+        "stationDetail": "充電站資訊",
+        "chargeBox": "充電樁列表",
         "chargingSession": "充電紀錄",
         "chargeBoxAlert": "充電樁警示",
         "setting": "設定",
-        "userAccount": "用戶帳號資訊",
-        "accountList": "帳號列表",
-        "billingLog": "帳單資訊"
+        "memberAccount": "會員帳號",
+        "account": "帳號列表",
+        "billingLog": "帳單資訊",
+        "support": "支援",
+        "workOrder": "工單",
+        "accountMgt": "帳戶管理"
     },
     "login": {
         "login": "登入",
