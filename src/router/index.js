@@ -69,8 +69,8 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false },
                     { path: '/chargeBoxAlert', component: () => import('@/views/support/chargeBoxAlert.vue'), name: 'menu.chargeBoxAlert', hidden: false },
+                    { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false }
                 ]
             },
             {

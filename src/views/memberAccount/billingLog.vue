@@ -58,7 +58,7 @@
                                     </el-table-column>
                                     <el-table-column :label="$t('chargingStation.connector')">
                                         <template slot-scope="scope">
-                                            <div v-for="(item, key) in scope.row.connector" :key="key">{{ "("+ key +") "+ item }}</div>
+                                            <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
                                         </template>
                                     </el-table-column>
                                     <el-table-column :label="$t('chargingStation.billing')">
@@ -90,7 +90,11 @@
 <script>
 import BillingLogData from "@/tmpData/billingLogData";
 import { setScrollBar } from "@/utils/function";
+import Connector from "@/components/chargingStation/connector";
 export default {
+    components: {
+        Connector
+    },
     data() {
         return {
             filter: {

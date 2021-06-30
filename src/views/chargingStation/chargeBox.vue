@@ -9,8 +9,9 @@
                 <div class="filter">
                     <el-select
                         class="select-small dark"
-                        v-model="filter.operator">
-                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                        v-model="filter.operatorTypeId"
+                        @change="fetchData()">
+                        <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.chargeBoxID')"
@@ -42,9 +43,9 @@
                             {{scope.row.power + "kWh"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :min-width="6">
+                    <el-table-column :label="$t('chargingStation.connector')" :width="90">
                         <template slot-scope="scope">
-                            <div v-for="(item, key) in scope.row.connectorTypeInfo" :key="key">{{ "("+ key +") "+ item }}</div>
+                            <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.type')" :min-width="3" class-name="center">
@@ -175,18 +176,23 @@ import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getStationListForSelect, $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
-
+import Connector from "@/components/chargingStation/connector";
 export default {
     components: {
-        ShowPostion
+        ShowPostion,
+        Connector
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
+            operatorList: {
+                1: "Fiicharger",
+                2: "MidwestFiber",
+                3: "APT"
+            },
             filter: {
                 tmpSearch: '',
                 search: '',
-                operator: 'Fiicharger'
+                operatorTypeId: 1
             },
             isLoading: false,
             stationList: {},
@@ -267,7 +273,9 @@ export default {
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {};
+            let param = {
+                operatorTypeId: that.filter.operatorTypeId
+            };
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
             }

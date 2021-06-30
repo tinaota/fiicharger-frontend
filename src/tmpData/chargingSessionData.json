@@ -8,10 +8,10 @@
             "power": 7.7,
             "connectorList": [
                 {
-                    "id": "1",
+                    "connectorId": "1",
                     "status": 0,
-                    "type": 1,
-                    "typeName": "Type1"
+                    "connectorTypeId": 3,
+                    "connectorType": "Type1"
                 }
             ],
             "sTime": "2021/05/10 08:30:00",
@@ -32,10 +32,10 @@
             "power": 30,
             "connectorList": [
                 {
-                    "id": "1",
+                    "connectorId": "1",
                     "status": 0,
-                    "type": 1,
-                    "typeName": "Type1"
+                    "connectorTypeId": 3,
+                    "connectorType": "Type1"
                 }
             ],
             "sTime": "2021/05/01 09:30:00",
@@ -56,10 +56,10 @@
             "power": 10,
             "connectorList": [
                 {
-                    "id": "2",
+                    "connectorId": "2",
                     "status": 0,
-                    "type": 2,
-                    "typeName": "CCS1"
+                    "connectorTypeId": 9,
+                    "connectorType": "CCS1"
                 }
             ],
             "sTime": "2021/05/01 09:30:00",

@@ -43,10 +43,10 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
-                    <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="1"></el-table-column>
-                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="2"></el-table-column>
-                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="1">
+                    <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
+                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.power + 'kWh' }}
                         </template>
@@ -58,7 +58,7 @@
                     </el-table-column>
                     <el-table-column prop="sTime" :label="$t('general.startTime')" :min-width="2"></el-table-column>
                     <el-table-column prop="eTime" :label="$t('general.endTime')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.billing')" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.billing')" :min-width="2">
                         <template slot-scope="scope">
                             {{ "$" + scope.row.price }}
                         </template>
@@ -103,7 +103,6 @@ import ChargingSessionData from "@/tmpData/chargingSessionData";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import { $HTTP_getChargeBoxList } from "@/api/api";
-
 export default {
     components: {
         Connector

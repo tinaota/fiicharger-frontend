@@ -3,7 +3,7 @@
         <el-table
             :data="tableData.slice((page - 1) * 5, page * 5)"
             v-loading="isLoading">
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="1"></el-table-column>
+            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="2"></el-table-column>
             <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('general.status')" :min-width="1">
                 <template slot-scope="scope">
@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column :label="$t('chargingStation.connector')" :min-width="1">
                 <template slot-scope="scope">
-                    <div v-for="(item, key) in scope.row.connectorTypeInfo" :key="key">{{ "("+ key +") "+ item }}</div>
+                    <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('general.type')" :min-width="1">
@@ -63,9 +63,13 @@
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getChargeBoxList } from "@/api/api";
+import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
         stationId: String
+    },
+    components: {
+        Connector
     },
     data() {
         return {

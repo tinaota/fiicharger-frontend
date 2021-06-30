@@ -12,9 +12,14 @@
                 "sessionId": "S00000001",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
                 "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                },
+                "connectorList": [
+                    {
+                        "connectorId": "1",
+                        "status": 0,
+                        "connectorTypeId": 3,
+                        "connectorType": "Type1"
+                    }
+                ],
                 "sTime": "2021/05/10 08:30:00",
                 "eTime": "2021/05/10 09:30:00",
                 "price": 100
@@ -32,9 +37,14 @@
                 "sessionId": "S00000007",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
                 "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                },
+                "connectorList": [
+                    {
+                        "connectorId": "1",
+                        "status": 0,
+                        "connectorTypeId": 3,
+                        "connectorType": "Type1"
+                    }
+                ],
                 "sTime": "2021/05/01 09:30:00",
                 "eTime": "2021/05/01 10:30:00",
                 "price": 100
@@ -54,9 +64,14 @@
                 "sessionId": "S00000001",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
                 "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                },
+                "connectorList": [
+                    {
+                        "connectorId": "1",
+                        "status": 0,
+                        "connectorTypeId": 3,
+                        "connectorType": "Type1"
+                    }
+                ],
                 "sTime": "2021/05/10 08:30:00",
                 "eTime": "2021/05/10 09:30:00",
                 "price": 100
@@ -74,9 +89,14 @@
                 "sessionId": "S00000007",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
                 "power": 7.7,
-                "connector": {
-                    "1":"Type1"
-                },
+                "connectorList": [
+                    {
+                        "connectorId": "1",
+                        "status": 0,
+                        "connectorTypeId": 3,
+                        "connectorType": "Type1"
+                    }
+                ],
                 "sTime": "2021/05/01 09:30:00",
                 "eTime": "2021/05/01 10:30:00",
                 "price": 100
