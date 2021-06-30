@@ -52,7 +52,7 @@
                 </div>
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <el-tab-pane :label="$t('menu.chargeBoxList')" name="chargeBoxList">
+                        <el-tab-pane :label="$t('menu.chargeBox')" name="chargeBoxList">
                             <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
