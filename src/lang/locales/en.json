@@ -104,7 +104,7 @@
         "stationID": "Station ID",
         "stationName": "Station Name",
         "connector#": "Connector #",
-        "parkingRate": "Parking Rate",
+        "parkingRate": "Occupancy Rate",
         "elecRate": "Electricity Rate",
         "chargeType": "Type",
         "onPeak": "On-Peak",

@@ -56,23 +56,41 @@ div.connector-obj {
         display: inline-block;
         vertical-align: top;
     }
-    /* .color6 {
-        position: relative;
-        border: 2px solid #0885ff;
-        border-radius: 50%;
-        border-top: 2px solid #FFF;
-        border-bottom: 2px solid #FFF;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
+    .circle-number {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 16px;
+        line-height: 16px;
+        text-align: center;
+        padding: 4px;
+        vertical-align: text-top;
     }
-    @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
+    .color0 {
+        background: transparent;
+        border: 1px solid #FFF;
+        &.circle-number {
+            padding: 3px;
+        }
     }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    } */
+    .color1 {
+        background: #32d850;
+    }
+    .color2 {
+        background: #ffa10b;
+    }
+    .color3 {
+        background: #5e3715;
+    }
+    .color4 {
+        background: #fd2d55;
+    }
+    .color5 {
+        background: #8e8e9a;
+    }
+    .color6 {
+        background: #0885ff;
+    }
     .circular {
         display: inline-block;
         height:24px;
@@ -83,7 +101,6 @@ div.connector-obj {
             position: absolute;
             top: 1px;
             left: 8px;
-            /* transform: translate(-50%, -50%); */
         }
         .color6 {
             position: absolute;

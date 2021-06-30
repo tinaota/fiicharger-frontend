@@ -40,7 +40,7 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.power')" :min-width="4">
                         <template slot-scope="scope">
-                            {{scope.row.power + "kWh"}}
+                            {{scope.row.power + "kW"}}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')" :width="90">
