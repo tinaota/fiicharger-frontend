@@ -22,7 +22,7 @@
             </el-table-column>
             <el-table-column :label="$t('chargingStation.connector')" :min-width="1">
                 <template slot-scope="scope">
-                    <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
+                    <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item" :isBreak="true"></Connector>
                 </template>
             </el-table-column>
             <el-table-column :label="$t('general.type')" :min-width="1">
@@ -45,7 +45,9 @@
             <el-table-column :label="$t('general.action')" :width="108">
                 <template slot-scope="scope">
                     <!-- <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button> -->
-                    <el-button class="unbind" @click="unBindCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)">{{ $t('general.unbind') }}</el-button>
+                    <el-tooltip :content="$t('general.unbind')" placement="top" effect="light" popper-class="item custom">
+                        <el-button class="no-bg unbind" @click="unBindCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)"></el-button>
+                    </el-tooltip>
                 </template>
             </el-table-column>
         </el-table>

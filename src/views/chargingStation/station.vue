@@ -9,8 +9,9 @@
                 <div class="filter">
                     <el-select
                         class="select-small dark"
-                        v-model="filter.operator">
-                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                        v-model="filter.operatorTypeId"
+                        @change="fetchData()">
+                        <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.stationID')"
@@ -176,12 +177,16 @@ export default {
     },
     data() {
         return {
-            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
+            operatorList: {
+                1: "Fiicharger",
+                2: "MidwestFiber",
+                3: "APT"
+            },
             lang: '',
             filter: {
                 tmpSearch: '',
                 search: '',
-                operator: 'Fiicharger'
+                operatorTypeId: 1
             },
             isLoading: false,
             tableData: [],
@@ -224,7 +229,7 @@ export default {
     },
     mounted() {
         this.fetchData();
-        this.fetchCountryCodeList();
+        // this.fetchCountryCodeList();
     },
     methods: {
         fetchData(type) {
@@ -232,7 +237,9 @@ export default {
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {};
+            let param = {
+                operatorTypeId: that.filter.operatorTypeId
+            };
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
             }
@@ -263,21 +270,21 @@ export default {
         changePage(page) {
             this.page = page;
         },
-        fetchCountryCodeList() {
-            const that = this;
-            this.countryCode.isLoading = true;
-            $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
-                this.countryCode.isLoading = false;
-                if (!!data.success) {
-                    this.countryCode.data = data.countryCodeList.slice();
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('countryCode', err);
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
+        // fetchCountryCodeList() {
+        //     const that = this;
+        //     this.countryCode.isLoading = true;
+        //     $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
+        //         this.countryCode.isLoading = false;
+        //         if (!!data.success) {
+        //             this.countryCode.data = data.countryCodeList.slice();
+        //         } else {
+        //             this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+        //         }
+        //     }).catch((err) => {
+        //         console.log('countryCode', err);
+        //         this.$message({ type: "warning", message: i18n.t("error_network") });
+        //     });
+        // },
         handleRowClick(row, column, event) {
             if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
                 const stationData = {

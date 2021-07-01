@@ -117,7 +117,7 @@
         "chargeBoxID": "充电桩ID",
         "power": "电耗",
         "connector": "充电枪",
-        "connectorList": ["", "可用", "充电中", "准备中", "结束", "连线异常", "异常"],
+        "connectorList": ["", "可用", "准备中", "充电中", "结束", "连线异常", "异常"],
         "sessionID": "充电纪录ID",
         "billing": "帐单",
         "billingID": "帐单ID",

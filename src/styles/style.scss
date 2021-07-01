@@ -193,6 +193,12 @@
             width: 16px;
             height: 16px;
             border-radius: 16px;
+            &.color1 {
+                background: #32d850;
+            }
+            &.color5 {
+                background: #8e8e9a;
+            }
         }
         .el-tabs {
             .el-tabs__nav-wrap {
@@ -337,13 +343,9 @@ button,
         background-image: url('~imgs/ic_delete.png');
     }
     &.unbind {
-            background: #2D3238;
-            border-radius: 4px;
-            font-size: 0.875rem;
-            color: #FFFFFF;
-            letter-spacing: 0;
-            padding: 8px 20px;
-            border: unset;
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_unbind.png');
     }
      + .el-button {
         margin-left: 8px;

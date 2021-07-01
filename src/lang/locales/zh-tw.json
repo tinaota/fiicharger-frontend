@@ -117,7 +117,7 @@
         "chargeBoxID": "充電樁ID",
         "power": "電耗",
         "connector":"充電槍",
-        "connectorList": ["", "可用", "充電中", "準備中", "結束", "連線異常", "異常"],
+        "connectorList": ["", "可用", "準備中", "充電中", "結束", "連線異常", "異常"],
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
         "billingID": "帳單ID",

@@ -64,7 +64,7 @@ let routes = [
             },
             {
                 path: '/support',
-                iconCls: 'ic_user_o',
+                iconCls: 'ic_support_o',
                 name: 'menu.support',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
@@ -75,7 +75,7 @@ let routes = [
             },
             {
                 path: '/setting',
-                iconCls: 'ic_user_o',
+                iconCls: 'ic_setting_o',
                 name: 'menu.setting',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),

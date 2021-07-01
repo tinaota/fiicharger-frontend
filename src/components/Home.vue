@@ -41,7 +41,7 @@
                                     </el-menu-item>
                                     <el-submenu v-else :index="child.path" :key="child.path">
                                         <template slot="title">
-                                            <div style="margin-right:12px;width:21px;display: inline-block"><img :src="getImgUrl(child.iconCls)"></div>
+                                            <div style="margin-right:12px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children" >
