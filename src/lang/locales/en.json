@@ -124,7 +124,7 @@
         "billingType": "Billing Type",
         "billingStatus": "Billing Status",
         "billingLog": "Billing Log",
-        "userID": "User ID",
+        "userID": "Member ID",
         "powerUsed": "Power Used",
         "totalPrice": "Total Price",
         "alertID": "Alert ID",
@@ -161,7 +161,7 @@
         "disconnection": "Disconnection"
     },
     "userAccount": {
-        "userName": "User Name",
+        "userName": "Member Name",
         "countryCode": "Country Code",
         "phone": "Phone Number",
         "thirdPartyVerification": "Third-Party Verification",

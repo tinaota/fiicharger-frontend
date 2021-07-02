@@ -75,3 +75,18 @@ export const $HTTP_deleteChargeBox = params => { return post(`${base}/ChargeStat
  * @description 取得充電樁列表
  */
 export const $HTTP_getChargeBoxList = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxList`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電樁列表（選單用）
+ */
+export const $HTTP_getChargeBoxListForSelect = () => { return fetch(`${base}/ChargeStation/ChargeBox/getChargeBoxListForSelect`) }
+
+/**
+ * @description 取得區域編碼列表（選單用）
+ */
+export const $HTTP_getZipCodeListForSelect = params => { return post(`${base}/Home/Location/getZipCodeListForSelect`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電紀錄列表
+ */
+export const $HTTP_getChargingSessionList = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionList`, qs.stringify(params)) }

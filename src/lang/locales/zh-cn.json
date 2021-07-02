@@ -124,7 +124,7 @@
         "billingType": "帐单类型",
         "bullingStatus": "帐单状态",
         "billingLog": "帐单纪录",
-        "userID": "用户名",
+        "userID": "会员ID",
         "powerUsed": "使用功率",
         "totalPrice": "总价",
         "alertID": "警报ID",
@@ -161,7 +161,7 @@
         "disconnection": "断开"
     },
     "userAccount": {
-        "userName": "用户名",
+        "userName": "会员名称",
         "countryCode": "国家代码",
         "phone": "电话号码",
         "thirdPartyVerification": "第三方验证",

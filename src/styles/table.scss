@@ -98,15 +98,6 @@
         td {
             font-size: 0.875rem;
             border-bottom: 1px solid #2C2E30;
-            // .el-button:not(.is-circle) {
-            //     background: #2D3238;
-            //     border-radius: 4px;
-            //     font-size: 0.875rem;
-            //     color: #FFFFFF;
-            //     letter-spacing: 0;
-            //     padding: 8px 20px;
-            //     border: unset;
-            // }
             &.el-table__expanded-cell {
                 background: #222222;
                 padding: 20px 60px 10px 60px;
@@ -119,7 +110,7 @@
                 height: 28px;
                 border-radius: 30px;
                 background-color: #1e5effab;
-                padding: 4px;
+                padding: 4px 8px;
                 text-align: center;
             }
         }

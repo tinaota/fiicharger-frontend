@@ -5,73 +5,58 @@
             "sessionId": "S00000001",
             "stationId": "C000001",
             "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-            "power": 7.7,
-            "connectorList": [
-                {
+            "connectorInfo": {
                     "connectorId": "1",
-                    "status": 0,
                     "connectorTypeId": 3,
                     "connectorType": "Type1"
-                }
-            ],
-            "sTime": "2021/05/10 08:30:00",
-            "eTime": "2021/05/10 09:30:00",
-            "price": 100,
-            "billingId": "B000000001",
-            "billingInfo": [{
-                "billingId": "B000000001",
-                "userId": "U00000001",
+            },
+            "chargingStartTime": "2021/05/10 08:30:00",
+            "chargingEndTime": "2021/05/10 09:30:00",
+            "billingInfo": {
+                "billingCode": "B000000001",
+                "memberCode": "U00000001",
                 "price": 100,
-                "power": 100
-            }]
+                "powerUsage": 100,
+                "unitType": 1
+            }
         },
         {
             "sessionId": "S00000003",
             "stationId": "C000001",
             "chargeBoxId": "AWLU770001T2P0D2052A169A0",
-            "power": 30,
-            "connectorList": [
-                {
+            "connectorInfo": {
                     "connectorId": "1",
-                    "status": 0,
                     "connectorTypeId": 3,
                     "connectorType": "Type1"
-                }
-            ],
-            "sTime": "2021/05/01 09:30:00",
-            "eTime": "2021/05/01 10:30:00",
-            "price": 300,
-            "billingId": "B000000007",
-            "billingInfo": [{
-                "billingId": "B000000007",
-                "userId": "U00000002",
+            },
+            "chargingStartTime": "2021/05/01 09:30:00",
+            "chargingEndTime": "2021/05/01 10:30:00",
+            "billingInfo": {
+                "billingCode": "B000000007",
+                "memberCode": "U00000002",
                 "price": 300,
-                "power": 300
-            }]
+                "powerUsage": 300,
+                "unitType": 1
+            }
         },
         {
             "sessionId": "S00000004",
             "stationId": "C000001",
             "chargeBoxId": "DWWU301J0UD1PHD2048A004A0",
-            "power": 10,
-            "connectorList": [
-                {
+            "connectorInfo": {
                     "connectorId": "2",
-                    "status": 0,
                     "connectorTypeId": 9,
                     "connectorType": "CCS1"
-                }
-            ],
-            "sTime": "2021/05/01 09:30:00",
-            "eTime": "2021/05/01 10:30:00",
-            "price": 50,
-            "billingId": "B000000008",
-            "billingInfo": [{
-                "billingId": "B000000008",
-                "userId": "U00000001",
+            },
+            "chargingStartTime": "2021/05/01 09:30:00",
+            "chargingEndTime": "2021/05/01 10:30:00",
+            "billingInfo": {
+                "billingCode": "B000000008",
+                "memberCode": "U00000001",
                 "price": 50,
-                "power": 50
-            }]
+                "powerUsage": 50,
+                "unitType": 1
+            }
         }
     ]
 }

@@ -168,7 +168,10 @@ export default {
             this.getChartSesstionData();
             this.getChartPowerUsedData();
             this.info = data.info;
-            this.chargingSessionData = data.chargingSession;
+            this.chargingSessionData = data.chargingSession.map(item=> {
+                item.connectorInfo.status = 0;
+                return item;
+            });
             setScrollBar('.scroll', this);
         },
         handleShowDialog() {
