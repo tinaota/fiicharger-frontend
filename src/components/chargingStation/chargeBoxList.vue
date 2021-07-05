@@ -93,10 +93,8 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            // this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             let param = {
-                stationId: this.stationId,
-                status: 0
+                stationId: this.stationId
             };
             $HTTP_getChargeBoxList(param).then((data) => {
                 this.isLoading = false;
@@ -111,7 +109,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                // setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;

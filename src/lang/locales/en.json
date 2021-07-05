@@ -78,7 +78,8 @@
         "telephone": "Telephone",
         "businessHours": "Business Hours",
         "type": "Type",
-        "name": "Name"
+        "name": "Name",
+        "operator": "Operator"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",

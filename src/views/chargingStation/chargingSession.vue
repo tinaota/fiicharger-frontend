@@ -10,7 +10,9 @@
                     <el-select
                         class="select-small dark"
                         v-model="filter.operatorTypeId"
-                        @change="fetchData()">
+                        :placeholder="$t('general.operator')"
+                        @change="fetchData()"
+                        clearable>
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-date-picker
@@ -120,7 +122,7 @@ export default {
                 3: "APT"
             },
             filter: {
-                operatorTypeId: 1,
+                operatorTypeId: '',
                 dateRange: [],
                 chargeBoxId: '',
                 zipCode: ''

@@ -1,21 +1,22 @@
 <template>
     <div class="tab">
         <el-table
-            :data="tableData.slice((page - 1) * 10, page * 10)">
-            <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="1"></el-table-column>
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="2"></el-table-column>
-            <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="1">
+            :data="tableData.slice((page - 1) * 10, page * 10)"
+            v-loading="isLoading">
+            <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
+            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
+            <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.billingInfo.powerUsage + 'kWh' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.connector')" :min-width="1">
+            <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
                 <template slot-scope="scope">
                     <Connector :key="idx" :dataObj="scope.row.connectorInfo"></Connector>
                 </template>
             </el-table-column>
-            <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="2"></el-table-column>
-            <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="2"></el-table-column>
+            <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="3"></el-table-column>
+            <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="3"></el-table-column>
             <el-table-column :label="$t('chargingStation.billing')" :width="120">
                 <template slot-scope="scope">
                     <el-popover trigger="click" popper-class="dark" width="420" placement="left" :offset="-20" :visible-arrow="false">
@@ -51,34 +52,59 @@
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
+import { $HTTP_getChargingSessionList } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
-        tableData: {
-            type: Array,
-            required: true
-        }
+        stationId: String
     },
     components: {
         Connector
     },
     data() {
         return {
-            currencyList: $GLOBAL_CURRENCY,
+            lang: '',
+            tableData: [],
+            isLoading: false,
             page: 1,
             total: 0,
+            currencyList: $GLOBAL_CURRENCY,
         }
     },
-    watch: {
-        tableData: {
-            deep: true,
-            handler() {
-                this.total = this.tableData.length;
-                this.page = 1;
-            }
-        }
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
+    },
+    mounted() {
+        this.fetchData();
     },
     methods : {
+        fetchData() {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
+            let param = {
+                stationId: this.stationId
+            };
+            $HTTP_getChargingSessionList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.chargingSessionList.map(item=> {
+                        item.connectorInfo.status = 0;
+                        return item;
+                    });
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         changePage(page) {
             this.page = page;
         }

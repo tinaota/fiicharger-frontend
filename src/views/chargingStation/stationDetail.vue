@@ -56,7 +56,7 @@
                             <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
-                            <ChargingSession :tableData="chargingSessionData"></ChargingSession>
+                            <ChargingSession :stationId="curRouteParam.stationId"></ChargingSession>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -130,7 +130,6 @@ export default {
                 }
             },
             active: 'chargeBoxList',
-            chargingSessionData: [],
             mapDialog: {
                 visible: false,
                 itemId: '',
@@ -168,10 +167,6 @@ export default {
             this.getChartSesstionData();
             this.getChartPowerUsedData();
             this.info = data.info;
-            this.chargingSessionData = data.chargingSession.map(item=> {
-                item.connectorInfo.status = 0;
-                return item;
-            });
             setScrollBar('.scroll', this);
         },
         handleShowDialog() {

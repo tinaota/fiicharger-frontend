@@ -78,7 +78,8 @@
         "telephone": "電話",
         "businessHours": "營業時間",
         "type": "類型",
-        "name": "名稱"
+        "name": "名稱",
+        "operator": "操作員"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",

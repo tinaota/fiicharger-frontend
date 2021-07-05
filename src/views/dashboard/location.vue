@@ -3,7 +3,9 @@
         <el-select
             class="select-small dark-header"
             v-model="curOperator"
-            @change="changeOption">
+            :placeholder="$t('general.operator')"
+            @change="changeOption"
+            clearable>
             <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
         <br/>
@@ -204,7 +206,7 @@ export default {
         fetchData() {
             this.searchData = MapData.search;
             this.operatorList = MapData.operatorList.slice();
-            this.curOperator = this.operatorList[0];
+            // this.curOperator = this.operatorList[0];
             this.chargeBoxData = {};
             MapData.chargeBoxList.forEach(item => {
                 this.chargeBoxData[item.chargeBoxId] = Object.assign({}, item);

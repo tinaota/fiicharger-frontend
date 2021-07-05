@@ -9,8 +9,10 @@
                 <div class="filter">
                     <el-select
                         class="select-small dark"
+                        :placeholder="$t('general.operator')"
                         v-model="filter.operatorTypeId"
-                        @change="fetchData()">
+                        @change="fetchData()"
+                        clearable>
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-input
@@ -192,7 +194,7 @@ export default {
             filter: {
                 tmpSearch: '',
                 search: '',
-                operatorTypeId: 1
+                operatorTypeId: ''
             },
             isLoading: false,
             stationList: {},

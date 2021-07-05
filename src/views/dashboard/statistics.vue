@@ -9,7 +9,9 @@
             <el-select
                 class="select-small dark-header"
                 v-model="curOperator"
-                @change="changeOption">
+                :placeholder="$t('general.operator')"
+                @change="changeOption"
+                clearable>
                 <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
             </el-select>
             <br/>
@@ -194,7 +196,7 @@ export default {
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.statistics = Object.assign({}, DashboardData.statistics);
             this.operatorList = DashboardData.operatorList.slice();
-            this.curOperator = this.operatorList[0];
+            // this.curOperator = this.operatorList[0];
             this.powerUsedTop10 = this.addPercentage(DashboardData.powerUsedTop10);
             this.revenueTop10 = this.addPercentage(DashboardData.revenueTop10);
             this.sessionTop10 = this.addPercentage(DashboardData.sessionTop10);
