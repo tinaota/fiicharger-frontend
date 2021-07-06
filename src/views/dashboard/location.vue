@@ -13,7 +13,7 @@
         <el-autocomplete
             v-model="searchInput"
             class="input-round"
-            :placeholder="$t('general.search')"
+            :placeholder="$t('general.searchStation')"
             prefix-icon="el-icon-search"
             :fetch-suggestions="querySearch"
             :trigger-on-focus="false"

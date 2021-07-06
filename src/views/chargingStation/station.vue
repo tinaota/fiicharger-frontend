@@ -12,7 +12,7 @@
                         v-model="filter.operatorTypeId"
                         :placeholder="$t('general.operator')"
                         @change="fetchData()"
-                        clearable >
+                        clearable>
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-input

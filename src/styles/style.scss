@@ -156,7 +156,6 @@
             }
             .dark.el-input,
             .dark.el-select {
-                width: 250px;
                 height: 40px;
                 background: #0F1010;
                 border-radius: 4px;
@@ -172,6 +171,9 @@
                 input::-webkit-input-placeholder {
                     color: #979797;
                 }
+            }
+            .dark.el-input {
+                width: 250px;
             }
             .dark.el-select {
                 width: 200px;

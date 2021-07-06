@@ -44,10 +44,7 @@
             </el-table-column>
             <el-table-column :label="$t('general.action')" :width="108">
                 <template slot-scope="scope">
-                    <!-- <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button> -->
-                    <el-tooltip :content="$t('general.unbind')" placement="top" effect="light" popper-class="item custom">
-                        <el-button class="no-bg unbind" @click="unBindCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)"></el-button>
-                    </el-tooltip>
+                    <el-button class="no-bg edit" @click="openDialog(scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -59,18 +56,21 @@
             :current-page.sync="page"
             @current-change="changePage">
         </el-pagination>
+        <EditChargeBox name="stationDetail" :show="dialogVisible" :dialog="dialog" @close="()=> {this.dialogVisible = false;}"></EditChargeBox>
     </div>
 </template>
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getChargeBoxList } from "@/api/api";
+import EditChargeBox from "@/components/chargingStation/editChargeBox"
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
         stationId: String
     },
     components: {
+        EditChargeBox,
         Connector
     },
     data() {
@@ -80,6 +80,27 @@ export default {
             isLoading: false,
             page: 1,
             total: 0,
+            dialogVisible: false,
+            dialog: {
+                visible: false,
+                type: 0,
+                info: {
+                    chargeBoxId: '',
+                    chargeBoxName: '',
+                    loc: {
+                        lng: '',
+                        lon: '',
+                        lat: ''
+                    },
+                    stationId: '',
+                    chargeType: 1,
+                    unitType: '',
+                    onPeakElectricityRate: 0,
+                    onPeakElectricityRateType: 1,
+                    offPeakElectricityRate: 0,
+                    offPeakElectricityRateType: 1
+                }
+            },
         }
     },
     created() {
@@ -119,23 +140,13 @@ export default {
         changePage(page) {
             this.page = page;
         },
-        unBindCheckBox(id, name) {
-            // const that = this;
-            // this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
-            //     showClose: false,
-            //     customClass: 'dark'
-            // }).then(() => {
-                //要換成解榜的
-            //     $HTTP_deleteChargeBox({stationId: this.stationId, chargeBoxId: id}).then(data => {
-            //         if (!!data.success) {
-            //             that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
-            //             that.fetchData();
-            //         } else {
-            //             that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-            //         }
-            //     });
-            // });
-        },
+        openDialog(data) {
+            const that = this;
+            this.dialog.type = 1;
+            this.dialog.info = Object.assign({}, data);
+            this.dialog.info.loc.lng = this.dialog.info.loc.lon;
+            this.dialogVisible = true;
+        }
     }
 }
 </script>

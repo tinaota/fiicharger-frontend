@@ -57,7 +57,7 @@
         "startTime": "開始時間",
         "endTime": "結束時間",
         "time": "時間",
-        "search": "搜索...",
+        "searchStation": "搜索充電站",
         "available": "可用",
         "unavailable": "不可用",
         "maintenance": "維護",

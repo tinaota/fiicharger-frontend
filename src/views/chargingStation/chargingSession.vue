@@ -36,7 +36,7 @@
                         <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
                     </el-select>
                     <el-select
-                        class="select-small dark"
+                        class="select-small dark long"
                         v-model="filter.chargeBoxId"
                         :placeholder="$t('chargingStation.chargeBoxID')"
                         v-loading="chargerBoxList.isLoading"
@@ -229,7 +229,7 @@ export default {
 }
 </script>
 <style lang = "scss" scoped>
-.card-8 {
+.mainctrl .card-8 {
     padding: 28px;
     width: calc(100% - 56px);
     position: relative;
@@ -243,6 +243,9 @@ export default {
         font-size: 1rem;
         color: #5A607F;
         letter-spacing: 0;
+    }
+    .filter .dark.el-select.long {
+        width: 300px;
     }
 }
 </style>
