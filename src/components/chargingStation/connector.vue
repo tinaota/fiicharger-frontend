@@ -1,7 +1,7 @@
 <template>
     <div class="connector-obj" 
         v-bind:class="{ 'nextLine': isBreak }">
-        <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light" popper-class="item custom">
+        <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light">
             <span v-if="dataObj.status===1" class="circle-number color1">{{ dataObj.connectorId }}</span>
             <span v-else-if="dataObj.status===2" class="circle-number color2">{{ dataObj.connectorId }}</span>
             <!-- <span v-else-if="dataObj.status===3" class="circle-number color6">{{ dataObj.connectorId }}</span> -->
@@ -14,7 +14,7 @@
             </span>
         </el-tooltip>
         <span v-if="dataObj.status===0" class="circle-number color0">{{ dataObj.connectorId }}</span>
-        <el-tooltip :content="dataObj.connectorType" placement="bottom" effect="light" popper-class="custom">
+        <el-tooltip :content="dataObj.connectorType" placement="bottom" effect="light">
             <div class="imgItem"><img :src="imgIcon[dataObj.connectorTypeId]"></div>
         </el-tooltip>
     </div>
@@ -60,6 +60,7 @@ div.connector-obj {
         display: inline-block;
         width: 16px;
         height: 16px;
+        color: #FFF;
         border-radius: 16px;
         line-height: 16px;
         text-align: center;
@@ -68,13 +69,14 @@ div.connector-obj {
     }
     .color0 {
         background: transparent;
-        border: 1px solid #FFF;
+        border: 1px solid #525E69;
+        color: #525E69;
         &.circle-number {
             padding: 3px;
         }
     }
     .color1 {
-        background: #32d850;
+        background: #33c85a;
     }
     .color2 {
         background: #ffa10b;
@@ -83,13 +85,13 @@ div.connector-obj {
         background: #5e3715;
     }
     .color4 {
-        background: #fd2d55;
+        background: #fc2e56;
     }
     .color5 {
-        background: #8e8e9a;
+        background: #8c8f97;
     }
     .color6 {
-        background: #0885ff;
+        background: #1e5eff;
     }
     .circular {
         display: inline-block;

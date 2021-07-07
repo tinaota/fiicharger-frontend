@@ -117,7 +117,6 @@ export default {
     .total {
         position: absolute;
         right: 28px;
-        bottom: 28px;
         height: 36px;
         line-height: 36px;
         vertical-align: middle;

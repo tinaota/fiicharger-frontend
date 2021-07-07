@@ -8,7 +8,7 @@
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-select
-                        class="select-small dark"
+                        class="select-small"
                         v-model="filter.operatorTypeId"
                         :placeholder="$t('general.operator')"
                         @change="fetchData()"
@@ -17,7 +17,6 @@
                     </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.stationID')"
-                        class="dark"
                         v-model="filter.tmpSearch"
                         @keyup.enter.native="fetchData('s')">
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -36,7 +35,7 @@
                     <el-table-column :label="$t('chargingStation.connector#')" label-class-name="center">
                         <el-table-column label="AC" :width="60" label-class-name="center" class-name="center">
                             <template slot-scope="scope">
-                                <el-tooltip placement="top" effect="light" popper-class="custom">
+                                <el-tooltip placement="bottom" effect="light">
                                     <div slot="content">
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.acAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.acUnavailable}}
@@ -47,7 +46,7 @@
                         </el-table-column>
                         <el-table-column label="DC" :width="60" label-class-name="center" class-name="center">
                             <template slot-scope="scope">
-                                <el-tooltip placement="top" effect="light" popper-class="custom">
+                                <el-tooltip placement="bottom" effect="light">
                                     <div slot="content">
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.dcAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.dcUnavailable}}
@@ -62,7 +61,7 @@
                     </el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="top" effect="light" popper-class="custom">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>

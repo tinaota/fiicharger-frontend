@@ -92,17 +92,18 @@ export default {
                     data: this.timeList,
                     nameTextStyle: {
                         padding: [0, 0, -50, 2],
-                        color: "#B0B0CC"
+                        color: "#525E69"
                     },
                     axisLine: {
                         lineStyle: {
-                            color: " #B0B0CC"
+                            color: "#525E69"
                         }
                     },
                     axisLabel: {
                         margin: 16,
                         textStyle: {
-                            fontSize: 12
+                            fontSize: 12,
+                            color: "#525E69"
                         }
                     },
                 },
@@ -112,22 +113,23 @@ export default {
                     axisLabel: {
                         margin: 16,
                         textStyle: {
-                            fontSize: 12
+                            fontSize: 12,
+                            color: "#525E69"
                         }
                     },
                     axisLine: {
                         show: false,
                         lineStyle: {
-                            color: '#B0B0CC'
+                            color: '#525E69'
                         }
                     },
                     nameTextStyle: {
                         padding: [0, 0, -5, -50],
-                        color: "#B0B0CC"
+                        color: "#525E69"
                     },
                     splitLine: {
                         lineStyle: {
-                            color: "rgba(255,255,255,0.2)"
+                            color: "#E5E9F2"
                         }
                     },
                 },

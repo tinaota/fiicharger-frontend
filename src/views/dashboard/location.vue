@@ -1,7 +1,12 @@
 <template>
     <div class="mainctrl">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item>{{ $t('menu.dashboard') }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
+        </el-breadcrumb>
+        <br/>
         <el-select
-            class="select-small dark-header"
+            class="select-small large"
             v-model="curOperator"
             :placeholder="$t('general.operator')"
             @change="changeOption"
@@ -9,7 +14,7 @@
             <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
         <br/>
-        <div id="mapboxBox" />
+        <div id="mapboxBox"/>
         <el-autocomplete
             v-model="searchInput"
             class="input-round"
@@ -17,7 +22,8 @@
             prefix-icon="el-icon-search"
             :fetch-suggestions="querySearch"
             :trigger-on-focus="false"
-            @select="handleSearch">
+            @select="handleSearch"
+            clearable>
         </el-autocomplete>
         <div class="hint-bar">
             <div class="item"><img :src="icon.normal"><span>{{$t('general.available')}}</span></div>
@@ -291,25 +297,26 @@ export default {
 </script>
 <style lang = "scss" scoped>
 .mainctrl {
-    padding: 0;
+    /* padding: 0; */
 }
 #mapboxBox {
     width: 100%;
-    height: calc(100vh - 68px - 58px);
+    height: calc(95.2vh - 68px - 54px - 2vh);
+    position: relative;
 }
 .el-autocomplete {
     width: 25vw;
     position:absolute;
-    top: calc(58px + 68px + 4%);
-    left: calc(208px + 3%);
+    top: calc(68px + 2.4vh + 54px + 2vh + 2.4vh);
+    left: calc(208px + 1.6vw + 1.2vw);
 }
 .hint-bar {
     position:absolute;
-    bottom: 2vh;
+    bottom: calc(2.4vh + 2vh);
     width: auto;
     height: auto;
     padding: 10px 18px;
-    background-color: #1C1C1E;
+    background-color: #E6EEF8;
     border-radius: 30px;
     vertical-align: middle;
     .item {
@@ -323,7 +330,7 @@ export default {
             height: 24px;
             line-height: 24px;
             margin-left: 10px;
-            color: #9EA7AC;
+            color: #151E25;
         }
         img {
             width: 24px;

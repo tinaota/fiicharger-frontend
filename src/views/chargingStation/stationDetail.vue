@@ -9,7 +9,7 @@
             <div class="card-8 station-detail">
                 <div class="header">
                     {{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}
-                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
+                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light">
                         <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog()"></el-button>
                     </el-tooltip>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="chart">
                     <div class="header">{{ $t('chargingStation.chargingSessionAnalysis') }}
                         <el-select
-                            class="select-small dark right"
+                            class="select-small no-border right"
                             v-model="chartChargingSesstion.search"
                             @change="handleSelected('chartChargingSesstion')">
                             <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -74,7 +74,7 @@
                 <div class="chart">
                     <div class="header">{{ $t('chargingStation.powerUsedAnalysis') }}
                         <el-select
-                            class="select-small dark right"
+                            class="select-small no-border right"
                             v-model="chartPowerUsed.search"
                             @change="handleSelected('chartPowerUsed')">
                             <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -224,11 +224,27 @@ export default {
 <style lang = "scss" scoped>
 .station-detail {
     width: calc(100% - 40px);
+    .header {
+        color: #151E25;
+        font-size: 1.25rem;
+    }
+    .sec-header {
+        font-size: 0.875rem;
+        color: #525E69;
+        &.long {
+            margin: 12px 0;
+        }
+        &:not(.long) {
+            width: auto;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+    }
     .s-contain {
         width: calc(100% - 32px);
         height: 246px;
         padding: 0 0 0 32px;
-        background: #121213;
+        background: #DDE7F5;
         border-radius: 4px;
         margin-bottom: 28px;
         .item {
@@ -238,13 +254,13 @@ export default {
             float: left;
             .label {
                 font-size: 1rem;
-                color: #929292;
+                color: #525E69;
                 letter-spacing: 0;
                 margin-bottom: 6px;
             }
             .content {
                 font-size: 1.875rem;
-                color: #FCFCFC;
+                color: #151E25;
                 letter-spacing: 0;
                 .name-wrapper {
                     color: #89c0f9;
@@ -260,6 +276,7 @@ export default {
         margin-bottom: 28px;
         .header {
             font-size: 1rem;
+            color: #525E69;
         }
         .barChart {
             height: 30vh;

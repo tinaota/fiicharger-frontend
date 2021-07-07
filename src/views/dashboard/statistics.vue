@@ -7,7 +7,7 @@
             </el-breadcrumb>
             <br/>
             <el-select
-                class="select-small dark-header"
+                class="select-small large"
                 v-model="curOperator"
                 :placeholder="$t('general.operator')"
                 @change="changeOption"
@@ -15,10 +15,10 @@
                 <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
             </el-select>
             <br/>
-            <div class="card-12 statistics">
+            <div class="card-8 statistics">
                 <div class="header">{{ $t('menu.statistics') }}
                     <el-select
-                        class="select-small dark right"
+                        class="select-small right"
                         v-model="statisticsDay"
                         @change="handleSelected('s')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -67,10 +67,10 @@
                     </div>
                 </div>
             </div>
-            <div class="card-12 rank-area">
+            <div class="card-8 rank-area">
                 <div class="header">{{ $t('dashboard.powerUsedTop10') }}
                     <el-select
-                        class="select-small dark right"
+                        class="select-small right"
                         v-model="powerUsedTop10Day"
                         @change="handleSelected('p10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -82,14 +82,14 @@
                             <span class="name">{{ item.id }}</span>
                             <span class="num">{{ new Intl.NumberFormat('en-IN').format(powerUsedTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==powerUsedTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==powerUsedTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
-            <div class="card-12 rank-area">
+            <div class="card-8 rank-area">
                 <div class="header">{{ $t('dashboard.revenueTop10') }}
                     <el-select
-                        class="select-small dark right"
+                        class="select-small right"
                         v-model="revenueTop10Day"
                         @change="handleSelected('r10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -101,14 +101,14 @@
                             <span class="name">{{ item.id }}</span>
                             <span class="num">{{ new Intl.NumberFormat('en-IN').format(revenueTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==revenueTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==revenueTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
-            <div class="card-12 rank-area">
+            <div class="card-8 rank-area">
                 <div class="header">{{ $t('dashboard.sessionTop10') }}
                     <el-select
-                        class="select-small dark right"
+                        class="select-small right"
                         v-model="sessionTop10Day"
                         @change="handleSelected('s10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -120,14 +120,14 @@
                             <span class="name">{{ item.id }}</span>
                             <span class="num">{{ new Intl.NumberFormat('en-IN').format(sessionTop10.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==sessionTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==sessionTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
-            <div class="card-12 rank-area">
+            <div class="card-8 rank-area">
                 <div class="header">{{ $t('dashboard.faultsTypeTop5') }}
                     <el-select
-                        class="select-small dark right"
+                        class="select-small right"
                         v-model="faultsTypeTop5Day"
                         @change="handleSelected('f5')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -139,7 +139,7 @@
                             <span class="name">{{ item.id }}</span>
                             <span class="num">{{ new Intl.NumberFormat('en-IN').format(faultsTypeTop5.data[idx].val) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==faultsTypeTop5.most.id}" :percentage="item.val" :show-text="false" :stroke-width="12"></el-progress>
+                        <el-progress :class="{'spec': item.id==faultsTypeTop5.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -248,13 +248,13 @@ export default {
             float: left;
             .label {
                 font-size: 1rem;
-                color: #929292;
+                color: #525E69;
                 letter-spacing: 0;
-                margin-bottom: 6px;
+                margin-bottom: 4px;
             }
             .content {
                 font-size: 1.875rem;
-                color: #FCFCFC;
+                color: #151E25;
                 letter-spacing: 0;
                 i {
                     margin-left: 12px;
@@ -263,7 +263,7 @@ export default {
                         color: #FD2D55;
                     }
                     &.el-icon-bottom {
-                        color: #32D850;
+                        color: #33C85A;
                     }
                 }
             }
@@ -272,30 +272,34 @@ export default {
 }
 .rank-area {
     width: calc(100% - 40px);
-    height: 70vh;
-    min-height: 620px;
+    height: 600px;
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
     ul.rank {
         margin-top: 24px;
+        padding-left: 0;
+        margin: 32px 0 0 0;
         li {
-            margin-bottom: 32px;
+            height: 26px;
+            list-style: none;
+            margin-bottom: 28px;
             &:last-child {
                 margin-bottom: 0;
             }
             .label {
                 margin-bottom: 6px;
+                height: 20px;
                 line-height: 20px;
                 font-size: 0.875rem;
                 .name {
                     display: inline-block;
-                    color: #9EA7AC;
+                    color: #525E69;
                 }
                 .num {
                     display: inline-block;
                     float: right;
-                    color: #FFFFFF;
+                    color: #525E69;
                 }
             }
         }

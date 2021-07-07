@@ -37,16 +37,16 @@
                             <template v-for="child in item.children">
                                 <template v-if="!child.hidden">
                                     <el-menu-item v-if="!child.hasChild" :index="child.path" :key="child.path" >
-                                        <img :src="getImgUrl(child.iconCls)" style="margin-right:12px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
+                                        <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
                                     </el-menu-item>
                                     <el-submenu v-else :index="child.path" :key="child.path">
                                         <template slot="title">
-                                            <div style="margin-right:12px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
+                                            <div style="margin-right:6px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children" >
-                                            <el-menu-item v-if="!subChild.hidden && subChild.name !== 'menu.accountMgt'" :index="subChild.path" style="padding-left:60px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
-                                            <el-menu-item v-else-if="!subChild.hidden" :index="subChild.path" class="longItem" style="padding-left:60px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-if="!subChild.hidden && subChild.name !== 'menu.accountMgt'" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-else-if="!subChild.hidden" :index="subChild.path" class="longItem" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>
@@ -69,12 +69,11 @@
 <script>
 import * as types from "../store/types";
 import { $GLOBAL_LANG } from '@/utils/global';
-import {
-    $HTTP_Logout,
-} from "@/api/api";
+import { $HTTP_Logout } from "@/api/api";
 import Vue from 'vue';
 import { getLang } from "@/utils/function";
 import apiConfig from "../../config/apiConfig";
+import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
@@ -136,7 +135,7 @@ export default {
     activated() {
     },
     mounted() {
-        this.leftScroll();
+        setScrollBar('.home-menu', this);
     },
     methods: {
         handleChangeLang(lang) {
@@ -147,6 +146,7 @@ export default {
             }
         },
         handleMenuSelect(index, indexPath) {
+            // this.$jQuery(".home-menu").length > 0 && this.$jQuery(".home-menu").mCustomScrollbar('destroy');
             if (this.routerParent !== indexPath[0]) {
                 if (this.menuList[this.routerParent] && this.menuList[this.routerParent].iconCls) {
                     this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace('_p','_o');
@@ -154,21 +154,11 @@ export default {
                 this.menuList[indexPath[0]].iconCls = this.menuList[indexPath[0]].iconCls.replace('_o','_p');
                 this.routerParent = indexPath[0];
             }
+            // setScrollBar('.home-menu', this);
             // this.routerName = index;
         },
         getImgUrl(iconName) {
             return require('imgs/'+iconName+'.png');
-        },
-        leftScroll: function() {
-            this.$jQuery("#list-wraper")
-                .mCustomScrollbar({
-                    theme: "rounded-dots",
-                    scrollAmount: 50,
-                    mouseWheelPixels:200
-                });
-            this.$jQuery("#list-wraper")
-                .find(".mCSB_inside > .mCSB_container")
-                .css("margin-right", "0");
         },
         // logout: function() {
         //     this.$confirm(i18n.t('login.hint_logout'), i18n.t('general.hint')
@@ -201,30 +191,30 @@ export default {
 .header {
     height: 68px;
     padding: 16px;
-    background:  #000;
-    box-shadow: 1px 4px 4px 0 rgba(21,34,50,0.08);
+    background:  #D5E0EF;
     .header-info {
         height: 100%;
         text-align: right;
         padding-right: 12px;
         .el-divider {
             background-color: #979797;
-            margin: -28px 32px 0;
+            margin: -28px 24px 0;
             height: 2rem;
+            width: 1.5px;
         }
         .el-dropdown {
-            color: #FFF;
-            letter-spacing: 0.72px;
+            height: 36px;
+            line-height: 36px;
+            color: #525E69;
             font-size: 0.875rem;
-            height: 44px;
-            vertical-align: middle;
+            letter-spacing: 0px;
+            vertical-align: top;
             &:focus {
                 outline: unset;
             }
             .userinfo-inner {
                 div {
                     display: inline-block;
-                    // vertical-align: middle;
                 }
             }
         }
@@ -234,23 +224,23 @@ export default {
     width: 100%;
     height: calc(100vh - 68px);
     .left-container {
-        width: 230px;
-        height: calc(100% - 16px);
+        width: 208px;
+        height: 100%;
         display: inline-block;
         float: left;
-        background: #000;
-        box-shadow: 0 2px 21px 2px rgba(0,0,0,0.20);
+        background: #D5E0EF;
+        box-sizing: border-box;
         padding-top: 16px;
         .el-menu {
-            height: calc(100% - 16px);
+            height: 100%;
             overflow: hidden;
-            background: #000;
+            background: #D5E0EF;
             border-right: none;
         }
     }
     .right-container {
-        width: calc(100% - 230px);
-        height: calc(100%);
+        width: calc(100% - 208px);
+        height: 100%;
         display: inline-block;
     }
 }

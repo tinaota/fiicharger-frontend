@@ -245,7 +245,7 @@ export default {
         letter-spacing: 0;
     }
     .filter .dark.el-select.long {
-        width: 300px;
+        width: 280px;
     }
 }
 </style>

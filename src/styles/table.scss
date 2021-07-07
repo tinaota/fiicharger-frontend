@@ -15,13 +15,14 @@
             padding: 0;
             font-size: 0.875rem;
             border: none;
-            color: #929292;
+            color: #525E69;
             letter-spacing: 0;
             &.center .cell {
                 text-align: center;
             }
             &.is-leaf {
                 border-bottom: none;
+                border-bottom: 1px solid #DCE6F3;
             }
             .cell {
                 word-break: break-word;
@@ -29,8 +30,8 @@
         }
         td {
             padding: 0;
-            font-size: 1rem;
-            color: #FCFCFC;
+            font-size: 0.875rem;
+            color: #151E25;
             border: none;
             &.center .cell {
                 text-align: center;
@@ -42,6 +43,7 @@
             .cell {
                 word-break: break-word;
                 span.el-tooltip.text {
+                    color: #FFF;
                     background-color: #409eff;
                     border-radius: 14px;
                     padding: 4px 8px;
@@ -68,7 +70,7 @@
     }
     &.enable-row-click {
         &.el-table--enable-row-hover .el-table__body tr:hover>td {
-            background-color: #222;;
+            background-color: #D5E0EF;
         }
         tbody tr {
             cursor: pointer;
@@ -86,29 +88,15 @@
 .table-result .el-table,
 .el-tab-pane .el-table {
     margin-bottom: 28px;
-    thead tr {
-        height: 44px;
-        th.is-leaf {
-            color: #6C6C6C;
-            border-bottom: 1px solid #2C2E30;
-        }
-    }
     tbody tr {
-        height: 50px;
         td {
             font-size: 0.875rem;
-            border-bottom: 1px solid #2C2E30;
-            &.el-table__expanded-cell {
-                background: #222222;
-                padding: 20px 60px 10px 60px;
-                &:hover {
-                    background-color: #222222 !important;
-                }
-            }
+            border-bottom: 1px solid #DCE6F3;
             .el-popover__reference {
                 cursor: pointer;
                 height: 28px;
                 border-radius: 30px;
+                color: #FFF;
                 background-color: #1e5effab;
                 padding: 4px 8px;
                 text-align: center;
