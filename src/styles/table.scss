@@ -17,12 +17,9 @@
             border: none;
             color: #525E69;
             letter-spacing: 0;
+            border-bottom: 1px solid #DCE6F3;
             &.center .cell {
                 text-align: center;
-            }
-            &.is-leaf {
-                border-bottom: none;
-                border-bottom: 1px solid #DCE6F3;
             }
             .cell {
                 word-break: break-word;
@@ -56,9 +53,9 @@
     thead.is-group th {
         background-color: transparent;
     }
-    thead tr th.is-leaf {
-        border-bottom: none;
-    }
+    // thead tr th.is-leaf {
+    //     border-bottom: none;
+    // }
     &::before {
         background-color: unset;
     }

@@ -191,7 +191,7 @@ export default {
             let param = {
                 operatorTypeId: that.filter.operatorTypeId
             };
-            if (this.filter.dateRange & this.filter.dateRange.length == 2) {
+            if (this.filter.dateRange && this.filter.dateRange.length == 2) {
                 param.sDate = this.filter.dateRange[0];
                 param.eDate = this.filter.dateRange[1];
             }

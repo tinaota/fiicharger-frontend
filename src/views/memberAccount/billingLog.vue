@@ -16,14 +16,15 @@
                         :start-placeholder="$t('general.startDate')"
                         :end-placeholder="$t('general.endDate')"
                         :picker-options="pickerOptions"
-                        :clearable="false"
+                        :clearable="true"
                         @change="handleDaterange">
                     </el-date-picker>
                     <el-input
                         :placeholder="$t('chargingStation.userID')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
+                        @keyup.enter.native="handleSearch()"
+                        clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>

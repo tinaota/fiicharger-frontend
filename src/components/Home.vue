@@ -166,6 +166,7 @@ export default {
         //         type: "warning",
         //         confirmButtonText: i18n.t('general.ok'),
         //         cancelButtonText: i18n.t('general.cancel'),
+        // customClass: 'custom'
         //     })
         //     .then(() => {
         //         $HTTP_Logout().then(data => {

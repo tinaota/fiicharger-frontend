@@ -1,7 +1,7 @@
 <template>
     <div class="connector-obj" 
         v-bind:class="{ 'nextLine': isBreak }">
-        <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light">
+        <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light" popper-class="custom">
             <span v-if="dataObj.status===1" class="circle-number color1">{{ dataObj.connectorId }}</span>
             <span v-else-if="dataObj.status===2" class="circle-number color2">{{ dataObj.connectorId }}</span>
             <!-- <span v-else-if="dataObj.status===3" class="circle-number color6">{{ dataObj.connectorId }}</span> -->
@@ -14,7 +14,7 @@
             </span>
         </el-tooltip>
         <span v-if="dataObj.status===0" class="circle-number color0">{{ dataObj.connectorId }}</span>
-        <el-tooltip :content="dataObj.connectorType" placement="bottom" effect="light">
+        <el-tooltip :content="dataObj.connectorType" placement="bottom" effect="light" popper-class="custom">
             <div class="imgItem"><img :src="imgIcon[dataObj.connectorTypeId]"></div>
         </el-tooltip>
     </div>

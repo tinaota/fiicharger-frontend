@@ -9,7 +9,7 @@
             <div class="card-8 station-detail">
                 <div class="header">
                     {{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}
-                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light">
+                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
                         <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog()"></el-button>
                     </el-tooltip>
                 </div>
@@ -63,7 +63,7 @@
                 <div class="chart">
                     <div class="header">{{ $t('chargingStation.chargingSessionAnalysis') }}
                         <el-select
-                            class="select-small no-border right"
+                            class="select-small right"
                             v-model="chartChargingSesstion.search"
                             @change="handleSelected('chartChargingSesstion')">
                             <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
@@ -74,7 +74,7 @@
                 <div class="chart">
                     <div class="header">{{ $t('chargingStation.powerUsedAnalysis') }}
                         <el-select
-                            class="select-small no-border right"
+                            class="select-small right"
                             v-model="chartPowerUsed.search"
                             @change="handleSelected('chartPowerUsed')">
                             <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>

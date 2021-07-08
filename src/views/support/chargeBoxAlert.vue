@@ -9,7 +9,9 @@
                 <div class="filter">
                     <el-select
                         class="select-small dark"
-                        v-model="filter.operator">
+                        v-model="filter.operatorTypeId"
+                        :placeholder="$t('general.operator')"
+                        clearable>
                         <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
                     </el-select>
                     <el-date-picker
@@ -21,14 +23,15 @@
                         :start-placeholder="$t('general.startDate')"
                         :end-placeholder="$t('general.endDate')"
                         :picker-options="pickerOptions"
-                        :clearable="false"
+                        :clearable="true"
                         @change="handleDaterange">
                     </el-date-picker>
                     <el-input
                         :placeholder="$t('chargingStation.chargeBoxID')+'/'+$t('chargingStation.alert')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()">
+                        @keyup.enter.native="handleSearch()"
+                        clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
@@ -79,7 +82,7 @@ export default {
                 tmpSearch: '',
                 search: '',
                 dateRange: [],
-                operator: 'Fiicharger'
+                operatorTypeId: ''
             },
             tableData: [],
             page: 1,

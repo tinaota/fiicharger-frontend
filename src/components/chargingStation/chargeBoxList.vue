@@ -7,10 +7,10 @@
             <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('general.status')" :min-width="1">
                 <template slot-scope="scope">
-                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light">
+                    <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light" popper-class="custom">
                         <span class="circle-status color1"></span>
                     </el-tooltip>
-                    <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="bottom" effect="light">
+                    <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="bottom" effect="light" popper-class="custom">
                         <span class="circle-status color5"></span>
                     </el-tooltip>
                 </template>

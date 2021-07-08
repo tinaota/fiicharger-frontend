@@ -28,7 +28,8 @@
                         :placeholder="$t('chargingStation.chargeBoxID')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="fetchData('s')">
+                        @keyup.enter.native="fetchData('s')"
+                        clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
@@ -41,10 +42,10 @@
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light">
+                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="bottom" effect="light">
+                            <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color5"></span>
                             </el-tooltip>
                         </template>
@@ -79,7 +80,7 @@
                     <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
@@ -254,7 +255,7 @@ export default {
             const that = this;
             this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
                 showClose: false,
-                customClass: 'dark'
+                customClass: 'custom'
             }).then(() => {
                 $HTTP_deleteChargeBox({stationId: this.stationId, chargeBoxId: id}).then(data => {
                     if (!!data.success) {

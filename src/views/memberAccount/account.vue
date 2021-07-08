@@ -11,7 +11,8 @@
                         :placeholder="$t('chargingStation.userID')+'/'+$t('userAccount.userName')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="fetchData('s')">
+                        @keyup.enter.native="fetchData('s')"
+                        clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
@@ -117,7 +118,7 @@ export default {
             const that = this;
             this.$confirm(i18n.t('general.deleteItem', { item: id }), i18n.t('general.hint'), {
                 showClose: false,
-                customClass: 'dark'
+                customClass: 'custom'
             }).then(() => {
                 $HTTP_deleteAccount({memberCode: id}).then(data => {
                     if (!!data.success) {

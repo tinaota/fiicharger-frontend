@@ -18,7 +18,8 @@
                     <el-input
                         :placeholder="$t('chargingStation.stationID')"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="fetchData('s')">
+                        @keyup.enter.native="fetchData('s')"
+                        clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
@@ -35,7 +36,7 @@
                     <el-table-column :label="$t('chargingStation.connector#')" label-class-name="center">
                         <el-table-column label="AC" :width="60" label-class-name="center" class-name="center">
                             <template slot-scope="scope">
-                                <el-tooltip placement="bottom" effect="light">
+                                <el-tooltip placement="bottom" effect="light" popper-class="custom">
                                     <div slot="content">
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.acAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.acUnavailable}}
@@ -46,7 +47,7 @@
                         </el-table-column>
                         <el-table-column label="DC" :width="60" label-class-name="center" class-name="center">
                             <template slot-scope="scope">
-                                <el-tooltip placement="bottom" effect="light">
+                                <el-tooltip placement="bottom" effect="light" popper-class="custom">
                                     <div slot="content">
                                         {{ $t('general.available') + ': ' + scope.row.connectorCountInfo.dcAvailable}} <br/>
                                         {{ $t('general.unavailable') + ': ' + scope.row.connectorCountInfo.dcUnavailable}}
@@ -61,7 +62,7 @@
                     </el-table-column>
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                         </template>
@@ -321,7 +322,7 @@ export default {
             const that = this;
             this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
                 showClose: false,
-                customClass: 'dark'
+                customClass: 'custom'
             }).then(() => {
                 $HTTP_deleteStation({stationId: id}).then(data => {
                     if (!!data.success) {
