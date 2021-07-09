@@ -11,6 +11,7 @@
             "sessionInfo": {
                 "sessionId": "S00000001",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "chargeBoxName": "FiiCB18",
                 "power": 7.7,
                 "connectorList": [
                     {
@@ -36,6 +37,7 @@
             "sessionInfo": {
                 "sessionId": "S00000007",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "chargeBoxName": "FiiCB18",
                 "power": 7.7,
                 "connectorList": [
                     {
@@ -63,6 +65,7 @@
             "sessionInfo": {
                 "sessionId": "S00000001",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "chargeBoxName": "FiiCB18",
                 "power": 7.7,
                 "connectorList": [
                     {
@@ -88,6 +91,7 @@
             "sessionInfo": {
                 "sessionId": "S00000007",
                 "chargeBoxId": "AWLU770001T2P0D2052A169A0",
+                "chargeBoxName": "FiiCB18",
                 "power": 7.7,
                 "connectorList": [
                     {

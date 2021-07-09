@@ -3,7 +3,8 @@
         {
             "alertId": "A00000001",
             "stationId": "C000001",
-            "chargeBoxId": "AWLU770001T2P0D2052A169A1",
+            "chargeBoxId": "AWLU770001T2P0D2052A1285A0",
+            "chargeBoxName": "FiiCB18",
             "connectorList": [
                 {
                     "connectorId": "1",
@@ -23,7 +24,8 @@
         {
             "alertId": "A00000002",
             "stationId": "C000001",
-            "chargeBoxId": "DWWU301J0UD1PHD2051A003A0",
+            "chargeBoxId": "DWWU301J00D1PHD2048A0227A0",
+            "chargeBoxName": "FiiCB16",
             "connectorList": [
                 {
                     "connectorId": "2",

@@ -2,13 +2,13 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.chargeBoxAlert') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePointAlert') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-select
-                        class="select-small dark"
+                        class="select-small"
                         v-model="filter.operatorTypeId"
                         :placeholder="$t('general.operator')"
                         clearable>
@@ -27,7 +27,7 @@
                         @change="handleDaterange">
                     </el-date-picker>
                     <el-input
-                        :placeholder="$t('chargingStation.chargeBoxID')+'/'+$t('chargingStation.alert')"
+                        :placeholder="$t('chargingStation.chargePointID')+'/'+$t('chargingStation.alert')"
                         class="dark"
                         v-model="filter.tmpSearch"
                         @keyup.enter.native="handleSearch()"
@@ -39,8 +39,9 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol">
                     <el-table-column prop="alertId" :label="$t('chargingStation.alertID')"></el-table-column>
-                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column>
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')"></el-table-column>
+                    <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column> -->
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
+                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')">
                         <template slot-scope="scope">
                             <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>

@@ -320,28 +320,6 @@
         }
     }
 }
-.el-autocomplete {
-    &.input-round input.el-input__inner {
-        border-radius: 20px;
-        background: #E6EEF8;
-        color: #151E25;
-        border: unset;
-        height: 40px;
-        line-height: 40px;
-        padding-left: 40px;
-    }
-    &.input-round input.el-input__inner::-webkit-input-placeholder {
-        color: #525E69;
-    }
-    .el-input .el-input__prefix {
-        color: #151E25;
-        padding-left: 8px;
-    }
-    .el-input__suffix .el-input__suffix-inner i,
-    .el-input__suffix .el-input__suffix-inner i:hover {
-        color: #151E25;
-    }
-}
 button,
 .el-button {
     cursor: pointer;

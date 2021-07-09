@@ -1,7 +1,7 @@
 <template>
     <div class="mainctrl">
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item>{{ $t('menu.dashboard') }}</el-breadcrumb-item>
+            <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
         </el-breadcrumb>
         <br/>
@@ -13,18 +13,17 @@
             clearable>
             <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
+        <el-select
+            class="select-small large"
+            v-model="filter.chargeBoxId"
+            :placeholder="$t('menu.chargePoint')"
+            v-loading="chargerBoxList.isLoading"
+            @change="fetchData()"
+            clearable>
+            <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
+        </el-select>
         <br/>
         <div id="mapboxBox"/>
-        <el-autocomplete
-            v-model="searchInput"
-            class="input-round"
-            :placeholder="$t('general.searchStation')"
-            prefix-icon="el-icon-search"
-            :fetch-suggestions="querySearch"
-            :trigger-on-focus="false"
-            @select="handleSearch"
-            clearable>
-        </el-autocomplete>
         <div class="hint-bar">
             <div class="item"><img :src="icon.normal"><span>{{$t('general.available')}}</span></div>
             <div class="item"><img :src="icon.serviceUnavailable"><span>{{$t('general.unavailable')}}</span></div>
@@ -43,7 +42,8 @@ import MapStyle from '@/assets/js/mapStyle.js'
 import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss"
 import MapData from "@/tmpData/mapData";
-const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
+import { $HTTP_getChargeBoxListForSelect } from "@/api/api";
+const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
         return {
@@ -54,7 +54,6 @@ export default {
                 lng: -87.91695010215827
             },
             zoom: 16,
-            searchInput: "",
             icon: {
                 normal: require("imgs/ic_info_green.png"),
                 abnormal: require("imgs/ic_info_red.png"),
@@ -65,7 +64,13 @@ export default {
                 charging: require("imgs/ic_charging.png"),
                 revenue: require("imgs/ic_revenue.png")
             },
-            searchData: {},
+            filter: {
+                chargeBoxId: ''
+            },
+            chargerBoxList: {
+                isLoading: false,
+                data: {}
+            },
             chargeBoxData: {},
             markers: [],
             MapBoxObject: null,
@@ -77,6 +82,7 @@ export default {
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
         this.initMapboxMap();
         this.fetchData();
+        this.fetchChargerBoxList();
     },
     methods: {
         changeOption() {
@@ -190,11 +196,11 @@ export default {
             return callBack(info);
         },
         getPosInfoHtml: function(item) {
-            let info = `<div class="info-tite">${item.stationName}</div>
+            let info = `<div class="info-tite">${item.chargeBoxName}</div>
                         <div class="info-msg">
                             <ul>
                                 <li>
-                                    <div class="item-title-img"><img src='${this.icon.deviceInfo}'>${i18n.t('chargingStation.chargeBoxID')}</div>
+                                    <div class="item-title-img"><img src='${this.icon.deviceInfo}'>${i18n.t('chargingStation.chargePointID')}</div>
                                     <div class="item-msg">${item.chargeBoxId}</div>
                                 </li>
                                 <li>
@@ -210,7 +216,6 @@ export default {
             return info;
         },
         fetchData() {
-            this.searchData = MapData.search;
             this.operatorList = MapData.operatorList.slice();
             // this.curOperator = this.operatorList[0];
             this.chargeBoxData = {};
@@ -219,6 +224,24 @@ export default {
                 this.drawMapboxMarker(item);
             });
             this.drawMapboxClusters();
+        },
+        fetchChargerBoxList() {
+            const that = this;
+            this.chargerBoxList.isLoading = true;
+            $HTTP_getChargeBoxListForSelect().then((data) => {
+                this.chargerBoxList.isLoading = false;
+                this.chargerBoxList.data = {};
+                if (!!data.success) {
+                    data.chargeBoxList.forEach(item => {
+                        this.chargerBoxList.data[item.chargeBoxId] = item.chargeBoxName;
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         drawMapboxClusters() {
             const that = this
@@ -270,28 +293,7 @@ export default {
                     }
                 );
             });
-        },
-        querySearch(queryString, cb) {
-            var keys = Object.keys(this.searchData).map((key, idx) => {
-                return {
-                    value: key,
-                    name: idx,
-                    };
-            });
-            var results = queryString ? keys.filter(this.createFilter(queryString)):keys;
-            cb(results);
-        },
-        createFilter(queryString) {
-            return (key) => {
-                return (key.value.toLowerCase().indexOf(queryString.toLowerCase()) >= 0);
-            };
-        },
-        handleSearch(item) {
-            if (this.searchData[item.value] && this.searchData[item.value].pos) {
-                this.MapBoxObject.setCenter(this.searchData[item.value].pos);
-                this.MapBoxObject.setZoom(this.searchData[item.value].zoom);
-            }
-        },
+        }
     }
 }
 </script>
@@ -304,12 +306,6 @@ export default {
     height: calc(95.2vh - 68px - 54px - 2vh);
     position: relative;
 }
-.el-autocomplete {
-    width: 25vw;
-    position:absolute;
-    top: calc(68px + 2.4vh + 54px + 2vh + 2.4vh);
-    left: calc(208px + 1.6vw + 1.2vw);
-}
 .hint-bar {
     position:absolute;
     bottom: calc(2.4vh + 2vh);
@@ -317,6 +313,7 @@ export default {
     height: auto;
     padding: 10px 18px;
     background-color: #E6EEF8;
+    box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10);
     border-radius: 30px;
     vertical-align: middle;
     .item {

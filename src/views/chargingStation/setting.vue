@@ -2,13 +2,13 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.setting') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-select
-                        class="select-small dark"
+                        class="select-small"
                         v-model="operator">
                         <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
                     </el-select>

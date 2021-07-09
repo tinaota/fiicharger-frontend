@@ -10,7 +10,7 @@
         <div id="map-container" class="google-map"></div>
         <div class="right-form formVertical">
             <div class="form-item">
-                <div class="label">{{ $t('chargingStation.chargeBoxID') }}</div>
+                <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                 <el-input v-model="dialog.info.chargeBoxId"></el-input>
             </div>
             <div class="form-item">
@@ -27,7 +27,7 @@
             </div>
             <div class="hint" v-if="mapInfo.marker === null">{{$t('general.clickAddMarker')}}</div>
             <div class="hint" v-else>{{$t('general.dragMarker')}}</div>
-            <div class="form-item">
+            <!-- <div class="form-item">
                 <div class="label">{{ $t('chargingStation.station') }}</div>
                 <el-select
                     class="select-small"
@@ -35,7 +35,7 @@
                     v-loading="stationList.isLoading">
                     <el-option v-for="(item, key) in stationList.data" :label="key+' '+item" :key="key" :value="key"></el-option>
                 </el-select>
-            </div>
+            </div> -->
             <div class="form-item">
                 <div class="label">{{ $t('chargingStation.chargeType') }}</div>
                 <el-select
@@ -92,7 +92,8 @@
 <script>
 import { setScrollBar } from "@/utils/function";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { $HTTP_getStationListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
+// import { $HTTP_getStationListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
+import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js'
@@ -128,15 +129,15 @@ export default {
                 };
             }
         },
-        stationList: {
-            type: Object,
-            default: function() {
-                return {
-                    isLoading: false,
-                    data: {}
-                };
-            }
-        }
+        // stationList: {
+        //     type: Object,
+        //     default: function() {
+        //         return {
+        //             isLoading: false,
+        //             data: {}
+        //         };
+        //     }
+        // }
     },
     data() {
         return {
@@ -171,9 +172,9 @@ export default {
                 that.isUpdate = false;
                 if (that.visible) {
                     that.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar('destroy');
-                    if (that.name === 'stationDetail') {
-                        this.fetchStationList();
-                    }
+                    // if (that.name === 'stationDetail') {
+                    //     this.fetchStationList();
+                    // }
                     that.$nextTick(() => {
                         setScrollBar('.right-form', this);
                         if (that.mapInfo.initMap) {
@@ -196,7 +197,7 @@ export default {
         }
     },
     methods: {
-        fetchStationList() {
+        /*fetchStationList() {
             const that = this;
             this.stationList.isLoading = true;
             $HTTP_getStationListForSelect().then((data) => {
@@ -213,7 +214,7 @@ export default {
                 console.log('StationList', err);
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
-        },
+        },*/
         initMap() {
             const that = this;
             this.map = new google.maps.Map(document.getElementById('map-container'), {
@@ -266,7 +267,7 @@ export default {
                     chargeBoxName: that.dialog.info.chargeBoxName,
                     lon: that.dialog.info.loc.lon,
                     lat: that.dialog.info.loc.lat,
-                    stationId: that.dialog.info.stationId,
+                    // stationId: that.dialog.info.stationId,
                     chargeType: that.dialog.info.chargeType,
                     unitType: that.dialog.info.unitType,
                     onPeakElectricityRate: that.dialog.info.onPeakElectricityRate,

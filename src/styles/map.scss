@@ -73,28 +73,29 @@
 
 #mapboxBox {
     .marker {
-        background-size: cover;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
+        // background-size: cover;
+        width: 36px;
+        height: 55px;
+        // border-radius: 50%;
         cursor: pointer;
+        background-repeat: no-repeat;
         &.pos0 {
             background-image: url('~imgs/ic_blue_dot.png');
         }
         &.pos1 {
-            background-image: url('~imgs/ic_info_green.png');
+            background-image: url('~imgs/ic_green_dot.png');
         }
         &.pos2 {
-            background-image: url('~imgs/ic_info_orange.png');
+            background-image: url('~imgs/ic_orange_dot.png');
         }
         &.pos3 {
-            background-image: url('~imgs/ic_info_brown.png');
+            background-image: url('~imgs/ic_brown_dot.png');
         }
         &.pos4 {
-            background-image: url('~imgs/ic_info_red.png');
+            background-image: url('~imgs/ic_red_dot.png');
         }
         &.pos5 {
-            background-image: url('~imgs/ic_info_gray.png');
+            background-image: url('~imgs/ic_gray_dot.png');
         }
         &.loading {
             position: relative;

@@ -2,7 +2,7 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/station' }">{{ $t('menu.station') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="s-contain" v-loading="detail.isLoading">
                     <div class="item">
-                        <div class="label">{{ $t('chargingStation.nChargeBox') }}</div>
+                        <div class="label">{{ $t('chargingStation.nChargePoint') }}</div>
                         <div class="content">
                             <span>{{ new Intl.NumberFormat('en-IN').format(detail.data.chargeBoxCount) }}</span>
                         </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <el-tab-pane :label="$t('menu.chargeBox')" name="chargeBoxList">
+                        <el-tab-pane :label="$t('menu.chargePoint')" name="chargeBoxList">
                             <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">

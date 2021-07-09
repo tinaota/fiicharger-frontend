@@ -4,7 +4,7 @@
             :data="tableData.slice((page - 1) * 10, page * 10)"
             v-loading="isLoading">
             <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="3"></el-table-column>
+            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
             <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.billingInfo.powerUsage + 'kWh' }}

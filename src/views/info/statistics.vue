@@ -2,7 +2,7 @@
     <div class="scroll">
         <div class="mainctrl dashboard-statistics">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.dashboard') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.statistics') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <br/>

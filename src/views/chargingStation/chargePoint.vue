@@ -2,30 +2,30 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.chargeBox') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-select
-                        class="select-small dark"
+                        class="select-small"
                         :placeholder="$t('general.operator')"
                         v-model="filter.operatorTypeId"
                         @change="fetchData()"
                         clearable>
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
-                    <el-select
-                        class="select-small dark long"
+                    <!-- <el-select
+                        class="select-small long"
                         :placeholder="$t('chargingStation.station')"
                         v-model="filter.stationId"
                         v-loading="stationList.isLoading"
                         @change="fetchData()"
                         clearable>
                         <el-option v-for="(item, key) in stationList.data" :label="item" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
                     <el-input
-                        :placeholder="$t('chargingStation.chargeBoxID')"
+                        :placeholder="$t('chargingStation.chargePointID')+' / '+$t('general.name')"
                         class="dark"
                         v-model="filter.tmpSearch"
                         @keyup.enter.native="fetchData('s')"
@@ -38,7 +38,7 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargeBoxID')" :min-width="7"></el-table-column>
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
                         <template slot-scope="scope">
@@ -77,7 +77,7 @@
                             </template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column>
+                    <!-- <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column> -->
                     <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
@@ -101,7 +101,8 @@
                     @current-change="changePage">
                 </el-pagination>
             </div>
-            <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" :stationList="stationList" @close="closeDialog"></EditChargeBox>
+            <!-- <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" :stationList="stationList" @close="closeDialog"></EditChargeBox> -->
+            <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" @close="closeDialog"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
         </div>
     </div>
@@ -112,7 +113,8 @@ import { setScrollBar } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox"
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { $HTTP_getStationListForSelect, $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
+// import { $HTTP_getStationListForSelect, $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
+import { $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 export default {
     components: {
@@ -123,7 +125,7 @@ export default {
     data() {
         return {
             operatorList: {
-                1: "Fiicharger",
+                1: i18n.t('general.all'),
                 2: "MidwestFiber",
                 3: "APT"
             },
@@ -134,10 +136,10 @@ export default {
                 operatorTypeId: ''
             },
             isLoading: false,
-            stationList: {
-                isLoading: false,
-                data: {}
-            },
+            // stationList: {
+            //     isLoading: false,
+            //     data: {}
+            // },
             tableData: [],
             page: 1,
             total: 0,
@@ -174,14 +176,15 @@ export default {
         }
     },
     mounted() {
-        const that = this;
-        this.fetchStationList(()=>{ that.fetchData()});
+        // const that = this;
+        // this.fetchStationList(()=>{ that.fetchData()});
+        this.fetchData();
     },
     beforeDestroy() {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, 'click');
     },
     methods: {
-        fetchStationList(callBack) {
+        /*fetchStationList(callBack) {
             const that = this;
             this.stationList.isLoading = true;
             this.isLoading = true;
@@ -201,28 +204,29 @@ export default {
                 console.log('StationList', err);
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
-        },
+        },*/
         fetchData(type) {
             const that = this;
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {
-                operatorTypeId: that.filter.operatorTypeId
-            };
+            let param = {};
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
             }
-            if (this.filter.stationId) {
-                param.stationId = this.filter.stationId;
-            }
+            // if (this.filter.stationId) {
+            //     param.stationId = this.filter.stationId;
+            // }
             param.search = this.filter.search;
             $HTTP_getChargeBoxList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.tableData = data.chargeBoxList.map(item => {
                         item.currency = $GLOBAL_CURRENCY[item.unitType];
-                        item.stationName = that.stationList.data[item.stationId];
+                        // item.stationName = that.stationList.data[item.stationId];
                         return item;
                     });
                     this.total = this.tableData.length;

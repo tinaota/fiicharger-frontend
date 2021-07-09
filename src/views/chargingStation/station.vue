@@ -2,7 +2,7 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargingStation') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.station') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
@@ -180,7 +180,7 @@ export default {
     data() {
         return {
             operatorList: {
-                1: "Fiicharger",
+                1: i18n.t('general.all'),
                 2: "MidwestFiber",
                 3: "APT"
             },
@@ -239,9 +239,10 @@ export default {
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {
-                operatorTypeId: that.filter.operatorTypeId
-            };
+            let param = {};
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
             }
