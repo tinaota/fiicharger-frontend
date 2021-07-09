@@ -29,8 +29,8 @@
                         <div class="label">{{ $t('general.billing') }}</div>
                         <div class="content">
                             <span>{{ "$" + new Intl.NumberFormat('en-IN').format(statistics.billing[0]) }}</span>
-                            <i v-if="statistics.billing[1]>0" class="el-icon-top"> {{ statistics.billing[1] }}%</i>
-                            <i v-else class="el-icon-bottom"> {{ statistics.billing[1] }}%</i>
+                            <i v-if="statistics.billing[1]>0" class="el-icon-top"><span> {{ statistics.billing[1] }}% </span></i>
+                            <i v-else class="el-icon-bottom"><span>{{ statistics.billing[1] }}% </span></i>
                         </div>
                     </div>
                     <div class="item">

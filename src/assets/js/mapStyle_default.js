@@ -11,80 +11,75 @@ export default {
         },
         "mapbox:autocomposite": true,
         "mapbox:groups": {
-            "Transit, transit-labels": {
-                "name": "Transit, transit-labels",
-                "collapsed": true
-            },
-            "Administrative boundaries, admin": {
-                "name": "Administrative boundaries, admin",
-                "collapsed": true
-            },
-            "Buildings, building-labels": {
-                "name": "Buildings, building-labels",
-                "collapsed": true
-            },
-            "Road network, bridges": {
-                "name": "Road network, bridges",
+            "Land, water, & sky, land": {
+                "name": "Land, water, & sky, land",
                 "collapsed": true
             },
             "Land, water, & sky, water": {
                 "name": "Land, water, & sky, water",
                 "collapsed": true
             },
-            "Road network, tunnels": {
-                "name": "Road network, tunnels",
-                "collapsed": true
-            },
-            "Road network, road-labels": {
-                "name": "Road network, road-labels",
-                "collapsed": true
-            },
-            "Buildings, built": {"name": "Buildings, built", "collapsed": true},
-            "Natural features, natural-labels": {
-                "name": "Natural features, natural-labels",
-                "collapsed": true
-            },
-            "Road network, surface": {
-                "name": "Road network, surface",
-                "collapsed": true
-            },
             "Land, water, & sky, built": {
                 "name": "Land, water, & sky, built",
                 "collapsed": true
             },
-            "Walking, cycling, etc., barriers-bridges": {
-                "name": "Walking, cycling, etc., barriers-bridges",
-                "collapsed": true
-            },
-            "Place labels, place-labels": {
-                "name": "Place labels, place-labels",
-                "collapsed": true
-            },
-            "Point of interest labels, poi-labels": {
-                "name": "Point of interest labels, poi-labels",
-                "collapsed": true
-            },
+            "Transit, built": {"name": "Transit, built", "collapsed": true},
+            "Buildings, built": {"name": "Buildings, built", "collapsed": true},
             "Walking, cycling, etc., tunnels": {
                 "name": "Walking, cycling, etc., tunnels",
                 "collapsed": true
             },
-            "Walking, cycling, etc., walking-cycling-labels": {
-                "name": "Walking, cycling, etc., walking-cycling-labels",
+            "Road network, tunnels": {
+                "name": "Road network, tunnels",
                 "collapsed": true
             },
             "Walking, cycling, etc., surface": {
                 "name": "Walking, cycling, etc., surface",
                 "collapsed": true
             },
-            "Transit, built": {"name": "Transit, built", "collapsed": true},
-            "Land, water, & sky, land": {
-                "name": "Land, water, & sky, land",
-                "collapsed": false
+            "Road network, surface": {
+                "name": "Road network, surface",
+                "collapsed": true
+            },
+            "Walking, cycling, etc., barriers-bridges": {
+                "name": "Walking, cycling, etc., barriers-bridges",
+                "collapsed": true
+            },
+            "Road network, bridges": {
+                "name": "Road network, bridges",
+                "collapsed": true
+            },
+            "Administrative boundaries, admin": {
+                "name": "Administrative boundaries, admin",
+                "collapsed": true
+            },
+            "Road network, road-labels": {
+                "name": "Road network, road-labels",
+                "collapsed": true
+            },
+            "Walking, cycling, etc., walking-cycling-labels": {
+                "name": "Walking, cycling, etc., walking-cycling-labels",
+                "collapsed": true
+            },
+            "Natural features, natural-labels": {
+                "name": "Natural features, natural-labels",
+                "collapsed": true
+            },
+            "Point of interest labels, poi-labels": {
+                "name": "Point of interest labels, poi-labels",
+                "collapsed": true
+            },
+            "Transit, transit-labels": {
+                "name": "Transit, transit-labels",
+                "collapsed": true
+            },
+            "Place labels, place-labels": {
+                "name": "Place labels, place-labels",
+                "collapsed": true
             }
         },
-        "mapbox:uiParadigm": "layers",
         "mapbox:decompiler": {
-            "id": "ckqvq2kg91dco17qudzz7rmxe",
+            "id": "basic-v1",
             "componentVersion": "10.1.0",
             "strata": [
                 {
@@ -122,29 +117,6 @@ export default {
                     ]
                 }
             ],
-            "overrides": {
-                "road-network": {
-                    "road-simple": {
-                        "paint": {
-                            "line-color": [
-                                "match",
-                                ["get", "class"],
-                                [
-                                    "primary_link",
-                                    "secondary_link",
-                                    "tertiary_link",
-                                    "street",
-                                    "street_limited",
-                                    "service",
-                                    "track"
-                                ],
-                                "hsl(0, 0%, 96%)",
-                                "hsl(38, 55%, 100%)"
-                            ]
-                        }
-                    }
-                }
-            },
             "components": {
                 "road-network": "10.1.0",
                 "natural-features": "10.1.0",
@@ -158,38 +130,38 @@ export default {
             },
             "propConfig": {
                 "road-network": {
-                    "color-base": "hsl(200, 12%, 95%)",
+                    "color-base": "hsl(40, 48%, 92%)",
                     "color-road": "hsl(38, 55%, 100%)",
                     "roadNetwork": "Simple"
                 },
                 "natural-features": {
-                    "color-base": "hsl(200, 12%, 95%)",
-                    "color-water": "#a1c1fb",
+                    "color-base": "hsl(40, 48%, 92%)",
+                    "color-water": "hsl(205, 76%, 70%)",
                     "color-poi": "hsl(26, 20%, 38%)"
                 },
                 "place-labels": {
-                    "color-base": "hsl(200, 12%, 95%)",
+                    "color-base": "hsl(40, 48%, 92%)",
                     "color-place-label": "hsl(0, 0%, 15%)",
                     "settlementSubdivisionsDensity": 3,
                     "settlementLabelStyle": "Text only"
                 },
                 "admin-boundaries": {
-                    "color-base": "hsl(200, 12%, 95%)",
+                    "color-base": "hsl(40, 48%, 92%)",
                     "color-place-label": "hsl(0, 0%, 15%)"
                 },
                 "point-of-interest-labels": {
-                    "color-base": "hsl(200, 12%, 95%)",
-                    "color-greenspace": "#d1ead5",
+                    "color-base": "hsl(40, 48%, 92%)",
+                    "color-greenspace": "hsl(78, 50%, 73%)",
                     "color-greenspace-label": "hsl(76, 50%, 16%)",
                     "color-hospital": "hsl(3, 45%, 55%)",
-                    "color-school": "hsl(40, 0%, 45%)",
+                    "color-school": "hsl(40, 45%, 45%)",
                     "color-poi": "hsl(26, 20%, 38%)",
                     "density": 2
                 },
                 "walking-cycling": {
-                    "color-base": "hsl(200, 12%, 95%)",
+                    "color-base": "hsl(40, 48%, 92%)",
                     "color-road": "hsl(38, 55%, 100%)",
-                    "color-greenspace": "#d1ead5",
+                    "color-greenspace": "hsl(78, 50%, 73%)",
                     "color-greenspace-label": "hsl(76, 50%, 16%)",
                     "walkingCyclingPisteBackground": false,
                     "golfHoleLabelLine": false,
@@ -197,42 +169,42 @@ export default {
                 },
                 "transit": {
                     "color-airport": "hsl(225, 4%, 40%)",
-                    "color-transit": "hsl(216, 5%, 42%)",
+                    "color-transit": "hsl(345, 6%, 40%)",
                     "aerialways": false,
                     "color-road": "hsl(38, 55%, 100%)",
-                    "color-water": "#a1c1fb",
+                    "color-water": "hsl(205, 76%, 70%)",
                     "transitLabels": false,
                     "railways": false,
                     "ferries": false,
-                    "color-base": "hsl(200, 12%, 95%)"
+                    "color-base": "hsl(40, 48%, 92%)"
                 },
                 "land-and-water": {
                     "color-airport": "hsl(225, 4%, 40%)",
                     "color-hospital": "hsl(3, 45%, 55%)",
                     "landType": "Landuse only",
-                    "color-greenspace": "#d1ead5",
-                    "color-water": "#a1c1fb",
+                    "color-greenspace": "hsl(78, 50%, 73%)",
+                    "color-water": "hsl(205, 76%, 70%)",
                     "transitionLandOnZoom": false,
                     "waterStyle": "Simple",
-                    "color-base": "hsl(200, 12%, 95%)",
-                    "color-school": "hsl(40, 0%, 45%)"
+                    "color-base": "hsl(40, 48%, 92%)",
+                    "color-school": "hsl(40, 45%, 45%)"
                 },
                 "buildings": {
-                    "color-base": "hsl(200, 12%, 95%)",
-                    "houseNumbers": true,
-                    "3D": false,
-                    "underground": true
+                    "color-base": "hsl(40, 48%, 92%)",
+                    "houseNumbers": false
                 }
             }
         }
     },
-    "center": [-87.91590417065932, 42.6250335390734],
-    "zoom": 16.49592892143935,
-    "bearing": 0,
-    "pitch": 0,
+    "center": [2.3176, 48.8665],
+    "zoom": 12,
     "sources": {
+        "mapbox://mapbox.mapbox-traffic-v1": {
+            "url": "mapbox://mapbox.mapbox-traffic-v1",
+            "type": "vector"
+        },
         "composite": {
-            "url": "mapbox://mapbox.mapbox-streets-v8",
+            "url": "mapbox://mapbox.mapbox-streets-v8,mapbox.mapbox-terrain-v2",
             "type": "vector"
         }
     },
@@ -247,7 +219,7 @@ export default {
                 "mapbox:group": "Land, water, & sky, land"
             },
             "layout": {},
-            "paint": {"background-color": "hsl(200, 10%, 91%)"}
+            "paint": {"background-color": "hsl(40, 46%, 86%)"}
         },
         {
             "id": "national-park",
@@ -262,7 +234,7 @@ export default {
             "filter": ["==", ["get", "class"], "national_park"],
             "layout": {},
             "paint": {
-                "fill-color": "#d1ead5",
+                "fill-color": "hsl(78, 50%, 73%)",
                 "fill-opacity": [
                     "interpolate",
                     ["linear"],
@@ -310,44 +282,44 @@ export default {
                         "match",
                         ["get", "class"],
                         "park",
-                        "#d1ead5",
+                        "hsl(78, 50%, 73%)",
                         "airport",
-                        "hsl(225, 13%, 92%)",
+                        "hsl(225, 49%, 88%)",
                         "cemetery",
-                        "rgb(234, 240, 233)",
+                        "hsl(60, 49%, 79%)",
                         "glacier",
-                        "rgb(255, 255, 255)",
+                        "hsl(205, 66%, 90%)",
                         "hospital",
-                        "hsl(3, 24%, 88%)",
+                        "hsl(3, 47%, 84%)",
                         "pitch",
-                        "rgb(191, 226, 197)",
+                        "hsl(78, 51%, 68%)",
                         "sand",
-                        "hsl(187, 31%, 89%)",
+                        "hsl(43, 50%, 83%)",
                         "school",
-                        "hsl(40, 7%, 82%)",
-                        "hsl(200, 14%, 86%)"
+                        "hsl(40, 47%, 78%)",
+                        "hsl(40, 49%, 82%)"
                     ],
                     16,
                     [
                         "match",
                         ["get", "class"],
                         "park",
-                        "#d1ead5",
+                        "hsl(78, 50%, 73%)",
                         "airport",
-                        "hsl(225, 27%, 90%)",
+                        "hsl(225, 63%, 86%)",
                         "cemetery",
-                        "rgb(234, 240, 233)",
+                        "hsl(60, 49%, 79%)",
                         "glacier",
-                        "rgb(255, 255, 255)",
+                        "hsl(205, 66%, 90%)",
                         "hospital",
-                        "hsl(3, 38%, 90%)",
+                        "hsl(3, 46%, 86%)",
                         "pitch",
-                        "rgb(191, 226, 197)",
+                        "hsl(78, 51%, 68%)",
                         "sand",
-                        "hsl(187, 31%, 89%)",
+                        "hsl(43, 50%, 83%)",
                         "school",
-                        "hsl(40, 7%, 82%)",
-                        "hsl(200, 14%, 86%)"
+                        "hsl(40, 47%, 78%)",
+                        "hsl(40, 49%, 82%)"
                     ]
                 ],
                 "fill-opacity": [
@@ -373,7 +345,7 @@ export default {
             "minzoom": 15,
             "filter": ["==", ["get", "class"], "pitch"],
             "layout": {},
-            "paint": {"line-color": "rgb(213, 227, 211)"}
+            "paint": {"line-color": "hsl(60, 29%, 81%)"}
         },
         {
             "id": "waterway",
@@ -390,7 +362,7 @@ export default {
                 "line-join": "round"
             },
             "paint": {
-                "line-color": "#a1c1fb",
+                "line-color": "hsl(205, 76%, 70%)",
                 "line-width": [
                     "interpolate",
                     ["exponential", 1.3],
@@ -421,7 +393,7 @@ export default {
             "source": "composite",
             "source-layer": "water",
             "layout": {},
-            "paint": {"fill-color": "#a1c1fb"}
+            "paint": {"fill-color": "hsl(205, 76%, 70%)"}
         },
         {
             "id": "land-structure-polygon",
@@ -439,7 +411,7 @@ export default {
                 ["==", ["get", "class"], "land"]
             ],
             "layout": {},
-            "paint": {"fill-color": "hsl(200, 10%, 91%)"}
+            "paint": {"fill-color": "hsl(40, 46%, 86%)"}
         },
         {
             "id": "land-structure-line",
@@ -467,7 +439,7 @@ export default {
                     20,
                     40
                 ],
-                "line-color": "hsl(200, 10%, 91%)"
+                "line-color": "hsl(40, 46%, 86%)"
             }
         },
         {
@@ -498,9 +470,9 @@ export default {
                     ["linear"],
                     ["zoom"],
                     15,
-                    "hsl(225, 10%, 83%)",
+                    "hsl(225, 37%, 79%)",
                     16,
-                    "hsl(225, 7%, 85%)"
+                    "hsl(225, 19%, 81%)"
                 ],
                 "fill-opacity": [
                     "interpolate",
@@ -531,9 +503,9 @@ export default {
                     ["linear"],
                     ["zoom"],
                     15,
-                    "hsl(225, 10%, 83%)",
+                    "hsl(225, 37%, 79%)",
                     16,
-                    "hsl(225, 7%, 85%)"
+                    "hsl(225, 19%, 81%)"
                 ],
                 "line-width": [
                     "interpolate",
@@ -563,7 +535,7 @@ export default {
             ],
             "layout": {},
             "paint": {
-                "line-color": "hsl(200, 6%, 81%)",
+                "line-color": "hsl(40, 42%, 77%)",
                 "line-width": [
                     "interpolate",
                     ["exponential", 1.5],
@@ -606,9 +578,9 @@ export default {
                     ["linear"],
                     ["zoom"],
                     15,
-                    "hsl(200, 9%, 87%)",
+                    "hsl(40, 45%, 83%)",
                     16,
-                    "hsl(200, 5%, 87%)"
+                    "hsl(40, 41%, 82%)"
                 ],
                 "fill-opacity": [
                     "interpolate",
@@ -619,36 +591,7 @@ export default {
                     16,
                     1
                 ],
-                "fill-outline-color": "hsl(200, 6%, 81%)"
-            }
-        },
-        {
-            "id": "building-underground",
-            "type": "fill",
-            "metadata": {
-                "mapbox:featureComponent": "buildings",
-                "mapbox:group": "Buildings, built"
-            },
-            "source": "composite",
-            "source-layer": "building",
-            "minzoom": 15,
-            "filter": [
-                "all",
-                ["==", ["get", "underground"], "true"],
-                ["==", ["geometry-type"], "Polygon"]
-            ],
-            "layout": {},
-            "paint": {
-                "fill-color": "hsl(200, 5%, 87%)",
-                "fill-opacity": [
-                    "interpolate",
-                    ["linear"],
-                    ["zoom"],
-                    15,
-                    0,
-                    16,
-                    0.5
-                ]
+                "fill-outline-color": "hsl(40, 42%, 77%)"
             }
         },
         {
@@ -679,7 +622,7 @@ export default {
                     18,
                     4
                 ],
-                "line-color": "hsl(200, 6%, 81%)",
+                "line-color": "hsl(40, 42%, 77%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -722,7 +665,7 @@ export default {
                     18,
                     6
                 ],
-                "line-color": "hsl(200, 6%, 81%)",
+                "line-color": "hsl(40, 42%, 77%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -763,7 +706,7 @@ export default {
                     18,
                     12
                 ],
-                "line-color": "hsl(200, 6%, 81%)",
+                "line-color": "hsl(40, 42%, 77%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -929,7 +872,7 @@ export default {
                     18,
                     4
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -972,7 +915,7 @@ export default {
                     18,
                     6
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -1013,7 +956,7 @@ export default {
                     18,
                     12
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -1230,7 +1173,7 @@ export default {
                         "service",
                         "track"
                     ],
-                    "hsl(0, 0%, 96%)",
+                    "hsl(38, 55%, 95%)",
                     "hsl(38, 55%, 100%)"
                 ]
             }
@@ -1263,7 +1206,7 @@ export default {
                     18,
                     4
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -1306,7 +1249,7 @@ export default {
                     18,
                     6
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -1347,7 +1290,7 @@ export default {
                     18,
                     12
                 ],
-                "line-color": "hsl(200, 10%, 100%)",
+                "line-color": "hsl(40, 47%, 96%)",
                 "line-dasharray": [
                     "step",
                     ["zoom"],
@@ -1463,7 +1406,7 @@ export default {
                         16
                     ]
                 ],
-                "line-color": "hsl(200, 10%, 91%)"
+                "line-color": "hsl(40, 46%, 86%)"
             }
         },
         {
@@ -1621,9 +1564,9 @@ export default {
                     ["linear"],
                     ["zoom"],
                     8,
-                    "hsl(200, 10%, 91%)",
+                    "hsl(40, 46%, 86%)",
                     16,
-                    "hsl(0, 0%, 91%)"
+                    "hsl(0, 0%, 87%)"
                 ],
                 "line-width": [
                     "interpolate",
@@ -1679,9 +1622,9 @@ export default {
                     ["linear"],
                     ["zoom"],
                     6,
-                    "hsl(200, 10%, 91%)",
+                    "hsl(40, 46%, 86%)",
                     8,
-                    "hsl(0, 0%, 91%)"
+                    "hsl(0, 0%, 87%)"
                 ],
                 "line-opacity": [
                     "interpolate",
@@ -1824,57 +1767,6 @@ export default {
             }
         },
         {
-            "id": "building-number-label",
-            "type": "symbol",
-            "metadata": {
-                "mapbox:featureComponent": "buildings",
-                "mapbox:group": "Buildings, building-labels"
-            },
-            "source": "composite",
-            "source-layer": "housenum_label",
-            "minzoom": 17,
-            "layout": {
-                "text-field": ["get", "house_num"],
-                "text-font": ["DIN Pro Italic", "Arial Unicode MS Regular"],
-                "text-padding": 4,
-                "text-max-width": 7,
-                "text-size": 9.5
-            },
-            "paint": {
-                "text-color": "hsl(200, 0%, 70%)",
-                "text-halo-color": "hsl(200, 5%, 92%)",
-                "text-halo-width": 0.5
-            }
-        },
-        {
-            "id": "block-number-label",
-            "type": "symbol",
-            "metadata": {
-                "mapbox:featureComponent": "buildings",
-                "mapbox:group": "Buildings, building-labels"
-            },
-            "source": "composite",
-            "source-layer": "place_label",
-            "minzoom": 16,
-            "filter": [
-                "all",
-                ["==", ["get", "class"], "settlement_subdivision"],
-                ["==", ["get", "type"], "block"]
-            ],
-            "layout": {
-                "text-field": ["get", "name"],
-                "text-font": ["DIN Pro Italic", "Arial Unicode MS Regular"],
-                "text-max-width": 7,
-                "text-size": 11
-            },
-            "paint": {
-                "text-color": "hsl(200, 10%, 57%)",
-                "text-halo-color": "hsl(200, 8%, 100%)",
-                "text-halo-width": 0.5,
-                "text-halo-blur": 0.5
-            }
-        },
-        {
             "id": "road-label-simple",
             "type": "symbol",
             "metadata": {
@@ -1943,7 +1835,7 @@ export default {
                 "text-letter-spacing": 0.01
             },
             "paint": {
-                "text-color": "hsl(200, 10%, 44%)",
+                "text-color": "hsl(40, 47%, 41%)",
                 "text-halo-color": "hsl(38, 55%, 100%)",
                 "text-halo-width": 1
             }
@@ -1985,8 +1877,8 @@ export default {
                 "text-letter-spacing": 0.01
             },
             "paint": {
-                "text-color": "hsl(200, 10%, 44%)",
-                "text-halo-color": "hsl(200, 8%, 100%)",
+                "text-color": "hsl(40, 47%, 41%)",
+                "text-halo-color": "hsl(40, 46%, 95%)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -2049,7 +1941,7 @@ export default {
                 "text-pitch-alignment": "viewport",
                 "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]]
             },
-            "paint": {"text-color": "rgb(214, 225, 245)"}
+            "paint": {"text-color": "hsl(205, 44%, 90%)"}
         },
         {
             "id": "natural-line-label",
@@ -2101,7 +1993,7 @@ export default {
             },
             "paint": {
                 "text-halo-width": 0.5,
-                "text-halo-color": "hsl(200, 17%, 100%)",
+                "text-halo-color": "hsl(40, 53%, 100%)",
                 "text-halo-blur": 0.5,
                 "text-color": [
                     "step",
@@ -2216,7 +2108,7 @@ export default {
                     17,
                     ["step", ["get", "sizerank"], 0, 13, 1]
                 ],
-                "text-halo-color": "hsl(200, 17%, 100%)",
+                "text-halo-color": "hsl(40, 53%, 100%)",
                 "text-halo-width": 0.5,
                 "text-halo-blur": 0.5,
                 "text-color": [
@@ -2310,8 +2202,8 @@ export default {
                     "match",
                     ["get", "class"],
                     ["bay", "ocean", "sea"],
-                    "rgb(255, 255, 255)",
-                    "rgb(214, 225, 245)"
+                    "hsl(205, 72%, 90%)",
+                    "hsl(205, 44%, 90%)"
                 ]
             }
         },
@@ -2392,8 +2284,8 @@ export default {
                     "match",
                     ["get", "class"],
                     ["bay", "ocean", "sea"],
-                    "rgb(255, 255, 255)",
-                    "rgb(214, 225, 245)"
+                    "hsl(205, 72%, 90%)",
+                    "hsl(205, 44%, 90%)"
                 ]
             }
         },
@@ -2486,12 +2378,12 @@ export default {
                     "match",
                     ["get", "class"],
                     "park_like",
-                    "rgb(255, 255, 255)",
+                    "hsl(78, 55%, 100%)",
                     "education",
-                    "hsl(40, 11%, 100%)",
+                    "hsl(40, 52%, 100%)",
                     "medical",
-                    "hsl(3, 43%, 100%)",
-                    "hsl(200, 17%, 100%)"
+                    "hsl(3, 51%, 100%)",
+                    "hsl(40, 53%, 100%)"
                 ],
                 "text-halo-width": 0.5,
                 "text-halo-blur": 0.5,
@@ -2509,7 +2401,7 @@ export default {
                             "park_like",
                             "hsl(76, 51%, 26%)",
                             "education",
-                            "hsl(40, 0%, 45%)",
+                            "hsl(40, 18%, 45%)",
                             "medical",
                             "hsl(3, 18%, 55%)",
                             "hsl(26, 15%, 48%)"
@@ -2523,7 +2415,7 @@ export default {
                             "park_like",
                             "hsl(76, 50%, 15%)",
                             "education",
-                            "hsl(40, 0%, 25%)",
+                            "hsl(40, 45%, 25%)",
                             "medical",
                             "hsl(3, 24%, 45%)",
                             "hsl(26, 20%, 38%)"
@@ -2541,7 +2433,7 @@ export default {
                             "park_like",
                             "hsl(76, 51%, 26%)",
                             "education",
-                            "hsl(40, 0%, 45%)",
+                            "hsl(40, 18%, 45%)",
                             "medical",
                             "hsl(3, 18%, 55%)",
                             "hsl(26, 15%, 48%)"
@@ -2555,7 +2447,7 @@ export default {
                             "park_like",
                             "hsl(76, 50%, 15%)",
                             "education",
-                            "hsl(40, 0%, 25%)",
+                            "hsl(40, 45%, 25%)",
                             "medical",
                             "hsl(3, 24%, 45%)",
                             "hsl(26, 20%, 38%)"
@@ -2613,7 +2505,7 @@ export default {
             },
             "paint": {
                 "text-color": "hsl(225, 4%, 40%)",
-                "text-halo-color": "hsl(225, 32%, 100%)",
+                "text-halo-color": "hsl(225, 68%, 100%)",
                 "text-halo-width": 1
             }
         },
@@ -2675,7 +2567,7 @@ export default {
                 ]
             },
             "paint": {
-                "text-halo-color": "hsla(200, 17%, 100%, 0.75)",
+                "text-halo-color": "hsla(40, 53%, 100%, 0.75)",
                 "text-halo-width": 1,
                 "text-color": "hsl(0, 0%, 27%)",
                 "text-halo-blur": 0.5
@@ -2733,18 +2625,6 @@ export default {
                 ]
             ],
             "layout": {
-                "icon-image": "",
-                "text-font": ["DIN Pro Regular", "Arial Unicode MS Regular"],
-                "text-radial-offset": [
-                    "step",
-                    ["zoom"],
-                    ["match", ["get", "capital"], 2, 0.6, 0.55],
-                    8,
-                    0
-                ],
-                "text-anchor": ["step", ["zoom"], "center", 8, "center"],
-                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
-                "text-max-width": 7,
                 "text-line-height": 1.1,
                 "text-size": [
                     "interpolate",
@@ -2786,11 +2666,23 @@ export default {
                         15,
                         13
                     ]
-                ]
+                ],
+                "text-radial-offset": [
+                    "step",
+                    ["zoom"],
+                    ["match", ["get", "capital"], 2, 0.6, 0.55],
+                    8,
+                    0
+                ],
+                "icon-image": "",
+                "text-font": ["DIN Pro Regular", "Arial Unicode MS Regular"],
+                "text-anchor": ["step", ["zoom"], "center", 8, "center"],
+                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
+                "text-max-width": 7
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 0%)",
-                "text-halo-color": "hsl(200, 17%, 100%)",
+                "text-halo-color": "hsl(40, 53%, 100%)",
                 "text-halo-width": 1,
                 "icon-opacity": ["step", ["zoom"], 1, 8, 0],
                 "text-halo-blur": 1
@@ -2854,18 +2746,6 @@ export default {
                 ]
             ],
             "layout": {
-                "icon-image": "",
-                "text-font": ["DIN Pro Medium", "Arial Unicode MS Regular"],
-                "text-radial-offset": [
-                    "step",
-                    ["zoom"],
-                    ["match", ["get", "capital"], 2, 0.6, 0.55],
-                    8,
-                    0
-                ],
-                "text-anchor": ["step", ["zoom"], "center", 8, "center"],
-                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
-                "text-max-width": 7,
                 "text-line-height": 1.1,
                 "text-size": [
                     "interpolate",
@@ -2895,11 +2775,23 @@ export default {
                         15,
                         13
                     ]
-                ]
+                ],
+                "text-radial-offset": [
+                    "step",
+                    ["zoom"],
+                    ["match", ["get", "capital"], 2, 0.6, 0.55],
+                    8,
+                    0
+                ],
+                "icon-image": "",
+                "text-font": ["DIN Pro Medium", "Arial Unicode MS Regular"],
+                "text-anchor": ["step", ["zoom"], "center", 8, "center"],
+                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
+                "text-max-width": 7
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 0%)",
-                "text-halo-color": "hsl(200, 17%, 100%)",
+                "text-halo-color": "hsl(40, 53%, 100%)",
                 "text-halo-width": 1,
                 "icon-opacity": ["step", ["zoom"], 1, 8, 0],
                 "text-halo-blur": 1
@@ -2964,7 +2856,7 @@ export default {
             },
             "paint": {
                 "text-color": "hsl(0, 0%, 0%)",
-                "text-halo-color": "hsl(200, 17%, 100%)",
+                "text-halo-color": "hsl(40, 53%, 100%)",
                 "text-halo-width": 1
             }
         },
@@ -2993,12 +2885,7 @@ export default {
                 false
             ],
             "layout": {
-                "icon-image": "",
-                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
                 "text-line-height": 1.1,
-                "text-max-width": 6,
-                "text-font": ["DIN Pro Medium", "Arial Unicode MS Regular"],
-                "text-radial-offset": ["step", ["zoom"], 0.6, 8, 0],
                 "text-size": [
                     "interpolate",
                     ["cubic-bezier", 0.2, 0, 0.7, 1],
@@ -3007,7 +2894,12 @@ export default {
                     ["step", ["get", "symbolrank"], 11, 4, 9, 5, 8],
                     9,
                     ["step", ["get", "symbolrank"], 22, 4, 19, 5, 17]
-                ]
+                ],
+                "text-radial-offset": ["step", ["zoom"], 0.6, 8, 0],
+                "icon-image": "",
+                "text-font": ["DIN Pro Medium", "Arial Unicode MS Regular"],
+                "text-field": ["coalesce", ["get", "name_en"], ["get", "name"]],
+                "text-max-width": 6
             },
             "paint": {
                 "icon-opacity": [
@@ -3023,18 +2915,18 @@ export default {
                     ["linear"],
                     ["zoom"],
                     2,
-                    "hsla(200, 17%, 100%, 0.75)",
+                    "hsla(40, 53%, 100%, 0.75)",
                     3,
-                    "hsl(200, 17%, 100%)"
+                    "hsl(40, 53%, 100%)"
                 ],
                 "text-halo-width": 1.25
             }
         }
     ],
-    "created": "2021-07-09T02:31:03.967Z",
-    "modified": "2021-07-09T02:46:58.777Z",
-    "id": "ckqvq2kg91dco17qudzz7rmxe",
-    "owner": "nckuid",
+    "created": "2021-07-05T08:13:37.144Z",
+    "modified": "2021-07-05T08:13:46.021Z",
+    "id": "ckqqcjopz4m2818pbpaud566q",
+    "owner": "",
     "visibility": "private",
-    "draft": true
+    "draft": false
 }

@@ -90,3 +90,18 @@ export const $HTTP_getZipCodeListForSelect = params => { return post(`${base}/Ho
  * @description 取得充電紀錄列表
  */
 export const $HTTP_getChargingSessionList = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionList`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電站明細
+ */
+export const $HTTP_getStationDetail = params => { return post(`${base}/ChargeStation/Station/getStationDetail`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電紀錄分析資訊
+ */
+export const $HTTP_getChargingSessionAnalysisInfo = params => { return post(`${base}/ChargeStation/Station/getChargingSessionAnalysisInfo`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電用電量分析資訊
+ */
+export const $HTTP_getPowerUsageAnalysisInfo = params => { return post(`${base}/ChargeStation/Station/getPowerUsageAnalysisInfo`, qs.stringify(params)) }

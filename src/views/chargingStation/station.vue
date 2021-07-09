@@ -298,8 +298,6 @@ export default {
                     // phone: row.phone,
                     // serviceStartTime: row.serviceStartTime,
                     // serviceEndTime: row.serviceEndTime,
-                    currency: row.currency,
-                    parkingRate: row.currency + row.parkingRate + "/min",
                     address: row.address
                 }
                 window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));

@@ -136,10 +136,10 @@
         "accumCharging": "累積功耗",
         "avgPrice": "均價",
         "daySelectList": {
-            "7": "最近七天",
-            "14": "最近14天",
-            "30": "最近一個月",
-            "365": "最近一年"
+            "1": "最近七天",
+            "2": "最近14天",
+            "3": "最近一個月",
+            "4": "最近一年"
         },
         "chargingSessionAnalysis": "充電紀錄分析",
         "powerUsedAnalysis": "使用功率分析",

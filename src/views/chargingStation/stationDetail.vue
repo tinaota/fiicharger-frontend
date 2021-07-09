@@ -18,35 +18,35 @@
                     <!-- <div class="sec-header"><i class="el-icon-alarm-clock"></i> {{ curRouteParam.serviceStartTime + ' ~ ' + curRouteParam.serviceEndTime }}</div>
                     <div class="sec-header" style="margin-left: 16px"><i class="el-icon-phone-outline"></i> {{ curRouteParam.countryCode + " " + curRouteParam.phone }}</div> -->
                 </div>
-                <div class="s-contain">
+                <div class="s-contain" v-loading="detail.isLoading">
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.nChargeBox') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(info.chargeBoxNum) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(detail.data.chargeBoxCount) }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('menu.chargingSession') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(info.chargeSessionNum) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(detail.data.stationSessionCount) }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.accumCharging') }}</div>
                         <div class="content">
-                            <span>{{ info.powerUsed + "kWh" }}</span>
+                            <span>{{ detail.data.stationAccumulativeEnergy + "kWh" }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.avgPrice') }}</div>
                         <div class="content">
-                            <span>{{ curRouteParam.currency + info.avgPrice + "/kWh"}}</span>
+                            <span>{{ detail.data.electricityRateCurrency + detail.data.electricityRate + "/kWh" }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
                         <div class="content">
-                            <span>{{ curRouteParam.parkingRate }}</span>
+                            <span>{{ detail.data.parkingRateCurrency + detail.data.parkingRate + "/" + $t('chargingStation.elecRateUnit')[1] }}</span>
                         </div>
                     </div>
                 </div>
@@ -66,7 +66,7 @@
                             class="select-small right"
                             v-model="chartChargingSesstion.search"
                             @change="handleSelected('chartChargingSesstion')">
-                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
+                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                         </el-select>
                     </div>
                     <BarChart class="barChart" id="chartChargingSesstion" :chartData="chartChargingSesstion.chartData"></BarChart>
@@ -77,7 +77,7 @@
                             class="select-small right"
                             v-model="chartPowerUsed.search"
                             @change="handleSelected('chartPowerUsed')">
-                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
+                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                         </el-select>
                     </div>
                     <BarChart class="barChart" id="chartPowerUsed" :chartData="chartPowerUsed.chartData"></BarChart>
@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import { $HTTP_getStationDetail, $HTTP_getChargingSessionAnalysisInfo, $HTTP_getPowerUsageAnalysisInfo } from "@/api/api";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
 import StationDetailData from "@/tmpData/stationDetailData";
 import { setScrollBar } from "@/utils/function";
 import moment from "moment";
@@ -106,15 +108,23 @@ export default {
     data() {
         return {
             curRouteParam: {},
-            info: {
-                chargeBoxNum: 0,
-                chargeSessionNum: 0,
-                powerUsed: 0,
-                avgPrice: 0
+            lang: '',
+            detail: {
+                isLoading: false,
+                data: {
+                    chargeBoxCount: 0,
+                    stationSessionCount: 0,
+                    stationAccumulativeEnergy: 0,
+                    electricityRateCurrency: '',
+                    electricityRate: 0,
+                    parkingRateCurrency: '',
+                    parkingRate: 0
+                }
             },
             daySelectList: i18n.t('chargingStation.daySelectList'),
             chartChargingSesstion: {
-                search: '7',
+                search: 1,
+                isLoading: false,
                 chartData: {
                     timeList: [],
                     data: [],
@@ -122,7 +132,8 @@ export default {
                 }
             },
             chartPowerUsed: {
-                search: '7',
+                search: 1,
+                isLoading: false,
                 chartData: {
                     timeList: [],
                     data: [],
@@ -146,75 +157,94 @@ export default {
             let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
             if (temp && temp.stationId && temp.stationName
                 && temp.loc && temp.loc.lon && temp.loc.lat
-                && temp.currency && temp.parkingRate && temp.address) {
+                && temp.address) {
                 this.curRouteParam = temp;
             } else {
                 this.$router.go(-1);
             }
         }
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
-        this.fetchData();
-
+        this.fetchStationDetail();
+        this.fetchChartSesstionData();
+        this.fetchChartPowerUsedData();
+        setScrollBar('.scroll', this);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods : {
-        fetchData() {
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let data = Object.assign({}, StationDetailData);
-            this.getChartSesstionData();
-            this.getChartPowerUsedData();
-            this.info = data.info;
-            setScrollBar('.scroll', this);
+        fetchStationDetail() {
+            const that = this;
+            let param = {
+                stationId: that.curRouteParam.stationId
+            };
+            this.detail.isLoading = true;
+            $HTTP_getStationDetail(param).then((data) => {
+                this.detail.isLoading = false;
+                if (!!data.success) {
+                    this.detail.data = Object.assign({}, data.stationInfo);
+                    this.detail.data.electricityRateCurrency = $GLOBAL_CURRENCY[data.stationInfo.electricityRateUnitType] || 1;
+                    this.detail.data.parkingRateCurrency = $GLOBAL_CURRENCY[data.stationInfo.parkingRateUnitType] || 1;
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchChartSesstionData() {
+            const that = this;
+            let param = {
+                stationId: that.curRouteParam.stationId,
+                dateType: that.chartChargingSesstion.search
+            };
+            this.chartChargingSesstion.isLoading = true;
+            $HTTP_getChargingSessionAnalysisInfo(param).then((data) => {
+                this.chartChargingSesstion.isLoading = false;
+                if (!!data.success) {
+                    this.chartChargingSesstion.chartData.data = data.dataList;
+                    this.chartChargingSesstion.chartData.timeList = data.timeList;
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('chartChargingSesstion', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchChartPowerUsedData() {
+            const that = this;
+            let param = {
+                stationId: that.curRouteParam.stationId,
+                dateType: that.chartPowerUsed.search
+            };
+            this.chartPowerUsed.isLoading = true;
+            $HTTP_getPowerUsageAnalysisInfo(param).then((data) => {
+                this.chartPowerUsed.isLoading = false;
+                if (!!data.success) {
+                    this.chartPowerUsed.chartData.data = data.dataList;
+                    this.chartPowerUsed.chartData.timeList = data.timeList;
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('chartPowerUsed', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         handleShowDialog() {
             this.mapDialog.itemId = this.curRouteParam.stationId;
             this.mapDialog.position = this.curRouteParam.loc;
             this.mapDialog.visible = true;
         },
-        getChartSesstionData() {
-            let data = [],
-                timeList = [],
-                time = parseInt(this.chartChargingSesstion.search);
-            if (time <= 30) {
-                for(var i = time; i>=1; i--) {
-                    data.push(50 + Math.floor(Math.random() * 251)); //50-300
-                    timeList.push(moment().subtract(i, 'days').format('MM/DD'));
-                }
-            } else {
-                for(var i = (12-1); i>=0; i--) {
-                    data.push(100 + Math.floor(Math.random() * 8901)); //100-9000
-                    timeList.push(moment().subtract(i, 'months').format('YYYY-MM'));
-                }
-            }
-            this.chartChargingSesstion.chartData.data = data;
-            this.chartChargingSesstion.chartData.timeList = timeList;
-        },
-        getChartPowerUsedData() {
-            let data = [],
-                timeList = [],
-                time = parseInt(this.chartPowerUsed.search);
-            if (time <= 30) {
-                for(var i = time; i>=1; i--) {
-                    data.push( Math.floor(Math.random() * 21*10)/10); //0-20
-                    timeList.push(moment().subtract(i, 'days').format('MM/DD'));
-                }
-            } else {
-                for(var i = (12-1); i>=0; i--) {
-                    data.push(5 + Math.floor(Math.random() * 295*10)/10); //5-300
-                    timeList.push(moment().subtract(i, 'months').format('YYYY-MM'));
-                }
-            }
-            this.chartPowerUsed.chartData.data = data;
-            this.chartPowerUsed.chartData.timeList = timeList;
-        },
         handleSelected(item) {
             if (item === 'chartChargingSesstion') {
-                this.getChartSesstionData();
+                this.fetchChartSesstionData();
             } else {
-                this.getChartPowerUsedData()
+                this.fetchChartPowerUsedData()
             }
         },
         handleTabClick(tab, event) {}
