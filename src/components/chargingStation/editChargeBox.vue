@@ -37,6 +37,10 @@
                 </el-select>
             </div> -->
             <div class="form-item">
+                <div class="label">{{ $t('general.zipCode') }}</div>
+                <el-input v-model="dialog.info.zipCode"></el-input>
+            </div>
+            <div class="form-item">
                 <div class="label">{{ $t('chargingStation.chargeType') }}</div>
                 <el-select
                     class="select-small"
@@ -80,7 +84,10 @@
                     </el-select>
                 </div>
             </div>
-
+            <div class="form-item">
+                <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+            </div>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -118,13 +125,15 @@ export default {
                             lon: '',
                             lat: ''
                         },
-                        stationId: '',
+                        // stationId: '',
+                        zipCode: '',
                         chargeType: 1,
                         unitType: '',
                         onPeakElectricityRate: 0,
                         onPeakElectricityRateType: 1,
                         offPeakElectricityRate: 0,
-                        offPeakElectricityRateType: 1
+                        offPeakElectricityRateType: 1,
+                        parkingRate: 0
                     }
                 };
             }
@@ -268,12 +277,14 @@ export default {
                     lon: that.dialog.info.loc.lon,
                     lat: that.dialog.info.loc.lat,
                     // stationId: that.dialog.info.stationId,
+                    zipCode: that.dialog.info.zipCode,
                     chargeType: that.dialog.info.chargeType,
                     unitType: that.dialog.info.unitType,
                     onPeakElectricityRate: that.dialog.info.onPeakElectricityRate,
                     onPeakElectricityRateType: that.dialog.info.onPeakElectricityRateType,
                     offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
                     offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
+                    parkingRate: that.dialog.info.parkingRate
                   },
                   sucMsg = "";
             if (!that.dialog.type) {

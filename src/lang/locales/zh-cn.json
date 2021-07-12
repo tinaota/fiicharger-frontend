@@ -19,7 +19,7 @@
         "billingLog": "帐单资讯",
         "support": "支援",
         "workOrder": "工单",
-        "accountMgt": "帐户管理"
+        "myAccount": "我的帐户"
     },
     "login": {
         "login": "登入",

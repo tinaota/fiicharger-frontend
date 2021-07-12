@@ -37,7 +37,8 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
-                    v-loading="isLoading">
+                    v-loading="isLoading"
+                    style="width: 100%">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">

@@ -19,7 +19,7 @@
         "billingLog": "Billing Log",
         "support": "Support",
         "workOrder": "Work Order",
-        "accountMgt": "Account Management"
+        "myAccount": "My Account"
     },
     "login": {
         "login": "Login",

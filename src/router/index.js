@@ -47,6 +47,7 @@ let routes = [
                     // { path: '/station/stationDetail', component: () => import('@/views/chargingStation/stationDetail.vue'), name: 'stationDetail', hidden: true },
                     { path: '/chargePoint', component: () => import('@/views/chargingStation/chargePoint.vue'), name: 'menu.chargePoint', hidden: false },
                     { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: false },
+                    { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: false },
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                 ]
             },
@@ -69,7 +70,6 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/chargePointAlert', component: () => import('@/views/support/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: false },
                     { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false }
                 ]
             },
@@ -80,7 +80,7 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/accountMgt', component: () => import('@/views/setting/accountMgt.vue'), name: 'menu.accountMgt', hidden: false },
+                    { path: '/myAccount', component: () => import('@/views/setting/myAccount.vue'), name: 'menu.myAccount', hidden: false },
                 ]
             }
         ]
