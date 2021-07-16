@@ -44,6 +44,7 @@
                         clearable>
                         <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
                     </el-select>
+                    <el-button class="right" icon="el-icon-refresh-right" @click="fetchData()"></el-button>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
@@ -91,6 +92,11 @@
                             </el-popover>
                         </template>
                     </el-table-column>
+                    <!-- <el-table-column :label="$t('general.action')" :width="74">
+                        <template slot-scope="scope">
+                            <el-button class="no-bg" icon="el-icon-data-line" @click="openDialog(scope.row.sessionId)"></el-button>
+                        </template>
+                    </el-table-column> -->
                 </el-table>
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
                 <el-pagination background layout="prev, pager, next"
@@ -100,6 +106,47 @@
                     :current-page.sync="page"
                     @current-change="changePage">
                 </el-pagination>
+                <el-dialog
+                    :title="dialog.sessionId"
+                    width="80%"
+                    :visible.sync="dialog.visible"
+                    :show-close="false"
+                    v-loading="dialog.isLoading">
+                    <div class="sessionDetail">
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.chargePointID')}}</div>
+                            <div class="info">PHIHONG_HQ_360kW</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.chargePointName')}}</div>
+                            <div class="info">FiiCB27</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('general.startTime')}}</div>
+                            <div class="info">2021-07-07 17:58:00</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('general.endTime')}}</div>
+                            <div class="info">2021-07-07 23:58:00</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.chargingDuration')}}</div>
+                            <div class="info">0h 0m 12s</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.powerUsed')}}</div>
+                            <div class="info">{{ "3.502" + "kWh" }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.minOutputPower')}}</div>
+                            <div class="info">{{ "146.9" + "kW" }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.maxOutputPower')}}</div>
+                            <div class="info">{{ "146.9" + "kW" }}</div>
+                        </div>
+                    </div>
+                </el-dialog>
             </div>
         </div>
     </div>
@@ -145,6 +192,15 @@ export default {
                 disabledDate(time) {
                 return time.getTime() > Date.now();
                 }
+            },
+            dialog: {
+                visible: false,
+                isLoading: false,
+                sessionId: '',
+                info: {
+
+                },
+                chartData: {}
             }
         }
     },
@@ -213,7 +269,6 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.tableData = data.chargingSessionList.map(item=> {
-                        item.connectorInfo.status = 0;
                         item.chargeBoxName = that.chargerBoxList.data[item.chargeBoxId] || item.chargeBoxId;
                         return item;
                     });
@@ -233,6 +288,10 @@ export default {
         },
         changePage(page) {
             this.page = page;
+        },
+        openDialog(sessionId) {
+            this.dialog.sessionId = sessionId;
+            this.dialog.visible = true;
         }
     },
 }
@@ -255,6 +314,25 @@ export default {
     }
     .filter .dark.el-select.long {
         width: 280px;
+    }
+    .sessionDetail .item {
+        display: inline-block;
+        width: calc(50% - 4px);
+        margin-bottom: 12px;
+        .label {
+            display: inline-block;
+            width: 200px;
+            font-size: 1rem;
+            color: #525E69;
+            letter-spacing: 0;
+        }
+        .info {
+            display: inline-block;
+            width: calc(100% - 206px);
+            font-size: 1rem;
+            color: #151E25;
+            letter-spacing: 0;
+        }
     }
 }
 </style>

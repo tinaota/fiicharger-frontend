@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.setting') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.accountMgt') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.myAccount') }}</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
     </div>

@@ -3,26 +3,26 @@
     right: 8px;
     width: 30px;
     height: 30px;
-    font-size: 24px;
+    font-size: 1.5rem;
     color: #151E25;
 }
 .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
     border-right-color: rgba(230, 238, 248, 0.9);
 }
 .mapboxgl-popup-content {
-    width: 256px;
+    width: 360px;
     padding: 8px 0px 16px 12px;
     background: rgba(230, 238, 248, 0.9);
     border: unset;
     .info-tite {
-        font-size: 16px;
+        font-size: 1.5rem;
         font-weight: bold;
         color: #151E25;
         letter-spacing: 0.35px;
-        margin-bottom: 12px
+        margin-bottom: 16px
     }
     .info-msg {
-        max-height: 480px;
+        height: 120px;
         overflow-y: auto;
         ul {
             padding-left: 0;
@@ -32,7 +32,7 @@
                 list-style: none;
                 min-height: 18px;
                 line-height: 18px;
-                font-size: 12px;
+                font-size: 1.125rem;
                 + li {
                     margin-top: 20px;
                 }
@@ -84,33 +84,53 @@
         }
         &.pos1 {
             background-image: url('~imgs/ic_green_dot.png');
+            &.loading::before {
+                border: 2px solid #33c85a;
+                border-right: 2px solid #FFF;
+            }
         }
         &.pos2 {
             background-image: url('~imgs/ic_orange_dot.png');
+            &.loading::before {
+                border: 2px solid #ffa10b;
+                border-right: 2px solid #FFF;
+            }
         }
         &.pos3 {
             background-image: url('~imgs/ic_brown_dot.png');
+            &.loading::before {
+                border: 2px solid #5e3715;
+                border-right: 2px solid #FFF;
+            }
         }
         &.pos4 {
             background-image: url('~imgs/ic_red_dot.png');
+            &.loading::before {
+                border: 2px solid #fc2e56;
+                border-right: 2px solid #FFF;
+            }
         }
         &.pos5 {
             background-image: url('~imgs/ic_gray_dot.png');
+            &.loading::before {
+                border: 2px solid #8c8f97;
+                border-right: 2px solid #FFF;
+            }
         }
         &.loading {
             position: relative;
             &:before {
                 content: "";
                 position: absolute;
-                width: 100%;
-                height: 100%;
-                background-color: #fff;
+                width: 36px;
+                height: 36px;
+                background-color: rgba(255, 255, 255, 0.8);
                 border-radius: 50%;
-                animation: rotating 2s linear infinite;
-                border: 2px solid #9EA7AC;
                 top: -2px;
                 left: -2px;
-                border-right: 2px solid transparent;
+                animation: rotating 2s linear infinite;
+                // border: 2px solid transparent;
+                // border-right: 2px solid #FFF;
             }
         }
     }

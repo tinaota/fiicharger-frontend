@@ -33,7 +33,7 @@ export default {
                 return {
                     connectorId: '',
                     status: 0,
-                    connectorTypeId: 1,
+                    connectorTypeId: 3,
                     connectorType: ''
                 };
             }
@@ -42,9 +42,16 @@ export default {
     data() {
         return {
             imgIcon: {
+                1: require("imgs/ic_ac_iec.png"),
+                2: require("imgs/ic_ac_tesla.png"),
                 3: require("imgs/ic_ac_sae.png"),
+                4: require("imgs/ic_ac_gbt.png"),
+                5: require("imgs/ic_ac_iec.png"),
+                6: require("imgs/ic_ac_tesla.png"),
+                7: require("imgs/ic_ac_chademo.png"),
+                8: require("imgs/ic_ac_ccs2.png"),
                 9: require("imgs/ic_ac_ccs1.png"),
-                7:require("imgs/ic_ac_chademo.png")
+                10: require("imgs/ic_ac_gbt.png")
             }
         }
     },
@@ -111,8 +118,8 @@ div.connector-obj {
             background-color: #0885ff;
             border: 2px solid #0885ff;
             border-radius: 50%;
-            border-top: 2px solid #c2e0fc;
-            border-bottom: 2px solid #c2e0fc;
+            border-top: 2px solid #e7f3fd;
+            border-bottom: 2px solid #e7f3fd;
             -webkit-animation: spin 2s linear infinite;
             animation: spin 2s linear infinite;
         }

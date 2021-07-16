@@ -52,10 +52,10 @@
         "repair": "Repair",
         "clickAddMarker": "Please click on the map to add a marker",
         "dragMarker": "Drag the marker on the map to change its position",
-        "startDate": "Start date",
-        "endDate": "End date",
-        "startTime": "Start time",
-        "endTime": "End time",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "startTime": "Start Time",
+        "endTime": "End Time",
         "time": "Time",
         "searchChargePoint": "Search Charge Point",
         "available": "Available",
@@ -160,7 +160,10 @@
         },
         "itemPosition": "{item} Position",
         "connection": "Connection",
-        "disconnection": "Disconnection"
+        "disconnection": "Disconnection",
+        "chargingDuration": "Charging Duration",
+        "minOutputPower": "Minimum Output Power",
+        "maxOutputPower": "Maximum Output Power"
     },
     "userAccount": {
         "userName": "Member Name",

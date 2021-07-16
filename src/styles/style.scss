@@ -99,14 +99,18 @@
         float: right;
     }
     .large.el-select {
-        width: 180px;
+        width: 230px;
         margin-bottom: 12px;
         input {
-            font-size: 1.5rem;
+            font-size: 2rem;
             background: transparent;
             border: unset;
             color: #151E25;
             padding-left: 0;
+        }
+        .el-input--mini .el-input__inner {
+            height: 32px;
+            line-height: 32px;
         }
         input::-webkit-input-placeholder {
             color: #525E69;
@@ -209,10 +213,11 @@
                 background: transparent;
                 border-radius: 4px;
                 border: unset;
-                .el-icon-plus {
+                .el-icon-plus,
+                .el-icon-refresh-right {
                     color: #1E5EFF;
                     font-weight: bold;
-                    font-size: 1.25rem;
+                    font-size: 1.5rem;
                 }
             }
         }
@@ -330,6 +335,10 @@ button,
         background-size: contain;
         background-position: center;
         border: unset;
+        .el-icon-data-line {
+            font-size: 24px;
+            color: #1e5eff;
+        }
     }
     &.loc {
         width: 24px;
@@ -345,11 +354,6 @@ button,
         width: 24px;
         height: 24px;
         background-image: url('~imgs/ic_delete.png');
-    }
-    &.unbind {
-        width: 24px;
-        height: 24px;
-        background-image: url('~imgs/ic_unbind.png');
     }
      + .el-button {
         margin-left: 8px;
@@ -406,6 +410,7 @@ button:disabled {
                 color: #525E69;
                 font-size: 14px;
                 letter-spacing: 0;
+                font-weight: normal;
                 &.is-leaf {
                     border-bottom: none;
                 }
@@ -417,6 +422,7 @@ button:disabled {
                 padding: 0;
                 border: none;
                 color: #151E25;
+                font-size: 14px;
             }
         }
         &::before {
@@ -442,7 +448,7 @@ button:disabled {
     .el-dialog__footer {
         padding: 0 2vw 2vh 2vw;
         .el-button {
-            font-size: 0.875rem;
+            font-size: 1rem;
             width: 130px;
             height: 50px;
             border-radius: 6px;
@@ -531,8 +537,8 @@ button:disabled {
         }
     }
     .hint {
-        margin: 8px 0 18px 0;
-        font-size: 0.75rem;
+        margin: 8px 20px 18px 0;
+        font-size: 0.95rem;
         color: #1E5EFF;
     }
 }

@@ -37,8 +37,7 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
-                    v-loading="isLoading"
-                    style="width: 100%">
+                    v-loading="isLoading">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
@@ -56,7 +55,7 @@
                             {{scope.row.power + "kW"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :width="90">
+                    <el-table-column :label="$t('chargingStation.connector')" :width="100">
                         <template slot-scope="scope">
                             <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item" :isBreak="true"></Connector>
                         </template>
@@ -79,7 +78,7 @@
                         </el-table-column>
                     </el-table-column>
                     <!-- <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column> -->
-                    <el-table-column  :label="$t('general.location')" :width="80" class-name="center">
+                    <el-table-column  :label="$t('general.location')" :width="88" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>

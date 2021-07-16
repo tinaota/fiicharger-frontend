@@ -53,12 +53,12 @@ export default {
                 3: "APT"
             },
             center: {
-                lat: 67.87946334072687,
-                lng: 173.85862513198617
+                lat: 42.677811124442854,
+                lng: -87.91695010215827
             },
             defaultZoomSize: 16,
             minZoomSize: 1.5,
-            maxZoomSize: 22,
+            maxZoomSize: 18,
             icon: {
                 normal: require("imgs/ic_info_green.png"),
                 abnormal: require("imgs/ic_info_red.png"),
@@ -83,90 +83,20 @@ export default {
                 data: []
             },
             markers: {},
-            markersOnScreen: {},
             MapBoxObject: null,
             mapboxLoadingPromise: {},
             currentPopUp: null
         }
     },
     mounted() {
-        const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width()/2 + 12;
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
-        this.initMapboxMap(()=> {
-            that.fetchData();
-        });
+        this.initMapboxMap();
+        this.fetchData();
         this.fetchChargerBoxList();
     },
     methods: {
-        fetchData() {
-            const that = this;
-            let param = {};
-            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
-                param.operatorTypeId = this.filter.operatorTypeId;
-            }
-            if (this.filter.chargeBoxId) {
-                param.chargeBoxId = this.filter.chargeBoxId;
-            }
-            this.removeMapboxMarkers();
-            this.chargeBoxData.data = {};
-            this.chargeBoxData.isLoading = true;
-            $HTTP_getChargeBoxListForMap(param).then((data) => {
-                that.chargeBoxData.isLoading = false;
-                if (!!data.success) {
-                    data.chargeBoxList.forEach(item => {
-                        item.loc = {
-                            lng: item.lon,
-                            lat: item.lat
-                        }
-                        that.chargeBoxData.data[item.chargeBoxId] = Object.assign({}, item);
-                    });
-                    if (that.filter.chargeBoxId) {
-                        this.removeMapboxClusters();
-                        let chargeBoxId = data.chargeBoxList[0].chargeBoxId;
-                        let marker = that.drawMapboxMarker(that.chargeBoxData.data[chargeBoxId]);
-                        this.markersOnScreen[chargeBoxId] = marker;
-                        that.MapBoxObject.setCenter([data.centerLocInfo.lon, data.centerLocInfo.lat]);
-                        that.MapBoxObject.setZoom(data.centerLocInfo.zoomSize);
-                        marker.addTo(that.MapBoxObject);
-                    } else {
-                        that.MapBoxObject.setCenter([data.centerLocInfo.lon, data.centerLocInfo.lat]);
-                        that.MapBoxObject.setZoom(data.centerLocInfo.zoomSize);
-                        that.drawMapboxClusters();
-                    }
-                } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log(err)
-                that.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
-        fetchChargerBoxList(callBack) {
-            const that = this;
-            let param = {};
-            if (this.filter.operatorTypeId) {
-                param.operatorTypeId = (this.filter.operatorTypeId === 1)? '': this.filter.operatorTypeId;
-            }
-            this.chargerBoxList.isLoading = true;
-            $HTTP_getChargeBoxListForSelect(param).then((data) => {
-                this.chargerBoxList.isLoading = false;
-                this.chargerBoxList.data = {};
-                if (!!data.success) {
-                    data.chargeBoxList.forEach(item => {
-                        this.chargerBoxList.data[item.chargeBoxId] = item.chargeBoxName;
-                    });
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-                callBack && callBack();
-            }).catch((err) => {
-                console.log('chargeBoxList', err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
         initMapboxMap(callBack) {
-            const that = this;
             mapboxgl.accessToken = MAPBOXTOKEN;
             this.MapBoxObject = new mapboxgl.Map({
                 antialias: true,
@@ -175,9 +105,9 @@ export default {
                 pitch: 60, //视野倾斜，0-60
                 // bearing: -17, //视野旋转角度
                 center: this.center,
-                zoom: this.minZoomSize, // Less than 15 GetFeatureInfo does not work,
+                zoom: this.defaultZoomSize, // Less than 15 GetFeatureInfo does not work,
                 minZoom: this.minZoomSize,
-                maxZoom: this.maxZoomSize,
+                maxZoom: 22,
             })
             window.tb = new window.Threebox(
                 this.MapBoxObject,
@@ -186,30 +116,37 @@ export default {
                     defaultLights: true,
                 }
             );
-            this.MapBoxObject.on("load", () => {
-                that.mapLoadLayer();
-                callBack && callBack();
-            });
-            this.MapBoxObject.on('click', 'clusters', function (e) {
-                var features = that.MapBoxObject.queryRenderedFeatures(e.point, {
-                    layers: ['clusters']
-                });
-                var clusterId = features[0].properties.cluster_id;
-                that.MapBoxObject.getSource('custom').getClusterExpansionZoom(
-                    clusterId,
-                    function (err, zoom) {
-                        if (err) return;
-                        that.MapBoxObject.easeTo({
-                            center: features[0].geometry.coordinates,
-                            zoom: zoom
-                        });
+            this.mapboxLoadingPromise = new Promise(resolve => {
+                this.MapBoxObject.on("load", () => {
+                    this.mapLoadLayer();
+                    resolve();
+                })
+            })
+            // zoomlevel:
+            // small：  18<level<=21 model + marker
+            // middle： 15<level<=18 || >21 marker
+            // large:   <=15 cluster
+            let zoomLevel = 'large'; //s、m、l
+            const that = this;
+            this.MapBoxObject.on('zoom', () => {
+                const nowZoom = this.MapBoxObject.getZoom();
+                let nowZoomlevel = '';
+                if (nowZoom <= 15) {
+                    nowZoomlevel = 'large';
+                } else {
+                    nowZoomlevel = 'middle';
+                }
+                if (zoomLevel !== nowZoomlevel) {
+                    switch(nowZoomlevel) {
+                        case 'large':
+                            that.removeMapboxMarkers();
+                            break;
+                        case 'middle':
+                            that.drawMarkers();
+                            break;
                     }
-                );
-            });
-            this.MapBoxObject.on('zoom', function () {
-                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.isSourceLoaded('custom')) {
-                    that.updateMarkers();
-                };
+                    zoomLevel = nowZoomlevel;
+                }
             });
         },
         mapLoadLayer() {
@@ -220,47 +157,14 @@ export default {
             for(let key in this.markers) {
                 this.markers[key].remove();
             }
-            for(let key in this.markersOnScreen) {
-                this.markersOnScreen[key].remove();
-            }
             this.markers = {};
-            this.markersOnScreen = {};
         },
-        removeMapboxClusters() {
-            if (this.MapBoxObject.getLayer('clusters')) {
-                this.MapBoxObject.removeLayer('clusters');
-                this.MapBoxObject.removeLayer('cluster-count');
-            }
-        },
-        updateMarkers() {
-            let newMarkers = {};
-            let features = this.MapBoxObject.querySourceFeatures('custom');
-            features.forEach(feature => {
-                let coords = feature.geometry.coordinates;
-                let props = feature.properties;
-                if (!props.cluster) {
-                    let item = {
-                        chargeBoxId: props.chargeBoxId,
-                        loc: {
-                            lng: props.lng,
-                            lat: props.lat
-                        },
-                        chargeBoxStatus: props.chargeBoxStatus
-                    };
-                    var marker = this.markers[props.chargeBoxId];
-                    if (!marker) {
-                        marker = this.drawMapboxMarker(item);
-                    }
-                    if (!this.markersOnScreen[props.chargeBoxId]) marker.addTo(this.MapBoxObject);
-                    newMarkers[props.chargeBoxId] = marker;
-                }
-            });
-            for( let id in this.markersOnScreen) {
-                if (!newMarkers[id]) {
-                    this.markersOnScreen[id].remove();
+        drawMarkers() {
+            if(Object.keys(this.markers.length === 0)) {
+                for(let key in this.chargeBoxData.data) {
+                    this.drawMapboxMarker(this.chargeBoxData.data[key]);
                 }
             }
-            this.markersOnScreen = newMarkers;
         },
         drawMapboxMarker(item) {
             const that = this,
@@ -270,7 +174,8 @@ export default {
                             element: el
                         },
                   marker = new mapboxgl.Marker(option)
-                            .setLngLat(item.loc);
+                            .setLngLat(item.loc)
+                            .addTo(this.MapBoxObject);
             marker.getElement().addEventListener('click', () => {
                 that.getMarkerLoading(marker, true);
                 that.getMapboxPosInfoHtml(item.chargeBoxId, (info) => {
@@ -278,7 +183,7 @@ export default {
                     const option = {
                         offset: [20,-10],
                         anchor: 'left',
-                        maxWidth: '360px'
+                        maxWidth: '256px'
                     };
                     const popup = new mapboxgl.Popup(option).setHTML(info);
 
@@ -289,7 +194,6 @@ export default {
                 });
             });
             that.markers[item.chargeBoxId] = marker;
-            return marker;
         },
         getMarkerLoading(marker, loadingBool) {
             const classList = marker.getElement().classList;
@@ -331,21 +235,79 @@ export default {
                         //         </li>
             return info;
         },
-        drawMapboxClusters() {
+        fetchData() {
             const that = this;
+            let param = {};
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            if (this.filter.chargeBoxId) {
+                param.chargeBoxId = this.filter.chargeBoxId;
+            }
+            this.removeMapboxMarkers();
+            this.chargeBoxData.data = {};
+            this.chargeBoxData.isLoading = true;
+            $HTTP_getChargeBoxListForMap(param).then((data) => {
+                that.chargeBoxData.isLoading = false;
+                if (!!data.success) {
+                    data.chargeBoxList.forEach(item => {
+                        item.loc = {
+                            lng: item.lon,
+                            lat: item.lat
+                        }
+                        that.chargeBoxData.data[item.chargeBoxId] = Object.assign({}, item);
+                        that.drawMapboxMarker(item);
+                        console.log('fetchData drawMapboxMarker')
+                    });
+                    that.drawMapboxClusters();
+                    if (!that.filter.chargeBoxId) {
+                        that.removeMapboxMarkers();
+                    }
+                    that.MapBoxObject.setCenter([data.centerLocInfo.lon, data.centerLocInfo.lat]);
+                    that.MapBoxObject.setZoom(data.centerLocInfo.zoomSize);
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log(err)
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchChargerBoxList(callBack) {
+            const that = this;
+            let param = {};
+            if (this.filter.operatorTypeId) {
+                param.operatorTypeId = (this.filter.operatorTypeId === 1)? '': this.filter.operatorTypeId;
+            }
+            this.chargerBoxList.isLoading = true;
+            $HTTP_getChargeBoxListForSelect(param).then((data) => {
+                this.chargerBoxList.isLoading = false;
+                this.chargerBoxList.data = {};
+                if (!!data.success) {
+                    data.chargeBoxList.forEach(item => {
+                        this.chargerBoxList.data[item.chargeBoxId] = item.chargeBoxName;
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                callBack && callBack();
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        drawMapboxClusters() {
+            const that = this
             const geoJson = {
                 type: 'FeatureCollection',
                 features: []
             };
             const setOneFeature = (key, obj) => {
-                const { lat, lng } = obj.loc;
+                const { lat, lng } = obj.loc
                 return {
                     type: 'Feature',
                     properties: {
-                        chargeBoxId: key,
-                        lng: lng,
-                        lat: lat,
-                        chargeBoxStatus: obj.chargeBoxStatus
+                        id: key
                     },
                     geometry: {
                         type: 'Point',
@@ -353,30 +315,39 @@ export default {
                     }
                 }
             }
-            const mySource = this.MapBoxObject.getSource('custom');
-            for(let key in this.chargeBoxData.data) {
-                const feature = setOneFeature(key, this.chargeBoxData.data[key]);
-                geoJson.features.push(feature);
-            }
-            if (!mySource) {
-                this.MapBoxObject.addSource('custom', {
+            Object.keys(this.chargeBoxData.data).map(key => {
+                const obj = setOneFeature(key, this.chargeBoxData.data[key])
+                geoJson.features.push(obj)
+            })
+            this.mapboxLoadingPromise.then(() => {
+                if (!this.MapBoxObject.getSource('custom')) {
+                    this.MapBoxObject.addSource('custom', {
                     type: 'geojson',
-                    data: geoJson,
-                    cluster: true,
-                    // clusterMaxZoom: 18,
-                    clusterRadius: 50,
-                    clusterMinPoints: 5
+                        data: geoJson,
+                        cluster: true,
+                        clusterMaxZoom: 14,
+                        clusterRadius: 50
+                    });
+                    this.MapBoxObject.addLayer(clusters);
+                    this.MapBoxObject.addLayer(clusterCount);
+                }
+            });
+            this.MapBoxObject.on('click', 'clusters', function (e) {
+                var features = that.MapBoxObject.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
                 });
-            } else {
-                mySource.setData(geoJson);
-            }
-            if (!this.MapBoxObject.getLayer('clusters')) {
-                this.MapBoxObject.addLayer(clusters);
-                this.MapBoxObject.addLayer(clusterCount);
-            }
-            window.setTimeout(() => {
-                that.updateMarkers();
-            }, 1500);
+                var clusterId = features[0].properties.cluster_id;
+                that.MapBoxObject.getSource('custom').getClusterExpansionZoom(
+                    clusterId,
+                    function (err, zoom) {
+                        if (err) return;
+                        that.MapBoxObject.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom
+                        });
+                    }
+                );
+            });
         },
         handleOperatorChanged() {
             const that = this;
@@ -396,7 +367,7 @@ export default {
 }
 #mapboxBox {
     width: 100%;
-    height: calc(95.2vh - 68px - 58px - 2vh);
+    height: calc(95.2vh - 68px - 54px - 2vh);
     position: relative;
     background: #a1c1fb;
     box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10);
@@ -423,7 +394,6 @@ export default {
             line-height: 24px;
             margin-left: 10px;
             color: #151E25;
-            font-size: 1.125rem;
         }
         img {
             width: 24px;

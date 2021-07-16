@@ -12,7 +12,7 @@
                 "lat": 42.677411,
                 "lng": -87.916993
             },
-            "status": 1
+            "chargeBoxStatus": 1
         },
         {
             "stationId": "C000002",
@@ -25,7 +25,7 @@
                 "lat": 42.676411,
                 "lng": -87.916993
             },
-            "status": 4
+            "chargeBoxStatus": 4
         }
     ]
 }

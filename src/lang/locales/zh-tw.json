@@ -160,7 +160,10 @@
         },
         "itemPosition": "{item}位置",
         "connection": "連接",
-        "disconnection": "斷開"
+        "disconnection": "斷開",
+        "chargingDuration": "充電時間",
+        "minOutputPower": "最小輸出功率",
+        "maxOutputPower": "最大輸出功率"
     },
     "userAccount": {
         "userName": "會員名稱",

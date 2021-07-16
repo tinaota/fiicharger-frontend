@@ -14,7 +14,7 @@
             <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('chargingStation.sessionID')" :width="120">
                 <template slot-scope="scope">
-                    <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
+                    <el-popover trigger="click" popper-class="dark" width="800" placement="left" :offset="-20" :visible-arrow="false">
                         <el-table :data="[scope.row.sessionInfo]">
                             <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')"></el-table-column>
                             <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>

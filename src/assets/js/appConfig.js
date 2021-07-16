@@ -42,18 +42,18 @@ export const buildingsIn3D = {
 export const clusters = {
     id: 'clusters',
     type: 'circle',
-    source: 'poles',
+    source: 'custom',
     filter: ['has', 'point_count'],
     paint: {
         // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
         'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#51bbd6',
+            '#1e5eff',
             100,
-            '#51bbd6',
+            '#1e5eff',
             750,
-            '#51bbd6'
+            '#1e5eff'
         ],
         'circle-radius': [
             'step',
@@ -72,12 +72,12 @@ export const clusters = {
 export const clusterCount = {
     id: 'cluster-count',
     type: 'symbol',
-    source: 'poles',
+    source: 'custom',
     filter: ['has', 'point_count'],
     layout: {
         'text-field': '{point_count_abbreviated}',
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-        'text-size': 12
+        'text-size': 18
     },
     paint: {
         'text-color': '#fff',

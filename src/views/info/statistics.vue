@@ -37,8 +37,8 @@
                         <div class="label">{{ $t('dashboard.energyUsedUnit') }}</div>
                         <div class="content">
                             <span>{{ new Intl.NumberFormat('en-IN').format(statistics.energyUsedUnit[0]) }}</span>
-                            <i v-if="statistics.energyUsedUnit[1]>0" class="el-icon-top"> {{ statistics.energyUsedUnit[1] }}%</i>
-                            <i v-else class="el-icon-bottom"> {{ statistics.energyUsedUnit[1] }}%</i>
+                            <i v-if="statistics.energyUsedUnit[1]>0" class="el-icon-top"><span>{{ statistics.energyUsedUnit[1] }}%</span></i>
+                            <i v-else class="el-icon-bottom"><span>{{ statistics.energyUsedUnit[1] }}%</span></i>
                         </div>
                     </div>
                     <div class="item">
@@ -258,7 +258,7 @@ export default {
                 letter-spacing: 0;
                 i {
                     margin-left: 12px;
-                    font-size: 1.5rem;
+                    font-size: 1rem;
                     &.el-icon-top {
                         color: #FD2D55;
                     }
@@ -279,7 +279,7 @@ export default {
     ul.rank {
         margin-top: 24px;
         padding-left: 0;
-        margin: 32px 0 0 0;
+        margin: 28px 0 0 0;
         li {
             height: 26px;
             list-style: none;
@@ -291,7 +291,7 @@ export default {
                 margin-bottom: 6px;
                 height: 20px;
                 line-height: 20px;
-                font-size: 0.875rem;
+                font-size: 1rem;
                 .name {
                     display: inline-block;
                     color: #525E69;

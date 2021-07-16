@@ -13,11 +13,12 @@
         th {
             background-color: transparent;
             padding: 0;
-            font-size: 0.875rem;
+            font-size: 1rem;
             border: none;
             color: #525E69;
             letter-spacing: 0;
             border-bottom: 1px solid #DCE6F3;
+            font-weight: normal;
             &.center .cell {
                 text-align: center;
             }
@@ -27,7 +28,7 @@
         }
         td {
             padding: 0;
-            font-size: 0.875rem;
+            font-size: 1rem;
             color: #151E25;
             border: none;
             &.center .cell {
@@ -87,7 +88,6 @@
     margin-bottom: 28px;
     tbody tr {
         td {
-            font-size: 0.875rem;
             border-bottom: 1px solid #DCE6F3;
             .el-popover__reference {
                 cursor: pointer;
