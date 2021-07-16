@@ -68,13 +68,14 @@
                 </div>
             </div>
             <div class="card-8 rank-area">
-                <div class="header">{{ $t('dashboard.powerUsedTop10') }}
-                    <el-select
+                <div class="header">
+                    <div class="title">{{ $t('dashboard.powerUsedTop10') }}</div>
+                    <!-- <el-select
                         class="select-small right"
                         v-model="powerUsedTop10Day"
                         @change="handleSelected('p10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
                 </div>
                 <ul class="rank">
                     <li v-for="(item, idx) in powerUsedTop10.pData" :key="idx">
@@ -87,13 +88,14 @@
                 </ul>
             </div>
             <div class="card-8 rank-area">
-                <div class="header">{{ $t('dashboard.revenueTop10') }}
-                    <el-select
+                <div class="header">
+                    <div class="title">{{ $t('dashboard.revenueTop10') }}</div>
+                    <!-- <el-select
                         class="select-small right"
                         v-model="revenueTop10Day"
                         @change="handleSelected('r10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
                 </div>
                 <ul class="rank">
                     <li v-for="(item, idx) in revenueTop10.pData" :key="idx">
@@ -106,13 +108,14 @@
                 </ul>
             </div>
             <div class="card-8 rank-area">
-                <div class="header">{{ $t('dashboard.sessionTop10') }}
-                    <el-select
+                <div class="header">
+                    <div class="title">{{ $t('dashboard.sessionTop10') }}</div>
+                    <!-- <el-select
                         class="select-small right"
                         v-model="sessionTop10Day"
                         @change="handleSelected('s10')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
                 </div>
                 <ul class="rank">
                     <li v-for="(item, idx) in sessionTop10.pData" :key="idx">
@@ -125,13 +128,14 @@
                 </ul>
             </div>
             <div class="card-8 rank-area">
-                <div class="header">{{ $t('dashboard.faultsTypeTop5') }}
-                    <el-select
+                <div class="header">
+                    <div class="title">{{ $t('dashboard.faultsTypeTop5') }}</div>
+                    <!-- <el-select
                         class="select-small right"
                         v-model="faultsTypeTop5Day"
                         @change="handleSelected('f5')">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
                 </div>
                 <ul class="rank">
                     <li v-for="(item, idx) in faultsTypeTop5.pData" :key="idx">
@@ -152,6 +156,7 @@ import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
+            lang: '',
             curOperator: '',
             operatorList: [],
             daySelectList: i18n.t('dashboard.daySelectList'),
@@ -187,6 +192,7 @@ export default {
         }
     },
     created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();
@@ -238,13 +244,17 @@ export default {
 <style lang = "scss" scoped>
 .statistics {
     width: calc(100% - 40px);
+    .header {
+        height: 28px;
+        line-height: 28px;
+    }
     .s-contain {
-        width: calc(100% - 32px);
-        padding: 0 0 0 32px;
+        width: calc(100% - 18px);
+        padding: 0 0 0 18px;
         .item {
             padding: 16px 0 8px 0;
             display: inline-block;
-            width: calc(50% - 16px);
+            width: calc(33.33% - 6px);
             float: left;
             .label {
                 font-size: 1rem;
@@ -257,7 +267,7 @@ export default {
                 color: #151E25;
                 letter-spacing: 0;
                 i {
-                    margin-left: 12px;
+                    /* margin-left: 12px; */
                     font-size: 1rem;
                     &.el-icon-top {
                         color: #FD2D55;
@@ -271,11 +281,16 @@ export default {
     }
 }
 .rank-area {
-    width: calc(100% - 40px);
-    height: 600px;
+    /* width: calc(100% - 40px); */
+    width: calc(25% - 40px - 9px);
+    margin-right: 12px;
+    height: 580px;
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
+    &:nth-child(4n+1) {
+        margin-right: 0px;
+    }
     ul.rank {
         margin-top: 24px;
         padding-left: 0;
@@ -306,17 +321,22 @@ export default {
     }
 }
 
-@media only screen and (max-width: 1600px) and (min-width: 1201px) {
+/* @media only screen and (max-width: 1600px) and (min-width: 1201px) {
     .statistics .s-contain .item {
         width: calc(33.33% - 11px);
     }
 }
 @media (min-width: 1601px) {
     .statistics .s-contain .item {
-        width: calc(16.67% - 5.34px);
+        width: calc(16.667% - 5.34px);
+    }
+} */
+@media (min-width: 1251px) {
+    .statistics .s-contain .item {
+        width: calc(16.667% - 3px);
     }
 }
-@media only screen and (max-width: 1850px) and (min-width: 1201px) {
+/* @media only screen and (max-width: 1850px) and (min-width: 1201px) {
     .rank-area {
         width: calc(50% - 40px - 12px);
         margin-right: 24px;
@@ -324,8 +344,8 @@ export default {
             margin-right: 0px;
         }
     }
-}
-@media (min-width: 1851px) {
+} */
+/* @media (min-width: 1851px) {
     .rank-area {
         width: calc(25% - 40px - 18px);
         margin-right: 24px;
@@ -333,5 +353,5 @@ export default {
             margin-right: 0px;
         }
     }
-}
+} */
 </style>

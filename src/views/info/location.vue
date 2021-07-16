@@ -1,30 +1,30 @@
 <template>
     <div class="mainctrl">
+        <div id="mapboxBox" v-loading="chargeBoxData.isLoading" />
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
         </el-breadcrumb>
-        <br/>
-        <el-select
-            class="select-small large"
-            v-model="filter.operatorTypeId"
-            :placeholder="$t('general.operator')"
-            @change="handleOperatorChanged()"
-            clearable>
-            <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-        </el-select>
-        <el-select
-            class="select-small large"
-            v-model="filter.chargeBoxId"
-            :placeholder="$t('menu.chargePoint')"
-            v-loading="chargerBoxList.isLoading"
-            @change="fetchData()"
-            clearable
-            filterable>
-            <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
-        </el-select>
-        <br/>
-        <div id="mapboxBox" v-loading="chargeBoxData.isLoading" />
+        <div class="loc-filter">
+            <el-select
+                class="select-small large"
+                v-model="filter.operatorTypeId"
+                :placeholder="$t('general.operator')"
+                @change="handleOperatorChanged()"
+                clearable>
+                <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
+            </el-select>
+            <el-select
+                class="select-small large"
+                v-model="filter.chargeBoxId"
+                :placeholder="$t('menu.chargePoint')"
+                v-loading="chargerBoxList.isLoading"
+                @change="fetchData()"
+                clearable
+                filterable>
+                <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
+            </el-select>
+        </div>
         <div class="hint-bar">
             <div class="item"><img :src="icon.normal"><span>{{$t('general.available')}}</span></div>
             <div class="item"><img :src="icon.serviceUnavailable"><span>{{$t('general.unavailable')}}</span></div>
@@ -47,6 +47,7 @@ const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
         return {
+            lang: '',
             operatorList: {
                 1: i18n.t('general.all'),
                 2: "MidwestFiber",
@@ -88,6 +89,9 @@ export default {
             mapboxLoadingPromise: {},
             currentPopUp: null
         }
+    },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         const that = this;
@@ -201,10 +205,20 @@ export default {
                         if (err) return;
                         that.MapBoxObject.easeTo({
                             center: features[0].geometry.coordinates,
-                            zoom: zoom
+                            zoom: zoom,
+                            // duration: 400
                         });
+                        // that.updateMarkers();
+                        window.setTimeout(() => {
+                            that.updateMarkers();
+                        }, 800);
                     }
                 );
+            });
+            this.MapBoxObject.on('mousemove', function() {
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.isSourceLoaded('custom')) {
+                    that.updateMarkers();
+                };
             });
             this.MapBoxObject.on('zoom', function () {
                 if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.isSourceLoaded('custom')) {
@@ -392,18 +406,34 @@ export default {
 </script>
 <style lang = "scss" scoped>
 .mainctrl {
-    /* padding: 0; */
+        /* padding: 2.4vh 1.6vw 2.4vh 1.6vw; */
+    .el-breadcrumb {
+        display: block;
+        position: absolute;
+        top: calc(68px + 2.4vh);
+        left: calc(208px + 1.6vw);
+    }
+    .loc-filter {
+        position: absolute;
+        top: calc(68px + 2.4vh + 27px);
+        left: calc(208px + 1.6vw);
+    }
 }
 #mapboxBox {
-    width: 100%;
-    height: calc(95.2vh - 68px - 58px - 2vh);
-    position: relative;
+    width: calc(100vw - 208px);
+    /* height: calc(95.2vh - 68px - 58px - 2vh); */
+    height: calc(100vh - 68px);
+    position: absolute;
     background: #a1c1fb;
-    box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10);
+    top: 68px;
+    left: 208px;
+    z-index: 0;
+    /* box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10); */
 }
 .hint-bar {
     position:absolute;
-    bottom: calc(2.4vh + 2vh);
+    /* bottom: calc(2.4vh + 2vh); */
+    bottom: calc(2.5vh);
     width: auto;
     height: auto;
     padding: 10px 18px;

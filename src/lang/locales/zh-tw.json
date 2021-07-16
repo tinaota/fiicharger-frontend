@@ -15,11 +15,14 @@
         "chargePointAlert": "充電樁警示",
         "setting": "設定",
         "memberAccount": "會員帳號",
-        "account": "帳號列表",
-        "billingLog": "帳單資訊",
+        "account": "帳號",
+        "billing": "帳單",
+        "billingLog": "帳單紀錄",
         "support": "支援",
         "workOrder": "工單",
-        "myAccount": "我的帳戶"
+        "myAccount": "我的帳戶",
+        "operator": "運營商",
+        "endUser": "終端用戶"
     },
     "login": {
         "login": "登入",
@@ -79,7 +82,9 @@
         "businessHours": "營業時間",
         "type": "類型",
         "name": "名稱",
-        "operator": "操作員"
+        "operator": "操作員",
+        "billingAmt": "費用",
+        "installationDate": "安裝日期"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",

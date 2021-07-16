@@ -124,6 +124,7 @@ export default {
     },
     data() {
         return {
+            lang: '',
             operatorList: {
                 1: i18n.t('general.all'),
                 2: "MidwestFiber",
@@ -162,7 +163,9 @@ export default {
                     onPeakElectricityRate: 0,
                     onPeakElectricityRateType: 1,
                     offPeakElectricityRate: 0,
-                    offPeakElectricityRateType: 1
+                    offPeakElectricityRateType: 1,
+                    parkingRate: 0,
+                    installationDate: ''
                 }
             },
             mapDialog: {
@@ -174,6 +177,9 @@ export default {
                 }
             }
         }
+    },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         // const that = this;

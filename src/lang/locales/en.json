@@ -16,10 +16,13 @@
         "setting": "Setting",
         "memberAccount": "Member Account",
         "account": "Account",
+        "billing": "Billing",
         "billingLog": "Billing Log",
         "support": "Support",
         "workOrder": "Work Order",
-        "myAccount": "My Account"
+        "myAccount": "My Account",
+        "operator": "Operator",
+        "endUser": "End User"
     },
     "login": {
         "login": "Login",
@@ -79,7 +82,9 @@
         "businessHours": "Business Hours",
         "type": "Type",
         "name": "Name",
-        "operator": "Operator"
+        "operator": "Operator",
+        "billingAmt": "Billing amt.",
+        "installationDate": "Installation Date"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Used(kWh)",

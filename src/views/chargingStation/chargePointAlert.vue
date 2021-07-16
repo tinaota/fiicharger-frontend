@@ -41,7 +41,6 @@
                     <el-table-column prop="alertId" :label="$t('chargingStation.alertID')"></el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column> -->
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
-                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')">
                         <template slot-scope="scope">
                             <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
@@ -78,6 +77,7 @@ export default {
     },
     data() {
         return {
+            lang: '',
             operatorList: ["Fiicharger", "MidwestFiber", "APT"],
             filter: {
                 tmpSearch: '',
@@ -94,6 +94,9 @@ export default {
                 },
             }
         }
+    },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();

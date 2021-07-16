@@ -38,11 +38,12 @@
                     <el-select
                         class="select-small"
                         v-model="filter.chargeBoxId"
-                        :placeholder="$t('chargingStation.chargePointName')"
+                        :placeholder="$t('chargingStation.chargePointID')"
                         v-loading="chargerBoxList.isLoading"
                         @change="fetchData()"
-                        clearable>
-                        <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
+                        clearable
+                        style="width: 280px">
+                        <el-option v-for="(item, key) in chargerBoxList.data" :label="key" :key="key" :value="key"></el-option>
                     </el-select>
                     <el-button class="right" icon="el-icon-refresh-right" @click="fetchData()"></el-button>
                 </div>
@@ -53,7 +54,6 @@
                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="2"></el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column> -->
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
-                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')" :min-width="2"></el-table-column>
                     <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.billingInfo.powerUsage + 'kWh' }}
@@ -66,7 +66,7 @@
                     </el-table-column>
                     <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="2"></el-table-column>
                     <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.billing')" :min-width="2">
+                    <el-table-column :label="$t('general.billingAmt')" :min-width="2">
                         <template slot-scope="scope">
                             {{ currencyList[scope.row.billingInfo.unitType] + scope.row.billingInfo.price }}
                         </template>
@@ -82,7 +82,7 @@
                                             {{ scope.row.powerUsage + 'kWh' }}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column prop="power" :label="$t('chargingStation.totalPrice')">
+                                    <el-table-column prop="power" :label="$t('general.billingAmt')">
                                         <template slot-scope="scope">
                                             {{ currencyList[scope.row.unitType] + scope.row.price }}
                                         </template>
@@ -110,40 +110,40 @@
                     :title="dialog.sessionId"
                     width="80%"
                     :visible.sync="dialog.visible"
-                    :show-close="false"
-                    v-loading="dialog.isLoading">
-                    <div class="sessionDetail">
+                    :show-close="false">
+                    <div class="sessionDetail"
+                        v-loading="dialog.isLoading">
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.chargePointID')}}</div>
-                            <div class="info">PHIHONG_HQ_360kW</div>
+                            <div class="info">{{ dialog.info.chargeBoxId }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.chargePointName')}}</div>
-                            <div class="info">FiiCB27</div>
+                            <div class="info">{{ dialog.info.chargeBoxName }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('general.startTime')}}</div>
-                            <div class="info">2021-07-07 17:58:00</div>
+                            <div class="info">{{ dialog.info.chargingStartTime }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('general.endTime')}}</div>
-                            <div class="info">2021-07-07 23:58:00</div>
+                            <div class="info">{{ dialog.info.chargingEndTime }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.chargingDuration')}}</div>
-                            <div class="info">0h 0m 12s</div>
+                            <div class="info">{{ dialog.info.chargingDuration }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.powerUsed')}}</div>
-                            <div class="info">{{ "3.502" + "kWh" }}</div>
+                            <div class="info">{{ dialog.info.powerUsage + "kWh" }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.minOutputPower')}}</div>
-                            <div class="info">{{ "146.9" + "kW" }}</div>
+                            <div class="info">{{ dialog.info.minOutputPower + "kW" }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.maxOutputPower')}}</div>
-                            <div class="info">{{ "146.9" + "kW" }}</div>
+                            <div class="info">{{ dialog.info.maxOutputPower + "kW" }}</div>
                         </div>
                     </div>
                 </el-dialog>
@@ -157,13 +157,14 @@ import { $GLOBAL_CURRENCY } from '@/utils/global';
 import ChargingSessionData from "@/tmpData/chargingSessionData";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
-import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList } from "@/api/api";
+import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail } from "@/api/api";
 export default {
     components: {
         Connector
     },
     data() {
         return {
+            lang: '',
             operatorList: {
                 1: i18n.t('general.all'),
                 2: "MidwestFiber",
@@ -198,17 +199,25 @@ export default {
                 isLoading: false,
                 sessionId: '',
                 info: {
-
+                    chargeBoxId: '',
+                    chargeBoxName: '',
+                    chargingStartTime: '',
+                    chargingEndTime: '',
+                    chargingDuration: '',
+                    minOutputPower: '',
+                    maxOutputPower: '',
+                    powerUsage: ''
                 },
                 chartData: {}
             }
         }
     },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
+    },
     mounted() {
-        const that = this;
-        this.fetchChargerBoxList(()=> {
-            that.fetchData();
-        });
+        this.fetchChargerBoxList();
+        this.fetchData();
         this.fetchLocationList();
     },
     methods: {
@@ -227,7 +236,7 @@ export default {
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        fetchChargerBoxList(callBack) {
+        fetchChargerBoxList() {
             const that = this;
             this.chargerBoxList.isLoading = true;
             $HTTP_getChargeBoxListForSelect().then((data) => {
@@ -240,7 +249,6 @@ export default {
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                callBack && callBack();
             }).catch((err) => {
                 console.log('chargeBoxList', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
@@ -268,10 +276,7 @@ export default {
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargingSessionList.map(item=> {
-                        item.chargeBoxName = that.chargerBoxList.data[item.chargeBoxId] || item.chargeBoxId;
-                        return item;
-                    });
+                    this.tableData = data.chargingSessionList.slice();
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -286,12 +291,38 @@ export default {
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
+        fetchChargingSessionDetail() {
+            const that = this;
+            let param = {
+                sessionID: this.dialog.sessionId,
+                lang: this.lang
+            };
+            this.dialog.isLoading = true;
+            $HTTP_getChargingSessionDetail(param).then((data) => {
+                that.dialog.isLoading = false;
+                if (!!data.success) {
+                    that.dialog.info = Object.assign({}, data.chargingSessionInfo);
+                    that.dialog.chartData = Object.assign({}, data.chargingChartInfo);
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         changePage(page) {
             this.page = page;
         },
         openDialog(sessionId) {
+            const that = this;
             this.dialog.sessionId = sessionId;
             this.dialog.visible = true;
+            this.$jQuery(".sessionDetail").length > 0 && this.$jQuery(".sessionDetail").mCustomScrollbar('destroy');
+            that.$nextTick(() => {
+                that.fetchChargingSessionDetail();
+                setScrollBar('.sessionDetail', that);
+            });
         }
     },
 }

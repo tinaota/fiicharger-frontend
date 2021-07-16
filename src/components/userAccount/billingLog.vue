@@ -4,7 +4,7 @@
             :data="tableData.slice((page - 1) * 10, page * 10)">
             <el-table-column prop="billingId" :label="$t('chargingStation.billingID')" :min-width="1"></el-table-column>
             <el-table-column prop="billingTime" :label="$t('general.time')" :min-width="1"></el-table-column>
-            <el-table-column :label="$t('chargingStation.totalPrice')" :min-width="1">
+            <el-table-column :label="$t('general.billingAmt')" :min-width="1">
                 <template slot-scope="scope">
                     {{ "$" + scope.row.price }}
                 </template>
@@ -14,11 +14,11 @@
             <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('chargingStation.sessionID')" :width="120">
                 <template slot-scope="scope">
-                    <el-popover trigger="click" popper-class="dark" width="800" placement="left" :offset="-20" :visible-arrow="false">
+                    <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
                         <el-table :data="[scope.row.sessionInfo]">
                             <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')"></el-table-column>
                             <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
-                            <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column>
+                            <!-- <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column> -->
                             <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
                                 <template slot-scope="scope">
                                     {{ scope.row.power + 'kWh' }}
@@ -31,7 +31,7 @@
                             </el-table-column>
                             <el-table-column prop="sTime" :label="$t('general.startTime')"></el-table-column>
                             <el-table-column prop="eTime" :label="$t('general.endTime')"></el-table-column>
-                            <el-table-column :label="$t('chargingStation.totalPrice')">
+                            <el-table-column :label="$t('general.billingAmt')">
                                 <template slot-scope="scope">
                                     {{ "$" + scope.row.price }}
                                 </template>

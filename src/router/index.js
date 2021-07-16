@@ -52,15 +52,13 @@ let routes = [
                 ]
             },
             {
-                path: '/memberAccount',
-                iconCls: 'ic_user_o',
-                name: 'menu.memberAccount',
+                path: '/billing',
+                iconCls: 'ic_setting_o',
+                name: 'menu.billing',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/account', component: () => import('@/views/memberAccount/account.vue'), name: 'menu.account', hidden: false },
-                    { path: '/account/accountDetail', component: () => import('@/views/memberAccount/accountDetail.vue'), name: 'accountDetail', hidden: true },
-                    { path: '/billingLog', component: () => import('@/views/memberAccount/billingLog.vue'), name: 'menu.billingLog', hidden: false },
+                    { path: '/billingLog', component: () => import('@/views/billing/billingLog.vue'), name: 'menu.billingLog', hidden: false },
                 ]
             },
             {
@@ -73,14 +71,27 @@ let routes = [
                     { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false }
                 ]
             },
+            // {
+            //     path: '/setting',
+            //     iconCls: 'ic_setting_o',
+            //     name: 'menu.setting',
+            //     hasChild: true,
+            //     component: () => import('@/components/data.vue'),
+            //     children: [
+            //         { path: '/myAccount', component: () => import('@/views/setting/myAccount.vue'), name: 'menu.myAccount', hidden: false },
+            //     ]
+            // },
             {
-                path: '/setting',
-                iconCls: 'ic_setting_o',
-                name: 'menu.setting',
+                path: '/account',
+                iconCls: 'ic_user_o',
+                name: 'menu.account',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/myAccount', component: () => import('@/views/setting/myAccount.vue'), name: 'menu.myAccount', hidden: false },
+                    // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
+                    { path: '/account/accountDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
+                    { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
+                    { path: '/endUser', component: () => import('@/views/account/endUser.vue'), name: 'menu.endUser', hidden: false },
                 ]
             }
         ]

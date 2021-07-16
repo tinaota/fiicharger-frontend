@@ -15,11 +15,14 @@
         "chargePointAlert": "充电桩警示",
         "setting": "设定",
         "memberAccount": "会员帐号",
-        "account": "帐号列表",
-        "billingLog": "帐单资讯",
+        "account": "帐号",
+        "billing": "帐单",
+        "billingLog": "帐单纪录",
         "support": "支援",
         "workOrder": "工单",
-        "myAccount": "我的帐户"
+        "myAccount": "我的帐户",
+        "operator": "运营商",
+        "endUser": "终端用户"
     },
     "login": {
         "login": "登入",
@@ -79,7 +82,9 @@
         "businessHours": "营业时间",
         "type": "类型",
         "name": "名称",
-        "operator": "操作员"
+        "operator": "操作员",
+        "billingAmt": "费用",
+        "installationDate": "安装日期"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",

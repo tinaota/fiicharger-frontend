@@ -2,11 +2,18 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.memberAccount') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.billing') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.billingLog') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-select
+                        class="select-small"
+                        :placeholder="$t('general.operator')"
+                        v-model="filter.operatorTypeId"
+                        clearable>
+                        <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                    </el-select>
                     <el-date-picker
                         v-model="filter.dateRange"
                         type="daterange"
@@ -33,7 +40,7 @@
                     <el-table-column prop="userId" :label="$t('chargingStation.userID')"></el-table-column>
                     <el-table-column prop="billingId" :label="$t('chargingStation.billingID')"></el-table-column>
                     <el-table-column prop="billingTime" :label="$t('general.time')"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.totalPrice')">
+                    <el-table-column :label="$t('general.billingAmt')">
                         <template slot-scope="scope">
                             {{ "$" + scope.row.price }}
                         </template>
@@ -48,11 +55,11 @@
                     <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')"></el-table-column>
                     <el-table-column :label="$t('chargingStation.sessionID')" :width="120">
                         <template slot-scope="scope">
-                            <el-popover trigger="click" popper-class="dark" width="800" placement="left" :offset="-20" :visible-arrow="false">
+                            <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
                                 <el-table :data="[scope.row.sessionInfo]">
                                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')"></el-table-column>
                                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
-                                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column>
+                                    <!-- <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column> -->
                                     <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
                                         <template slot-scope="scope">
                                             {{ scope.row.power + 'kWh' }}
@@ -63,7 +70,7 @@
                                             <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column :label="$t('chargingStation.billing')">
+                                    <el-table-column :label="$t('general.billingAmt')">
                                         <template slot-scope="scope">
                                             {{ "$" + scope.row.price }}
                                         </template>
@@ -99,10 +106,17 @@ export default {
     },
     data() {
         return {
+            lang: '',
+            operatorList: {
+                1: i18n.t('general.all'),
+                2: "MidwestFiber",
+                3: "APT"
+            },
             filter: {
                 tmpSearch: '',
                 search: '',
                 dateRange: [],
+                operatorTypeId: ''
             },
             tableData: [],
             page: 1,
@@ -113,6 +127,9 @@ export default {
                 },
             }
         }
+    },
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();

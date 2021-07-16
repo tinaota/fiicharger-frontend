@@ -115,3 +115,8 @@ export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/Cha
  * @description 取得充電樁地圖打點資訊
  */
 export const $HTTP_getChargeBoxInfoForMap = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxInfoForMap`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電紀錄明細
+ */
+export const $HTTP_getChargingSessionDetail = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionDetail`, qs.stringify(params)) }

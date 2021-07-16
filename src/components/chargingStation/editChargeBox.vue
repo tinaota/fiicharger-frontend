@@ -88,6 +88,17 @@
                 <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
                 <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
             </div>
+            <div class="form-item">
+                <div class="label">{{ $t('general.installationDate') }}</div>
+                <el-date-picker
+                    v-model="dialog.info.installationDate"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    :picker-options="pickerOptions"
+                    :clearable="false">
+                </el-date-picker>
+            </div>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -133,7 +144,8 @@ export default {
                         onPeakElectricityRateType: 1,
                         offPeakElectricityRate: 0,
                         offPeakElectricityRateType: 1,
-                        parkingRate: 0
+                        parkingRate: 0,
+                        installationDate: ''
                     }
                 };
             }
@@ -166,7 +178,12 @@ export default {
                 icon: require('imgs/ic_info_green.png')
             },
             currencyList: $GLOBAL_CURRENCY,
-            serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')]
+            serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')],
+            pickerOptions: {
+                disabledDate(time) {
+                return time.getTime() > Date.now();
+                }
+            },
         }
     },
     beforeDestroy() {
@@ -284,7 +301,8 @@ export default {
                     onPeakElectricityRateType: that.dialog.info.onPeakElectricityRateType,
                     offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
                     offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
-                    parkingRate: that.dialog.info.parkingRate
+                    parkingRate: that.dialog.info.parkingRate,
+                    installationDate: that.dialog.info.installationDate
                   },
                   sucMsg = "";
             if (!that.dialog.type) {

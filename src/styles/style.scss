@@ -88,7 +88,7 @@
         .el-breadcrumb__item {
             .el-breadcrumb__inner,
             .el-breadcrumb__separator {
-                font-size: 0.875rem;
+                font-size: 1rem;
                 color: #525E69;
                 letter-spacing: 1.25px;
                 font-weight: 400;
@@ -99,10 +99,10 @@
         float: right;
     }
     .large.el-select {
-        width: 230px;
+        width: 180px;
         margin-bottom: 12px;
         input {
-            font-size: 2rem;
+            font-size: 1.5rem;
             background: transparent;
             border: unset;
             color: #151E25;
@@ -534,6 +534,9 @@ button:disabled {
                     color: #525E69;
                 }
             }
+        }
+        .el-date-editor .el-icon-date {
+            color: #151E25;
         }
     }
     .hint {

@@ -2,8 +2,8 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.memberAccount') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.account') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.endUser') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
