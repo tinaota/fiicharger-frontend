@@ -87,7 +87,7 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.tableData = [Object.assign({}, data.accountInfo)];
-                    this.billingLogData = AccountListDetailData[this.curRouteParam.memberCode].billingLog.slice();
+                    this.billingLogData = AccountListDetailData['mem1623271199'].billingLog.slice();
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

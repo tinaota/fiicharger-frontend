@@ -1,0 +1,78 @@
+{
+    "operatorList": ["All", "MidwestFiber", "APT"],
+    "statistics": {
+        "billing": [112, 1.68],
+        "energyUsedUnit": [1680, 1.68],
+        "nAccount": 500,
+        "nStation": 100,
+        "nSession": 2500,
+        "nConnector": 200
+    },
+    "powerUsedTop10": {
+        "most": {
+            "id": "US053177-A004A0",
+            "val": 109.3
+        },
+        "data": [
+            { "id": "US053177-A004A0", "val": 109.3 },
+            { "id": "TW236044-A004A1", "val": 88.1 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
+    },
+    "revenueTop10": {
+        "most": {
+            "id": "US053177-A004A0",
+            "val": 10000
+        },
+        "data": [
+            { "id": "US053177-A004A0", "val": 10000 },
+            { "id": "TW236044-A004A1", "val": 1500 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
+    },
+    "sessionTop10": {
+        "most": {
+            "id": "US053177-A004A0",
+            "val": 2000
+        },
+        "data": [
+            { "id": "US053177-A004A0", "val": 2000 },
+            { "id": "TW236044-A004A1", "val": 500 },
+            { "id": "FiiCB20", "val": 17 },
+            { "id": "FiiCB16", "val": 15 },
+            { "id": "FiiCB21", "val": 12 },
+            { "id": "FiiCB22", "val": 10 },
+            { "id": "FiiCB19", "val": 6 },
+            { "id": "FiiCB23", "val": 5 },
+            { "id": "FiiCB15", "val": 3 },
+            { "id": "FiiCB24", "val": 1 }
+        ]
+    },
+    "faultsTypeTop5": {
+        "most": {
+            "id": "Ground Fault",
+            "val": 10
+        },
+        "data": [
+            { "id": "Ground Fault", "val": 10 },
+            { "id": "Handshaking Fault", "val": 6 },
+            { "id": "Over Voltage", "val": 5 },
+            { "id": "Under Voltage", "val": 3 },
+            { "id": "Emergency Stop", "val": 1 }
+        ]
+    }
+}

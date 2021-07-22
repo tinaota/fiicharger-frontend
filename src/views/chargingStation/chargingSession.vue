@@ -51,21 +51,21 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
-                    <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column> -->
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
-                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="4"></el-table-column>
+                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="3">
                         <template slot-scope="scope">
                             {{ scope.row.billingInfo.powerUsage + 'kWh' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.connector')" :min-width="3">
                         <template slot-scope="scope">
                             <Connector :dataObj="scope.row.connectorInfo"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="2"></el-table-column>
-                    <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="2"></el-table-column>
+                    <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="3"></el-table-column>
+                    <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.billingAmt')" :min-width="2">
                         <template slot-scope="scope">
                             {{ currencyList[scope.row.billingInfo.unitType] + scope.row.billingInfo.price }}
@@ -92,11 +92,11 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="$t('general.action')" :width="74">
+                    <el-table-column :label="$t('general.action')" :width="74">
                         <template slot-scope="scope">
                             <el-button class="no-bg" icon="el-icon-data-line" @click="openDialog(scope.row.sessionId)"></el-button>
                         </template>
-                    </el-table-column> -->
+                    </el-table-column>
                 </el-table>
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
                 <el-pagination background layout="prev, pager, next"
@@ -145,6 +145,7 @@
                             <div class="label">{{ $t('chargingStation.maxOutputPower')}}</div>
                             <div class="info">{{ dialog.info.maxOutputPower + "kW" }}</div>
                         </div>
+                        <LineChart class="lineChart" :id="dialog.sessionId" :chartData="dialog.chartData"></LineChart>
                     </div>
                 </el-dialog>
             </div>
@@ -157,10 +158,12 @@ import { $GLOBAL_CURRENCY } from '@/utils/global';
 import ChargingSessionData from "@/tmpData/chargingSessionData";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
+import LineChart from "@/components/charts/lineChart";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail } from "@/api/api";
 export default {
     components: {
-        Connector
+        Connector,
+        LineChart
     },
     data() {
         return {
@@ -294,7 +297,7 @@ export default {
         fetchChargingSessionDetail() {
             const that = this;
             let param = {
-                sessionID: this.dialog.sessionId,
+                sessionId: this.dialog.sessionId,
                 lang: this.lang
             };
             this.dialog.isLoading = true;
@@ -317,6 +320,16 @@ export default {
         openDialog(sessionId) {
             const that = this;
             this.dialog.sessionId = sessionId;
+            this.dialog.info = {
+                                chargeBoxId: '',
+                                chargeBoxName: '',
+                                chargingStartTime: '',
+                                chargingEndTime: '',
+                                chargingDuration: '',
+                                minOutputPower: '',
+                                maxOutputPower: '',
+                                powerUsage: ''
+                            };
             this.dialog.visible = true;
             this.$jQuery(".sessionDetail").length > 0 && this.$jQuery(".sessionDetail").mCustomScrollbar('destroy');
             that.$nextTick(() => {
@@ -346,23 +359,31 @@ export default {
     .filter .dark.el-select.long {
         width: 280px;
     }
-    .sessionDetail .item {
-        display: inline-block;
-        width: calc(50% - 4px);
-        margin-bottom: 12px;
-        .label {
+    .sessionDetail {
+        max-height: calc(85vh - 50px - 7.5vh - 24px);
+        .item {
             display: inline-block;
-            width: 200px;
-            font-size: 1rem;
-            color: #525E69;
-            letter-spacing: 0;
+            width: calc(50% - 4px);
+            margin-bottom: 12px;
+            .label {
+                display: inline-block;
+                width: 200px;
+                font-size: 1rem;
+                color: #525E69;
+                letter-spacing: 0;
+            }
+            .info {
+                display: inline-block;
+                width: calc(100% - 206px);
+                font-size: 1rem;
+                color: #151E25;
+                letter-spacing: 0;
+            }
         }
-        .info {
-            display: inline-block;
-            width: calc(100% - 206px);
-            font-size: 1rem;
-            color: #151E25;
-            letter-spacing: 0;
+        .lineChart {
+            width: 100%;
+            height: 300px;
+            position: relative;
         }
     }
 }

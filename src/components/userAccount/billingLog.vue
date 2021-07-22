@@ -42,7 +42,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="total">{{ $t("general.result", {item:total})}}</div>
+        <div class="total">{{ $t("general.result", {item: total})}}</div>
         <el-pagination background layout="prev, pager, next"
             :total="total"
             :pager-count="5"
@@ -71,14 +71,19 @@ export default {
             total: 0,
         }
     },
-    watch: {
-        tableData: {
-            deep: true,
-            handler() {
-                this.total = this.tableData.length;
-                this.page = 1;
-            }
-        }
+    // watch: {
+    //     tableData: {
+    //         deep: true,
+    //         handler() {
+    //             this.total = this.tableData.length;
+    //             // console.log(this.total);
+    //             this.page = 1;
+    //         }
+    //     }
+    // },
+    mounted() {
+        this.total = this.tableData.length;
+        this.page = 1;
     },
     methods : {
         changePage(page) {

@@ -53,7 +53,7 @@ let routes = [
             },
             {
                 path: '/billing',
-                iconCls: 'ic_setting_o',
+                iconCls: 'ic_billing_o',
                 name: 'menu.billing',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),

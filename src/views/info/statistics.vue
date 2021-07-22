@@ -8,11 +8,11 @@
             <br/>
             <el-select
                 class="select-small large"
-                v-model="curOperator"
+                v-model="filter.operatorTypeId"
                 :placeholder="$t('general.operator')"
-                @change="changeOption"
+                @change="fetchData"
                 clearable>
-                <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
             <br/>
             <div class="card-8 statistics">
@@ -48,9 +48,9 @@
                         </div>
                     </div>
                     <div class="item">
-                        <div class="label">{{ $t('dashboard.nStation') }}</div>
+                        <div class="label">{{ $t('chargingStation.nChargePoint') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nStation) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nChargePoint) }}</span>
                         </div>
                     </div>
                     <div class="item">
@@ -157,15 +157,21 @@ export default {
     data() {
         return {
             lang: '',
-            curOperator: '',
-            operatorList: [],
+            filter: {
+                operatorTypeId: 1
+            },
+            operatorList: {
+                1: i18n.t('general.all'),
+                2: "MidwestFiber",
+                3: "APT"
+            },
             daySelectList: i18n.t('dashboard.daySelectList'),
             statisticsDay: '7',
             statistics: {
                 billing: [0,0],
                 energyUsedUnit: [0,0],
                 nAccount: 0,
-                nStation: 0,
+                nChargePoint: 0,
                 nSession: 0,
                 nConnector: 0
             },
@@ -199,14 +205,13 @@ export default {
     },
     methods : {
         fetchData() {
+            const data = Object.assign({},DashboardData[this.filter.operatorTypeId || 1]);
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.statistics = Object.assign({}, DashboardData.statistics);
-            this.operatorList = DashboardData.operatorList.slice();
-            // this.curOperator = this.operatorList[0];
-            this.powerUsedTop10 = this.addPercentage(DashboardData.powerUsedTop10);
-            this.revenueTop10 = this.addPercentage(DashboardData.revenueTop10);
-            this.sessionTop10 = this.addPercentage(DashboardData.sessionTop10);
-            this.faultsTypeTop5 = this.addPercentage(DashboardData.faultsTypeTop5);
+            this.statistics = data.statistics;
+            this.powerUsedTop10 = this.addPercentage(data.powerUsedTop10);
+            this.revenueTop10 = this.addPercentage(data.revenueTop10);
+            this.sessionTop10 = this.addPercentage(data.sessionTop10);
+            this.faultsTypeTop5 = this.addPercentage(data.faultsTypeTop5);
             setScrollBar('.scroll', this);
         },
         changeOption() {

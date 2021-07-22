@@ -22,7 +22,8 @@
         margin-bottom: 16px
     }
     .info-msg {
-        height: 120px;
+        // height: 120px;
+        height: 300px;
         overflow-y: auto;
         ul {
             padding-left: 0;
@@ -46,19 +47,18 @@
                         vertical-align: middle;
                     }
                 }
-                // .item-title {
-                //     padding-left: 24px;
-                //     color: #525E69;
-                //     letter-spacing: 0;
-                // }
+                .item-title {
+                    padding-left: 24px;
+                    color: #525E69;
+                    letter-spacing: 0;
+                }
                 .item-msg {
                     color: #000013;
                     letter-spacing: 0;
                     padding-left: 24px;
                     margin-top: 4px;
-                    img {
-                        width: 52px;
-                        height: 92px;
+                    + .item-title {
+                        margin-top: 12px;
                     }
                 }
             }

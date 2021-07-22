@@ -11,8 +11,6 @@ export default {
             type: Object,
             default: function() {
                 return {
-                    unit: '',
-                    xUnit: '',
                     xList: [],
                     yList: [],
                 };
@@ -25,6 +23,7 @@ export default {
             nameList: [],
             seriesData: [],
             legendList: [],
+            yAxisData: []
         };
     },
     created() {},
@@ -45,13 +44,13 @@ export default {
     computed: {
         chartId: function() {
             let chart = this.$echarts.init(this.$refs[this.id]);
-            chart.showLoading({
+            /*chart.showLoading({
                 text: '',
                 color: '#409EFF',
                 maskColor: 'rgba(0, 0, 0, 0.9)',
                 spinnerRadius: 20,
                 lineWidth: 2
-            });
+            });*/
             return chart;
         }
     },
@@ -68,14 +67,21 @@ export default {
             that.seriesData = [];
             that.nameList = [];
             that.legendList = [];
-            that.chartData.yList.forEach((item, idx) => {
-                const rightOffset = (that.chartData.yList.length - idx) * 76 - 45;
+            that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
+                let rightOffset = 0;
+                if (!idx) {
+                    rightOffset = that.chartData.yList.length * 76 - 35;
+                } else {
+                    rightOffset = (that.chartData.yList.length - idx) * 76 - 55;
+                }
                 let info = {
                         name: item.name,
                         type: "line",
                         symbol:'circle',
-                        // symbolSize: 8,
+                        symbolSize: 10,
                         data: item.value,
+                        areaStyle: {},
+                        yAxisIndex: idx,
                         // itemStyle: {
                         //     color: '#162951',
                         //     borderColor: color[idx],
@@ -95,12 +101,12 @@ export default {
                             name: item.name,
                             icon: "circle",
                         }],
-                        // top: "0",
-                        // right: rightOffset.toString(),
-                        // textStyle: {
-                        //     fontSize: 14,
-                        //     color: "#B0B0CC"
-                        // },
+                        top: "0",
+                        right: rightOffset.toString(),
+                        textStyle: {
+                            fontSize: 14,
+                            color: "#525E69"
+                        },
                         // itemStyle: {
                         //     color: color[idx]
                         // }
@@ -109,21 +115,80 @@ export default {
                 that.nameList.push(item.name);
                 that.legendList.push(legend);
             });
+            that.yAxisData = [
+                        {
+                            type: "value",
+                            name: "(kWh)",
+                            axisLabel: {
+                                margin: 16,
+                                textStyle: {
+                                    fontSize: 14,
+                                    color: "#0c83ff"
+                                }
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#525E69'
+                                }
+                            },
+                            nameTextStyle: {
+                                padding: [0, 0, 5, -55],
+                                color: "#0c83ff",
+                                fontWeight: 'bold',
+                                fontSize: 14
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: "#525E69"
+                                }
+                            }
+                        },
+                        {
+                            type: "value",
+                            name: "(%)",
+                            min: 0,
+                            max: 100,
+                            axisLabel: {
+                                margin: 16,
+                                textStyle: {
+                                    fontSize: 14,
+                                    color: "#3ADB65"
+                                }
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#525E69'
+                                }
+                            },
+                            nameTextStyle: {
+                                padding: [0, 0, 5, 55],
+                                color: "#3ADB65",
+                                fontWeight: 'bold',
+                                fontSize: 14
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: "#525E69"
+                                }
+                            }
+                        }];
         },
         draw() {
-            const color = ["#1A91F8", "#FF8891", "#01AF6D", "#9B4AEB", "#D842A9", "#71E9D4", "#F6894C"];
+            const color = ["#0c83ff", "#3ADB65"];
             let options = {
                 color: color,
                 tooltip: {
                     trigger: "axis",
-                    // formatter: function(params) {
-                    //     let result = params[0].name + '<br/>';
-                    //     params.forEach((p, idx) => {
-                    //         result += `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${color[idx]};"></span>
-                    //                     ${p.seriesName}: ${p.value}<br/>`;
-                    //     });
-                    //     return result;
-                    // },
+                    formatter: function(params) {
+                        let result = params[0].name + '<br/>';
+                        params.forEach((p, idx) => {
+                            result += `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${color[idx]};"></span>
+                                        ${p.seriesName} : ${p.value} ${(idx)? '%':'kWh'} <br/>`;
+                        });
+                        return result;
+                    },
                     padding: [12,20],
                     borderColor: "#FFFFFF",
                     borderWidth: 1,
@@ -134,16 +199,15 @@ export default {
                 legend: this.legendList,
                 grid: {
                     left: "20",
-                    right: "0",
-                    top: "40",
+                    right: "20",
+                    top: "70",
                     bottom: "20",
                     containLabel: true
                 },
                 xAxis: {
-                    name: this.chartData.xUnit,
                     type: "category",
                     data: this.timeList,
-                    boundaryGap: true,
+                    boundaryGap: false,
                     nameTextStyle: {
                         padding: [0, 0, -50, 2],
                         color: "#525E69"
@@ -155,45 +219,18 @@ export default {
                     },
                     axisLabel: {
                         margin: 16,
-                        fontWeight: 'bold',
                         textStyle: {
                             fontSize: 14,
                             color: "#525E69"
                         }
                     },
                 },
-                yAxis:  {
-                    type: "value",
-                    name: this.chartData.unit,
-                    axisLabel: {
-                        margin: 16,
-                        // fontWeight: 'bold',
-                        textStyle: {
-                            fontSize: 14,
-                            color: "#525E69"
-                        }
-                    },
-                    axisLine: {
-                        show: false,
-                        lineStyle: {
-                            color: '#525E69'
-                        }
-                    },
-                    nameTextStyle: {
-                        padding: [0, 0, 5, -55],
-                        color: "#525E69"
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: "#525E69"
-                        }
-                    }
-                },
+                yAxis:  this.yAxisData,
                 series: this.seriesData
             };
-            if (this.timeList.length > 0) {
-                this.chartId.hideLoading();
-            }
+            // if (this.timeList.length > 0) {
+            //     this.chartId.hideLoading();
+            // }
             this.chartId.setOption(options);
         },
         resizeCharts: function() {

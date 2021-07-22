@@ -138,7 +138,7 @@
         "alert": "Alert",
         "workeOrder": "Work Order",
         "workeOrderStatus": "Work Order Status",
-        "nChargePoint": "Number of Charge Point",
+        "nChargePoint": "Number of Charger",
         "accumCharging": "Accumulative Charging",
         "avgPrice": "Avg Price",
         "daySelectList": {

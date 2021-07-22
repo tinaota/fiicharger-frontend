@@ -21,7 +21,8 @@
                 v-loading="chargerBoxList.isLoading"
                 @change="fetchData()"
                 clearable
-                filterable>
+                filterable
+                style="width: 240px">
                 <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
             </el-select>
         </div>
@@ -43,6 +44,7 @@ import MapStyle from '@/assets/js/mapStyle.js'
 import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getChargeBoxListForMap, $HTTP_getChargeBoxInfoForMap } from "@/api/api";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
@@ -71,7 +73,7 @@ export default {
                 revenue: require("imgs/ic_revenue.png")
             },
             filter: {
-                operatorTypeId: '',
+                operatorTypeId: 1,
                 chargeBoxId: ''
             },
             chargerBoxList: {
@@ -87,7 +89,19 @@ export default {
             markersOnScreen: {},
             MapBoxObject: null,
             mapboxLoadingPromise: {},
-            currentPopUp: null
+            currentPopUp: null,
+            connectorIcon: {
+                1: require("imgs/ic_ac_iec.png"),
+                2: require("imgs/ic_ac_tesla.png"),
+                3: require("imgs/ic_ac_sae.png"),
+                4: require("imgs/ic_ac_gbt.png"),
+                5: require("imgs/ic_ac_iec.png"),
+                6: require("imgs/ic_ac_tesla.png"),
+                7: require("imgs/ic_ac_chademo.png"),
+                8: require("imgs/ic_ac_ccs2.png"),
+                9: require("imgs/ic_ac_ccs1.png"),
+                10: require("imgs/ic_ac_gbt.png")
+            }
         }
     },
     created() {
@@ -208,7 +222,6 @@ export default {
                             zoom: zoom,
                             // duration: 400
                         });
-                        // that.updateMarkers();
                         window.setTimeout(() => {
                             that.updateMarkers();
                         }, 800);
@@ -216,12 +229,12 @@ export default {
                 );
             });
             this.MapBoxObject.on('mousemove', function() {
-                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.isSourceLoaded('custom')) {
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
                     that.updateMarkers();
                 };
             });
             this.MapBoxObject.on('zoom', function () {
-                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.isSourceLoaded('custom')) {
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
                     that.updateMarkers();
                 };
             });
@@ -326,6 +339,8 @@ export default {
             });
         },
         getPosInfoHtml: function(item) {
+            const currency = $GLOBAL_CURRENCY[item.unitType || 1],
+                  connectorHtml = this.getConnectorHtml(item.connectorList);
             let info = `<div class="info-tite">${item.chargeBoxName}</div>
                         <div class="info-msg">
                             <ul>
@@ -334,15 +349,55 @@ export default {
                                     <div class="item-msg">${item.chargeBoxId}</div>
                                 </li>
                                 <li>
-                                    <div class="item-title-img"><img src='${this.icon.charging}'>${i18n.t('chargingStation.powerUsed')}</div>
-                                    <div class="item-msg">${item.powerUsage}kWh</div>
+                                    <div class="item-title-img"><img src='${this.icon.charging}'>${i18n.t('chargingStation.power')}</div>
+                                    <div class="item-msg">${item.power}kW</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.connector')}</div>
+                                    <div class="item-msg">${connectorHtml}</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.elecRate')}</div>
+                                    <div class="item-msg">${i18n.t('chargingStation.onPeak') + ' ' + currency + item.onPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.onPeakElectricityRateType || 1]}</div>
+                                    <div class="item-msg">${i18n.t('chargingStation.offPeak') + ' ' + currency + item.offPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.offPeakElectricityRateType || 1]}</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.parkingRate')}</div>
+                                    <div class="item-msg">${currency + item.parkingRate + '/' + i18n.t('chargingStation.elecRateUnit')[1]} </div>
                                 </li>
                             </ul>
                         </div>`;
-                        // <li>
-                        //             <div class="item-title-img"><img src='${this.icon.revenue}'>${i18n.t('dashboard.revenue')}</div>
-                        //             <div class="item-msg">${item.revenue}</div>
-                        //         </li>
+            return info;
+        },
+        getConnectorHtml(connectorList) {
+            let info = '';
+            connectorList.forEach((item, idx) => {
+                info += '<div class="connector-obj">';
+                switch(item.status) {
+                    case 1:
+                        info += `<span class="circle-number color1">${item.connectorId}</span>`;
+                        break;
+                    case 2:
+                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
+                        break;
+                    case 4:
+                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
+                        break;
+                    case 5:
+                        info += `<span class="circle-number color5">${item.connectorId}</span>`;
+                        break;
+                    case 6:
+                        info += `<span class="circle-number color4">${item.connectorId}</span>`;
+                        break;
+                    case 3:
+                        info += `<span class="circular">
+                                    <div class="color6"></div>
+                                    <div class="number">${item.connectorId}</div>
+                                </span>`;
+                        break;
+                    default:
+                        info += `<span class="circle-number color0">${item.connectorId}</span>`;
+                }
+                info +=`<div class="imgItem"><img src="${this.connectorIcon[item.connectorTypeId]}"></div>
+                        </div>`
+            });
             return info;
         },
         drawMapboxClusters() {

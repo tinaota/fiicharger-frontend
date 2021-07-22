@@ -13,10 +13,10 @@
                 <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                 <el-input v-model="dialog.info.chargeBoxId"></el-input>
             </div>
-            <div class="form-item">
+            <!-- <div class="form-item">
                 <div class="label">{{ $t('general.name') }}</div>
                 <el-input v-model="dialog.info.chargeBoxName"></el-input>
-            </div>
+            </div> -->
             <div class="form-item">
                 <div class="label">{{ $t('general.lng') }}</div>
                 <el-input v-model="dialog.info.loc.lon" disabled></el-input>
@@ -130,7 +130,7 @@ export default {
                     type: 0,
                     info: {
                         chargeBoxId: '',
-                        chargeBoxName: '',
+                        // chargeBoxName: '',
                         loc: {
                             lng: '',
                             lon: '',
@@ -290,7 +290,7 @@ export default {
             let   $API,
                   params = {
                     chargeBoxId: that.dialog.info.chargeBoxId,
-                    chargeBoxName: that.dialog.info.chargeBoxName,
+                    // chargeBoxName: that.dialog.info.chargeBoxName,
                     lon: that.dialog.info.loc.lon,
                     lat: that.dialog.info.loc.lat,
                     // stationId: that.dialog.info.stationId,

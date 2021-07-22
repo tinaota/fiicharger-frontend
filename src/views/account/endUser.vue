@@ -8,7 +8,7 @@
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-input
-                        :placeholder="$t('chargingStation.userID')+'/'+$t('userAccount.userName')"
+                        :placeholder="$t('chargingStation.userID')+'/'+$t('general.name')"
                         class="dark"
                         v-model="filter.tmpSearch"
                         @keyup.enter.native="fetchData('s')"

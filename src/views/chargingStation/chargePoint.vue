@@ -25,7 +25,7 @@
                         <el-option v-for="(item, key) in stationList.data" :label="item" :key="key" :value="key"></el-option>
                     </el-select> -->
                     <el-input
-                        :placeholder="$t('chargingStation.chargePointID')+' / '+$t('general.name')"
+                        :placeholder="$t('chargingStation.chargePointID')"
                         class="dark"
                         v-model="filter.tmpSearch"
                         @keyup.enter.native="fetchData('s')"
@@ -39,7 +39,7 @@
                     class="moreCol"
                     v-loading="isLoading">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
-                    <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
+                    <!-- <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column> -->
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light" popper-class="custom">
@@ -88,7 +88,7 @@
                     <el-table-column :label="$t('general.action')" :width="96">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.chargeBoxId, scope.row.chargeBoxName)"></el-button>
+                            <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.chargeBoxId)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -151,7 +151,7 @@ export default {
                 type: 0,
                 info: {
                     chargeBoxId: '',
-                    chargeBoxName: '',
+                    // chargeBoxName: '',
                     loc: {
                         lng: '',
                         lon: '',
@@ -261,9 +261,9 @@ export default {
             }
             this.dialogVisible = true;
         },
-        deleteCheckBox(id, name) {
+        deleteCheckBox(id) {
             const that = this;
-            this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
+            this.$confirm(i18n.t('general.deleteItem', { item: id }), i18n.t('general.hint'), {
                 showClose: false,
                 customClass: 'custom'
             }).then(() => {

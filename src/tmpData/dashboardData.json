@@ -1,78 +1,209 @@
 {
-    "operatorList": ["All", "MidwestFiber", "APT"],
-    "statistics": {
-        "billing": [112, 1.68],
-        "energyUsedUnit": [1680, 1.68],
-        "nAccount": 500,
-        "nStation": 100,
-        "nSession": 2500,
-        "nConnector": 200
-    },
-    "powerUsedTop10": {
-        "most": {
-            "id": "FiiCB18",
-            "val": 20
+    "1": {
+        "statistics": {
+            "billing": [149.9, 1.5],
+            "energyUsedUnit": [299.7, 0.5],
+            "nAccount": 8,
+            "nChargePoint": 12,
+            "nSession": 446,
+            "nConnector": 17
         },
-        "data": [
-            { "id": "FiiCB18", "val": 20 },
-            { "id": "FiiCB17", "val": 18 },
-            { "id": "FiiCB20", "val": 17 },
-            { "id": "FiiCB16", "val": 15 },
-            { "id": "FiiCB21", "val": 12 },
-            { "id": "FiiCB22", "val": 10 },
-            { "id": "FiiCB19", "val": 6 },
-            { "id": "FiiCB23", "val": 5 },
-            { "id": "FiiCB15", "val": 3 },
-            { "id": "FiiCB24", "val": 1 }
-        ]
-    },
-    "revenueTop10": {
-        "most": {
-            "id": "FiiCB18",
-            "val": 20
+        "powerUsedTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 109.3
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 109.3 },
+                { "id": "US053177-A157A0", "val": 88.1 },
+                { "id": "US053177-A169A0", "val": 60.5 },
+                { "id": "TW000710-A001S0", "val": 20.7},
+                { "id": "TW000710-UTDOOR", "val": 15.3 },
+                { "id": "TW000333-_360kW", "val": 5.8 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 },
+                { "id": "TW000327-1255A0", "val": 0 }
+            ]
         },
-        "data": [
-            { "id": "FiiCB18", "val": 20 },
-            { "id": "FiiCB17", "val": 18 },
-            { "id": "FiiCB20", "val": 17 },
-            { "id": "FiiCB16", "val": 15 },
-            { "id": "FiiCB21", "val": 12 },
-            { "id": "FiiCB22", "val": 10 },
-            { "id": "FiiCB19", "val": 6 },
-            { "id": "FiiCB23", "val": 5 },
-            { "id": "FiiCB15", "val": 3 },
-            { "id": "FiiCB24", "val": 1 }
-        ]
-    },
-    "sessionTop10": {
-        "most": {
-            "id": "FiiCB18",
-            "val": 20
+        "revenueTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 55.65
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 55.65 },
+                { "id": "US053177-A157A0", "val": 40.05 },
+                { "id": "US053177-A169A0", "val": 30.25 },
+                { "id": "TW000710-A001S0", "val": 10.35 },
+                { "id": "TW000710-UTDOOR", "val": 7.65 },
+                { "id": "TW000333-_360kW", "val": 2.9 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 },
+                { "id": "TW000327-1255A0", "val": 0 }
+            ]
         },
-        "data": [
-            { "id": "FiiCB18", "val": 20 },
-            { "id": "FiiCB17", "val": 18 },
-            { "id": "FiiCB20", "val": 17 },
-            { "id": "FiiCB16", "val": 15 },
-            { "id": "FiiCB21", "val": 12 },
-            { "id": "FiiCB22", "val": 10 },
-            { "id": "FiiCB19", "val": 6 },
-            { "id": "FiiCB23", "val": 5 },
-            { "id": "FiiCB15", "val": 3 },
-            { "id": "FiiCB24", "val": 1 }
-        ]
-    },
-    "faultsTypeTop5": {
-        "most": {
-            "id": "Ground Fault",
-            "val": 10
+        "sessionTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 168
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 168 },
+                { "id": "US053177-A157A0", "val": 97 },
+                { "id": "US053177-A169A0", "val": 87 },
+                { "id": "TW000710-A001S0", "val": 54 },
+                { "id": "TW000333-_360kW", "val": 29 },
+                { "id": "TW000710-UTDOOR", "val": 11 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 },
+                { "id": "TW000327-1255A0", "val": 0 }
+            ]
         },
-        "data": [
-            { "id": "Ground Fault", "val": 10 },
-            { "id": "Handshaking Fault", "val": 6 },
-            { "id": "Over Voltage", "val": 5 },
-            { "id": "Under Voltage", "val": 3 },
-            { "id": "Emergency Stop", "val": 1 }
-        ]
+        "faultsTypeTop5": {
+            "most": {
+                "id": "Ground Fault",
+                "val": 10
+            },
+            "data": [
+                { "id": "Ground Fault", "val": 10 },
+                { "id": "Handshaking Fault", "val": 6 },
+                { "id": "Over Voltage", "val": 5 },
+                { "id": "Under Voltage", "val": 3 },
+                { "id": "Emergency Stop", "val": 1 }
+            ]
+        }
+    },
+    "2": {
+        "statistics": {
+            "billing": [129, 1],
+            "energyUsedUnit": [257.9, 0.2],
+            "nAccount": 8,
+            "nChargePoint": 6,
+            "nSession": 352,
+            "nConnector": 7
+        },
+        "powerUsedTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 109.3
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 109.3 },
+                { "id": "US053177-A157A0", "val": 88.1 },
+                { "id": "US053177-A169A0", "val": 60.5 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 }
+            ]
+        },
+        "revenueTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 54.65
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 54.65 },
+                { "id": "US053177-A157A0", "val": 40.05 },
+                { "id": "US053177-A169A0", "val": 30.25 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 }
+            ]
+        },
+        "sessionTop10": {
+            "most": {
+                "id": "US053177-A004A0",
+                "val": 168
+            },
+            "data": [
+                { "id": "US053177-A004A0", "val": 168 },
+                { "id": "US053177-A157A0", "val": 97 },
+                { "id": "US053177-A169A0", "val": 87 },
+                { "id": "US053177-1289A0", "val": 0 },
+                { "id": "US053177-1285A0", "val": 0 },
+                { "id": "US053177-A15VVV", "val": 0 }
+            ]
+        },
+        "faultsTypeTop5": {
+            "most": {
+                "id": "Ground Fault",
+                "val": 7
+            },
+            "data": [
+                { "id": "Ground Fault", "val": 7 },
+                { "id": "Handshaking Fault", "val": 5 },
+                { "id": "Over Voltage", "val": 2 },
+                { "id": "Under Voltage", "val": 1 },
+                { "id": "Emergency Stop", "val": 0 }
+            ]
+        }
+    },
+    "3": {
+        "statistics": {
+            "billing": [20.9, 0.6],
+            "energyUsedUnit": [41.8, 0.3],
+            "nAccount": 8,
+            "nChargePoint": 6,
+            "nSession": 94,
+            "nConnector": 10
+        },
+        "powerUsedTop10": {
+            "most": {
+                "id": "TW000710-A001S0",
+                "val": 20.7
+            },
+            "data": [
+                { "id": "TW000710-A001S0", "val": 20.7 },
+                { "id": "TW000710-UTDOOR", "val": 15.3 },
+                { "id": "TW000333-_360kW", "val": 5.8 },
+                { "id": "TW000327-1255A0", "val": 0 },
+                { "id": "TW000327-1237A0", "val": 0 },
+                { "id": "TW000327-3375A0", "val": 0 }
+            ]
+        },
+        "revenueTop10": {
+            "most": {
+                "id": "TW000710-A001S0",
+                "val": 10.35
+            },
+            "data": [
+                { "id": "TW000710-A001S0", "val": 10.35 },
+                { "id": "TW000710-UTDOOR", "val": 7.65 },
+                { "id": "TW000333-_360kW", "val": 2.9 },
+                { "id": "TW000327-1255A0", "val": 0 },
+                { "id": "TW000327-1237A0", "val": 0 },
+                { "id": "TW000327-3375A0", "val": 0 }
+            ]
+        },
+        "sessionTop10": {
+            "most": {
+                "id": "TW000710-A001S0",
+                "val": 54
+            },
+            "data": [
+                { "id": "TW000710-A001S0", "val": 54 },
+                { "id": "TW000333-_360kW", "val": 29 },
+                { "id": "TW000710-UTDOOR", "val": 11 },
+                { "id": "TW000327-1255A0", "val": 0 },
+                { "id": "TW000327-1237A0", "val": 0 },
+                { "id": "TW000327-3375A0", "val": 0 }
+            ]
+        },
+        "faultsTypeTop5": {
+            "most": {
+                "id": "Ground Fault",
+                "val": 3
+            },
+            "data": [
+                { "id": "Ground Fault", "val": 3 },
+                { "id": "Over Voltage", "val": 3 },
+                { "id": "Under Voltage", "val": 2 },
+                { "id": "Emergency Stop", "val": 1 },
+                { "id": "Handshaking Fault", "val": 1 }
+            ]
+        }
     }
 }
