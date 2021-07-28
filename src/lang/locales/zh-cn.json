@@ -10,7 +10,7 @@
         "chargingStation": "充电站资讯",
         "station": "充电站",
         "stationDetail": "充电站资讯",
-        "chargePoint": "充电桩列表",
+        "chargePoint": "充电桩",
         "chargingSession": "充电纪录",
         "chargePointAlert": "充电桩警示",
         "setting": "设定",
@@ -22,7 +22,8 @@
         "workOrder": "工单",
         "myAccount": "我的帐户",
         "operator": "运营商",
-        "endUser": "终端用户"
+        "endUser": "终端用户",
+        "cars": "車輛"
     },
     "login": {
         "login": "登入",
@@ -97,11 +98,11 @@
         "sessionTop10": "充电数据前十名(次)",
         "faultsTypeTop5": "故障类型前五名(次)",
         "daySelectList": {
-            "7": "最近七天",
-            "14": "最近14天",
-            "30": "最近一个月",
-            "90": "最近一季",
-            "365": "最近一年"
+            "1": "最近七天",
+            "2": "最近14天",
+            "3": "最近一个月",
+            "4": "最近一季",
+            "5": "最近一年"
         },
         "revenue": "收入"
     },
@@ -178,5 +179,15 @@
         "email": "电子邮件",
         "carType": "车型",
         "creditCard": "信用卡"
+    },
+    "support": {
+        "marker": "标记",
+        "model": "模型",
+        "batteryCapacity": "电池容量",
+        "realRange": "实际范围",
+        "acPower": "交流电源",
+        "acPlug": "交流电插头",
+        "dcPower": "直流电源",
+        "dcPlug": "直流电插头"
     }
 }

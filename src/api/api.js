@@ -120,3 +120,28 @@ export const $HTTP_getChargeBoxInfoForMap = params => { return post(`${base}/Cha
  * @description 取得充電紀錄明細
  */
 export const $HTTP_getChargingSessionDetail = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionDetail`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電統計資訊
+ */
+export const $HTTP_getChargingStatisticsInfo = params => { return post(`${base}/Home/Statistics/getChargingStatisticsInfo`, qs.stringify(params)) }
+
+/**
+ * @description 取得電耗量前十名資訊列表
+ */
+export const $HTTP_getPowerUsageTop10List = params => { return post(`${base}/Home/Statistics/getPowerUsageTop10List`, qs.stringify(params)) }
+
+/**
+ * @description 取得總收益前十名資訊列表
+ */
+export const $HTTP_getRevenueTop10List = params => { return post(`${base}/Home/Statistics/getRevenueTop10List`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電紀錄次數前十名資訊列表
+ */
+export const $HTTP_getChargingSessionCountTop10List = params => { return post(`${base}/Home/Statistics/getChargingSessionCountTop10List`, qs.stringify(params)) }
+
+/**
+ * @description 取得故障狀態次數前五名資訊列表
+ */
+export const $HTTP_getFaultCountTop5List = params => { return post(`${base}/Home/Statistics/getFaultCountTop5List`, qs.stringify(params)) }

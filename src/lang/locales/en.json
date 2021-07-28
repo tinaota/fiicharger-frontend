@@ -22,7 +22,8 @@
         "workOrder": "Work Order",
         "myAccount": "My Account",
         "operator": "Operator",
-        "endUser": "End User"
+        "endUser": "End User",
+        "cars": "Cars"
     },
     "login": {
         "login": "Login",
@@ -97,11 +98,11 @@
         "sessionTop10": "Session Top 10(Times)",
         "faultsTypeTop5": "Faults Type Top 5(Times)",
         "daySelectList": {
-            "7": "Last 7 days",
-            "14": "Last 14 days",
-            "30": "Last month",
-            "90": "Last season",
-            "365": "Last year"
+            "1": "Last 7 days",
+            "2": "Last 14 days",
+            "3": "Last month",
+            "4": "Last season",
+            "5": "Last year"
         },
         "revenue": "Revenue"
     },
@@ -178,5 +179,15 @@
         "email": "E-mail",
         "carType": "Car Type",
         "creditCard": "Credit Card"
+    },
+    "support": {
+        "marker": "Marker",
+        "model": "Model",
+        "batteryCapacity": "Battery Capacity",
+        "realRange": "Real Range",
+        "acPower": "AC Power",
+        "acPlug": "AC Plug",
+        "dcPower": "DC Power",
+        "dcPlug": "DC Plug"
     }
 }

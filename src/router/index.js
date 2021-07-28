@@ -9,13 +9,13 @@ import { $GLOBAL_PROJECT } from '@/utils/global'
 Vue.use(Router)
 
 let routes = [
-    // {
-    //     path: '/login',
-    //     meta: { title: 'Login' },
-    //     name: 'Login',
-    //     component: () => import('@/components/Login.vue'),
-    //     hidden: true
-    // },
+    {
+        path: '/login',
+        meta: { title: 'Login' },
+        name: 'Login',
+        component: () => import('@/components/Login.vue'),
+        hidden: true
+    },
     {
         path: '/',
         meta: { title: 'Home' },
@@ -68,7 +68,8 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false }
+                    { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false },
+                    { path: '/cars', component: () => import('@/views/support/cars.vue'), name: 'menu.cars', hidden: false }
                 ]
             },
             // {

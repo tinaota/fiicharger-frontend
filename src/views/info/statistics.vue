@@ -10,7 +10,7 @@
                 class="select-small large"
                 v-model="filter.operatorTypeId"
                 :placeholder="$t('general.operator')"
-                @change="fetchData"
+                @change="fetchAllData"
                 clearable>
                 <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
@@ -19,50 +19,52 @@
                 <div class="header">{{ $t('menu.statistics') }}
                     <el-select
                         class="select-small right"
-                        v-model="statisticsDay"
-                        @change="handleSelected('s')">
-                        <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
+                        v-model="statistics.filter"
+                        @change="handleSelected()">
+                        <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                 </div>
                 <div class="s-contain">
                     <div class="item">
                         <div class="label">{{ $t('general.billing') }}</div>
                         <div class="content">
-                            <span>{{ "$" + new Intl.NumberFormat('en-IN').format(statistics.billing[0]) }}</span>
-                            <i v-if="statistics.billing[1]>0" class="el-icon-top"><span> {{ statistics.billing[1] }}% </span></i>
-                            <i v-else class="el-icon-bottom"><span>{{ statistics.billing[1] }}% </span></i>
+                            <span>{{ "$" + new Intl.NumberFormat('en-IN').format(statistics.data.price) }}</span>
+                            <i v-if="statistics.data.priceRate>0" class="el-icon-top"><span> {{ statistics.data.priceRate }}% </span></i>
+                            <i v-else-if="statistics.data.priceRate<0" class="el-icon-bottom"><span>{{ statistics.data.priceRate }}% </span></i>
+                            <span v-else class="rate">{{ statistics.data.priceRate }}%</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('dashboard.energyUsedUnit') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.energyUsedUnit[0]) }}</span>
-                            <i v-if="statistics.energyUsedUnit[1]>0" class="el-icon-top"><span>{{ statistics.energyUsedUnit[1] }}%</span></i>
-                            <i v-else class="el-icon-bottom"><span>{{ statistics.energyUsedUnit[1] }}%</span></i>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.powerUsage) }}</span>
+                            <i v-if="statistics.data.powerUsageRate>0" class="el-icon-top"><span>{{ statistics.data.powerUsageRate }}%</span></i>
+                            <i v-else-if="statistics.data.powerUsageRate<0" class="el-icon-bottom"><span>{{ statistics.data.powerUsageRate }}%</span></i>
+                            <span v-else class="rate">{{ statistics.data.powerUsageRate }}%</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('dashboard.nAccount') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nAccount) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.accountCount) }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.nChargePoint') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nChargePoint) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.chargeBoxCount) }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('dashboard.nSession') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nSession) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.chargingSessionCount) }}</span>
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('dashboard.nConnector') }}</div>
                         <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.nConnector) }}</span>
+                            <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.chargeConnectorCount) }}</span>
                         </div>
                     </div>
                 </div>
@@ -80,10 +82,10 @@
                 <ul class="rank">
                     <li v-for="(item, idx) in powerUsedTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ item.id }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(powerUsedTop10.data[idx].val) }}</span>
+                            <span class="name">{{ item.name }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(powerUsedTop10.data[idx].powerUsage) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==powerUsedTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
+                        <el-progress :class="{'spec': !idx}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -100,10 +102,10 @@
                 <ul class="rank">
                     <li v-for="(item, idx) in revenueTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ item.id }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(revenueTop10.data[idx].val) }}</span>
+                            <span class="name">{{ item.name }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(revenueTop10.data[idx].price) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==revenueTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
+                        <el-progress :class="{'spec': !idx}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -120,10 +122,10 @@
                 <ul class="rank">
                     <li v-for="(item, idx) in sessionTop10.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ item.id }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(sessionTop10.data[idx].val) }}</span>
+                            <span class="name">{{ item.name }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(sessionTop10.data[idx].chargingSessionCount) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==sessionTop10.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
+                        <el-progress :class="{'spec': !idx}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -140,10 +142,10 @@
                 <ul class="rank">
                     <li v-for="(item, idx) in faultsTypeTop5.pData" :key="idx">
                         <div class="label">
-                            <span class="name">{{ item.id }}</span>
-                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(faultsTypeTop5.data[idx].val) }}</span>
+                            <span class="name">{{ item.name }}</span>
+                            <span class="num">{{ new Intl.NumberFormat('en-IN').format(faultsTypeTop5.data[idx].count) }}</span>
                         </div>
-                        <el-progress :class="{'spec': item.id==faultsTypeTop5.most.id}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
+                        <el-progress :class="{'spec': !idx}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
             </div>
@@ -153,6 +155,7 @@
 <script>
 import DashboardData from "@/tmpData/dashboardData";
 import { setScrollBar } from "@/utils/function";
+import { $HTTP_getChargingStatisticsInfo, $HTTP_getPowerUsageTop10List, $HTTP_getRevenueTop10List, $HTTP_getChargingSessionCountTop10List, $HTTP_getFaultCountTop5List } from "@/api/api";
 export default {
     data() {
         return {
@@ -166,34 +169,47 @@ export default {
                 3: "APT"
             },
             daySelectList: i18n.t('dashboard.daySelectList'),
-            statisticsDay: '7',
             statistics: {
-                billing: [0,0],
-                energyUsedUnit: [0,0],
-                nAccount: 0,
-                nChargePoint: 0,
-                nSession: 0,
-                nConnector: 0
+                isLoading: false,
+                filter: 1,
+                data: {
+                    price: 0,
+                    priceRate: 0,
+                    powerUsage: 0,
+                    powerUsageRate: 0,
+                    accountCount: 0,
+                    chargeBoxCount: 0,
+                    chargingSessionCount: 0,
+                    chargeConnectorCount: 0
+                }
             },
-            powerUsedTop10Day: '7',
             powerUsedTop10: {
+                isLoading: false,
+                filter: 1,
                 most: "",
-                data: {}
+                data: [],
+                pData: []
             },
-            revenueTop10Day: '7',
             revenueTop10: {
+                isLoading: false,
+                filter: 1,
                 most: "",
-                data: {}
+                data: [],
+                pData: []
             },
-            sessionTop10Day: '7',
             sessionTop10: {
+                isLoading: false,
+                filter: 1,
                 most: "",
-                data: {}
+                data: [],
+                pData: []
             },
-            faultsTypeTop5Day: '7',
             faultsTypeTop5: {
+                isLoading: false,
+                filter: 1,
                 most: "",
-                data: {}
+                data: [],
+                pData: []
             },
         }
     },
@@ -201,47 +217,176 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
-        this.fetchData();
+        this.fetchAllData();
+        setScrollBar('.scroll', this);
     },
     methods : {
-        fetchData() {
-            const data = Object.assign({},DashboardData[this.filter.operatorTypeId || 1]);
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.statistics = data.statistics;
-            this.powerUsedTop10 = this.addPercentage(data.powerUsedTop10);
-            this.revenueTop10 = this.addPercentage(data.revenueTop10);
-            this.sessionTop10 = this.addPercentage(data.sessionTop10);
-            this.faultsTypeTop5 = this.addPercentage(data.faultsTypeTop5);
-            setScrollBar('.scroll', this);
+        fetchAllData() {
+            this.fetchChargingStatisticsInfo();
+            this.fetchPowerUsedTop10();
+            this.fetchRevenueTop10();
+            this.fetchSessionTop10();
+            this.fetchFaultsTypeTop5();
         },
-        changeOption() {
-            // console.log(this.curOperator);
+        fetchChargingStatisticsInfo() {
+            const that = this;
+            let param = {
+                dateType: this.statistics.filter
+            };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.statistics.isLoading = true;
+            $HTTP_getChargingStatisticsInfo(param).then((data) => {
+                that.statistics.isLoading = false;
+                if (!!data.success) {
+                    that.statistics.data = Object.assign({}, data.chargingSessionAnalysisInfo);
+                } else {
+                    that.statistics.data = {
+                                            price: 0,
+                                            priceRate: 0,
+                                            powerUsage: 0,
+                                            powerUsageRate: 0,
+                                            accountCount: 0,
+                                            chargeBoxCount: 0,
+                                            chargingSessionCount: 0,
+                                            chargeConnectorCount: 0
+                                        };
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('statistics', err);
+                that.statistics.data = {
+                                        price: 0,
+                                        priceRate: 0,
+                                        powerUsage: 0,
+                                        powerUsageRate: 0,
+                                        accountCount: 0,
+                                        chargeBoxCount: 0,
+                                        chargingSessionCount: 0,
+                                        chargeConnectorCount: 0
+                                    };
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
-        addPercentage(item) {
-            let tmp = Object.assign({}, item);
-            tmp.pData = [];
-            const basicP = Math.round(tmp.most.val/0.9);
-            tmp.data.forEach(info => {
-                tmp.pData.push({
-                    id: info.id,
-                    val: Math.round(info.val * 100 / basicP)
+        fetchPowerUsedTop10() {
+            const that = this;
+            let param = {
+                dateType: this.powerUsedTop10.filter
+            };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.powerUsedTop10.isLoading = true;
+            $HTTP_getPowerUsageTop10List(param).then((data) => {
+                that.powerUsedTop10.isLoading = false;
+                if (!!data.success) {
+                    that.powerUsedTop10.data = data.powerUsageTop10List.slice();
+                } else {
+                    that.powerUsedTop10.data = [];
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                that.powerUsedTop10.pData = that.addPercentage(that.powerUsedTop10.data, 'chargeBoxName', 'powerUsage');
+            }).catch((err) => {
+                console.log('powerUsedTop10', err);
+                that.powerUsedTop10.data = [];
+                that.powerUsedTop10.pData = [];
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchRevenueTop10() {
+            const that = this;
+            let param = {
+                dateType: this.revenueTop10.filter
+            };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.revenueTop10.isLoading = true;
+            $HTTP_getRevenueTop10List(param).then((data) => {
+                that.revenueTop10.isLoading = false;
+                if (!!data.success) {
+                    that.revenueTop10.data = data.revenueTop10List.slice();
+                } else {
+                    that.revenueTop10.data = [];
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                that.revenueTop10.pData = that.addPercentage(that.revenueTop10.data, 'chargeBoxName', 'price');
+            }).catch((err) => {
+                console.log('revenueTop10', err);
+                that.revenueTop10.data = [];
+                that.revenueTop10.pData = [];
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchSessionTop10() {
+            const that = this;
+            let param = {
+                dateType: this.sessionTop10.filter
+            };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.sessionTop10.isLoading = true;
+            $HTTP_getChargingSessionCountTop10List(param).then((data) => {
+                that.sessionTop10.isLoading = false;
+                if (!!data.success) {
+                    that.sessionTop10.data = data.chargingSessionCountTop10List.slice();
+                } else {
+                    that.sessionTop10.data = [];
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                that.sessionTop10.pData = that.addPercentage(that.sessionTop10.data, 'chargeBoxName', 'chargingSessionCount');
+            }).catch((err) => {
+                console.log('sessionTop10', err);
+                that.sessionTop10.data = [];
+                that.sessionTop10.pData = [];
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchFaultsTypeTop5() {
+            const that = this;
+            let param = {
+                dateType: this.faultsTypeTop5.filter
+            };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.faultsTypeTop5.isLoading = true;
+            $HTTP_getFaultCountTop5List(param).then((data) => {
+                that.faultsTypeTop5.isLoading = false;
+                if (!!data.success) {
+                    that.faultsTypeTop5.data = data.faultCountTop5List.slice();
+                } else {
+                    that.faultsTypeTop5.data = [];
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                that.faultsTypeTop5.pData = that.addPercentage(that.faultsTypeTop5.data, 'name', 'count');
+            }).catch((err) => {
+                console.log('faultsTypeTop5', err);
+                that.faultsTypeTop5.data = [];
+                that.faultsTypeTop5.pData = [];
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        addPercentage(data, name, val) {
+            let pData = [];
+            const basicP = (data[0][val] == 0) ? 100 : Math.round(data[0][val]*10/0.9)/10;
+            data.forEach(info => {
+                pData.push({
+                    name: info[name],
+                    val: Math.round(info[val] * 100 / basicP)
                 })
             });
-            return tmp;
+            return pData;
         },
-        handleSelected(type) {
-            switch(type) {
-                case 's':
-                    break;
-                case 'p10':
-                    break;
-                case 'r10':
-                    break;
-                case 's10':
-                    break;
-                case 'f5':
-                    break;
-            }
+        handleSelected() {
+            const tmp = this.statistics.filter;
+            this.powerUsedTop10.filter = tmp;
+            this.revenueTop10.filter = tmp;
+            this.sessionTop10.filter = tmp;
+            this.faultsTypeTop5.filter = tmp;
+            this.fetchAllData();
         }
     }
 }
@@ -280,6 +425,11 @@ export default {
                     &.el-icon-bottom {
                         color: #33C85A;
                     }
+                }
+                .rate {
+                    font-size: 1rem;
+                    color: #525E69;
+                    margin-left: 16px;
                 }
             }
         }

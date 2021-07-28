@@ -1,10 +1,13 @@
 <template>
     <div>
         <el-row class="header">
-            <el-col :sm="24" :lg="4" class="sys">
-                <div><img :src="systemLogo" style="margin-top: -4px;"></div>
+            <el-col :sm="24" :lg="8" class="sys">
+                <div>
+                    <img :src="appLogo" style="margin-top: -4px; margin-right: 8px">
+                    <img :src="systemLogo" style="margin-top: -4px;">
+                </div>
             </el-col>
-            <el-col :sm="24" :lg="20" class="header-info">
+            <el-col :sm="24" :lg="16" class="header-info">
                 <el-dropdown trigger="hover">
                     <span class="el-dropdown-link userinfo-inner">{{ langList[lang] }}</span>
                     <el-dropdown-menu slot="dropdown">
@@ -85,7 +88,8 @@ export default {
             langList: $GLOBAL_LANG,
             systemLogo: require("imgs/fiics_logo.png"),
             sysUserAvatar: require("imgs/ic_avata.png"),
-            sysUserName: 'Developer'
+            sysUserName: 'Developer',
+            appLogo: require("imgs/app_icon.png")
         };
     },
     created() {
