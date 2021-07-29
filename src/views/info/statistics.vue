@@ -153,7 +153,6 @@
     </div>
 </template>
 <script>
-import DashboardData from "@/tmpData/dashboardData";
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_getChargingStatisticsInfo, $HTTP_getPowerUsageTop10List, $HTTP_getRevenueTop10List, $HTTP_getChargingSessionCountTop10List, $HTTP_getFaultCountTop5List } from "@/api/api";
 export default {

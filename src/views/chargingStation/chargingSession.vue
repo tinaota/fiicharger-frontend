@@ -155,7 +155,6 @@
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import ChargingSessionData from "@/tmpData/chargingSessionData";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import LineChart from "@/components/charts/lineChart";

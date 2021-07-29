@@ -145,3 +145,8 @@ export const $HTTP_getChargingSessionCountTop10List = params => { return post(`$
  * @description 取得故障狀態次數前五名資訊列表
  */
 export const $HTTP_getFaultCountTop5List = params => { return post(`${base}/Home/Statistics/getFaultCountTop5List`, qs.stringify(params)) }
+
+/**
+ * @description 取得付款紀錄列表
+ */
+export const $HTTP_getBillingList = params => { return post(`${base}/Home/Billing/getBillingList`, qs.stringify(params)) }

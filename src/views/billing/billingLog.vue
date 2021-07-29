@@ -11,6 +11,7 @@
                         class="select-small"
                         :placeholder="$t('general.operator')"
                         v-model="filter.operatorTypeId"
+                        @change="fetchData()"
                         clearable>
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
@@ -24,30 +25,30 @@
                         :end-placeholder="$t('general.endDate')"
                         :picker-options="pickerOptions"
                         :clearable="true"
-                        @change="handleDaterange">
+                        @change="fetchData()">
                     </el-date-picker>
                     <el-input
                         :placeholder="$t('chargingStation.userID')"
-                        class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()"
+                        @change="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
                 <el-table
-                    :data="tableData.slice((page - 1) * 10, page * 10)">
-                    <el-table-column prop="userId" :label="$t('chargingStation.userID')"></el-table-column>
-                    <el-table-column prop="billingId" :label="$t('chargingStation.billingID')"></el-table-column>
-                    <el-table-column prop="billingTime" :label="$t('general.time')"></el-table-column>
+                    :data="tableData.slice((page - 1) * 10, page * 10)"
+                    v-loading="isLoading">
+                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
+                    <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')"></el-table-column>
+                    <el-table-column prop="sDate" :label="$t('general.time')"></el-table-column>
                     <el-table-column :label="$t('general.billingAmt')">
                         <template slot-scope="scope">
-                            {{ "$" + scope.row.price }}
+                            {{ currencyList[scope.row.sessionInfo.unitType] + scope.row.sessionInfo.price }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
                         <template slot-scope="scope">
-                            {{ scope.row.power + 'kWh' }}
+                            {{ scope.row.sessionInfo.powerUsage + 'kWh' }}
                         </template>
                     </el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column> -->
@@ -60,25 +61,25 @@
                                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')"></el-table-column>
                                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
                                     <!-- <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column> -->
-                                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
+                                    <el-table-column :label="$t('chargingStation.powerUsed')">
                                         <template slot-scope="scope">
-                                            {{ scope.row.power + 'kWh' }}
+                                            {{ scope.row.powerUsage + 'kWh' }}
                                         </template>
                                     </el-table-column>
                                     <el-table-column :label="$t('chargingStation.connector')">
                                         <template slot-scope="scope">
-                                            <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
+                                            <Connector :dataObj="scope.row.connectorInfo"></Connector>
                                         </template>
                                     </el-table-column>
                                     <el-table-column :label="$t('general.billingAmt')">
                                         <template slot-scope="scope">
-                                            {{ "$" + scope.row.price }}
+                                            {{ currencyList[scope.row.unitType] + scope.row.price }}
                                         </template>
                                     </el-table-column>
-                                    <el-table-column prop="sTime" :label="$t('general.startTime')"></el-table-column>
-                                    <el-table-column prop="eTime" :label="$t('general.endTime')"></el-table-column>
+                                    <el-table-column prop="chargingStartTime" :label="$t('general.startTime')"></el-table-column>
+                                    <el-table-column prop="chargingEndTime" :label="$t('general.endTime')"></el-table-column>
                                 </el-table>
-                                <div slot="reference" class="name-wrapper">{{scope.row.sessionId }}</div>
+                                <div slot="reference" class="name-wrapper">{{scope.row.sessionInfo.sessionId }}</div>
                             </el-popover>
                         </template>
                     </el-table-column>
@@ -97,9 +98,10 @@
 </template>
 
 <script>
-import BillingLogData from "@/tmpData/billingLogData";
-import { setScrollBar } from "@/utils/function";
+import { $HTTP_getBillingList } from "@/api/api";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
 import Connector from "@/components/chargingStation/connector";
+import { setScrollBar } from "@/utils/function";
 export default {
     components: {
         Connector
@@ -107,6 +109,7 @@ export default {
     data() {
         return {
             lang: '',
+            currencyList: $GLOBAL_CURRENCY,
             operatorList: {
                 1: i18n.t('general.all'),
                 2: "MidwestFiber",
@@ -118,6 +121,7 @@ export default {
                 dateRange: [],
                 operatorTypeId: ''
             },
+            isLoading: false,
             tableData: [],
             page: 1,
             total: 0,
@@ -135,35 +139,46 @@ export default {
         this.fetchData();
     },
     methods: {
-        fetchData() {
+        fetchData(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = BillingLogData.billingLogData.slice();
-            this.page = 1;
-            this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = BillingLogData.billingLogData.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
-            }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return (item.userId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0);
+            let param = {
+                lang: this.lang
             };
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            if (this.filter.dateRange && this.filter.dateRange.length == 2) {
+                param.sDate = this.filter.dateRange[0];
+                param.eDate = this.filter.dateRange[1];
+            }
+            if (type) {
+                this.filter.search = this.filter.tmpSearch;
+            }
+            param.search = this.filter.search;
+            $HTTP_getBillingList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.billingList.slice();
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         changePage(page) {
             this.page = page;
-        },
-        handleDaterange() {}
+        }
     }
 }
 </script>

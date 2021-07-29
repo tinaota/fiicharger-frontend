@@ -2,11 +2,11 @@
     <div class="tab">
         <el-table
             :data="tableData.slice((page - 1) * 10, page * 10)">
-            <el-table-column prop="billingId" :label="$t('chargingStation.billingID')" :min-width="1"></el-table-column>
-            <el-table-column prop="billingTime" :label="$t('general.time')" :min-width="1"></el-table-column>
+            <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')" :min-width="1"></el-table-column>
+            <el-table-column prop="sDate" :label="$t('general.time')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('general.billingAmt')" :min-width="1">
                 <template slot-scope="scope">
-                    {{ "$" + scope.row.price }}
+                    {{ currencyList[scope.row.sessionInfo.unitType] + scope.row.sessionInfo.price }}
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column> -->
@@ -18,26 +18,25 @@
                         <el-table :data="[scope.row.sessionInfo]">
                             <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')"></el-table-column>
                             <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
-                            <!-- <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')"></el-table-column> -->
-                            <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
+                            <el-table-column :label="$t('chargingStation.powerUsed')">
                                 <template slot-scope="scope">
-                                    {{ scope.row.power + 'kWh' }}
+                                    {{ scope.row.powerUsage + 'kWh' }}
                                 </template>
                             </el-table-column>
                             <el-table-column :label="$t('chargingStation.connector')">
                                 <template slot-scope="scope">
-                                    <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
+                                    <Connector :dataObj="scope.row.connectorInfo"></Connector>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="sTime" :label="$t('general.startTime')"></el-table-column>
-                            <el-table-column prop="eTime" :label="$t('general.endTime')"></el-table-column>
+                            <el-table-column prop="chargingStartTime" :label="$t('general.startTime')"></el-table-column>
+                            <el-table-column prop="chargingEndTime" :label="$t('general.endTime')"></el-table-column>
                             <el-table-column :label="$t('general.billingAmt')">
                                 <template slot-scope="scope">
-                                    {{ "$" + scope.row.price }}
+                                    {{ currencyList[scope.row.unitType] + scope.row.price }}
                                 </template>
                             </el-table-column>
                         </el-table>
-                        <div slot="reference" class="name-wrapper">{{scope.row.sessionId }}</div>
+                        <div slot="reference" class="name-wrapper">{{scope.row.sessionInfo.sessionId }}</div>
                     </el-popover>
                 </template>
             </el-table-column>
@@ -54,6 +53,7 @@
 </template>
 
 <script>
+import { $GLOBAL_CURRENCY } from '@/utils/global';
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
@@ -69,6 +69,7 @@ export default {
         return {
             page: 1,
             total: 0,
+            currencyList: $GLOBAL_CURRENCY,
         }
     },
     // watch: {

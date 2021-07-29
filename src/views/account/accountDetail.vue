@@ -28,10 +28,10 @@
                     <el-table-column prop="carBrand" :label="$t('userAccount.carType')"></el-table-column>
                     <el-table-column prop="creditCard" :label="$t('userAccount.creditCard')"></el-table-column>
                 </el-table>
-                <div class="tabs-contain" v-if="!isLoading">
+                <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
                         <el-tab-pane :label="$t('chargingStation.billingLog')" name="billingLog">
-                            <BillingLog :tableData="billingLogData"></BillingLog>
+                            <BillingLog :tableData="billingLogData" v-if="!billingLogIsLoading"></BillingLog>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
@@ -41,10 +41,9 @@
 </template>
 
 <script>
-import AccountListDetailData from "@/tmpData/accountListDetailData";
+import { $HTTP_getAccountInfo, $HTTP_getBillingList } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import BillingLog from "@/components/userAccount/billingLog";
-import { $HTTP_getAccountInfo } from "@/api/api";
 export default {
     components: {
         BillingLog
@@ -56,6 +55,7 @@ export default {
             tableData: [],
             isLoading: false,
             active: 'billingLog',
+            billingLogIsLoading: false,
             billingLogData: []
         }
     },
@@ -76,6 +76,7 @@ export default {
     },
     mounted() {
         this.fetchData();
+        this.fetchBillingData();
     },
     methods: {
         fetchData() {
@@ -87,20 +88,40 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.tableData = [Object.assign({}, data.accountInfo)];
-                    this.billingLogData = AccountListDetailData['mem1623271199'].billingLog.slice();
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
-                    this.billingLogData = [];
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
                 setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
-                this.billingLogData = [];
                 this.total = 0;
                 console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchBillingData() {
+            const that = this;
+            this.page = 1;
+            this.billingLogIsLoading = true;
+            let param = {
+                lang: this.lang,
+                search: this.curRouteParam.memberCode
+            };
+            $HTTP_getBillingList(param).then((data) => {
+                this.billingLogIsLoading = false;
+                if (!!data.success) {
+                    this.billingLogData = data.billingList.slice();
+                } else {
+                    this.billingLogData = [];
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.billingLogData = [];
+                console.log('billing log', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
