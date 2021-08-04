@@ -68,20 +68,10 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/workOrder', component: () => import('@/views/support/workOrder.vue'), name: 'menu.workOrder', hidden: false },
-                    { path: '/cars', component: () => import('@/views/support/cars.vue'), name: 'menu.cars', hidden: false }
+                    { path: '/workOrder/summary', component: () => import('@/views/support/workOrderSum.vue'), name: 'menu.workOrder', hidden: false },
+                    { path: '/workOrder/history', component: () => import('@/views/support/workOrderHistory.vue'), hidden: true }
                 ]
             },
-            // {
-            //     path: '/setting',
-            //     iconCls: 'ic_setting_o',
-            //     name: 'menu.setting',
-            //     hasChild: true,
-            //     component: () => import('@/components/data.vue'),
-            //     children: [
-            //         { path: '/myAccount', component: () => import('@/views/setting/myAccount.vue'), name: 'menu.myAccount', hidden: false },
-            //     ]
-            // },
             {
                 path: '/account',
                 iconCls: 'ic_user_o',
@@ -94,7 +84,17 @@ let routes = [
                     { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
                     { path: '/endUser', component: () => import('@/views/account/endUser.vue'), name: 'menu.endUser', hidden: false },
                 ]
-            }
+            },
+            {
+                path: '/setting',
+                iconCls: 'ic_setting_o',
+                name: 'menu.setting',
+                hasChild: true,
+                component: () => import('@/components/data.vue'),
+                children: [
+                    { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
+                ]
+            },
         ]
     },
     {

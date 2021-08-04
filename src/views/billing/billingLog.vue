@@ -38,8 +38,8 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     v-loading="isLoading">
-                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
                     <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')"></el-table-column>
+                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
                     <el-table-column prop="sDate" :label="$t('general.time')"></el-table-column>
                     <el-table-column :label="$t('general.billingAmt')">
                         <template slot-scope="scope">

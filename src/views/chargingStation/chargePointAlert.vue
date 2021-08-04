@@ -30,7 +30,7 @@
                         :placeholder="$t('chargingStation.chargePointID')+'/'+$t('chargingStation.alert')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="handleSearch()"
+                        @change="handleSearch()"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>

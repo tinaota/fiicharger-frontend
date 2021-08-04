@@ -20,6 +20,8 @@
         "billingLog": "Billing Log",
         "support": "Support",
         "workOrder": "Work Order",
+        "summary": "Summary",
+        "history": "History",
         "myAccount": "My Account",
         "operator": "Operator",
         "endUser": "End User",
@@ -180,7 +182,7 @@
         "carType": "Car Type",
         "creditCard": "Credit Card"
     },
-    "support": {
+    "setting": {
         "marker": "Marker",
         "model": "Model",
         "batteryCapacity": "Battery Capacity",
@@ -189,5 +191,19 @@
         "acPlug": "AC Plug",
         "dcPower": "DC Power",
         "dcPlug": "DC Plug"
+    },
+    "support": {
+        "workerOrderId": "Worker Order ID",
+        "eventName": "Event Name",
+        "createTime": "Create Time",
+        "lastUpdateTime": "Last Update Time",
+        "lastUpdateBy": "Last Update By",
+        "workOrderStatus": {
+            "1": "Created",
+            "2": "Assigned",
+            "3": "In Process",
+            "4": "Validing",
+            "5": "Closed"
+        }
     }
 }

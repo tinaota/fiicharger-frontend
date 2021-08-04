@@ -11,7 +11,7 @@
                         :placeholder="$t('chargingStation.userID')+'/'+$t('general.name')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="fetchData('s')"
+                        @change="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>

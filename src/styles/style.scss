@@ -98,6 +98,53 @@
     .right {
         float: right;
     }
+    .loc-filter {
+        div.label {
+            display: inline-block;
+            color: #525E69;
+            font-size: 1rem;
+            margin-right: 12px;
+        }
+        .el-input {
+            width: 160px;
+            height: 40px;
+            background: #F5FAFF;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid #D4DCEA;
+            input {
+                background: transparent;
+                border: unset;
+                color: #151E25;
+                font-size: 1rem;
+                height: 40px;
+                line-height: 40px;
+            }
+            .el-input__prefix {
+                color: #151E25;
+            }
+            .el-input__suffix .el-input__suffix-inner i,
+            .el-input__suffix .el-input__suffix-inner i:hover {
+                color: #151E25;
+                font-size: 1rem;
+            }
+        }
+        .el-select {
+            width: 160px;
+            border: 1px solid #D4DCEA;
+            height: 40px;
+            background: #F5FAFF;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            .el-input {
+                width: inherit;
+                border: unset;
+            }
+            + div.label {
+                margin-left: 28px;
+            }
+        }
+    }
     .large.el-select {
         width: 180px;
         margin-bottom: 12px;
@@ -124,8 +171,8 @@
     .card-8 {
         display: inline-block;
         width: calc(100% - 28px);
-        background: #E5E9F2;
-        // box-shadow: 0 1px 4px 0 #E5E9F2;
+        background: #E6EEF8;
+        box-shadow: 0 1px 4px 0 #E5E9F2;
         border-radius: 8px;
         border-radius: 8px;
         margin-bottom: 24px;
@@ -233,25 +280,6 @@
                 background: #8c8f97;
             }
         }
-        .el-tabs {
-            .el-tabs__nav-wrap {
-                &::after {
-                    background: #DCE6F3;
-                }
-                .el-tabs__active-bar {
-                    background: #1E5EFF;
-                }
-                .el-tabs__item {
-                    font-size: 1rem;
-                    color: #6C6C6C;
-                    letter-spacing: 0;
-                    padding: 0 16px;
-                    &.is-active {
-                        color: #1E5EFF;
-                    }
-                }
-            }
-        }
         &.station-detail {
             .chart .el-select {
                 width: 136px;
@@ -324,6 +352,25 @@
             }
         }
     }
+    .el-tabs {
+        .el-tabs__nav-wrap {
+            &::after {
+                background: #DCE6F3;
+            }
+            .el-tabs__active-bar {
+                background: #1E5EFF;
+            }
+            .el-tabs__item {
+                font-size: 1rem;
+                color: #6C6C6C;
+                letter-spacing: 0;
+                padding: 0 16px;
+                &.is-active {
+                    color: #1E5EFF;
+                }
+            }
+        }
+    }
 }
 button,
 .el-button {
@@ -354,6 +401,11 @@ button,
         width: 24px;
         height: 24px;
         background-image: url('~imgs/ic_delete.png');
+    }
+    &.detail {
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_device_info.png')
     }
      + .el-button {
         margin-left: 8px;

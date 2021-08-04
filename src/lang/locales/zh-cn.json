@@ -20,6 +20,8 @@
         "billingLog": "帐单纪录",
         "support": "支援",
         "workOrder": "工单",
+        "summary": "概要",
+        "history": "历史记录",
         "myAccount": "我的帐户",
         "operator": "运营商",
         "endUser": "终端用户",
@@ -180,7 +182,7 @@
         "carType": "车型",
         "creditCard": "信用卡"
     },
-    "support": {
+    "setting": {
         "marker": "标记",
         "model": "模型",
         "batteryCapacity": "电池容量",
@@ -189,5 +191,19 @@
         "acPlug": "交流电插头",
         "dcPower": "直流电源",
         "dcPlug": "直流电插头"
+    },
+    "support": {
+        "workerOrderId": "工单ID",
+        "eventName": "事件名称",
+        "createTime": "创建时间",
+        "lastUpdateTime": "最后更新时间",
+        "lastUpdateBy": "最后更新者",
+        "workOrderStatus": {
+            "1": "创建",
+            "2": "已分配",
+            "3": "处理中",
+            "4": "验证中",
+            "5": "关闭"
+        }
     }
 }

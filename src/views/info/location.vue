@@ -6,32 +6,50 @@
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="loc-filter">
+            <div class="label">{{ $t('general.operator') }}</div>
             <el-select
-                class="select-small large"
+                class="select-small"
                 v-model="filter.operatorTypeId"
-                :placeholder="$t('general.operator')"
-                @change="handleOperatorChanged()"
-                clearable>
+                @change="handleOperatorChanged()">
                 <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
+            <div class="label">{{ $t('menu.chargePoint') }}</div>
             <el-select
-                class="select-small large"
+                class="select-small"
                 v-model="filter.chargeBoxId"
-                :placeholder="$t('menu.chargePoint')"
                 v-loading="chargerBoxList.isLoading"
                 @change="fetchData()"
-                clearable
                 filterable
-                style="width: 240px">
+                style="width: 200px">
                 <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
             </el-select>
         </div>
         <div class="hint-bar">
-            <div class="item"><img :src="icon.normal"><span>{{$t('general.available')}}</span></div>
-            <div class="item"><img :src="icon.serviceUnavailable"><span>{{$t('general.unavailable')}}</span></div>
-            <div class="item"><img :src="icon.maintenance"><span>{{$t('general.maintenance')}}</span></div>
-            <div class="item"><img :src="icon.abnormal"><span>{{$t('general.alert')}}</span></div>
-            <div class="item"><img :src="icon.connectionLost"><span>{{$t('general.connectionLost')}}</span></div>
+            <div class="item">
+                <img :src="icon.normal">
+                <span class="num" v-if="statisticsInfo.availableCount !== 0">{{statisticsInfo.availableCount}}</span>
+                <span class="text">{{$t('general.available')}}</span>
+            </div>
+            <div class="item">
+                <img :src="icon.serviceUnavailable">
+                <span class="num" v-if="statisticsInfo.unavailableCount !== 0">{{statisticsInfo.unavailableCount}}</span>
+                <span class="text">{{$t('general.unavailable')}}</span>
+            </div>
+            <div class="item">
+                <img :src="icon.maintenance">
+                <span class="num" v-if="statisticsInfo.maintenanceCount !== 0">{{statisticsInfo.maintenanceCount}}</span>
+                <span class="text">{{$t('general.maintenance')}}</span>
+            </div>
+            <div class="item">
+                <img :src="icon.abnormal">
+                <span class="num" v-if="statisticsInfo.alertCount !== 0">{{statisticsInfo.alertCount}}</span>
+                <span class="text">{{$t('general.alert')}}</span>
+            </div>
+            <div class="item">
+                <img :src="icon.connectionLost">
+                <span class="num" v-if="statisticsInfo.connectionLostCount !== 0">{{statisticsInfo.connectionLostCount}}</span>
+                <span class="text">{{$t('general.connectionLost')}}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -85,6 +103,13 @@ export default {
                 isLoading: false,
                 data: []
             },
+            statisticsInfo: {
+                availableCount: 0,
+                unavailableCount: 0,
+                maintenanceCount: 0,
+                alertCount: 0,
+                connectionLostCount: 0
+            },
             markers: {},
             markersOnScreen: {},
             MapBoxObject: null,
@@ -132,6 +157,7 @@ export default {
             $HTTP_getChargeBoxListForMap(param).then((data) => {
                 that.chargeBoxData.isLoading = false;
                 if (!!data.success) {
+                    this.statisticsInfo = Object.assign({}, data.chargeBoxStatusStatisticsInfo);
                     data.chargeBoxList.forEach(item => {
                         item.loc = {
                             lng: item.lon,
@@ -486,7 +512,7 @@ export default {
     /* box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10); */
 }
 .hint-bar {
-    position:absolute;
+    position: absolute;
     /* bottom: calc(2.4vh + 2vh); */
     bottom: calc(2.5vh);
     width: auto;
@@ -497,18 +523,33 @@ export default {
     border-radius: 30px;
     vertical-align: middle;
     .item {
+        position: relative;
         display: inline-block;
         vertical-align: middle;
         height: 24px;
         span {
-            display: inline-block;
-            vertical-align: bottom;
             letter-spacing: 0;
-            height: 24px;
-            line-height: 24px;
-            margin-left: 10px;
             color: #151E25;
-            font-size: 1.125rem;
+            &.text {
+                height: 24px;
+                line-height: 24px;
+                /* vertical-align: bottom; */
+                vertical-align: top;
+                margin-left: 10px;
+                font-size: 1.125rem;
+            }
+            &.num {
+                position: absolute;
+                /* bottom: 18px; */
+                top: 18px;
+                left: 16px;
+                /* background-color: #F84736;
+                color: #FFF; */
+                background-color: rgb(240, 201, 197);
+                padding: 2px 4px;
+                border-radius: 16px;
+                font-size: 0.875rem;
+            }
         }
         img {
             width: 24px;

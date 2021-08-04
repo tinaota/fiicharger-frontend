@@ -24,11 +24,19 @@
                         clearable>
                         <el-option v-for="(item, key) in stationList.data" :label="item" :key="key" :value="key"></el-option>
                     </el-select> -->
+                    <el-select
+                        class="select-small"
+                        v-model="filter.zipCode"
+                        :placeholder="$t('general.location')"
+                        v-loading="loctionList.isLoading"
+                        @change="fetchData()"
+                        clearable>
+                        <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
                     <el-input
                         :placeholder="$t('chargingStation.chargePointID')"
-                        class="dark"
                         v-model="filter.tmpSearch"
-                        @keyup.enter.native="fetchData('s')"
+                        @fetchData="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
@@ -113,8 +121,7 @@ import { setScrollBar } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox"
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-// import { $HTTP_getStationListForSelect, $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
-import { $HTTP_getChargeBoxList, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
+import { $HTTP_getChargeBoxList, $HTTP_getZipCodeListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 export default {
     components: {
@@ -133,7 +140,8 @@ export default {
             filter: {
                 tmpSearch: '',
                 search: '',
-                stationId: '',
+                // stationId: '',
+                zipCode: '',
                 operatorTypeId: ''
             },
             isLoading: false,
@@ -141,6 +149,10 @@ export default {
             //     isLoading: false,
             //     data: {}
             // },
+            loctionList: {
+                isLoading: false,
+                data: []
+            },
             tableData: [],
             page: 1,
             total: 0,
@@ -185,6 +197,7 @@ export default {
         // const that = this;
         // this.fetchStationList(()=>{ that.fetchData()});
         this.fetchData();
+        this.fetchLocationList();
     },
     beforeDestroy() {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, 'click');
@@ -211,6 +224,21 @@ export default {
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },*/
+        fetchLocationList() {
+            const that = this;
+            this.loctionList.isLoading = true;
+            $HTTP_getZipCodeListForSelect().then((data) => {
+                this.loctionList.isLoading = false;
+                if (!!data.success) {
+                    this.loctionList.data = data.zipCodeList.slice();
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('loctionList', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         fetchData(type) {
             const that = this;
             this.page = 1;
@@ -219,6 +247,9 @@ export default {
             let param = {};
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            if (this.filter.zipCode) {
+                param.zipCode = this.filter.zipCode;
             }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
