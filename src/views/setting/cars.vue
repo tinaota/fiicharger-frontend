@@ -59,13 +59,13 @@
                     </el-table-column>
                     <el-table-column :label="$t('setting.acPower')" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.acPower + "kW"}}
+                            {{scope.row.acPower ? scope.row.acPower + "kW" : ''}}
                         </template>
                     </el-table-column>
                     <el-table-column prop="acPlug" :label="$t('setting.acPlug')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('setting.dcPower')" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.dcPower + "kW"}}
+                            {{scope.row.dcPower ? scope.row.dcPower + "kW" : ''}}
                         </template>
                     </el-table-column>
                     <el-table-column prop="dcPlug" :label="$t('setting.dcPlug')" :min-width="2"></el-table-column>
