@@ -6,20 +6,22 @@
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="loc-filter">
-            <div class="label">{{ $t('general.operator') }}</div>
             <el-select
                 class="select-small"
                 v-model="filter.operatorTypeId"
-                @change="handleOperatorChanged()">
+                :placeholder="$t('general.operator')"
+                @change="handleOperatorChanged()"
+                clearable>
                 <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
-            <div class="label">{{ $t('menu.chargePoint') }}</div>
             <el-select
                 class="select-small"
                 v-model="filter.chargeBoxId"
                 v-loading="chargerBoxList.isLoading"
+                :placeholder="$t('menu.chargePoint')"
                 @change="fetchData()"
                 filterable
+                clearable
                 style="width: 200px">
                 <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
             </el-select>
@@ -260,6 +262,7 @@ export default {
                 };
             });
             this.MapBoxObject.on('zoom', function () {
+                // console.log(that.MapBoxObject.getZoom());
                 if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
                     that.updateMarkers();
                 };
@@ -331,7 +334,7 @@ export default {
                     const option = {
                         offset: [20,-10],
                         anchor: 'left',
-                        maxWidth: '360px'
+                        maxWidth: '320px'
                     };
                     const popup = new mapboxgl.Popup(option).setHTML(info);
 
@@ -514,7 +517,7 @@ export default {
 .hint-bar {
     position: absolute;
     /* bottom: calc(2.4vh + 2vh); */
-    bottom: calc(2.5vh);
+    bottom: 2vh;
     width: auto;
     height: auto;
     padding: 10px 18px;
@@ -536,7 +539,7 @@ export default {
                 /* vertical-align: bottom; */
                 vertical-align: top;
                 margin-left: 10px;
-                font-size: 1.125rem;
+                font-size: 1rem;
             }
             &.num {
                 position: absolute;

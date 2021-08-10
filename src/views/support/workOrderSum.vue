@@ -7,30 +7,72 @@
                 <el-breadcrumb-item>{{ $t('menu.workOrder') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.summary') }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <el-tabs v-model="active" @tab-click="handleTabClick">
-                <el-tab-pane :label="$t('menu.summary')" name="summary">
-                </el-tab-pane>
-                <el-tab-pane :label="$t('menu.history')" name="history">
-                </el-tab-pane>
+            <el-tabs v-model="active" @tab-click="handleTabClick" class="work-order-tabs">
+                <el-tab-pane :label="$t('menu.summary')" name="summary"></el-tab-pane>
+                <el-tab-pane :label="$t('menu.history')" name="history"></el-tab-pane>
             </el-tabs>
             <div class="loc-filter">
-                <div class="label">{{ $t('general.operator') }}</div>
                 <el-select
                     class="select-small"
                     v-model="filter.operatorTypeId"
-                    @change="handleOperatorChanged()">
+                    :placeholder="$t('general.operator')"
+                    @change="handleOperatorChanged()"
+                    clearable>
                     <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                 </el-select>
-                <div class="label">{{ $t('menu.chargePoint') }}</div>
                 <el-select
                     class="select-small"
                     v-model="filter.chargeBoxId"
                     v-loading="chargerBoxList.isLoading"
+                    :placeholder="$t('menu.chargePoint')"
                     @change="fetchData()"
                     filterable
+                    clearable
                     style="width: 200px">
                     <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
                 </el-select>
+            </div>
+            <div class="work-order-sum card">
+                <div class="header">{{ $t('support.nWorkOrders') }}</div>
+                <div class="info">
+                    <div class="item assignedQueue">
+                        <div class="label">{{ $t('support.assignedQueue') }}</div>
+                        <div class="num">{{ numWorkOrder.assignedQueue }}</div>
+                    </div>
+                    <div class="item inprocess">
+                        <div class="label">{{ $t('support.inprocess') }}</div>
+                        <div class="num">{{ numWorkOrder.inprocess }}</div>
+                    </div>
+                    <div class="item validating">
+                        <div class="label">{{ $t('support.validating') }}</div>
+                        <div class="num">{{ numWorkOrder.validating }}</div>
+                    </div>
+                    <div class="item total">
+                        <div class="label">{{ $t('support.total') }}</div>
+                        <div class="num">{{ numWorkOrder.unsolved + " / " + numWorkOrder.accumulated }}</div>
+                        <div class="sub-label">{{ $t('support.unsolved') + ' / ' + $t('support.accumulated') }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="work-order-list card">
+                <div class="header">{{ $t('support.workOrdersList') }}</div>
+                <el-tabs v-model="workOrdersList.active" type="card" class="work-order-list-tabs" :stretch="false">
+                    <el-tab-pane :label="$t('support.assignedQueue')+' '+numWorkOrder.assignedQueue" name="assignedQueue">
+                        <div class="tab-pane-content">
+                            <WorkerOrderInfo v-for="(item, idx) in workOrdersList.data.assignedQueue" :key="idx" :dataObj="item" @setCenter="setMapCenter"></WorkerOrderInfo>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane :label="$t('support.inprocess')+' '+numWorkOrder.inprocess" name="inprocess">
+                        <div class="tab-pane-content">
+                            <WorkerOrderInfo v-for="(item, idx) in workOrdersList.data.inprocess" :key="idx" :dataObj="item" @setCenter="setMapCenter"></WorkerOrderInfo>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane :label="$t('support.validating')+' '+numWorkOrder.validating" name="validating">
+                        <div class="tab-pane-content">
+                            <WorkerOrderInfo v-for="(item, idx) in workOrdersList.data.validating" :key="idx" :dataObj="item" @setCenter="setMapCenter"></WorkerOrderInfo>
+                        </div>
+                    </el-tab-pane>
+                </el-tabs>
             </div>
             <div class="hint-bar">
                 <div class="item">
@@ -64,8 +106,22 @@
 </template>
 
 <script>
+import SumData from "@/tmpData/workOrderSumData";
+import { $HTTP_getChargeBoxListForSelect } from "@/api/api";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
+import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { buildingsIn3D, clusters, clusterCount, getLastLayerId } from '@/assets/js/appConfig.js'
+import MapStyle from '@/assets/js/mapStyle.js'
+import 'threebox-plugin/dist/threebox';
+import "@/styles/map.scss";
+const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 import { setScrollBar } from "@/utils/function";
+import WorkerOrderInfo from "@/components/support/workerOrderInfo";
 export default {
+    components: {
+        WorkerOrderInfo
+    },
     data() {
         return {
             lang: '',
@@ -76,10 +132,10 @@ export default {
                 3: "APT"
             },
             center: {
-                lat: 67.87946334072687,
-                lng: 173.85862513198617
+                lat: 42.677967089074805,
+                lng: -87.92675949716009
             },
-            defaultZoomSize: 16,
+            defaultZoomSize: 13.4,
             minZoomSize: 1.5,
             maxZoomSize: 22,
             icon: {
@@ -103,7 +159,7 @@ export default {
             },
             chargeBoxData: {
                 isLoading: false,
-                data: []
+                data: {}
             },
             statisticsInfo: {
                 availableCount: 0,
@@ -112,26 +168,409 @@ export default {
                 alertCount: 0,
                 connectionLostCount: 0
             },
+            numWorkOrder: {
+                assignedQueue: 0,
+                inprocess: 0,
+                validating: 0,
+                unsolved: 0,
+                accumulated: 60
+            },
+            workOrdersList: {
+                active: 'assignedQueue',
+                data: {
+                    assignedQueue: [],
+                    inprocess: [],
+                    validating: [],
+                }
+            },
+            markers: {},
+            markersOnScreen: {},
+            MapBoxObject: null,
+            mapboxLoadingPromise: {},
+            currentPopUp: null,
+            connectorIcon: {
+                1: require("imgs/ic_ac_iec.png"),
+                2: require("imgs/ic_ac_tesla.png"),
+                3: require("imgs/ic_ac_sae.png"),
+                4: require("imgs/ic_ac_gbt.png"),
+                5: require("imgs/ic_ac_iec.png"),
+                6: require("imgs/ic_ac_tesla.png"),
+                7: require("imgs/ic_ac_chademo.png"),
+                8: require("imgs/ic_ac_ccs2.png"),
+                9: require("imgs/ic_ac_ccs1.png"),
+                10: require("imgs/ic_ac_gbt.png")
+            }
         }
     },
     mounted() {
+        const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width()/2 + 12;
         this.$jQuery(".hint-bar").css('left', `calc(50% -  ${halfHintBarWidth}px)`);
-        this.fetchData();
+        this.initMapboxMap(()=> {
+            that.fetchData();
+        });
+        this.fetchChargerBoxList();
     },
     methods: {
         fetchData() {
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            setScrollBar('.scroll', this);
+            const that = this;
+            this.numWorkOrder = Object.assign({}, SumData.numWorkOrder);
+            this.workOrdersList.data = Object.assign({}, SumData.workOrderList);
+            this.statisticsInfo = Object.assign({}, SumData.statisticsInfo);
+            this.chargeBoxData.data = Object.assign({}, SumData.mapInfo);
+            this.drawMapboxClusters();
+            this.$nextTick(()=> {
+                let workOrderListHeight = that.$jQuery(".work-order-list-tabs").height(),
+                    elTabsHeaderHeight = that.$jQuery(".work-order-list-tabs .el-tabs__header").height() + 6,
+                    elTabPaneHeight = workOrderListHeight - elTabsHeaderHeight;
+                that.$jQuery(".work-order-list .tab-pane-content").css('max-height', elTabPaneHeight + 'px');
+                that.$jQuery(".work-order-list .tab-pane-content").length > 0 && that.$jQuery(".work-order-list .tab-pane-content").mCustomScrollbar('destroy');
+                setScrollBar(".work-order-list .tab-pane-content", that);
+            });
         },
-        changePage(page) {
+        fetchChargerBoxList(callBack) {
+            const that = this;
+            let param = {};
+            if (this.filter.operatorTypeId) {
+                param.operatorTypeId = (this.filter.operatorTypeId === 1)? '': this.filter.operatorTypeId;
+            }
+            this.chargerBoxList.isLoading = true;
+            $HTTP_getChargeBoxListForSelect(param).then((data) => {
+                this.chargerBoxList.isLoading = false;
+                this.chargerBoxList.data = {};
+                if (!!data.success) {
+                    data.chargeBoxList.forEach(item => {
+                        this.chargerBoxList.data[item.chargeBoxId] = item.chargeBoxName;
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                callBack && callBack();
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         handleTabClick(tab, event) {
             if (this.active === 'history') {
                 this.$router.push({ path: "/workOrder/history" }).catch();
             }
         },
-        handleOperatorChanged() {}
+        handleOperatorChanged() {
+            const that = this;
+            if (that.currentPopUp) {
+                that.currentPopUp.remove();
+            }
+            this.fetchChargerBoxList(()=> {
+                // that.fetchData();
+            });
+        },
+        initMapboxMap(callBack) {
+            const that = this;
+            mapboxgl.accessToken = MAPBOXTOKEN;
+            this.MapBoxObject = new mapboxgl.Map({
+                antialias: true,
+                container: "mapboxBox",
+                style: MapStyle,
+                pitch: 60, //视野倾斜，0-60
+                // bearing: -17, //视野旋转角度
+                center: this.center,
+                zoom: this.defaultZoomSize, // Less than 15 GetFeatureInfo does not work,
+                minZoom: this.minZoomSize,
+                maxZoom: this.maxZoomSize,
+            })
+            window.tb = new window.Threebox(
+                this.MapBoxObject,
+                this.MapBoxObject.getCanvas().getContext('webgl'),
+                {
+                    defaultLights: true,
+                }
+            );
+            this.MapBoxObject.on("load", () => {
+                that.mapLoadLayer();
+                callBack && callBack();
+            });
+            this.MapBoxObject.on('click', 'clusters', function (e) {
+                var features = that.MapBoxObject.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
+                });
+                var clusterId = features[0].properties.cluster_id;
+                that.MapBoxObject.getSource('custom').getClusterExpansionZoom(
+                    clusterId,
+                    function (err, zoom) {
+                        if (err) return;
+                        that.MapBoxObject.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom,
+                            // duration: 400
+                        });
+                        window.setTimeout(() => {
+                            that.updateMarkers();
+                        }, 800);
+                    }
+                );
+            });
+            this.MapBoxObject.on('mousemove', function() {
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
+                    that.updateMarkers();
+                };
+            });
+            this.MapBoxObject.on('zoom', function () {
+                // console.log(that.MapBoxObject.getZoom());
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
+                    that.updateMarkers();
+                };
+            });
+        },
+        mapLoadLayer() {
+            const lastLayerId = getLastLayerId(this.MapBoxObject);
+            this.MapBoxObject.addLayer(buildingsIn3D, lastLayerId);
+        },
+        removeMapboxMarkers() {
+            for(let key in this.markers) {
+                this.markers[key].remove();
+            }
+            for(let key in this.markersOnScreen) {
+                this.markersOnScreen[key].remove();
+            }
+            this.markers = {};
+            this.markersOnScreen = {};
+        },
+        removeMapboxClusters() {
+            if (this.MapBoxObject.getLayer('clusters')) {
+                this.MapBoxObject.removeLayer('clusters');
+                this.MapBoxObject.removeLayer('cluster-count');
+            }
+        },
+        updateMarkers() {
+            let newMarkers = {};
+            let features = this.MapBoxObject.querySourceFeatures('custom');
+            features.forEach(feature => {
+                let coords = feature.geometry.coordinates;
+                let props = feature.properties;
+                if (!props.cluster) {
+                    let item = {
+                        chargeBoxId: props.chargeBoxId,
+                        loc: {
+                            lng: props.lng,
+                            lat: props.lat
+                        },
+                        chargeBoxStatus: props.chargeBoxStatus
+                    };
+                    var marker = this.markers[props.chargeBoxId];
+                    if (!marker) {
+                        marker = this.drawMapboxMarker(item);
+                    }
+                    if (!this.markersOnScreen[props.chargeBoxId]) marker.addTo(this.MapBoxObject);
+                    newMarkers[props.chargeBoxId] = marker;
+                }
+            });
+            for( let id in this.markersOnScreen) {
+                if (!newMarkers[id]) {
+                    this.markersOnScreen[id].remove();
+                }
+            }
+            this.markersOnScreen = newMarkers;
+        },
+        drawMapboxMarker(item) {
+            const that = this,
+                  el = document.createElement('div');
+            el.className = `marker pos${item.chargeBoxStatus}`;
+            const option = {
+                            element: el
+                        },
+                  marker = new mapboxgl.Marker(option)
+                            .setLngLat(item.loc);
+            marker.getElement().addEventListener('click', () => {
+                // that.getMarkerLoading(marker, true);
+                that.getMapboxPosInfoHtml(item.chargeBoxId, (info) => {
+                    // that.getMarkerLoading(marker, false);
+                    const option = {
+                        offset: [20,-10],
+                        anchor: 'left',
+                        maxWidth: '320px'
+                    };
+                    const popup = new mapboxgl.Popup(option).setHTML(info);
+
+                    marker.setPopup(popup).addTo(this.MapBoxObject)
+                    // marker.togglePopup();
+                    that.currentPopUp = popup;
+                    // that.currentPopUp.addTo(this.MapBoxObject);
+                });
+            });
+            that.markers[item.chargeBoxId] = marker;
+            return marker;
+        },
+        getMarkerLoading(marker, loadingBool) {
+            const classList = marker.getElement().classList;
+            classList.remove('loading');
+            if(loadingBool) classList.add("loading");
+        },
+        getMapboxPosInfoHtml(chargeBoxId, callBack) {
+            // const that = this;
+            // $HTTP_getChargeBoxInfoForMap({ chargeBoxId: chargeBoxId }).then((data) => {
+            //     if (data.success) {
+            //         const info = that.getPosInfoHtml(data.chargeBoxInfo)
+            //         return callBack(info);
+            //     } else {
+            //         callBack('');
+            //         return that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+            //     }
+            // }).catch((err) => {
+            //     console.log('getMapboxPosInfoHtml', err)
+            //     that.$message({ type: "warning", message: i18n.t("error_network") });
+            // });
+            const that = this,
+                  data = that.chargeBoxData.data[chargeBoxId];
+            let info = "";
+            if (data.chargeBoxStatus === 3 || data.chargeBoxStatus === 4) {
+                info = that.getPosWorkOrderHtml(data);
+            } else {
+                info = that.getPosInfoHtml(data);
+            }
+            callBack && callBack(info);
+        },
+        getPosInfoHtml: function(item) {
+            const currency = $GLOBAL_CURRENCY[item.unitType || 1],
+                  connectorHtml = this.getConnectorHtml(item.connectorList);
+            let info = `<div class="info-tite">${item.chargeBoxName}</div>
+                        <div class="info-msg">
+                            <ul>
+                                <li>
+                                    <div class="item-title-img"><img src='${this.icon.deviceInfo}'>${i18n.t('chargingStation.chargePointID')}</div>
+                                    <div class="item-msg">${item.chargeBoxId}</div>
+                                </li>
+                                <li>
+                                    <div class="item-title-img"><img src='${this.icon.charging}'>${i18n.t('chargingStation.power')}</div>
+                                    <div class="item-msg">${item.power}kW</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.connector')}</div>
+                                    <div class="item-msg">${connectorHtml}</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.elecRate')}</div>
+                                    <div class="item-msg">${i18n.t('chargingStation.onPeak') + ' ' + currency + item.onPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.onPeakElectricityRateType || 1]}</div>
+                                    <div class="item-msg">${i18n.t('chargingStation.offPeak') + ' ' + currency + item.offPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.offPeakElectricityRateType || 1]}</div>
+
+                                    <div class="item-title">${i18n.t('chargingStation.parkingRate')}</div>
+                                    <div class="item-msg">${currency + item.parkingRate + '/' + i18n.t('chargingStation.elecRateUnit')[1]} </div>
+                                </li>
+                            </ul>
+                        </div>`;
+            return info;
+        },
+        getConnectorHtml(connectorList) {
+            let info = '';
+            connectorList.forEach((item, idx) => {
+                info += '<div class="connector-obj">';
+                switch(item.status) {
+                    case 1:
+                        info += `<span class="circle-number color1">${item.connectorId}</span>`;
+                        break;
+                    case 2:
+                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
+                        break;
+                    case 4:
+                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
+                        break;
+                    case 5:
+                        info += `<span class="circle-number color5">${item.connectorId}</span>`;
+                        break;
+                    case 6:
+                        info += `<span class="circle-number color4">${item.connectorId}</span>`;
+                        break;
+                    case 3:
+                        info += `<span class="circular">
+                                    <div class="color6"></div>
+                                    <div class="number">${item.connectorId}</div>
+                                </span>`;
+                        break;
+                    default:
+                        info += `<span class="circle-number color0">${item.connectorId}</span>`;
+                }
+                info +=`<div class="imgItem"><img src="${this.connectorIcon[item.connectorTypeId]}"></div>
+                        </div>`
+            });
+            return info;
+        },
+        getPosWorkOrderHtml: function(item) {
+            let info = `<div class="info-tite">${item.chargeBoxName}</div>
+                        <div class="info-msg">
+                            <ul>
+                                <li>
+                                    <div class="item-title-img"><img src='${this.icon.deviceInfo}'>${i18n.t('chargingStation.chargePointID')}</div>
+                                    <div class="item-msg">${item.chargeBoxId}</div>
+                                </li>`;
+            item.workOrderList.forEach((data,idx) => {
+                if (idx) {
+                    info+= `<li>
+                                <div class="item-msg">${data.workOrderCode}</div>
+                                <div class="item-msg">${data.time} </div>
+                                <div class="item-msg">${data.msg} </div>
+                            </li>`;
+                } else {
+                    info+= `<li>
+                                <div class="item-title">${i18n.t('support.workOrdersList')}</div>
+                                <div class="item-msg">${data.workOrderCode}</div>
+                                <div class="item-msg">${data.time} </div>
+                                <div class="item-msg">${data.msg} </div>
+                            </li>`;
+                }
+            });
+
+            info += `</ul></div>`;
+            return info;
+        },
+        drawMapboxClusters() {
+            const that = this;
+            const geoJson = {
+                type: 'FeatureCollection',
+                features: []
+            };
+            const setOneFeature = (key, obj) => {
+                const { lat, lng } = obj.loc;
+                return {
+                    type: 'Feature',
+                    properties: {
+                        chargeBoxId: key,
+                        lng: lng,
+                        lat: lat,
+                        chargeBoxStatus: obj.chargeBoxStatus
+                    },
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [lng, lat, 0.0]
+                    }
+                }
+            }
+            const mySource = this.MapBoxObject.getSource('custom');
+            for(let key in this.chargeBoxData.data) {
+                const feature = setOneFeature(key, this.chargeBoxData.data[key]);
+                geoJson.features.push(feature);
+            }
+            if (!mySource) {
+                this.MapBoxObject.addSource('custom', {
+                    type: 'geojson',
+                    data: geoJson,
+                    cluster: true,
+                    // clusterMaxZoom: 18,
+                    clusterRadius: 50,
+                    clusterMinPoints: 5
+                });
+            } else {
+                mySource.setData(geoJson);
+            }
+            if (!this.MapBoxObject.getLayer('clusters')) {
+                this.MapBoxObject.addLayer(clusters);
+                this.MapBoxObject.addLayer(clusterCount);
+            }
+            window.setTimeout(() => {
+                that.updateMarkers();
+            }, 1500);
+        },
+        setMapCenter(locString) {
+            const loc = JSON.parse(locString);
+            this.MapBoxObject.setCenter(loc);
+        }
     }
 }
 </script>
@@ -156,21 +595,80 @@ export default {
         top: 2.4vh;
         left: 1.6vw;
     }
-    .el-tabs {
+    .el-tabs.work-order-tabs {
         position: absolute;
-        top: 7.6vh;
-        left: 2.8vw;
-        width: calc(100% - 5.6vw);
+        top: calc(4.4vh + 16px);
+        left: 1.6vw;
+        width: calc(100% - 3.2vw);
     }
     .loc-filter {
         position: absolute;
-        top: calc(7.6vh + 55px);
-        left: 2.8vw;
-        width: calc(100% - 5.6vw);
+        top: calc(4.4vh + 16px + 54px);
+        left: 1.6vw;
+        width: calc(35% - 1.6vw);
+    }
+    .card {
+        box-sizing: border-box;
+        padding: 14px;
+        background: rgba(230,238,248,0.90);
+        border-radius: 12px;
+        box-shadow: 0 1px 4px 0 rgba(21,34,50,0.08);
+        .header {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #151E25;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+    }
+    .work-order-sum {
+        position: absolute;
+        top: calc(4.4vh + 16px + 54px);
+        left: calc(33% + 2%);
+        width: 35%;
+        .info {
+            .item {
+                display: inline-block;
+                vertical-align: top;
+                .label {
+                    font-size: 0.875rem;
+                    color: #525E69;
+                    letter-spacing: 0;
+                    margin-bottom: 4px;
+                }
+                .num {
+                    font-size: 1.5rem;
+                    color: #151E25;
+                    letter-spacing: 0;
+                }
+                .sub-label {
+                    font-size: 0.75rem;
+                    color: #525E69;
+                    letter-spacing: -0.13px;
+                }
+            }
+            .assignedQueue {
+                width: 24%;
+            }
+            .inprocess,
+            .validating {
+                width: 22%;
+            }
+            .total {
+                width: 28%;
+            }
+        }
+    }
+    .work-order-list {
+        position: absolute;
+        top: calc(4.4vh + 16px + 54px);
+        right: 1.6vw;
+        width: 27%;
+        height: calc(100% - 8.4vh - 70px - 44px);
     }
     .hint-bar {
         position: absolute;
-        bottom: calc(2.5vh);
+        bottom: 2vh;
         width: auto;
         height: auto;
         padding: 10px 18px;
@@ -192,7 +690,7 @@ export default {
                     /* vertical-align: bottom; */
                     vertical-align: top;
                     margin-left: 10px;
-                    font-size: 1.125rem;
+                    font-size: 1rem;
                 }
                 &.num {
                     position: absolute;

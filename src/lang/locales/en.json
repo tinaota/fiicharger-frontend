@@ -42,6 +42,7 @@
         "latestModification": "Latest Modification",
         "action": "Action",
         "detail": "Detail",
+        "details": "Details",
         "modify": "Modify",
         "delete": "Delete",
         "create": "Create",
@@ -194,16 +195,23 @@
     },
     "support": {
         "workerOrderId": "Worker Order ID",
-        "eventName": "Event Name",
+        "alertName": "Alert Name",
         "createTime": "Create Time",
         "lastUpdateTime": "Last Update Time",
         "lastUpdateBy": "Last Update By",
         "workOrderStatus": {
-            "1": "Created",
             "2": "Assigned",
             "3": "In Process",
             "4": "Validing",
             "5": "Closed"
-        }
+        },
+        "nWorkOrders": "Number of Work Orders",
+        "assignedQueue": "Assigned",
+        "inprocess": "In Process",
+        "validating": "Validating",
+        "total": "Total",
+        "unsolved": "Unsolved",
+        "accumulated": "Accumulated",
+        "workOrdersList": "Work Orders List"
     }
 }

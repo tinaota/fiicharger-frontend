@@ -42,6 +42,7 @@
         "latestModification": "最近修改時間",
         "action": "動作",
         "detail": "詳情",
+        "details": "詳情",
         "modify": "編輯",
         "delete": "刪除",
         "create": "新增",
@@ -194,16 +195,23 @@
     },
     "support": {
         "workerOrderId": "工單ID",
-        "eventName": "事件名稱",
+        "alertName": "警示名稱",
         "createTime": "創建時間",
         "lastUpdateTime": "最後更新時間",
         "lastUpdateBy": "最後更新者",
         "workOrderStatus": {
-            "1": "創建",
             "2": "已分配",
             "3": "處理中",
             "4": "驗證中",
             "5": "關閉"
-        }
+        },
+        "nWorkOrders": "工單數量",
+        "assignedQueue": "已分配",
+        "inprocess": "處理中",
+        "validating": "驗證中",
+        "total": "全部",
+        "unsolved": "未解決",
+        "accumulated": "累計",
+        "workOrdersList": "工單列表"
     }
 }

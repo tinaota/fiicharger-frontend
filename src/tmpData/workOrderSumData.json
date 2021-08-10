@@ -1,0 +1,310 @@
+{
+    "numWorkOrder": {
+        "assignedQueue": 3,
+        "inprocess": 1,
+        "validating": 2,
+        "unsolved": 6,
+        "accumulated": 6
+    },
+    "statisticsInfo": {
+        "alertCount": 1,
+        "availableCount": 4,
+        "connectionLostCount": 0,
+        "maintenanceCount": 2,
+        "unavailableCount": 0
+    },
+    "mapInfo": {
+        "AWLU770001T201D20521285A0": {
+            "chargeBoxId": "AWLU770001T201D20521285A0",
+            "chargeBoxName": "US053177-1285A0",
+            "chargeBoxStatus": 3,
+            "loc": {
+                "lat": 42.67455141820597,
+                "lng": -87.91759364550781
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000458695",
+                    "time": "2021-08-01 15:30",
+                    "msg": "Remote system check, Assigned, Rock"
+                }
+            ]
+        },
+        "AWLU770001T201D20521289A0": {
+            "chargeBoxId": "AWLU770001T201D20521289A0",
+            "chargeBoxName": "US053177-1289A0",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 42.679357324517895,
+                "lng": -87.91719949206545
+            },
+            "power": 7.7,
+            "offPeakElectricityRate": 0.3,
+            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.5,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
+                }
+            ]
+        },
+        "DWWU301J0UD101D2048A004A0": {
+            "chargeBoxId": "DWWU301J0UD101D2048A004A0",
+            "chargeBoxName": "US053177-A004A0",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 42.67937673189563,
+                "lng": -87.915190555542
+            },
+            "power": 7.7,
+            "offPeakElectricityRate": 0.3,
+            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.5,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
+                }
+            ]
+        },
+        "AWLU770001T201D2052A169A0": {
+            "chargeBoxId": "AWLU770001T201D2052A169A0",
+            "chargeBoxName": "US053177-A169A0",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 42.676322897758126,
+                "lng": -87.91536121691894
+            },
+            "power": 7.7,
+            "offPeakElectricityRate": 0.3,
+            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.5,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
+                }
+            ]
+        },
+        "AWLU770001T201D2052A157A0": {
+            "chargeBoxId": "AWLU770001T201D2052A157A0",
+            "chargeBoxName": "US053177-A157A0",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 42.679357324517895,
+                "lng": -87.91579337036133
+            },
+            "power": 7.7,
+            "offPeakElectricityRate": 0.3,
+            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.5,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
+                }
+            ]
+        },
+        "AWLU770001T201D2052A15VVV": {
+            "chargeBoxId": "AWLU770001T201D2052A15VVV",
+            "chargeBoxName": "US053177-A15VVV",
+            "chargeBoxStatus": 4,
+            "loc": {
+                "lat": 42.66791140384256,
+                "lng": -87.93407801837513
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000458698",
+                    "time": "2021-08-02 15:30",
+                    "msg": "Remote system check, Assigned, Glenda"
+                },
+                {
+                    "workOrderCode": "W000458699",
+                    "time": "2021-08-02 15:30",
+                    "msg": "Remote system check, Assigned, Glenda"
+                },
+                {
+                    "workOrderCode": "W000458700",
+                    "time": "2021-08-02 15:30",
+                    "msg": "Remote system check, Assigned, Glenda"
+                }
+            ]
+        },
+        "AWLU770001T201D2052A15GGG": {
+            "chargeBoxId": "AWLU770001T201D2052A15GGG",
+            "chargeBoxName": "US053182-A15GGG",
+            "chargeBoxStatus": 3,
+            "loc": {
+                "lat": 42.693315709077126,
+                "lng": -87.97211107165406
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000458696",
+                    "time": "2021-08-01 15:30",
+                    "msg": "Remote system check, Assigned, Rock"
+                }
+            ]
+        }
+    },
+    "workOrderList": {
+        "assignedQueue": [
+            {
+                "workOrderCode": "W000458698",
+                "alertName": "Emergency Stop",
+                "type": "Alert",
+                "chargeBoxId": "AWLU770001T201D2052A15VVV",
+                "lastUpdateTime": "2021-08-02 15:30",
+                "loc": {
+                    "lat": 42.66791140384256,
+                    "lng": -87.93407801837513
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 15:30",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 16:00",
+                        "msg": "On-site inspection -'AC charger' is offline"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000458699",
+                "alertName": "Handshaking Fault",
+                "type": "Alert",
+                "chargeBoxId": "AWLU770001T201D2052A15VVV",
+                "lastUpdateTime": "2021-08-02 15:30",
+                "loc": {
+                    "lat": 42.66791140384256,
+                    "lng": -87.93407801837513
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 15:30",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 16:00",
+                        "msg": "On-site inspection -'AC charger' is offline"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000458700",
+                "alertName": "Over Voltage",
+                "type": "Connection Lost",
+                "chargeBoxId": "AWLU770001T201D2052A15VVV",
+                "lastUpdateTime": "2021-08-02 18:30",
+                "loc": {
+                    "lat": 42.66791140384256,
+                    "lng": -87.93407801837513
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 18:00",
+                        "msg": "Confirm fiber network"
+                    },
+                    {
+                        "time": "2021-08-02 18:30",
+                        "msg": "On-site inspection -Internet connection failed"
+                    }
+                ]
+            }
+        ],
+        "inprocess": [
+            {
+                "workOrderCode": "W000458696",
+                "alertName": "Emergency Stop",
+                "type": "Alert",
+                "chargeBoxId": "AWLU770001T201D2052A15GGG",
+                "lastUpdateTime": "2021-08-02 15:30",
+                "loc": {
+                    "lat": 42.693315709077126,
+                    "lng": -87.97211107165406
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 15:30",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 16:00",
+                        "msg": "On-site inspection -'AC charger' is offline"
+                    }
+                ]
+            }
+        ],
+        "validating": [
+            {
+                "workOrderCode": "W000458695",
+                "alertName": "Handshaking Fault",
+                "type": "Alert",
+                "chargeBoxId": "AWLU770001T201D20521285A0",
+                "lastUpdateTime": "2021-08-02 15:30",
+                "loc": {
+                    "lat": 42.67455141820597,
+                    "lng": -87.91759364550781
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 15:30",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 16:00",
+                        "msg": "On-site inspection -'AC charger' is offline"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000458700",
+                "alertName": "Over Voltage",
+                "type": "Connection Lost",
+                "chargeBoxId": "AWLU770001T201D20521285A0",
+                "lastUpdateTime": "2021-08-02 18:30",
+                "loc": {
+                    "lat": 42.67455141820597,
+                    "lng": -87.91759364550781
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 18:00",
+                        "msg": "Confirm fiber network"
+                    },
+                    {
+                        "time": "2021-08-02 18:30",
+                        "msg": "On-site inspection -Internet connection failed"
+                    }
+                ]
+            }
+        ]
+    }
+}

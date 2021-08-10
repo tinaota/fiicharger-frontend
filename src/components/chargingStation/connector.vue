@@ -1,5 +1,5 @@
 <template>
-    <div class="connector-obj" 
+    <div class="connector-obj"
         v-bind:class="{ 'nextLine': isBreak }">
         <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light" popper-class="custom">
             <span v-if="dataObj.status===1" class="circle-number color1">{{ dataObj.connectorId }}</span>

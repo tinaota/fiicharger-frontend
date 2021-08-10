@@ -10,20 +10,19 @@
     border-right-color: rgba(230, 238, 248, 0.9);
 }
 .mapboxgl-popup-content {
-    width: 360px;
+    width: 320px;
     padding: 8px 0px 16px 12px;
     background: rgba(230, 238, 248, 0.9);
     border: unset;
     .info-tite {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: bold;
         color: #151E25;
         letter-spacing: 0.35px;
         margin-bottom: 16px
     }
     .info-msg {
-        // height: 120px;
-        height: 300px;
+        max-height: 300px;
         overflow-y: auto;
         ul {
             padding-left: 0;
@@ -33,7 +32,7 @@
                 list-style: none;
                 min-height: 18px;
                 line-height: 18px;
-                font-size: 1.125rem;
+                font-size: 1rem;
                 + li {
                     margin-top: 20px;
                 }
