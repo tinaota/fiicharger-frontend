@@ -41,7 +41,7 @@
                         <el-option v-for="(item, key) in statusList" :label="item" :key="item" :value="key"></el-option>
                     </el-select>
                     <el-input
-                        :placeholder="$t('support.eventName')"
+                        :placeholder="$t('support.alertName')"
                         v-model="filter.tmpSearch"
                         @fetchData="fetchData('s')"
                         clearable>
@@ -51,15 +51,15 @@
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     v-loading="isLoading">
-                    <el-table-column prop="workOrderCode" :label="$t('support.workerOrderId')" :min-width="2"></el-table-column>
-                    <el-table-column prop="type" :label="$t('general.type')" :min-width="2"></el-table-column>
-                    <el-table-column prop="alertName" :label="$t('support.alertName')" :min-width="3"></el-table-column>
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
-                    <el-table-column prop="createTime" :label="$t('support.createTime')" :min-width="2"></el-table-column>
-                    <el-table-column prop="lastUpdateTime" :label="$t('support.lastUpdateTime')" :min-width="2"></el-table-column>
-                    <el-table-column prop="lastUpdateName" :label="$t('support.lastUpdateBy')" :min-width="2"></el-table-column>
-                    <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="68">
+                    <el-table-column prop="workOrderCode" :label="$t('support.workerOrderId')" :min-width="5"></el-table-column>
+                    <el-table-column prop="type" :label="$t('general.type')" :min-width="4"></el-table-column>
+                    <el-table-column prop="alertName" :label="$t('support.alertName')" :min-width="5"></el-table-column>
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="6"></el-table-column>
+                    <el-table-column prop="createTime" :label="$t('support.createTime')" :min-width="4"></el-table-column>
+                    <el-table-column prop="lastUpdateTime" :label="$t('support.lastUpdateTime')" :min-width="4"></el-table-column>
+                    <el-table-column prop="lastUpdateName" :label="$t('support.lastUpdateBy')" :min-width="4"></el-table-column>
+                    <el-table-column prop="status" :label="$t('general.status')" :min-width="4"></el-table-column>
+                    <el-table-column :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit"></el-button>
                         </template>

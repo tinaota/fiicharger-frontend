@@ -334,7 +334,7 @@ export default {
                     const option = {
                         offset: [20,-10],
                         anchor: 'left',
-                        maxWidth: '320px'
+                        maxWidth: '300px'
                     };
                     const popup = new mapboxgl.Popup(option).setHTML(info);
 

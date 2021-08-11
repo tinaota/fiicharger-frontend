@@ -10,12 +10,12 @@
     border-right-color: rgba(230, 238, 248, 0.9);
 }
 .mapboxgl-popup-content {
-    width: 320px;
+    width: 300px;
     padding: 8px 0px 16px 12px;
     background: rgba(230, 238, 248, 0.9);
     border: unset;
     .info-tite {
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: bold;
         color: #151E25;
         letter-spacing: 0.35px;
@@ -32,7 +32,7 @@
                 list-style: none;
                 min-height: 18px;
                 line-height: 18px;
-                font-size: 1rem;
+                font-size: 0.9rem;
                 + li {
                     margin-top: 20px;
                 }

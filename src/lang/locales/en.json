@@ -30,9 +30,11 @@
     "login": {
         "login": "Login",
         "logout": "Logout",
-        "pls_input_account": "Please enter the account number",
+        "userName": "User Name",
+        "pwd": "Password",
+        "pls_input_account": "Please enter the user name",
         "pls_input_pwd": "Please input a password",
-        "remember_data": "Remember the login data",
+        "pls_input_captcha": "Please enter the graphic verification code",
         "hint_logout": "Are you sure to log out?",
         "err_logout": "Log out error!"
     },

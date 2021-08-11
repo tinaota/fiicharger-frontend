@@ -25,7 +25,7 @@
                     v-model="filter.chargeBoxId"
                     v-loading="chargerBoxList.isLoading"
                     :placeholder="$t('menu.chargePoint')"
-                    @change="fetchData()"
+                    @change="handleMapCenter()"
                     filterable
                     clearable
                     style="width: 200px">
@@ -132,8 +132,8 @@ export default {
                 3: "APT"
             },
             center: {
-                lat: 42.677967089074805,
-                lng: -87.92675949716009
+                lat: 69.79939371063055,
+                lng: -170.23546021893583
             },
             defaultZoomSize: 13.4,
             minZoomSize: 1.5,
@@ -154,8 +154,7 @@ export default {
             },
             chargerBoxList: {
                 isLoading: false,
-                data: {},
-                zoomSize: 16
+                data: {}
             },
             chargeBoxData: {
                 isLoading: false,
@@ -173,7 +172,7 @@ export default {
                 inprocess: 0,
                 validating: 0,
                 unsolved: 0,
-                accumulated: 60
+                accumulated: 0
             },
             workOrdersList: {
                 active: 'assignedQueue',
@@ -275,7 +274,7 @@ export default {
                 pitch: 60, //视野倾斜，0-60
                 // bearing: -17, //视野旋转角度
                 center: this.center,
-                zoom: this.defaultZoomSize, // Less than 15 GetFeatureInfo does not work,
+                zoom: 1.5, // Less than 15 GetFeatureInfo does not work,
                 minZoom: this.minZoomSize,
                 maxZoom: this.maxZoomSize,
             })
@@ -302,7 +301,7 @@ export default {
                         that.MapBoxObject.easeTo({
                             center: features[0].geometry.coordinates,
                             zoom: zoom,
-                            // duration: 400
+                            duration: 400
                         });
                         window.setTimeout(() => {
                             that.updateMarkers();
@@ -388,7 +387,7 @@ export default {
                     const option = {
                         offset: [20,-10],
                         anchor: 'left',
-                        maxWidth: '320px'
+                        maxWidth: '300px'
                     };
                     const popup = new mapboxgl.Popup(option).setHTML(info);
 
@@ -563,13 +562,34 @@ export default {
                 this.MapBoxObject.addLayer(clusters);
                 this.MapBoxObject.addLayer(clusterCount);
             }
+            // window.setTimeout(() => {
+                that.updateMarkers();
+            // }, 1000);
+        },
+        handleMapCenter() {
+            const that = this,
+                  loc = this.chargeBoxData.data[this.filter.chargeBoxId].loc;
+            that.MapBoxObject.easeTo({
+                            center: loc,
+                            zoom: 18,
+                            duration: 400
+                        });
             window.setTimeout(() => {
                 that.updateMarkers();
-            }, 1500);
+            }, 800);
         },
         setMapCenter(locString) {
-            const loc = JSON.parse(locString);
-            this.MapBoxObject.setCenter(loc);
+            const that = this,
+                  loc = JSON.parse(locString);
+            that.MapBoxObject.setCenter(loc);
+            that.MapBoxObject.easeTo({
+                            center: loc,
+                            zoom: 18,
+                            duration: 400
+                        });
+            window.setTimeout(() => {
+                that.updateMarkers();
+            }, 800);
         }
     }
 }

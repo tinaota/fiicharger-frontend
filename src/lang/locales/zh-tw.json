@@ -30,9 +30,11 @@
     "login": {
         "login": "登入",
         "logout": "登出",
-        "pls_input_account": "請輸入帳號",
+        "userName": "用戶名稱",
+        "pwd": "密碼",
+        "pls_input_account": "請輸入用戶名稱",
         "pls_input_pwd": "請輸入密碼",
-        "remember_data": "記住登入資訊",
+        "pls_input_captcha": "請輸入圖形驗證碼",
         "hint_logout": "你確定要登出?",
         "err_logout": "登出錯誤!"
     },

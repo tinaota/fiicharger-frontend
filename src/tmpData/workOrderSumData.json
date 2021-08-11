@@ -1,14 +1,14 @@
 {
     "numWorkOrder": {
         "assignedQueue": 3,
-        "inprocess": 1,
-        "validating": 2,
+        "inprocess": 2,
+        "validating": 1,
         "unsolved": 6,
         "accumulated": 6
     },
     "statisticsInfo": {
-        "alertCount": 1,
-        "availableCount": 4,
+        "alertCount": 3,
+        "availableCount": 8,
         "connectionLostCount": 0,
         "maintenanceCount": 2,
         "unavailableCount": 0
@@ -17,16 +17,85 @@
         "AWLU770001T201D20521285A0": {
             "chargeBoxId": "AWLU770001T201D20521285A0",
             "chargeBoxName": "US053177-1285A0",
-            "chargeBoxStatus": 3,
+            "chargeBoxStatus": 4,
             "loc": {
-                "lat": 42.67455141820597,
-                "lng": -87.91759364550781
+                "lng": -87.91759364550781,
+                "lat": 42.67455141820597
             },
             "workOrderList": [
                 {
-                    "workOrderCode": "W000458695",
-                    "time": "2021-08-01 15:30",
-                    "msg": "Remote system check, Assigned, Rock"
+                    "workOrderCode": "W000000698",
+                    "time": "2021-08-02 15:30",
+                    "msg": "Remote system check"
+                },
+                {
+                    "workOrderCode": "W000002323",
+                    "time": "2021-08-02 18:30",
+                    "msg": "Remote system check"
+                }
+            ]
+        },
+        "DWWU301J0UD101D2048A004A0": {
+            "chargeBoxId": "DWWU301J0UD101D2048A004A0",
+            "chargeBoxName": "US053177-A004A0",
+            "chargeBoxStatus": 4,
+            "loc": {
+                "lat": 42.67937673189563,
+                "lng": -87.915190555542
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000000711",
+                    "time": "2021-08-02 20:10",
+                    "msg": "Remote system check"
+                }
+            ]
+        },
+        "DWWU301J0UD101D20481237A0": {
+            "chargeBoxId": "DWWU301J0UD101D20481237A0",
+            "chargeBoxName": "TW000327-1237A0",
+            "chargeBoxStatus": 3,
+            "loc": {
+                "lng": 121.10404502648926,
+                "lat": 24.969631195543904
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000001288",
+                    "time": "2021-08-02 22:45",
+                    "msg": "Ground Fault"
+                }
+            ]
+        },
+        "AWLU770001T201D2052A15GGG": {
+            "chargeBoxId": "AWLU770001T201D2052A15GGG",
+            "chargeBoxName": "US053182-A15GGG",
+            "chargeBoxStatus": 4,
+            "loc": {
+                "lng": -87.97211107165406,
+                "lat": 42.693315709077126
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000001999",
+                    "time": "2021-08-02 23:11",
+                    "msg": "Remote system check"
+                }
+            ]
+        },
+        "DSYE601J0ED2PHDA601A001S0": {
+            "chargeBoxId": "DSYE601J0ED2PHDA601A001S0",
+            "chargeBoxName": "TW000710-A001S0",
+            "chargeBoxStatus": 3,
+            "loc": {
+                "lat": 23.024494027485872,
+                "lng": 120.22873918518064
+            },
+            "workOrderList": [
+                {
+                    "workOrderCode": "W000000899",
+                    "time": "2021-08-02 20:30",
+                    "msg": "Handshaking Fault"
                 }
             ]
         },
@@ -55,17 +124,17 @@
                 }
             ]
         },
-        "DWWU301J0UD101D2048A004A0": {
-            "chargeBoxId": "DWWU301J0UD101D2048A004A0",
-            "chargeBoxName": "US053177-A004A0",
+        "AWLU770001T201D20511255A0": {
+            "chargeBoxId": "AWLU770001T201D20511255A0",
+            "chargeBoxName": "TW000327-1255A0",
             "chargeBoxStatus": 1,
             "loc": {
-                "lat": 42.67937673189563,
-                "lng": -87.915190555542
+                "lat": 24.972061227193464,
+                "lng": 121.10187825927737
             },
             "power": 7.7,
-            "offPeakElectricityRate": 0.3,
-            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRate": 0.5,
+            "onPeakElectricityRate": 0.5,
             "offPeakElectricityRateType": 1,
             "onPeakElectricityRateType": 1,
             "unitType": 1,
@@ -80,6 +149,62 @@
                 }
             ]
         },
+        "AWLU770001T201D20513375A0": {
+            "chargeBoxId": "AWLU770001T201D20513375A0",
+            "chargeBoxName": "TW000327-3375A0",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 24.976672736004648,
+                "lng": 121.09851786242675
+            },
+            "power": 7.7,
+            "offPeakElectricityRate": 0.4,
+            "onPeakElectricityRate": 0.5,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.5,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
+                }
+            ]
+        },
+        "PHIHONG_HQ_360kW": {
+            "chargeBoxId": "PHIHONG_HQ_360kW",
+            "chargeBoxName": "TW000333-_360kW",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 25.039766360000023,
+                "lng": 121.37373514101563
+            },
+            "power": 360,
+            "offPeakElectricityRate": 0.25,
+            "onPeakElectricityRate": 0.5,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 1,
+            "powerUsage": 47.99999999999999,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "CCS1",
+                    "connectorTypeId": "9",
+                    "status": 5
+                },
+                {
+                    "connectorId": "2",
+                    "connectorType": "CCS1",
+                    "connectorTypeId": "9",
+                    "status": 5
+                }
+            ]
+        },
         "AWLU770001T201D2052A169A0": {
             "chargeBoxId": "AWLU770001T201D2052A169A0",
             "chargeBoxName": "US053177-A169A0",
@@ -89,8 +214,8 @@
                 "lng": -87.91536121691894
             },
             "power": 7.7,
-            "offPeakElectricityRate": 0.3,
-            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRate": 0.16,
+            "onPeakElectricityRate": 0.32,
             "offPeakElectricityRateType": 1,
             "onPeakElectricityRateType": 1,
             "unitType": 1,
@@ -110,12 +235,12 @@
             "chargeBoxName": "US053177-A157A0",
             "chargeBoxStatus": 1,
             "loc": {
-                "lat": 42.679357324517895,
+                "lat": 42.67492252975282,
                 "lng": -87.91579337036133
             },
             "power": 7.7,
-            "offPeakElectricityRate": 0.3,
-            "onPeakElectricityRate": 0.7,
+            "offPeakElectricityRate": 0.16,
+            "onPeakElectricityRate": 0.32,
             "offPeakElectricityRateType": 1,
             "onPeakElectricityRateType": 1,
             "unitType": 1,
@@ -130,45 +255,59 @@
                 }
             ]
         },
+        "DCTNOUTDOOR": {
+            "chargeBoxId": "DCTNOUTDOOR",
+            "chargeBoxName": "TW000710-UTDOOR",
+            "chargeBoxStatus": 1,
+            "loc": {
+                "lat": 23.027021786863383,
+                "lng": 120.23303071960447
+            },
+            "power": 60,
+            "offPeakElectricityRate": 0.25,
+            "onPeakElectricityRate": 0.5,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 1,
+            "powerUsage": 0,
+            "connectorList": [
+                {
+                    "connectorId": "1",
+                    "connectorType": "CHAdeMO",
+                    "connectorTypeId": "7",
+                    "status": 5
+                },
+                {
+                    "connectorId": "2",
+                    "connectorType": "CCS1",
+                    "connectorTypeId": "9",
+                    "status": 5
+                }
+            ]
+        },
         "AWLU770001T201D2052A15VVV": {
             "chargeBoxId": "AWLU770001T201D2052A15VVV",
             "chargeBoxName": "US053177-A15VVV",
-            "chargeBoxStatus": 4,
+            "chargeBoxStatus": 1,
             "loc": {
                 "lat": 42.66791140384256,
                 "lng": -87.93407801837513
             },
-            "workOrderList": [
+            "power": 7.7,
+            "offPeakElectricityRate": 0.01,
+            "onPeakElectricityRate": 0.01,
+            "offPeakElectricityRateType": 1,
+            "onPeakElectricityRateType": 1,
+            "unitType": 1,
+            "parkingRate": 0.05,
+            "powerUsage": 0,
+            "connectorList": [
                 {
-                    "workOrderCode": "W000458698",
-                    "time": "2021-08-02 15:30",
-                    "msg": "Remote system check, Assigned, Glenda"
-                },
-                {
-                    "workOrderCode": "W000458699",
-                    "time": "2021-08-02 15:30",
-                    "msg": "Remote system check, Assigned, Glenda"
-                },
-                {
-                    "workOrderCode": "W000458700",
-                    "time": "2021-08-02 15:30",
-                    "msg": "Remote system check, Assigned, Glenda"
-                }
-            ]
-        },
-        "AWLU770001T201D2052A15GGG": {
-            "chargeBoxId": "AWLU770001T201D2052A15GGG",
-            "chargeBoxName": "US053182-A15GGG",
-            "chargeBoxStatus": 3,
-            "loc": {
-                "lat": 42.693315709077126,
-                "lng": -87.97211107165406
-            },
-            "workOrderList": [
-                {
-                    "workOrderCode": "W000458696",
-                    "time": "2021-08-01 15:30",
-                    "msg": "Remote system check, Assigned, Rock"
+                    "connectorId": "1",
+                    "connectorType": "Type1",
+                    "connectorTypeId": "3",
+                    "status": 5
                 }
             ]
         }
@@ -176,132 +315,132 @@
     "workOrderList": {
         "assignedQueue": [
             {
-                "workOrderCode": "W000458698",
-                "alertName": "Emergency Stop",
-                "type": "Alert",
-                "chargeBoxId": "AWLU770001T201D2052A15VVV",
-                "lastUpdateTime": "2021-08-02 15:30",
-                "loc": {
-                    "lat": 42.66791140384256,
-                    "lng": -87.93407801837513
-                },
-                "detail": [
-                    {
-                        "time": "2021-08-02 15:30",
-                        "msg": "Remote system check"
-                    },
-                    {
-                        "time": "2021-08-02 16:00",
-                        "msg": "On-site inspection -'AC charger' is offline"
-                    }
-                ]
-            },
-            {
-                "workOrderCode": "W000458699",
-                "alertName": "Handshaking Fault",
-                "type": "Alert",
-                "chargeBoxId": "AWLU770001T201D2052A15VVV",
-                "lastUpdateTime": "2021-08-02 15:30",
-                "loc": {
-                    "lat": 42.66791140384256,
-                    "lng": -87.93407801837513
-                },
-                "detail": [
-                    {
-                        "time": "2021-08-02 15:30",
-                        "msg": "Remote system check"
-                    },
-                    {
-                        "time": "2021-08-02 16:00",
-                        "msg": "On-site inspection -'AC charger' is offline"
-                    }
-                ]
-            },
-            {
-                "workOrderCode": "W000458700",
-                "alertName": "Over Voltage",
+                "workOrderCode": "W000000698",
+                "alertName": "Remote system check",
                 "type": "Connection Lost",
-                "chargeBoxId": "AWLU770001T201D2052A15VVV",
-                "lastUpdateTime": "2021-08-02 18:30",
+                "chargeBoxId": "AWLU770001T201D20521285A0",
+                "lastUpdateTime": "2021-08-02 15:30",
                 "loc": {
-                    "lat": 42.66791140384256,
-                    "lng": -87.93407801837513
+                    "lng": -87.91759364550781,
+                    "lat": 42.67455141820597
                 },
                 "detail": [
                     {
-                        "time": "2021-08-02 18:00",
-                        "msg": "Confirm fiber network"
+                        "time": "2021-08-02 03:30",
+                        "msg": "Remote system check"
                     },
                     {
-                        "time": "2021-08-02 18:30",
-                        "msg": "On-site inspection -Internet connection failed"
+                        "time": "2021-08-02 04:00",
+                        "msg": "On-site inspection -'AC charger' is offline"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000000711",
+                "alertName": "Remote system check",
+                "type": "Connection Lost",
+                "chargeBoxId": "DWWU301J0UD101D2048A004A0",
+                "lastUpdateTime": "2021-08-02 20:10",
+                "loc": {
+                    "lat": 42.67937673189563,
+                    "lng": -87.915190555542
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 20:10",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 20:15",
+                        "msg": "On-site inspection -'DC charger' is offline"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000001999",
+                "alertName": "Remote system check",
+                "type": "Connection Lost",
+                "chargeBoxId": "AWLU770001T201D2052A15GGG",
+                "lastUpdateTime": "2021-08-02 23:11",
+                "loc": {
+                    "lng": -87.97211107165406,
+                    "lat": 42.693315709077126
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 23:11",
+                        "msg": "Remote system check"
                     }
                 ]
             }
         ],
         "inprocess": [
             {
-                "workOrderCode": "W000458696",
-                "alertName": "Emergency Stop",
+                "workOrderCode": "W000001288",
+                "alertName": "Ground Fault",
                 "type": "Alert",
-                "chargeBoxId": "AWLU770001T201D2052A15GGG",
-                "lastUpdateTime": "2021-08-02 15:30",
+                "chargeBoxId": "DWWU301J0UD101D20481237A0",
+                "lastUpdateTime": "2021-08-02 22:45",
                 "loc": {
-                    "lat": 42.693315709077126,
-                    "lng": -87.97211107165406
+                    "lng": 121.10404502648926,
+                    "lat": 24.969631195543904
                 },
                 "detail": [
                     {
-                        "time": "2021-08-02 15:30",
+                        "time": "2021-08-02 22:45",
                         "msg": "Remote system check"
                     },
                     {
-                        "time": "2021-08-02 16:00",
-                        "msg": "On-site inspection -'AC charger' is offline"
+                        "time": "2021-08-02 22:55",
+                        "msg": "On-site inspection - 'Ground Fault'"
+                    }
+                ]
+            },
+            {
+                "workOrderCode": "W000002323",
+                "alertName": "Remote system check",
+                "type": "Connection Lost",
+                "chargeBoxId": "AWLU770001T201D20521285A0",
+                "lastUpdateTime": "2021-08-02 18:30",
+                "loc": {
+                    "lng": -87.91759364550781,
+                    "lat": 42.67455141820597
+                },
+                "detail": [
+                    {
+                        "time": "2021-08-02 18:00",
+                        "msg": "Remote system check"
+                    },
+                    {
+                        "time": "2021-08-02 18:30",
+                        "msg": "On-site inspection -Internet connection failed"
                     }
                 ]
             }
         ],
         "validating": [
             {
-                "workOrderCode": "W000458695",
+                "workOrderCode": "W000000899",
                 "alertName": "Handshaking Fault",
                 "type": "Alert",
-                "chargeBoxId": "AWLU770001T201D20521285A0",
-                "lastUpdateTime": "2021-08-02 15:30",
+                "chargeBoxId": "DSYE601J0ED2PHDA601A001S0",
+                "lastUpdateTime": "2021-08-02 20:30",
                 "loc": {
-                    "lat": 42.67455141820597,
-                    "lng": -87.91759364550781
+                    "lat": 23.024494027485872,
+                "lng": 120.22873918518064
                 },
                 "detail": [
                     {
-                        "time": "2021-08-02 15:30",
+                        "time": "2021-08-02 20:30",
                         "msg": "Remote system check"
                     },
                     {
-                        "time": "2021-08-02 16:00",
-                        "msg": "On-site inspection -'AC charger' is offline"
-                    }
-                ]
-            },
-            {
-                "workOrderCode": "W000458700",
-                "alertName": "Over Voltage",
-                "type": "Connection Lost",
-                "chargeBoxId": "AWLU770001T201D20521285A0",
-                "lastUpdateTime": "2021-08-02 18:30",
-                "loc": {
-                    "lat": 42.67455141820597,
-                    "lng": -87.91759364550781
-                },
-                "detail": [
-                    {
-                        "time": "2021-08-02 18:00",
-                        "msg": "Confirm fiber network"
+                        "time": "2021-08-02 20:40",
+                        "msg": "The system detects a handshake failure"
                     },
                     {
-                        "time": "2021-08-02 18:30",
-                        "msg": "On-site inspection -Internet connection failed"
+                        "time": "2021-08-02 20:45",
+                        "msg": "System engineer remote reset"
                     }
                 ]
             }
