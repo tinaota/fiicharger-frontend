@@ -110,11 +110,7 @@ export default {
         return {
             lang: '',
             currencyList: $GLOBAL_CURRENCY,
-            operatorList: {
-                1: i18n.t('general.all'),
-                2: "MidwestFiber",
-                3: "APT"
-            },
+            operatorList: {},
             filter: {
                 tmpSearch: '',
                 search: '',
@@ -133,6 +129,8 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
+        this.operatorList = userData.operatorList;
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {

@@ -174,7 +174,8 @@
         "disconnection": "斷開",
         "chargingDuration": "充電時間",
         "minOutputPower": "最小輸出功率",
-        "maxOutputPower": "最大輸出功率"
+        "maxOutputPower": "最大輸出功率",
+        "failure": "失败"
     },
     "userAccount": {
         "userName": "會員名稱",
@@ -202,10 +203,11 @@
         "lastUpdateTime": "最後更新時間",
         "lastUpdateBy": "最後更新者",
         "workOrderStatus": {
+            "1": "已創建",
             "2": "已分配",
             "3": "處理中",
             "4": "驗證中",
-            "5": "關閉"
+            "5": "結束"
         },
         "nWorkOrders": "工單數量",
         "assignedQueue": "已分配",

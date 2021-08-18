@@ -83,7 +83,6 @@ axios.interceptors.response.use(
     }
 );
 
-
 export function fetch(url, params = {}) {
     axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
@@ -93,6 +92,28 @@ export function fetch(url, params = {}) {
             .then(response => {
                 if (response) {
                     resolve(response.data)
+                } else {
+                    reject(response)
+                }
+            })
+            .catch(err => {
+                err.status && err != 204 &&  reject(err)
+            })
+    })
+}
+
+export function fetchImg(url) {
+    axios.defaults.baseURL = apiConfig.baseUrl;
+    return new Promise((resolve, reject) => {
+        axios.get(url, {
+            responseType: "arraybuffer",
+            })
+            .then(response => {
+                if (response) {
+                    let img = 'data:image/png;base64,' + btoa(
+                        new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+                    );
+                    return resolve(img)
                 } else {
                     reject(response)
                 }

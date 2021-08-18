@@ -1,60 +1,68 @@
 <template>
     <div class="bg-container login" ref="loginContainer">
-        <!-- <el-form
+        <el-form
             :model="loginForm"
             :rules="loginRule"
             ref="loginForm"
             label-position="left"
             label-width="0px"
-            class="demo-ruleForm login-container specBorder"
+            class="demo-ruleForm login-container"
             status-icon>
-            <div class="login-tab-title">
-                <div class="logo"><img :src="fiiLogo"/></div>
+            <div class="login-title">
+                <img :src="fiiLogo"/>
             </div>
-            <el-form-item prop="account">
+            <el-form-item prop="account" class="account">
                 <el-input
                     type="text"
                     v-model="loginForm.account"
                     auto-complete="off"
-                    :placeholder="$t('login.pls_input_account')">
-                    <img slot="prefix" :src="accountImg"/>
+                    :placeholder="$t('login.userName')"
+                    @focus="handleFocus('acc', true)"
+                    @blur="handleFocus('acc', false)">
+                    <img slot="prefix" :src="!isFocusAcc ? accountImg: accountImg_n"/>
                 </el-input>
             </el-form-item>
-            <el-form-item prop="checkPwd">
+            <el-form-item prop="password" class="pwd">
                 <el-input
                     type="password"
-                    v-model="loginForm.checkPwd"
+                    v-model="loginForm.password"
                     auto-complete="off"
-                    :placeholder="$t('login.pls_input_pwd')"
-                    @keyup.enter.native="handleSubmitLogin">
-                    <img slot="prefix" :src="pwdImg"/>
+                    :placeholder="$t('login.pwd')"
+                    @focus="handleFocus('pwd', true)"
+                    @blur="handleFocus('pwd', false)">
+                    <img slot="prefix" :src="!isFocusPwd ? pwdImg: pwdImg_n"/>
                 </el-input>
+            </el-form-item>
+            <el-form-item prop="captcha" class="captcha">
+                <el-input
+                    type="text"
+                    v-model="loginForm.captcha"
+                    auto-complete="off"
+                    @keyup.enter.native="handleSubmitLogin">
+                </el-input>
+                <img id="auth-img" :src="captchaImg"/>
+                <el-button class="no-bg refresh" @click="refreshCaptchaImg"></el-button>
             </el-form-item>
             <el-form-item prop="lang">
                 <el-select
-                    :popper-append-to-body="false"
                     v-model="loginForm.lang"
-                    @change="handleChangeLang"
-                    class="select-style"
-                    popper-class="select-popper">
+                    @change="handleChangeLang">
                     <el-option v-for="(item, key) in langList" :key="key" :label="item" :value="key"></el-option>
                 </el-select>
             </el-form-item>
-            <el-checkbox v-model="checked" checked class="remember">{{$t('login.remember_data')}}</el-checkbox>
             <el-form-item>
                 <el-button type="primary" class="loginBtn" :loading="isLoading" @click.native.prevent="handleSubmitLogin">{{$t('login.login')}}</el-button>
             </el-form-item>
-        </el-form> -->
+        </el-form>
     </div>
 </template>
 
 <script type="text/javascript">
-// import * as types from "@/store/types";
-// import { $HTTP_Login } from "@/api/api";
+import * as types from "@/store/types";
+import { $HTTP_login, $HTTP_getCaptcha } from "@/api/api";
 import { $GLOBAL_LANG } from "@/utils/global";
 import md5 from "js-md5";
-import THREE from 'libs/vanta/three.min.js';
-// import p5 from 'libs/vanta/p5.min.js';
+import p5 from 'libs/vanta/p5.min.js';
 import TOPOLOGY  from 'libs/vanta/vanta.topology.min.js';
 export default {
     data() {
@@ -62,29 +70,30 @@ export default {
             langList: $GLOBAL_LANG,
             fiiLogo: require("imgs/fiicharger_logo.png"),
             accountImg: require("imgs/icon_account_p.png"),
+            accountImg_n: require("imgs/icon_account_n.png"),
             pwdImg: require("imgs/icon_password_p.png"),
+            pwdImg_n: require("imgs/icon_password_n.png"),
             isLoading: false,
+            isFocusAcc: false,
+            isFocusPwd: false,
             loginForm: {
                 account: "",
-                checkPwd: "",
+                password: "",
                 lang: "en",
+                captcha: ''
             },
             loginRule: {
                 account: [{ required: true, message: i18n.t("login.pls_input_account"), trigger: "blur" }],
-                checkPwd: [{ required: true, message: i18n.t("login.pls_input_pwd"), trigger: "blur" }]
+                password: [{ required: true, message: i18n.t("login.pls_input_pwd"), trigger: "blur" }],
+                captcha: [{ required: true, message: i18n.t("login.pls_input_captcha"), trigger: "blur" }]
             },
-            vantaEffect: null
-            // checked: true,
+            vantaEffect: null,
+            captchaImg: '',
+            captchaTimer: null
         };
     },
     created() {
-        let vm = this;
-        document.onkeydown = function (e) {
-            let _key = window.event.keyCode;
-            if (_key === 13) {
-                vm.handleSubmitLogin();
-            }
-        };
+        let that = this;
     },
     mounted() {
         if (window.sessionStorage.getItem('fiics-lang')) {
@@ -103,87 +112,94 @@ export default {
             scaleMobile: 1.00,
             color: 0xf8fbff,
             backgroundColor: 0xcde8ff,
-            // p5: p5,
-            THREE: THREE
+            p5: p5
         });
-        // this.getCookie();
+        this.fetchCaptcha();
+        this.setTimer();
     },
     beforeDestroy() {
         if (this.vantaEffect) {
             this.vantaEffect.destroy();
         }
+        if (this.captchaTimer) {
+            clearInterval(this.captchaTimer);
+        }
     },
     methods: {
-        /*handleSubmitLogin(ev) {
+        handleSubmitLogin() {
             this.$refs.loginForm && this.$refs.loginForm.validate((isValid) => {
                 if (isValid) {
-                    // if (this.checked == true) {
-                    //     this.setCookie(this.loginForm.account, this.loginForm.checkPwd, this.loginForm.lang, 7);
-                    // } else {
-                    //     this.clearCookie();
-                    // }
                     this.isLoading = true;
                     const loginParams = {
                         account: this.loginForm.account,
-                        password: this.loginForm.checkPwd,
-                        lang: this.loginForm.lang
+                        password: this.loginForm.password,
+                        lang: this.loginForm.lang,
+                        captcha: this.loginForm.captcha
                     };
-                    $HTTP_Login(loginParams).then((data) => {
+                    $HTTP_login(loginParams).then((data) => {
+                        // console.log(data)
                         this.isLoading = false;
                         if (!data.success) {
-                            this.$message({ type: "warning", message: that.loginForm.lang === 'en' ? data.message : data.reason });
+                            if (data.code === 10012) {
+                                this.refreshCaptchaImg();
+                            }
+                            this.$message({ type: "warning", message: this.loginForm.lang === 'en' ? data.message : data.reason });
                         } else {
                             let userData = {
-                                accId: data.accountInfo.accId,
-                                name: data.accountInfo.name,
-                                permission: data.accountInfo.accPermissionId,
-                                modifyFlag: data.accountInfo.modifyFlag
+                                accountInfo: data.accountInfo,
+                                operatorList: data.operatorTypeInfo,
+                                operatorId: parseInt(Object.keys(data.operatorTypeInfo)[0]) || 0
                             };
-                            // window.sessionStorage.setItem("fiics-accId", userData.accId);
-                            // window.sessionStorage.setItem("fiics-token", md5(userData.accId + " " + new Date().toString()));
+                            window.sessionStorage.setItem("fiics-token", md5(loginParams.account + " " + new Date().toString()));
                             window.sessionStorage.setItem("fiics-user", JSON.stringify(userData));
                             window.sessionStorage.setItem("fiics-lang", loginParams.lang);
                             this.$store.commit(types.LOGIN, window.sessionStorage.getItem("fiics-token"));
-                            this.$store.commit(types.USER, window.sessionStorage.getItem("fiics-user"));
-                            this.$router.push({ path: "/power" });
+                            if (userData.accountInfo.accPermissionType !== 4) {
+                                this.$router.push({ path: "/location" });
+                            } else {
+                                this.$router.push({ path: "/chargePoint" });
+                            }
                         }
                     })
                     .catch((error) => {
                         this.isLoading = false;
+                        console.log(error)
                         this.$message({ type: "error", message: i18n.t("error_network")});
                     });
                 } else {
                     return false;
                 }
             });
-        },*/
-        /*setCookie(c_name, c_pwd, exdays) {
-            var exdate = new Date();
-            exdate.setTime(exdate.getTime() + 24 * 60 * 60 * 1000 * exdays);
-            document.cookie = "fiics-userName" + "=" + c_name + ";path=/;expires=" + exdate.toGMTString();
-            document.cookie = "fiics-userPwd" + "=" + c_pwd + ";path=/;expires=" + exdate.toGMTString();
         },
-        getCookie: function () {
-            if (document.cookie.length > 0) {
-                var arr = document.cookie.split("; ");
-                for (var i = 0; i < arr.length; i++) {
-                    var arr2 = arr[i].split("=");
-                    switch(arr2[0]) {
-                        case 'fiics-userName':
-                            this.loginForm.account = arr2[1];
-                            break;
-                        case 'fiics-userPwd':
-                            this.loginForm.checkPwd = arr2[1];
-                            break;
-                    }
-                }
-            }
+        fetchCaptcha() {
+            const that = this;
+            $HTTP_getCaptcha().then((data) => {
+                that.captchaImg = data;
+            }).catch((err) => {
+                console.log('getCaptcha', err);
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
-        clearCookie: function () {
-            this.setCookie("", "", -1);
-        },*/
         handleChangeLang() {
             this.$store.dispatch('setLang', this.loginForm.lang);
+        },
+        handleFocus(type, isFocus) {
+            if (type === 'acc') {
+                this.isFocusAcc = isFocus;
+            } else {
+                this.isFocusPwd = isFocus;
+            }
+        },
+        setTimer() {
+            const that = this;
+            this.captchaTimer = setInterval(() => {
+                that.fetchCaptcha();
+            }, 1000 * 55);
+        },
+        refreshCaptchaImg() {
+            this.fetchCaptcha();
+            clearInterval(this.captchaTimer);
+            this.setTimer();
         }
     }
 };
@@ -207,67 +223,39 @@ html, body{
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: 0xcde8ff;
+    // background-color: 0xcde8ff;
     .login-container {
-        background-clip: padding-box;
-        width: 680px;
-        height: 698px;
-        padding: 75px 106px;
-        opacity: 0.89;
-        background: #131F4A;
-        border: 2px solid #304180;
+        width: 30vw;
+        max-width: 540px;
+        height: 65vh;
+        min-height: calc(12vh + 5.6vh + 390px);
+        padding: 6vh 3.6vw;
+        background: rgba(235,244,255,0.83);
+        border: unset;
         position: absolute;
-        top: calc(50% - 349px);
-        left: calc(50% - 340px);
-
-        .login-tab-title {
+        top: 15vh;
+        left: 35vw;
+        box-sizing: border-box;
+        border-radius: 10px;
+        .login-title {
             text-align: center;
-            .logo {
-                display: flex;
-                justify-content: center;
-                img {
-                    width: 90px;
-                    height: 86px;
-                }
+            margin-bottom: 5.6vh;
+            img {
+                width: 16.6vw;
+                max-width: 318px;
+                height: auto;
             }
         }
-        // .remember {
-        //     margin-bottom: 90px;
-        // }
     }
 }
 
 .loginBtn.el-button {
-    height: 44px;
+    height: 40px;
     width: 100%;
     border: none;
-    background: -moz-linear-gradient(left, #3FD4FF 0%, #3478DC 100%);
-    background: -webkit-linear-gradient(left, #3FD4FF 0%, #3478DC 100%);
-    background: linear-gradient(left, #3FD4FF 0%, #3478DC 100%);
-    clip-path: inset(0 round 2px);
-    font-size: 1rem;
-    letter-spacing: 0.57px;
+    font-size: 0.9rem;
+    color: #FFF;
+    background: #007BFF;
+    border-radius: 10px;
 }
-// .remember {
-//     .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-//         background-color: rgba(82,107,227,1);
-//         border-color: rgba(67,60,201,0.29);
-//     }
-// }
-@media (max-width: 680px ) {
-    .bg-container .login-container {
-        width: 90%;
-        height: 90%;
-        padding: 5%;
-        top: 5%;
-        left: 5%;
-    }
-}
-// @media (max-height: 600px ) {
-//     .bg-container .login-container {
-//         .remember {
-//             margin-bottom: 2rem;
-//         }
-//     }
-// }
 </style>

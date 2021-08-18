@@ -6,9 +6,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        token: null,
         lang:''
     },
     mutations: {
+        [types.LOGIN]: (state, data) => {
+            window.sessionStorage.setItem('fiics-token', data)
+            state.token = data
+        },
+        [types.LOGOUT]: (state) => {
+            window.sessionStorage.clear();
+            state = {
+                token: null,
+                lang: 'en',
+            };
+        },
         [types.LANG]: (state, data) => {
             state.lang = data;
             if (app && app.$i18n) {

@@ -87,13 +87,9 @@ export default {
     data() {
         return {
             lang: '',
-            operatorList: {
-                1: i18n.t('general.all'),
-                2: "MidwestFiber",
-                3: "APT"
-            },
+            operatorList: {},
             filter: {
-                operatorTypeId: 1,
+                operatorTypeId: '',
                 dateRange: [],
                 workOrderStatus: '',
                 tmpSearch: '',
@@ -111,6 +107,12 @@ export default {
                 }
             },
         }
+    },
+    created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
+        this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
+        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         const today = moment().format("YYYY-MM-DD");

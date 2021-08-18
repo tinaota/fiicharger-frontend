@@ -18,7 +18,8 @@
             <div class="card-8 statistics">
                 <div class="header">{{ $t('menu.statistics') }}
                     <el-select
-                        class="select-small right"
+                        class="select-small"
+                        style="vertical-align: top;"
                         v-model="statistics.filter"
                         @change="handleSelected()">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
@@ -160,13 +161,9 @@ export default {
         return {
             lang: '',
             filter: {
-                operatorTypeId: 1
+                operatorTypeId: ''
             },
-            operatorList: {
-                1: i18n.t('general.all'),
-                2: "MidwestFiber",
-                3: "APT"
-            },
+            operatorList: {},
             daySelectList: i18n.t('dashboard.daySelectList'),
             statistics: {
                 isLoading: false,
@@ -213,7 +210,10 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
     },
     mounted() {
         this.fetchAllData();

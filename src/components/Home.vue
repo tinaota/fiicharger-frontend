@@ -18,11 +18,10 @@
                 <div style="margin-right: 6px; display:inline-block"><img :src="sysUserAvatar" /></div>
                 <el-dropdown trigger="hover">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{sysUserName}}
+                        {{userData.name}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <!-- <el-dropdown-item divided @click.native="logout">{{$t('login.logout')}}</el-dropdown-item> -->
-                        <el-dropdown-item divided>{{$t('login.logout')}}</el-dropdown-item>
+                        <el-dropdown-item divided @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
@@ -38,7 +37,7 @@
                     <template v-for="item in $router.options.routes" >
                         <template v-if="!item.hidden && item.ename ==='Home'">
                             <template v-for="child in item.children">
-                                <template v-if="!child.hidden">
+                                <template v-if="menuShowCtrl(child)">
                                     <el-menu-item v-if="!child.hasChild" :index="child.path" :key="child.path" >
                                         <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
                                     </el-menu-item>
@@ -72,7 +71,7 @@
 <script>
 import * as types from "../store/types";
 import { $GLOBAL_LANG } from '@/utils/global';
-import { $HTTP_Logout } from "@/api/api";
+import { $HTTP_logout } from "@/api/api";
 import Vue from 'vue';
 import { getLang } from "@/utils/function";
 import apiConfig from "../../config/apiConfig";
@@ -83,22 +82,27 @@ export default {
             menuList: {},
             routerParent: '',
             routerName: '',
-            userData: {},
+            userData: {
+                account: '',
+                name: '',
+                accPermissionType: ''
+            },
             lang: '',
             langList: $GLOBAL_LANG,
             systemLogo: require("imgs/fiics_logo.png"),
             sysUserAvatar: require("imgs/ic_avata.png"),
-            sysUserName: 'Developer',
             appLogo: require("imgs/app_icon.png")
         };
     },
     created() {
-        // if (window.sessionStorage.getItem('fiics-accId')) {
-        //     this.sysUserName = this.userData.name;
-        // } else {
-        //     this.$store.commit(types.LOGOUT, JSON.stringify({}));
-        //     this.$router.push("/login");
-        // }
+        if (window.sessionStorage.getItem("fiics-user")) {
+            const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
+            this.userData = {
+                account: userData.accountInfo.account,
+                name: userData.accountInfo.name,
+                accPermissionType: userData.accountInfo.accPermissionType
+            }
+        }
         this.$router.options.routes.filter(item => item.ename=='Home')[0].children.forEach(item => {
             let temp = {};
             if(item.hidden)  return;
@@ -142,6 +146,23 @@ export default {
         setScrollBar('.home-menu', this);
     },
     methods: {
+        menuShowCtrl: function(child) {
+            if (this.userData.accPermissionType !== 2 && this.userData.accPermissionType !== 4 ) {
+                return !child.hidden;
+            } else if (this.userData.accPermissionType === 2) {
+                if (child.path !== '/account') {
+                    return !child.hidden;
+                } else {
+                    return false;
+                }
+            } else {
+                if (child.path !== '/info' && child.path !== '/billing' && child.path !== '/account') {
+                    return !child.hidden;
+                } else {
+                    return false;
+                }
+            }
+        },
         handleChangeLang(lang) {
             if(this.lang !== lang) {
                 this.lang = lang;
@@ -164,28 +185,24 @@ export default {
         getImgUrl(iconName) {
             return require('imgs/'+iconName+'.png');
         },
-        // logout: function() {
-        //     this.$confirm(i18n.t('login.hint_logout'), i18n.t('general.hint')
-        //     , {
-        //         type: "warning",
-        //         confirmButtonText: i18n.t('general.ok'),
-        //         cancelButtonText: i18n.t('general.cancel'),
-        // customClass: 'custom'
-        //     })
-        //     .then(() => {
-        //         $HTTP_Logout().then(data => {
-        //             if (!!data.success) {
-        //                 this.$store.commit(types.LOGOUT, JSON.stringify({}));
-        //                 this.$router.push("/login");
-        //                 this.$destroy();
-        //                 window.location.reload();
-        //             } else {
-        //                 this.$message.error(i18n.t('login.err_logout'));
-        //             }
-        //         });
-        //     })
-        //     .catch(() => {});
-        // }
+        logout: function() {
+            this.$confirm(i18n.t('login.hint_logout'), i18n.t('general.hint'), {
+                showClose: false,
+                customClass: 'custom'
+            }).then(() => {
+                $HTTP_logout().then(data => {
+                    if (!!data.success) {
+                        this.$store.commit(types.LOGOUT, JSON.stringify({}));
+                        this.$router.push("/login");
+                        this.$destroy();
+                        window.location.reload();
+                    } else {
+                        this.$message.error(i18n.t('login.err_logout'));
+                    }
+                });
+            })
+            .catch(() => {});
+        }
     }
 };
 </script>

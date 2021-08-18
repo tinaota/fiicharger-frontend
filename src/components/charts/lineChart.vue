@@ -70,7 +70,7 @@ export default {
             that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
                 let rightOffset = 0;
                 if (!idx) {
-                    rightOffset = that.chartData.yList.length * 76 - 35;
+                    rightOffset = that.chartData.yList.length * 76 - 30;
                 } else {
                     rightOffset = (that.chartData.yList.length - idx) * 76 - 55;
                 }
@@ -198,7 +198,7 @@ export default {
                 },
                 legend: this.legendList,
                 grid: {
-                    left: "20",
+                    left: "25",
                     right: "20",
                     top: "70",
                     bottom: "20",

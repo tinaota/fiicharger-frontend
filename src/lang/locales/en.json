@@ -93,12 +93,12 @@
         "installationDate": "Installation Date"
     },
     "dashboard": {
-        "energyUsedUnit": "Energy Used(kWh)",
+        "energyUsedUnit": "Energy Consumed(kWh)",
         "nAccount": "Number of Account",
         "nStation": "Number of Station",
         "nSession": "Number of Session",
         "nConnector": "Number of Connector",
-        "powerUsedTop10": "Power Used Top 10(kWh)",
+        "powerUsedTop10": "Energy Consumed Top 10(kWh)",
         "revenueTop10": "Revenue Top 10(USD)",
         "sessionTop10": "Session Top 10(Times)",
         "faultsTypeTop5": "Faults Type Top 5(Times)",
@@ -106,7 +106,7 @@
             "1": "Last 7 days",
             "2": "Last 14 days",
             "3": "Last month",
-            "4": "Last season",
+            "4": "Last quarter",
             "5": "Last year"
         },
         "revenue": "Revenue"
@@ -138,7 +138,7 @@
         "billingStatus": "Billing Status",
         "billingLog": "Billing Log",
         "userID": "Member ID",
-        "powerUsed": "Power Used",
+        "powerUsed": "Energy Consumed",
         "totalPrice": "Total Price",
         "alertID": "Alert ID",
         "alert": "Alert",
@@ -174,7 +174,8 @@
         "disconnection": "Disconnection",
         "chargingDuration": "Charging Duration",
         "minOutputPower": "Minimum Output Power",
-        "maxOutputPower": "Maximum Output Power"
+        "maxOutputPower": "Maximum Output Power",
+        "failure": "Failure"
     },
     "userAccount": {
         "userName": "Member Name",
@@ -202,6 +203,7 @@
         "lastUpdateTime": "Last Update Time",
         "lastUpdateBy": "Last Update By",
         "workOrderStatus": {
+            "1": "Created",
             "2": "Assigned",
             "3": "In Process",
             "4": "Validing",

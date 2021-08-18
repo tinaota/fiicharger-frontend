@@ -122,30 +122,52 @@ const router = new Router({
 /**
  * @description 页面刷新时重新对token 进行赋值操作
  */
-// if (window.sessionStorage.getItem('fiics-token')) {
-//     store.commit(types.LOGIN, window.sessionStorage.getItem('fiics-token'));
-// }
-
+if (window.sessionStorage.getItem('fiics-token')) {
+    store.commit(types.LOGIN, window.sessionStorage.getItem('fiics-token'));
+}
 
 /**
  * @description 处理页面跳转前后的路由逻辑操作
  */
 router.beforeEach((to, from, next) => {
-    if (from.path === '/' && to.path === '/') {
-        next({ path: '/location' });
+    // if (from.path === '/' && to.path === '/') {
+    //     next({ path: '/location' });
+    // } else {
+    //     next();
+    // }
+    if (to.path !== "/login") {
+        if (store.state.token && to.path !== "/") {
+            // var userData = window.sessionStorage.getItem('fiics-user') || null;
+            // if (userData && userData.accountInfo && userData.accountInfo.accPermissionType) {
+            //     var accPermissionType = userData.accountInfo.accPermissionType;
+            //     if (accPermissionType !== 2 && accPermissionType !== 4 ) {
+            //         next();
+            //     } else if (this.userData.accPermissionType === 2) {
+            //         if (to.path !== '/account/accountDetail' && to.path !== '/operator' && to.path !== '/endUser') {
+            //             next();
+            //         } else {
+            //             next({ path: '/404' });
+            //         }
+            //     } else {
+            //         if (to.path !== '/location' && to.path !== '/statistics' && to.path !== '/billingLog'
+            //             && to.path !== '/account/accountDetail' && to.path !== '/operator' && to.path !== '/endUser') {
+            //             next();
+            //         } else {
+            //             next({ path: '/404' });
+            //         }
+            //     }
+            // } else {
+            //     store.commit(types.LOGOUT);
+            //     next({ path: '/login' });
+            // }
+            next();
+        } else {
+            store.commit(types.LOGOUT);
+            next({ path: '/login' });
+        }
     } else {
         next();
     }
-    // if (to.path !== "/login") {
-    //     if (store.state.token && to.path !== "/") {
-    //         next();
-    //     } else {
-    //         store.commit(types.LOGOUT);
-    //         next({ path: '/login' });
-    //     }
-    // } else {
-        // next();
-    // }
     // axios.__axiosPromiseArr.forEach((ele, index) => {
     //     ele.cancel();
     //     delete axios.__axiosPromiseArr[index]

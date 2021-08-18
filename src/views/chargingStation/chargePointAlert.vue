@@ -12,7 +12,7 @@
                         v-model="filter.operatorTypeId"
                         :placeholder="$t('general.operator')"
                         clearable>
-                        <el-option v-for="item in operatorList" :label="item" :key="item" :value="item"></el-option>
+                        <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
                     <el-date-picker
                         v-model="filter.dateRange"
@@ -24,36 +24,37 @@
                         :end-placeholder="$t('general.endDate')"
                         :picker-options="pickerOptions"
                         :clearable="true"
-                        @change="handleDaterange">
+                        @change="fetchData()">
                     </el-date-picker>
                     <el-input
                         :placeholder="$t('chargingStation.chargePointID')+'/'+$t('chargingStation.alert')"
                         class="dark"
                         v-model="filter.tmpSearch"
-                        @change="handleSearch()"
+                        @change="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
-                    class="moreCol">
-                    <el-table-column prop="alertId" :label="$t('chargingStation.alertID')"></el-table-column>
-                    <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column> -->
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')">
+                    class="moreCol"
+                    v-loading="isLoading">
+                    <el-table-column prop="alertCode" :label="$t('chargingStation.alertID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
                         <template slot-scope="scope">
-                            <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item"></Connector>
+                            <Connector v-if="scope.row.connectorIsExistedFlag" :dataObj="scope.row.connectorInfo"></Connector>
+                            <span v-else>{{ $t('chargingStation.failure') }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="alert" :label="$t('chargingStation.alert')"></el-table-column>
-                    <el-table-column prop="time" :label="$t('general.time')"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.workeOrder')">
+                    <el-table-column prop="alertTitle" :label="$t('chargingStation.alert')" :min-width="3"></el-table-column>
+                    <el-table-column prop="sDate" :label="$t('general.time')" :min-width="3"></el-table-column>
+                    <el-table-column prop="workOrderCode" :label="$t('chargingStation.workeOrder')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.workeOrderStatus')" :min-width="2">
                         <template slot-scope="scope">
-                            {{ scope.row.workOrder.id }}
+                            {{ $t('support.workOrderStatus')[scope.row.workOrderStatus] }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="workerOrderStatus" :label="$t('chargingStation.workeOrderStatus')"></el-table-column>
                 </el-table>
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
                 <el-pagination background layout="prev, pager, next"
@@ -68,7 +69,7 @@
     </div>
 </template>
 <script>
-import StationAlertData from "@/tmpData/stationAlertData";
+import { $HTTP_getChargeAlertList } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 export default {
@@ -78,13 +79,14 @@ export default {
     data() {
         return {
             lang: '',
-            operatorList: ["Fiicharger", "MidwestFiber", "APT"],
+            operatorList: {},
             filter: {
                 tmpSearch: '',
                 search: '',
                 dateRange: [],
                 operatorTypeId: ''
             },
+            isLoading: false,
             tableData: [],
             page: 1,
             total: 0,
@@ -96,42 +98,53 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
+        this.operatorList = userData.operatorList;
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();
     },
     methods : {
-        fetchData() {
+        fetchData(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = StationAlertData.stationAlert.slice();
-            this.page = 1;
-            this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
-        },
-        handleSearch() {
-            this.filter.search = this.filter.tmpSearch;
-            this.page = 1;
-            if (this.filter.search) {
-                this.tableData = [];
-                this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-                this.tableData = StationAlertData.stationAlert.filter(this.createFilter(this.filter.search));
-                this.total = this.tableData.length;
-                setScrollBar('.scroll', this);
-            } else {
-                this.fetchData();
+            let param = {};
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+                param.operatorTypeId = this.filter.operatorTypeId;
             }
-        },
-        createFilter(queryString) {
-            return (item) => {
-                return (item.chargeBoxId.toLowerCase().indexOf(queryString.toLowerCase()) >= 0) ||
-                       (item.alert.toLowerCase().indexOf(queryString.toLowerCase()) >= 0)
-            };
+            if (this.filter.dateRange && this.filter.dateRange.length == 2) {
+                param.sDate = this.filter.dateRange[0];
+                param.eDate = this.filter.dateRange[1];
+            }
+            if (type) {
+                this.filter.search = this.filter.tmpSearch;
+            }
+            param.search = this.filter.search;
+            $HTTP_getChargeAlertList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.chargeAlertList.slice();
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.isLoading = false;
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         changePage(page) {
             this.page = page;
-        },
-        handleDaterange() {}
+        }
     },
 }
 </script>

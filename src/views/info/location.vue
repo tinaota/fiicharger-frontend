@@ -70,11 +70,7 @@ export default {
     data() {
         return {
             lang: '',
-            operatorList: {
-                1: i18n.t('general.all'),
-                2: "MidwestFiber",
-                3: "APT"
-            },
+            operatorList: {},
             center: {
                 lat: 67.87946334072687,
                 lng: 173.85862513198617
@@ -93,7 +89,7 @@ export default {
                 revenue: require("imgs/ic_revenue.png")
             },
             filter: {
-                operatorTypeId: 1,
+                operatorTypeId: '',
                 chargeBoxId: ''
             },
             chargerBoxList: {
@@ -132,7 +128,10 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
     },
     mounted() {
         const that = this;

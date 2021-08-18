@@ -167,11 +167,7 @@ export default {
     data() {
         return {
             lang: '',
-            operatorList: {
-                1: i18n.t('general.all'),
-                2: "MidwestFiber",
-                3: "APT"
-            },
+            operatorList: {},
             filter: {
                 operatorTypeId: '',
                 dateRange: [],
@@ -215,7 +211,9 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.operatorList = userData.operatorList;
     },
     mounted() {
         this.fetchChargerBoxList();

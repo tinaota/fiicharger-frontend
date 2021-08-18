@@ -1,9 +1,24 @@
 import axios from 'axios'
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_CTRL } from '@/utils/global'
-import { fetch, post } from '@/http/http'
+import { fetch, post, fetchImg } from '@/http/http'
 import apiConfig from "../../config/apiConfig";
 const base = $GLOBAL_HTTP;
+
+/**
+ * @description 登入
+ */
+export const $HTTP_login = params => { return post(`${base}/Home/Login/login`, qs.stringify(params)) }
+
+/**
+ * @description 登出
+ */
+export const $HTTP_logout = () => { return fetch(`${base}/Home/Login/logout`) }
+
+/**
+ * @description 取得圖形驗證碼
+ */
+export const $HTTP_getCaptcha = () => { return fetchImg(`${base}/Home/Login/getCaptcha`) }
 
 /**
  * @description 取得帳戶列表
@@ -167,3 +182,8 @@ export const $HTTP_getChargingSessionList = params => { return post(`${base}/Cha
  * @description 取得充電紀錄明細
  */
 export const $HTTP_getChargingSessionDetail = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionDetail`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電告警列表
+ */
+export const $HTTP_getChargeAlertList = params => { return post(`${base}/ChargeStation/Alert/getChargeAlertList`, qs.stringify(params)) }
