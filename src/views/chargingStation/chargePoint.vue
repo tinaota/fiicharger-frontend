@@ -44,8 +44,9 @@
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
-                    class="moreCol"
-                    v-loading="isLoading">
+                    class="moreCol enable-row-click"
+                    v-loading="isLoading"
+                    @row-click="handleRowClick">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
                     <!-- <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column> -->
                     <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
@@ -316,7 +317,14 @@ export default {
             this.mapDialog.itemId = data.chargeBoxId;
             this.mapDialog.position = data.loc;
             this.mapDialog.visible = true;
-        }
+        },
+        handleRowClick(row, column, event) {
+            if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
+                const data = Object.assign({}, row);
+                window.sessionStorage.setItem('fiics-chargePointInfo', JSON.stringify(data));
+                this.$router.push({ name: "chargePointDetail", params: data }).catch();
+            }
+        },
     }
 }
 </script>

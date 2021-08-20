@@ -2,22 +2,27 @@
     <div class="tab">
         <el-table
             :data="tableData.slice((page - 1) * 10, page * 10)"
+            class="moreCol"
             v-loading="isLoading">
             <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
-            <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
+            <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="3">
                 <template slot-scope="scope">
                     {{ scope.row.billingInfo.powerUsage + 'kWh' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+            <el-table-column :label="$t('chargingStation.connector')" :min-width="3">
                 <template slot-scope="scope">
-                    <Connector :key="idx" :dataObj="scope.row.connectorInfo"></Connector>
+                    <Connector :dataObj="scope.row.connectorInfo"></Connector>
                 </template>
             </el-table-column>
             <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="3"></el-table-column>
             <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="3"></el-table-column>
-            <el-table-column :label="$t('chargingStation.billing')" :width="120">
+            <el-table-column :label="$t('general.billingAmt')" :min-width="2">
+                <template slot-scope="scope">
+                    {{ currencyList[scope.row.billingInfo.unitType] + scope.row.billingInfo.price }}
+                </template>
+            </el-table-column>
+            <el-table-column :label="$t('chargingStation.billingID')" :width="120">
                 <template slot-scope="scope">
                     <el-popover trigger="click" popper-class="dark" width="420" placement="left" :offset="-20" :visible-arrow="false">
                         <el-table :data="[scope.row.billingInfo]">
@@ -25,12 +30,12 @@
                             <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
                             <el-table-column :label="$t('chargingStation.powerUsed')">
                                 <template slot-scope="scope">
-                                    {{ currencyList[scope.row.unitType] + scope.row.price }}
+                                    {{ scope.row.powerUsage + 'kWh' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="power" :label="$t('chargingStation.totalPrice')">
+                            <el-table-column prop="power" :label="$t('general.billingAmt')">
                                 <template slot-scope="scope">
-                                    {{ scope.row.powerUsage + 'kWh' }}
+                                    {{ currencyList[scope.row.unitType] + scope.row.price }}
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -56,7 +61,7 @@ import { $HTTP_getChargingSessionList } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
-        stationId: String
+        chargeBoxId: String
     },
     components: {
         Connector
@@ -83,15 +88,12 @@ export default {
             this.page = 1;
             this.isLoading = true;
             let param = {
-                stationId: this.stationId
+                chargeBoxId: this.chargeBoxId
             };
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargingSessionList.map(item=> {
-                        item.connectorInfo.status = 0;
-                        return item;
-                    });
+                    this.tableData = data.chargingSessionList.slice();
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -101,7 +103,7 @@ export default {
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
-                console.log(err)
+                console.log('session', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
