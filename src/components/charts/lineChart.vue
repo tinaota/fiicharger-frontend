@@ -19,6 +19,7 @@ export default {
     },
     data() {
         return {
+            lang: '',
             timeList: [],
             nameList: [],
             seriesData: [],
@@ -26,7 +27,9 @@ export default {
             yAxisData: []
         };
     },
-    created() {},
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
+    },
     mounted() {
         this.prePareData();
         this.draw();
@@ -44,13 +47,6 @@ export default {
     computed: {
         chartId: function() {
             let chart = this.$echarts.init(this.$refs[this.id]);
-            /*chart.showLoading({
-                text: '',
-                color: '#409EFF',
-                maskColor: 'rgba(0, 0, 0, 0.9)',
-                spinnerRadius: 20,
-                lineWidth: 2
-            });*/
             return chart;
         }
     },
@@ -67,13 +63,8 @@ export default {
             that.seriesData = [];
             that.nameList = [];
             that.legendList = [];
+            const rightOffset = (this.lang === 'en') ? ['345', '245', '20'] : ['250', '170', '20']
             that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
-                let rightOffset = 0;
-                if (!idx) {
-                    rightOffset = that.chartData.yList.length * 76 - 30;
-                } else {
-                    rightOffset = (that.chartData.yList.length - idx) * 76 - 55;
-                }
                 let info = {
                         name: item.name,
                         type: "line",
@@ -81,35 +72,19 @@ export default {
                         symbolSize: 10,
                         data: item.value,
                         areaStyle: {},
-                        yAxisIndex: idx,
-                        // itemStyle: {
-                        //     color: '#162951',
-                        //     borderColor: color[idx],
-                        //     borderWidth: 2,
-                        //     borderType: 'solid',
-                        // },
-                        // lineStyle: {
-                        //     normal: {
-                        //         color: color[idx]
-                        //     }
-                        // }
+                        yAxisIndex: idx
                     };
                 let legend = {
-                        // itemHeight: 10,
-                        // symbolSize: 10,
                         data: [{
                             name: item.name,
                             icon: "circle",
                         }],
                         top: "0",
-                        right: rightOffset.toString(),
+                        right: rightOffset[idx],
                         textStyle: {
                             fontSize: 14,
                             color: "#525E69"
-                        },
-                        // itemStyle: {
-                        //     color: color[idx]
-                        // }
+                        }
                     };
                 that.seriesData.push(info);
                 that.nameList.push(item.name);
@@ -119,8 +94,9 @@ export default {
                         {
                             type: "value",
                             name: "(kWh)",
+                            position: 'left',
                             axisLabel: {
-                                margin: 16,
+                                margin: 10,
                                 textStyle: {
                                     fontSize: 14,
                                     color: "#0c83ff"
@@ -133,7 +109,7 @@ export default {
                                 }
                             },
                             nameTextStyle: {
-                                padding: [0, 0, 5, -55],
+                                padding: [0, 0, 5, -45],
                                 color: "#0c83ff",
                                 fontWeight: 'bold',
                                 fontSize: 14
@@ -149,8 +125,9 @@ export default {
                             name: "(%)",
                             min: 0,
                             max: 100,
+                            position: 'right',
                             axisLabel: {
-                                margin: 16,
+                                margin: 10,
                                 textStyle: {
                                     fontSize: 14,
                                     color: "#3ADB65"
@@ -163,7 +140,7 @@ export default {
                                 }
                             },
                             nameTextStyle: {
-                                padding: [0, 0, 5, 55],
+                                padding: [0, 0, 5, 45],
                                 color: "#3ADB65",
                                 fontWeight: 'bold',
                                 fontSize: 14
@@ -173,10 +150,48 @@ export default {
                                     color: "#525E69"
                                 }
                             }
-                        }];
+                        },
+                        {
+                            type: "value",
+                            name: "(kW)",
+                            position: 'right',
+                            axisLabel: {
+                                margin: 55,
+                                textStyle: {
+                                    fontSize: 14,
+                                    color: "#FC2E56"
+                                }
+                            },
+                            axisLine: {
+                                show: false,
+                                lineStyle: {
+                                    color: '#525E69'
+                                }
+                            },
+                            nameTextStyle: {
+                                padding: [0, 0, 5, 130],
+                                color: "#FC2E56",
+                                fontWeight: 'bold',
+                                fontSize: 14
+                            },
+                            splitLine: {
+                                lineStyle: {
+                                    color: "#525E69"
+                                }
+                            }
+                        }
+                    ];
+            if (that.chartData.yList && !that.chartData.yList[0].value.length) {
+                that.yAxisData[0].min = 0;
+                that.yAxisData[0].max = 100;
+            }
+            if (that.chartData.yList && !that.chartData.yList[2].value.length) {
+                that.yAxisData[2].min = 0;
+                that.yAxisData[2].max = 100;
+            }
         },
         draw() {
-            const color = ["#0c83ff", "#3ADB65"];
+            const color = ["#0c83ff", "#3ADB65", "#FC2E56"];
             let options = {
                 color: color,
                 tooltip: {
@@ -228,9 +243,6 @@ export default {
                 yAxis:  this.yAxisData,
                 series: this.seriesData
             };
-            // if (this.timeList.length > 0) {
-            //     this.chartId.hideLoading();
-            // }
             this.chartId.setOption(options);
         },
         resizeCharts: function() {

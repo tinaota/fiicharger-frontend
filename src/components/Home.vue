@@ -3,19 +3,21 @@
         <el-row class="header">
             <el-col :sm="24" :lg="8" class="sys">
                 <div>
-                    <img :src="appLogo" style="margin-top: -4px; margin-right: 8px">
-                    <img :src="systemLogo" style="margin-top: -4px;">
+                    <img :src="appLogo">
+                    <img :src="systemLogo" style="vertical-align: bottom;">
                 </div>
             </el-col>
             <el-col :sm="24" :lg="16" class="header-info">
                 <el-dropdown trigger="hover">
-                    <span class="el-dropdown-link userinfo-inner">{{ langList[lang] }}</span>
+                    <span class="el-dropdown-link userinfo-inner" style="vertical-align: top;">{{ langList[lang] }}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-divider direction="vertical"></el-divider>
-                <div style="margin-right: 6px; display:inline-block"><img :src="sysUserAvatar" /></div>
+                <div class="img-container">
+                    <img :src="sysUserAvatar" />
+                </div>
                 <el-dropdown trigger="hover">
                     <div class="el-dropdown-link userinfo-inner">
                         {{userData.name}}
@@ -56,6 +58,7 @@
                         </template>
                     </template>
                 </el-menu>
+                <div class="version">{{ $t('version') + version }}</div>
             </aside>
             <section class="right-container">
                 <transition name="fade" mode="out-in">
@@ -70,15 +73,19 @@
 
 <script>
 import * as types from "../store/types";
-import { $GLOBAL_LANG } from '@/utils/global';
+import { $GLOBAL_LANG, $GLOBAL_VERSION } from '@/utils/global';
 import { $HTTP_logout } from "@/api/api";
 import Vue from 'vue';
 import { getLang } from "@/utils/function";
 import apiConfig from "../../config/apiConfig";
 import { setScrollBar } from "@/utils/function";
+import fiics_logo from 'imgs/fiics_logo.png';
+import ic_avata from 'imgs/ic_avata.png';
+import app_icon from 'imgs/app_icon.png';
 export default {
     data() {
         return {
+            version: $GLOBAL_VERSION,
             menuList: {},
             routerParent: '',
             routerName: '',
@@ -89,9 +96,9 @@ export default {
             },
             lang: '',
             langList: $GLOBAL_LANG,
-            systemLogo: require("imgs/fiics_logo.png"),
-            sysUserAvatar: require("imgs/ic_avata.png"),
-            appLogo: require("imgs/app_icon.png")
+            systemLogo: fiics_logo,
+            sysUserAvatar: ic_avata,
+            appLogo: app_icon
         };
     },
     created() {
@@ -220,9 +227,10 @@ export default {
         padding-right: 12px;
         .el-divider {
             background-color: #979797;
-            margin: -28px 24px 0;
-            height: 2rem;
+            margin: 0 24px;
+            height: 36px;
             width: 1.5px;
+            vertical-align: unset;
         }
         .el-dropdown {
             height: 36px;
@@ -240,6 +248,18 @@ export default {
                 }
             }
         }
+        .img-container {
+            height: 36px;
+            line-height: 36px;
+            margin-right: 6px;
+            display:inline-block;
+            vertical-align: top;
+            img {
+                width: auto;
+                max-height: 36px;
+                vertical-align: middle;
+            }
+        }
     }
 }
 .container {
@@ -254,16 +274,23 @@ export default {
         box-sizing: border-box;
         padding-top: 16px;
         .el-menu {
-            height: 100%;
+            height: calc(100% - 30px);
             overflow: hidden;
             background: #D5E0EF;
             border-right: none;
+        }
+        .version {
+            color: #525E69;
+            font-size: 1rem;
+            padding-left: 12px;
         }
     }
     .right-container {
         width: calc(100% - 208px);
         height: 100%;
         display: inline-block;
+        background-color: #DCE6f3;
+        border-top-left-radius: 20px;
     }
 }
 </style>

@@ -10,8 +10,7 @@
                 class="select-small large"
                 v-model="filter.operatorTypeId"
                 :placeholder="$t('general.operator')"
-                @change="fetchAllData"
-                clearable>
+                @change="fetchAllData">
                 <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
             <br/>

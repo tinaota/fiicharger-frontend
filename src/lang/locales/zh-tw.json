@@ -2,6 +2,7 @@
     "app_name": "Fii充電站管理系統",
     "app_name_short": "Fiicharger系統",
     "error_network": "網路異常!",
+    "version": "版本 ",
     "menu": {
         "home": "首頁",
         "information": "信息",

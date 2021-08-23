@@ -10,8 +10,7 @@
                 class="select-small"
                 v-model="filter.operatorTypeId"
                 :placeholder="$t('general.operator')"
-                @change="handleOperatorChanged()"
-                clearable>
+                @change="handleOperatorChanged()">
                 <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
             </el-select>
             <el-select
@@ -65,6 +64,22 @@ import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getChargeBoxListForMap, $HTTP_getChargeBoxInfoForMap } from "@/api/api";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
+import ic_info_green from 'imgs/ic_info_green.png';
+import ic_info_brown from 'imgs/ic_info_brown.png';
+import ic_info_red from 'imgs/ic_info_red.png';
+import ic_info_gray from 'imgs/ic_info_gray.png';
+import ic_info_orange from 'imgs/ic_info_orange.png';
+import ic_device_info from 'imgs/ic_device_info.png';
+import ic_charging from 'imgs/ic_charging.png';
+import ic_revenue from 'imgs/ic_revenue.png';
+
+import ic_ac_iec from 'imgs/ic_ac_iec.png';
+import ic_ac_tesla from 'imgs/ic_ac_tesla.png';
+import ic_ac_sae from 'imgs/ic_ac_sae.png';
+import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
+import ic_ac_chademo from 'imgs/ic_ac_chademo.png';
+import ic_ac_ccs2 from 'imgs/ic_ac_ccs2.png';
+import ic_ac_ccs1 from 'imgs/ic_ac_ccs1.png';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
@@ -79,14 +94,14 @@ export default {
             minZoomSize: 1.5,
             maxZoomSize: 22,
             icon: {
-                normal: require("imgs/ic_info_green.png"),
-                abnormal: require("imgs/ic_info_red.png"),
-                maintenance: require("imgs/ic_info_brown.png"),
-                connectionLost: require("imgs/ic_info_gray.png"),
-                serviceUnavailable: require("imgs/ic_info_orange.png"),
-                deviceInfo: require("imgs/ic_device_info.png"),
-                charging: require("imgs/ic_charging.png"),
-                revenue: require("imgs/ic_revenue.png")
+                normal: ic_info_green,
+                abnormal: ic_info_red,
+                maintenance: ic_info_brown,
+                connectionLost: ic_info_gray,
+                serviceUnavailable: ic_info_orange,
+                deviceInfo: ic_device_info,
+                charging: ic_charging,
+                revenue: ic_revenue
             },
             filter: {
                 operatorTypeId: '',
@@ -114,16 +129,16 @@ export default {
             mapboxLoadingPromise: {},
             currentPopUp: null,
             connectorIcon: {
-                1: require("imgs/ic_ac_iec.png"),
-                2: require("imgs/ic_ac_tesla.png"),
-                3: require("imgs/ic_ac_sae.png"),
-                4: require("imgs/ic_ac_gbt.png"),
-                5: require("imgs/ic_ac_iec.png"),
-                6: require("imgs/ic_ac_tesla.png"),
-                7: require("imgs/ic_ac_chademo.png"),
-                8: require("imgs/ic_ac_ccs2.png"),
-                9: require("imgs/ic_ac_ccs1.png"),
-                10: require("imgs/ic_ac_gbt.png")
+                1: ic_ac_iec,
+                2: ic_ac_tesla,
+                3: ic_ac_sae,
+                4: ic_ac_gbt,
+                5: ic_ac_iec,
+                6: ic_ac_tesla,
+                7: ic_ac_chademo,
+                8: ic_ac_ccs2,
+                9: ic_ac_ccs1,
+                10: ic_ac_gbt
             }
         }
     },
@@ -508,6 +523,7 @@ export default {
     height: calc(100vh - 68px);
     position: absolute;
     background: #a1c1fb;
+    border-top-left-radius: 20px;
     top: 68px;
     left: 208px;
     z-index: 0;

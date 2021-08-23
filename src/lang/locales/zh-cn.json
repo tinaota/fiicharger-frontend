@@ -2,6 +2,7 @@
     "app_name": "Fii充电站管理系统",
     "app_name_short": "Fiicharger系统",
     "error_network": "网路异常!",
+    "version": "版本 ",
     "menu": {
         "home": "首页",
         "information": "信息",

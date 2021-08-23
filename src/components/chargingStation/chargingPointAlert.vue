@@ -66,7 +66,7 @@ export default {
             $HTTP_getChargeAlertList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargeAlertList.filter(item => item.workOrderStatus !== 5);
+                    this.tableData = data.chargeAlertList.slice();
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

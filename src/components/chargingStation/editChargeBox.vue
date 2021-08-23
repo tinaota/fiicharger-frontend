@@ -112,12 +112,13 @@ import { setScrollBar } from "@/utils/function";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 // import { $HTTP_getStationListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
-import mapboxgl from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
-import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js'
-import MapStyle from '@/assets/js/mapStyle.js'
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js';
+import MapStyle from '@/assets/js/mapStyle.js';
 import 'threebox-plugin/dist/threebox';
-import "@/styles/map.scss"
+import "@/styles/map.scss";
+import ic_info_green from 'imgs/ic_info_green.png';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     props: {
@@ -175,7 +176,7 @@ export default {
                     lat: 42.677811124442854,
                     lng: -87.91695010215827
                 },
-                icon: require('imgs/ic_info_green.png')
+                icon: ic_info_green
             },
             currencyList: $GLOBAL_CURRENCY,
             serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')],

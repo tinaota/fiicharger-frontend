@@ -64,15 +64,20 @@ import { $GLOBAL_LANG } from "@/utils/global";
 import md5 from "js-md5";
 import p5 from 'libs/vanta/p5.min.js';
 import TOPOLOGY  from 'libs/vanta/vanta.topology.min.js';
+import fiicharger_logo from 'imgs/fiicharger_logo.png';
+import icon_account_p from 'imgs/icon_account_p.png';
+import icon_account_n from 'imgs/icon_account_n.png';
+import icon_password_p from 'imgs/icon_password_p.png';
+import icon_password_n from 'imgs/icon_password_n.png';
 export default {
     data() {
         return {
             langList: $GLOBAL_LANG,
-            fiiLogo: require("imgs/fiicharger_logo.png"),
-            accountImg: require("imgs/icon_account_p.png"),
-            accountImg_n: require("imgs/icon_account_n.png"),
-            pwdImg: require("imgs/icon_password_p.png"),
-            pwdImg_n: require("imgs/icon_password_n.png"),
+            fiiLogo: fiicharger_logo,
+            accountImg: icon_account_p,
+            accountImg_n: icon_account_n,
+            pwdImg: icon_password_p,
+            pwdImg_n: icon_password_n,
             isLoading: false,
             isFocusAcc: false,
             isFocusPwd: false,

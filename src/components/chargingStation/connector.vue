@@ -21,6 +21,13 @@
 </template>
 
 <script>
+import ic_ac_iec from 'imgs/ic_ac_iec.png';
+import ic_ac_tesla from 'imgs/ic_ac_tesla.png';
+import ic_ac_sae from 'imgs/ic_ac_sae.png';
+import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
+import ic_ac_chademo from 'imgs/ic_ac_chademo.png';
+import ic_ac_ccs2 from 'imgs/ic_ac_ccs2.png';
+import ic_ac_ccs1 from 'imgs/ic_ac_ccs1.png';
 export default {
     props: {
         isBreak: {
@@ -42,16 +49,16 @@ export default {
     data() {
         return {
             imgIcon: {
-                1: require("imgs/ic_ac_iec.png"),
-                2: require("imgs/ic_ac_tesla.png"),
-                3: require("imgs/ic_ac_sae.png"),
-                4: require("imgs/ic_ac_gbt.png"),
-                5: require("imgs/ic_ac_iec.png"),
-                6: require("imgs/ic_ac_tesla.png"),
-                7: require("imgs/ic_ac_chademo.png"),
-                8: require("imgs/ic_ac_ccs2.png"),
-                9: require("imgs/ic_ac_ccs1.png"),
-                10: require("imgs/ic_ac_gbt.png")
+                1: ic_ac_iec,
+                2: ic_ac_tesla,
+                3: ic_ac_sae,
+                4: ic_ac_gbt,
+                5: ic_ac_iec,
+                6: ic_ac_tesla,
+                7: ic_ac_chademo,
+                8: ic_ac_ccs2,
+                9: ic_ac_ccs1,
+                10: ic_ac_gbt
             }
         }
     },
