@@ -1,0 +1,38 @@
+{
+    "0": [{
+            "operatorName": "MidWestFiber",
+            "logo": "midwestFiber",
+            "address": "6070 N. Flint RoadGlendale, WI 53209",
+            "contactPerson": "Johnnie Walker",
+            "mobile": "+1 414 672 5612",
+            "email": "johnniewalker@midwestfibernetworks.com",
+            "createdDate": "2021-08-17 21:27:16"
+        },{
+            "operatorName": "APT",
+            "logo": "apt",
+            "address": "605 Lincoln Road5th FloorMiami Beach, FL 33139",
+            "contactPerson": "Jason Statham",
+            "mobile": "+1 888 998 2546",
+            "email": "hello@apt.com",
+            "createdDate": "2021-08-08 21:27:16"
+        }
+    ],
+    "2": [{
+            "operatorName": "MidWestFiber",
+            "logo": "midwestFiber",
+            "address": "6070 N. Flint RoadGlendale, WI 53209",
+            "contactPerson": "Johnnie Walker",
+            "mobile": "+1 414 672 5612",
+            "email": "johnniewalker@midwestfibernetworks.com",
+            "createdDate": "2021-08-17 21:27:16"
+    }],
+    "3": [{
+            "operatorName": "APT",
+            "logo": "apt",
+            "address": "605 Lincoln Road5th FloorMiami Beach, FL 33139",
+            "contactPerson": "Jason Statham",
+            "mobile": "+1 888 998 2546",
+            "email": "hello@apt.com",
+            "createdDate": "2021-08-08 21:27:16"
+    }]
+}

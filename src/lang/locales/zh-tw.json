@@ -185,7 +185,12 @@
         "thirdPartyVerification": "第三方驗證",
         "email": "電子郵件",
         "carType": "車型",
-        "creditCard": "信用卡"
+        "creditCard": "信用卡",
+        "operatorName": "運營商名稱",
+        "logo": "標誌",
+        "contactPerson": "聯繫人",
+        "mobile": "手機",
+        "createdDate": "Created Date"
     },
     "setting": {
         "marker": "標記",

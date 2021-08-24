@@ -69,7 +69,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="dcPlug" :label="$t('setting.dcPlug')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="72">
+                    <el-table-column :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg detail"></el-button>
                         </template>

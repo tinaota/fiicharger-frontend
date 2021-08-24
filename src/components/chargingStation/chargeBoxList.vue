@@ -42,7 +42,7 @@
                     </template>
                 </el-table-column>
             </el-table-column>
-            <el-table-column :label="$t('general.action')" :width="108">
+            <el-table-column :label="$t('general.action')" :width="65">
                 <template slot-scope="scope">
                     <el-button class="no-bg edit" @click="openDialog(scope.row)"></el-button>
                 </template>

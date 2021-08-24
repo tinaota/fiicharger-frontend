@@ -63,7 +63,7 @@ export default {
             that.seriesData = [];
             that.nameList = [];
             that.legendList = [];
-            const rightOffset = (this.lang === 'en') ? ['345', '245', '20'] : ['250', '170', '20']
+            const rightOffset = (this.lang === 'en') ? ['270', '165', '20'] : ['210', '130', '20']
             that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
                 let info = {
                         name: item.name,
@@ -197,10 +197,11 @@ export default {
                 tooltip: {
                     trigger: "axis",
                     formatter: function(params) {
-                        let result = params[0].name + '<br/>';
+                        let result = params[0].name + '<br/>',
+                            unit = ["kWh", "%", "kW"];
                         params.forEach((p, idx) => {
                             result += `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${color[idx]};"></span>
-                                        ${p.seriesName} : ${p.value} ${(idx)? '%':'kWh'} <br/>`;
+                                        ${p.seriesName} : ${p.value} ${unit[idx]} <br/>`;
                         });
                         return result;
                     },

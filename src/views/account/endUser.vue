@@ -30,7 +30,7 @@
                             <span v-for="(type, idx) in scope.row.loginType" :key="type">{{ type }} <br v-if="idx+1 !== scope.row.loginType.length"/></span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="80">
+                    <el-table-column :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg delete" @click="deleteAccount(scope.row.memberCode)"></el-button>
                         </template>

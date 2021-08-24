@@ -35,7 +35,7 @@
                     <el-input
                         :placeholder="$t('chargingStation.chargePointID')"
                         v-model="filter.tmpSearch"
-                        @fetchData="fetchData('s')"
+                        @change="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>

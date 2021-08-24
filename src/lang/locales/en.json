@@ -183,9 +183,14 @@
         "countryCode": "Country Code",
         "phone": "Phone Number",
         "thirdPartyVerification": "Third-Party Verification",
-        "email": "E-mail",
+        "email": "Email",
         "carType": "Car Type",
-        "creditCard": "Credit Card"
+        "creditCard": "Credit Card",
+        "operatorName": "Operator Name",
+        "logo": "Logo",
+        "contactPerson": "Contact Person",
+        "mobile": "Mobile",
+        "createdDate": "Created Date"
     },
     "setting": {
         "marker": "Marker",

@@ -91,7 +91,7 @@
                             </el-popover>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="74">
+                    <el-table-column :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg" icon="el-icon-data-line" @click="openDialog(scope.row.sessionId)"></el-button>
                         </template>
