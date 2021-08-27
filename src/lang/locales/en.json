@@ -91,7 +91,9 @@
         "name": "Name",
         "operator": "Operator",
         "billingAmt": "Billing amt.",
-        "installationDate": "Installation Date"
+        "installationDate": "Installation Date",
+        "onlyOneFile": "Only one file can be uploaded!",
+        "errFile": "File extension Error!"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

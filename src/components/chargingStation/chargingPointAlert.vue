@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { $HTTP_getChargeAlertList } from "@/api/api";
+import { $HTTP_getChargeHistoryAlertList } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
@@ -61,9 +61,9 @@ export default {
             this.page = 1;
             this.isLoading = true;
             let param = {
-                search: this.chargeBoxId
+                chargeBoxId: this.chargeBoxId
             };
-            $HTTP_getChargeAlertList(param).then((data) => {
+            $HTTP_getChargeHistoryAlertList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.tableData = data.chargeAlertList.slice();

@@ -91,7 +91,9 @@
         "name": "名稱",
         "operator": "操作員",
         "billingAmt": "費用",
-        "installationDate": "安裝日期"
+        "installationDate": "安裝日期",
+        "onlyOneFile": "只能上傳一個檔案!",
+        "errFile": "附檔名錯誤!"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",

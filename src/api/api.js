@@ -187,3 +187,8 @@ export const $HTTP_getChargingSessionDetail = params => { return post(`${base}/C
  * @description 取得充電告警列表
  */
 export const $HTTP_getChargeAlertList = params => { return post(`${base}/ChargeStation/Alert/getChargeAlertList`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電歷史告警列表
+ */
+export const $HTTP_getChargeHistoryAlertList = params => { return post(`${base}/ChargeStation/Alert/getChargeHistoryAlertList`, qs.stringify(params)) }

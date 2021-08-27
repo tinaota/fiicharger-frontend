@@ -3,17 +3,20 @@
         <el-row class="header">
             <el-col :sm="24" :lg="8" class="sys">
                 <div>
-                    <img :src="appLogo">
-                    <img :src="systemLogo" style="vertical-align: bottom;">
+                    <!-- <img :src="appLogo"> -->
+                    <img :src="systemLogo">
                 </div>
             </el-col>
             <el-col :sm="24" :lg="16" class="header-info">
-                <el-dropdown trigger="hover">
+                <!-- <el-dropdown trigger="hover">
                     <span class="el-dropdown-link userinfo-inner" style="vertical-align: top;">{{ langList[lang] }}</span>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-dropdown-item>
                     </el-dropdown-menu>
-                </el-dropdown>
+                </el-dropdown> -->
+                <div class="img-container">
+                    <img :src="appLogo" width="36px" height="36px">
+                </div>
                 <el-divider direction="vertical"></el-divider>
                 <div class="img-container">
                     <img :src="sysUserAvatar" />
