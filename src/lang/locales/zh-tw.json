@@ -26,7 +26,10 @@
         "myAccount": "我的帳戶",
         "operator": "運營商",
         "endUser": "終端用戶",
-        "cars": "車輛"
+        "cars": "車輛",
+        "report": "報告",
+        "usagePatterns": "使用模式",
+        "pluggedNotCharging": "插電&不充電"
     },
     "login": {
         "login": "登入",

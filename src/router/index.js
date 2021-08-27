@@ -83,7 +83,7 @@ let routes = [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     { path: '/account/accountDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
                     { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
-                    { path: '/endUser', component: () => import('@/views/account/endUser.vue'), name: 'menu.endUser', hidden: false },
+                    { path: '/endUser', component: () => import('@/views/account/endUser.vue'), name: 'menu.endUser', hidden: false }
                 ]
             },
             {

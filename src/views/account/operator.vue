@@ -5,119 +5,12 @@
                 <el-breadcrumb-item>{{ $t('menu.account') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.operator') }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div class="card-8 table-result">
-                <div class="filter">
-                    <el-select
-                        class="select-small"
-                        :placeholder="$t('general.operator')"
-                        v-model="filter.operatorTypeId"
-                        @change="fetchData()">
-                        <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                    </el-select>
-                    <el-input
-                        :placeholder="$t('userAccount.email')"
-                        v-model="filter.tmpEmail"
-                        @fetchData="fetchData('e')"
-                        clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                    <el-input
-                        :placeholder="$t('userAccount.contactPerson')"
-                        v-model="filter.tmpContactPersion"
-                        @fetchData="fetchData('c')"
-                        clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                    <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
-                </div>
-                <el-table
-                    :data="tableData.slice((page - 1) * 10, page * 10)"
-                    class="moreCol"
-                    v-loading="isLoading">
-                    <el-table-column prop="operatorName" :label="$t('userAccount.operatorName')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('userAccount.logo')" :min-width="3">
-                        <template slot-scope="scope">
-                            <img :src="icon[scope.row.logo]" class="logo">
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column>
-                    <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column>
-                    <el-table-column prop="mobile" :label="$t('userAccount.mobile')" :min-width="3"></el-table-column>
-                    <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
-                    <el-table-column prop="createdDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="65">
-                        <template slot-scope="scope">
-                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="total">{{ $t("general.result", {item:total}) }}</div>
-                <el-pagination background layout="prev, pager, next"
-                    :total="total"
-                    :pager-count="5"
-                    :page-size="10"
-                    :current-page.sync="page"
-                    @current-change="changePage">
-                </el-pagination>
+            <div v-if="accPermissionType !== 3">
+                <Operators></Operators>
             </div>
-            <!-- <el-dialog
-                :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')"
-                width="600px"
-                :visible.sync="dialog.visible"
-                :show-close="false"
-                v-loading="dialog.isLoading">
-                <div class="vertial formVertical">
-                    <div class="form-item" v-if="dialog.type">
-                        <div class="label">{{ $t('userAccount.stationID') }}</div>
-                        <el-input v-model="dialog.info.stationId" disabled></el-input>
-                    </div>
-                    <div class="form-item" v-if="dialog.type">
-                        <div class="label">{{ $t('userAccount.operatorName') }}</div>
-                        <el-input v-model="dialog.info.operatorName"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('general.address') }}</div>
-                        <el-input v-model="dialog.info.address"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('userAccount.contactPerson') }}</div>
-                        <el-input v-model="dialog.info.contactPerson"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('userAccount.countryCode') }}</div>
-                        <el-select
-                            class="select-small"
-                            v-model="dialog.info.countryCode"
-                            v-loading="countryCode.isLoading" >
-                            <el-option v-for="(item, idx) in countryCode.data" :label="item.countryCode+' ('+item.countryName+')'" :key="idx" :value="item.countryCode"></el-option>
-                        </el-select>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('userAccount.mobile') }}</div>
-                        <el-input v-model="dialog.info.mobile"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('general.address') }}</div>
-                        <el-input v-model="dialog.info.address"></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('userAccount.email') }}</div>
-                        <el-input v-model="dialog.info.email"></el-input>
-                    </div>
-                    <div class="form-item" v-if="dialog.type">
-                        <div class="label">{{ $t('userAccount.createdDate') }}</div>
-                        <el-input v-model="dialog.info.createdDate" disabled></el-input>
-                    </div>
-                    <div class="form-item" v-if="dialog.type">
-                        <div class="label">{{ $t('general.latestModification') }}</div>
-                        <el-input v-model="dialog.info.latestModification" disabled></el-input>
-                    </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button size="small" @click="dialog.visible = false">{{ $t('general.cancel') }}</el-button>
-                    <el-button size="small" type="primary">{{ $t('general.ok') }}</el-button>
-                </span>
-            </el-dialog> -->
+            <div v-else>
+                <OperatorSelf></OperatorSelf>
+            </div>
         </div>
     </div>
 </template>
@@ -128,17 +21,24 @@ import OperatorData from "@/tmpData/operatorData";
 import { setScrollBar } from "@/utils/function";
 import midwestFiber from 'imgs/midwestFiber.png';
 import apt from 'imgs/apt.png';
+import Operators from "@/components/userAccount/operators";
+import OperatorSelf from "@/components/userAccount/operatorSelf";
 export default {
+    components: {
+        Operators,
+        OperatorSelf
+    },
     data() {
         return {
             lang: '',
+            accPermissionType: '',
             operatorList: {},
             filter: {
                 operatorTypeId: '',
                 tmpEmail: '',
-                email: '',
+                emailSearch: '',
                 tmpContactPersion: '',
-                contactPersion: '',
+                personSearch: '',
             },
             icon: {
                 midwestFiber: midwestFiber,
@@ -154,20 +54,26 @@ export default {
             },
             dialog: {
                 visible: false,
+                isUpdating: false,
                 type: 0,
                 info: {
-                }
+                    file: []
+                },
+                uploadParams: {},
+                $Api: null
             },
         }
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.accPermissionType = userData.accountInfo.accPermissionType;
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
     },
     mounted() {
         this.fetchData();
+        this.fetchCountryCodeList();
     },
     methods: {
         fetchData() {
@@ -201,6 +107,43 @@ export default {
                 this.dialog.info = Object.assign({}, data);
             }
             this.dialog.visible = true;
+            that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
+            that.$nextTick(() => {
+                setScrollBar('.formVertical', this);
+            });
+        },
+        handleExceed(response, file, fileList) {
+            this.$message.warning(i18n.t('general.onlyOneFile'));
+        },
+        handleFileChange(file, fileList) {
+            this.dialog.info.file = fileList;
+        },
+        onBeforeUploadPic(file) {
+            const imgTypes = ['gif', 'jpeg', 'jpg', 'png'];
+            const fileExt = file.name.substring(file.name.lastIndexOf('.') + 1),
+                    flag = imgTypes.find(img => img === fileExt);
+
+            (flag == undefined) && this.$message.error(i18n.t('general.errFile'));
+            if (flag) {
+                this.dialog.isUpdating = true;
+            }
+            return flag;
+        },
+        handleSuccess(response, file, fileList) {
+            if (response.success == 1) {
+                this.dialog.isUpdating = false;
+                this.dialog.visible = false;
+                this.$message({type: 'success', message: (this.dialog.isAdd) ? i18n.t('general.sucAddMsg') : i18n.t('general.sucUpdateMsg') });
+                this.changePage(1);
+            } else {
+                this.$message({ type: 'warning', message: that.lang === 'en' ? data.message : data.reason });
+                this.dialog.isUpdating = false;
+            }
+        },
+        handleError(response, file, fileList) {
+            this.dialog.isUpdating = false;
+            this.dialog.visible = false;
+            this.$message({ type: 'error', message: i18n.t('error_network') });
         },
     }
 }

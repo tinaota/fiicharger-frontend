@@ -26,7 +26,10 @@
         "myAccount": "My Account",
         "operator": "Operator",
         "endUser": "End User",
-        "cars": "Cars"
+        "cars": "Cars",
+        "report": "Report",
+        "usagePatterns": "Usage Patterns",
+        "pluggedNotCharging": "Plugged & Not Charging"
     },
     "login": {
         "login": "Login",

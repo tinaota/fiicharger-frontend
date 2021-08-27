@@ -52,8 +52,7 @@
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children" >
-                                            <el-menu-item v-if="!subChild.hidden && subChild.name !== 'menu.accountMgt'" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
-                                            <el-menu-item v-else-if="!subChild.hidden" :index="subChild.path" class="longItem" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-if="subMenuShowCtrl(subChild)" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>
@@ -157,17 +156,22 @@ export default {
     },
     methods: {
         menuShowCtrl: function(child) {
-            if (this.userData.accPermissionType !== 2 && this.userData.accPermissionType !== 4 ) {
+            if (this.userData.accPermissionType !== 4 ) {
                 return !child.hidden;
-            } else if (this.userData.accPermissionType === 2) {
-                if (child.path !== '/account') {
+            } else {
+                if (child.path !== '/info' && child.path !== '/billing' && child.path !== '/account') {
                     return !child.hidden;
                 } else {
                     return false;
                 }
+            }
+        },
+        subMenuShowCtrl: function(subChild) {
+            if (this.userData.accPermissionType !== 2) {
+                return !subChild.hidden;
             } else {
-                if (child.path !== '/info' && child.path !== '/billing' && child.path !== '/account') {
-                    return !child.hidden;
+                if (subChild.path !== '/endUser') {
+                    return !subChild.hidden;
                 } else {
                     return false;
                 }

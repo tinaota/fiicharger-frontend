@@ -136,10 +136,10 @@
                             <div class="label">{{ $t('chargingStation.powerUsed')}}</div>
                             <div class="info">{{ dialog.info.powerUsage + "kWh" }}</div>
                         </div>
-                        <div class="item">
+                        <!-- <div class="item">
                             <div class="label">{{ $t('chargingStation.minOutputPower')}}</div>
                             <div class="info">{{ dialog.info.minOutputPower + "kW" }}</div>
-                        </div>
+                        </div> -->
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.maxOutputPower')}}</div>
                             <div class="info">{{ dialog.info.maxOutputPower + "kW" }}</div>
