@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_CTRL } from '@/utils/global'
 import { fetch, post, fetchImg } from '@/http/http'
-import apiConfig from "../../config/apiConfig";
+import apiConfig from "&apiConfig";
 const base = $GLOBAL_HTTP;
 
 /**
@@ -90,6 +90,23 @@ export const $HTTP_getWorkOrderList = params => { return post(`${base}/Home/Work
  * @description 取得汽車列表
  */
 export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCarList`, qs.stringify(params)) }
+
+/**
+ * @description 取得運營商列表
+ */
+export const $HTTP_getOperatorList = params => { return post(`${base}/Home/Operator/getOperatorList`, qs.stringify(params)) }
+
+/**
+ * @description 新增運營商
+ */
+// export const $HTTP_addOperator = params => { return post(`${base}/Home/Operator/addOperator`, qs.stringify(params)) }
+export const AddOperator = apiConfig.baseUrl + base +'/Home/Operator/addOperator';
+
+/**
+ * @description 更新運營商資訊
+ */
+export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operator/updateOperator`, qs.stringify(params)) }
+export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOperator';
 
 /**
  * @description 新增充電站
@@ -192,3 +209,4 @@ export const $HTTP_getChargeAlertList = params => { return post(`${base}/ChargeS
  * @description 取得充電歷史告警列表
  */
 export const $HTTP_getChargeHistoryAlertList = params => { return post(`${base}/ChargeStation/Alert/getChargeHistoryAlertList`, qs.stringify(params)) }
+

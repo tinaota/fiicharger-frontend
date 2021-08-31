@@ -8,12 +8,16 @@
                 <el-table-column prop="operatorName" :label="$t('userAccount.operatorName')" :min-width="3"></el-table-column>
                 <el-table-column :label="$t('userAccount.logo')" :min-width="3">
                     <template slot-scope="scope">
-                        <img :src="icon[scope.row.operatorPicPath]" class="logo">
+                        <img :src="scope.row.operatorPicPath" class="logo">
                     </template>
                 </el-table-column>
                 <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column>
                 <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column>
-                <el-table-column prop="phone" :label="$t('userAccount.mobile')" :min-width="3"></el-table-column>
+                <el-table-column :label="$t('userAccount.mobile')" :min-width="3">
+                    <template slot-scope="scope">
+                        {{ scope.row.countryCode + " " + scope.row.phone }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
                 <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
                 <el-table-column :label="$t('general.action')" :width="65">
@@ -34,10 +38,6 @@
             @close="$refs.updateImg && $refs.updateImg.clearFiles();"
             v-loading="dialog.isLoading">
             <div class="vertial formVertical">
-                <!-- <div class="form-item">
-                    <div class="label">{{ $t('userAccount.stationID') }}</div>
-                    <el-input v-model="dialog.info.stationId" disabled></el-input>
-                </div> -->
                 <div class="form-item">
                     <div class="label">{{ $t('userAccount.operatorName') }}</div>
                     <el-input v-model="dialog.info.operatorName"></el-input>
@@ -99,18 +99,16 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button size="small" @click="dialog.visible = false">{{ $t('general.cancel') }}</el-button>
-                <el-button size="small" type="primary">{{ $t('general.ok') }}</el-button>
+                <el-button size="small" type="primary" @click="updateOperatorData">{{ $t('general.ok') }}</el-button>
             </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { $HTTP_getCountryCodeSelectList } from "@/api/api";
+import { $HTTP_getCountryCodeSelectList, $HTTP_getOperatorList, $HTTP_updateOperator, UpdateOperator } from "@/api/api";
 import OperatorData from "@/tmpData/operatorData";
 import { setScrollBar } from "@/utils/function";
-import midwestFiber from 'imgs/midwestFiber.png';
-import apt from 'imgs/apt.png';
 import Operators from "@/components/userAccount/operators";
 import OperatorSelf from "@/components/userAccount/operatorSelf";
 export default {
@@ -122,10 +120,6 @@ export default {
         return {
             lang: '',
             operatorTypeId: '',
-            icon: {
-                midwestFiber: midwestFiber,
-                apt: apt
-            },
             isLoading: false,
             tableData: [],
             countryCode: {
@@ -134,11 +128,21 @@ export default {
             },
             dialog: {
                 visible: false,
-                isUpdating: false,
+                isLoading: false,
                 type: 0,
                 info: {
-                    file: []
+                    operatorName: '',
+                    file: [],
+                    address: '',
+                    contactPerson: '',
+                    countryCode: '',
+                    phone: '',
+                    email: '',
+                    operatorId: '',
+                    // fDate: '',
+                    // eDate: '',
                 },
+                originalImg: '',
                 uploadParams: {},
                 $Api: null
             },
@@ -155,9 +159,28 @@ export default {
     },
     methods: {
         fetchData() {
+            const that = this;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            this.tableData = OperatorData[this.operatorTypeId].slice();
-            setScrollBar('.scroll', this);
+            let param = {
+                operatorTypeId: this.operatorTypeId
+            };
+            $HTTP_getOperatorList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.tableData = data.operatorList.slice();
+                    this.total = this.tableData.length;
+                } else {
+                    this.tableData = [];
+                    this.total = 0;
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+                setScrollBar('.scroll', this);
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         fetchCountryCodeList() {
             const that = this;
@@ -176,7 +199,25 @@ export default {
         },
         openDialog(data) {
             const that = this;
-            this.dialog.info = Object.assign({}, data);
+            const imgFileName = data.operatorPicPath.split('images/operator/')[1];
+            this.dialog.info = {
+                                operatorId: data.operatorId,
+                                operatorName: data.operatorName,
+                                file: [{
+                                    name: imgFileName,
+                                    url: data.operatorPicPath
+                                }],
+                                address: data.address,
+                                contactPerson: data.contactPerson,
+                                countryCode: data.countryCode,
+                                phone: data.phone,
+                                email: data.email,
+                                fDate: data.fDate,
+                                eDate: data.eDate
+                            };
+            this.dialog.originalImg = data.operatorPicPath;
+            this.dialog.$Api = UpdateOperator;
+            this.dialog.uploadParams = {};
             this.dialog.visible = true;
             that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
             that.$nextTick(() => {
@@ -196,26 +237,84 @@ export default {
 
             (flag == undefined) && this.$message.error(i18n.t('general.errFile'));
             if (flag) {
-                this.dialog.isUpdating = true;
+                this.dialog.isLoading = true;
             }
             return flag;
         },
         handleSuccess(response, file, fileList) {
             if (response.success == 1) {
-                this.dialog.isUpdating = false;
-                this.dialog.visible = false;
                 this.$message({type: 'success', message: i18n.t('general.sucUpdateMsg') });
-                this.changePage(1);
+                this.dialog.isLoading = false;
+                this.updateOperatorList(Object.assign({}, response.operatorList), response.operatorPicPath, ()=> {
+                    this.dialog.visible = false;
+                    setTimeout(( () => {
+                        location.reload();
+                    }), 100);
+                });
             } else {
                 this.$message({ type: 'warning', message: that.lang === 'en' ? data.message : data.reason });
-                this.dialog.isUpdating = false;
+                this.dialog.isLoading = false;
             }
         },
         handleError(response, file, fileList) {
-            this.dialog.isUpdating = false;
-            this.dialog.visible = false;
+            this.dialog.isLoading = false;
+            console.log('handleError', response);
             this.$message({ type: 'error', message: i18n.t('error_network') });
         },
+        updateOperatorData() {
+            const that = this;
+            //有傳圖片情況
+            if (this.dialog.info.file.length > 0 && this.dialog.originalImg !== this.dialog.info.file[0].url) {
+                this.dialog.uploadParams = {
+                                            operatorId: this.dialog.info.operatorId,
+                                            operatorName: this.dialog.info.operatorName,
+                                            address: this.dialog.info.address,
+                                            contactPerson: this.dialog.info.contactPerson,
+                                            countryCode: this.dialog.info.countryCode,
+                                            phone: this.dialog.info.phone,
+                                            email: this.dialog.info.email
+                                        };
+                this.$nextTick(()=> {
+                    that.$refs.updateImg.submit();
+                });
+            } else { //沒有傳圖片情況 只有更新才會發生
+                let params = {
+                                operatorId: this.dialog.info.operatorId,
+                                operatorName: this.dialog.info.operatorName,
+                                address: this.dialog.info.address,
+                                contactPerson: this.dialog.info.contactPerson,
+                                countryCode: this.dialog.info.countryCode,
+                                phone: this.dialog.info.phone,
+                                email: this.dialog.info.email
+                            };
+                that.dialog.isLoading = true;
+                $HTTP_updateOperator(params).then(data => {
+                    that.dialog.isLoading = false;
+                    if (!!data.success) {
+                        that.$message({type: 'success', message: i18n.t('general.sucUpdateMsg') });
+                        that.updateOperatorList(Object.assign({}, data.operatorList));
+                        that.fetchData();
+                        that.dialog.visible = false;
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                });
+            }
+        },
+        updateOperatorList(list, imgPath, callBack) {
+            const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
+            this.operatorList = list;
+            userData.operatorList = list;
+            userData.operatorId = parseInt(Object.keys(list)[0]) || 0;
+            if (imgPath) {
+                userData.accountInfo.operatorPicPath = imgPath;
+            }
+            window.sessionStorage.setItem("fiics-user", JSON.stringify(userData));
+            callBack && callBack();
+        }
     }
 }
 </script>

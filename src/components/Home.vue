@@ -82,7 +82,6 @@ import { getLang } from "@/utils/function";
 import apiConfig from "../../config/apiConfig";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from 'imgs/fiics_logo.png';
-import ic_avata from 'imgs/ic_avata.png';
 import app_icon from 'imgs/app_icon.png';
 export default {
     data() {
@@ -99,7 +98,7 @@ export default {
             lang: '',
             langList: $GLOBAL_LANG,
             systemLogo: fiics_logo,
-            sysUserAvatar: ic_avata,
+            sysUserAvatar: '',
             appLogo: app_icon
         };
     },
@@ -111,6 +110,10 @@ export default {
                 name: userData.accountInfo.name,
                 accPermissionType: userData.accountInfo.accPermissionType
             }
+            this.sysUserAvatar = userData.accountInfo.operatorPicPath;
+        } else {
+            this.$store.commit(types.LOGOUT, JSON.stringify({}));
+            this.$router.push("/login");
         }
         this.$router.options.routes.filter(item => item.ename=='Home')[0].children.forEach(item => {
             let temp = {};

@@ -29,6 +29,7 @@ module.exports = {
       'scss_table': '@/styles/table.scss',
       'imgs': resolve('static/imgs'),
       'libs': resolve('static/libs'),
+      '&apiConfig': resolve('config/apiConfig.js')
     }
   },
   plugins: [
