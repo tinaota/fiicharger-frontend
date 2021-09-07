@@ -11,8 +11,8 @@ export default {
             type: Object,
             default: function() {
                 return {
-                    timeList: [],
-                    data: [],
+                    xList: [],
+                    yList: [],
                     unit: ''
                 };
             }
@@ -21,10 +21,13 @@ export default {
     data() {
         return {
             timeList: [],
+            nameList: [],
             seriesData: []
         };
     },
-    created() {},
+    created() {
+        this.lang = window.sessionStorage.getItem('fiics-lang');
+    },
     mounted() {
         this.prePareData();
         this.draw();
@@ -53,26 +56,32 @@ export default {
     },
     methods: {
         prePareData() {
-            this.timeList = this.chartData.timeList;
-            this.seriesData = [{
-                type: 'bar',
-                // stack: that.id,
-                data: this.chartData.data,
-                barWidth: this.chartData.timeList.length < 15 ? 25: 10,
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: this.chartData.timeList.length < 15 ? [5, 5, 5, 5]:[2, 2, 2, 2]
-                    }
-                }
-            }];
+            const that = this;
+            this.timeList = this.chartData.xList;
+            that.nameList = [];
+            that.seriesData = [];
+            that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
+                let info = {
+                            name: item.name,
+                            type: 'bar',
+                            stack: that.id,
+                            data: item.value,
+                            barWidth: this.chartData.xList.length < 15 ? 25: 10,
+                            emphasis: {
+                                focus: 'series'
+                            }
+                        };
+                that.seriesData.push(info);
+                that.nameList.push(item.name);
+            });
         },
         //配置
         draw() {
             let options = {
-                color: ['#0c83ff'],
+                color: ['#0C83FF', '#FFA10B'],
                 tooltip: {
                     trigger: "axis",
-                    formatter: "{b}: {c} "+this.chartData.unit,
+                    // formatter: "{b}: {c} "+this.chartData.unit,
                     padding: [12,20],
                     borderColor: "#FFFFFF",
                     borderWidth: 1,
@@ -80,10 +89,20 @@ export default {
                         type: 'shadow'
                     }
                 },
-                grid: {
-                    left: "10",
+                legend: {
+                    data: this.nameList,
                     right: "20",
-                    top: "30",
+                    top: '5',
+                    textStyle: {
+                        fontSize: 14,
+                        color: "#525E69"
+                    },
+                    itemGap: 24
+                },
+                grid: {
+                    left: "25",
+                    right: "20",
+                    top: "60",
                     bottom: "0",
                     containLabel: true
                 },
@@ -102,18 +121,20 @@ export default {
                     axisLabel: {
                         margin: 16,
                         textStyle: {
-                            fontSize: 12,
+                            fontSize: 14,
                             color: "#525E69"
                         }
                     },
                 },
-                yAxis:  {
+                yAxis: [{
                     type: "value",
                     name: this.chartData.unit,
+                    min: 0,
+                    max: 100,
                     axisLabel: {
                         margin: 16,
                         textStyle: {
-                            fontSize: 12,
+                            fontSize: 14,
                             color: "#525E69"
                         }
                     },
@@ -124,15 +145,17 @@ export default {
                         }
                     },
                     nameTextStyle: {
-                        padding: [0, 0, -5, -50],
-                        color: "#525E69"
+                        padding: [0, 0, 0, -50],
+                        color: "#525E69",
+                        fontWeight: 'bold',
+                                fontSize: 14
                     },
                     splitLine: {
                         lineStyle: {
                             color: "#E5E9F2"
                         }
                     },
-                },
+                }],
                 series: this.seriesData
             };
             this.chartId.setOption(options);

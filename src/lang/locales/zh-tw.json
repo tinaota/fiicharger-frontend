@@ -96,7 +96,8 @@
         "billingAmt": "費用",
         "installationDate": "安裝日期",
         "onlyOneFile": "只能上傳一個檔案!",
-        "errFile": "附檔名錯誤!"
+        "errFile": "附檔名錯誤!",
+        "day": "日"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -228,5 +229,21 @@
         "unsolved": "未解決",
         "accumulated": "累計",
         "workOrdersList": "工單列表"
+    },
+    "report": {
+        "summaryUsagePatterns": "按日期時間站點使用情況和能源消耗資訊。",
+        "summaryPluggedNotCharging": "按日期報告車輛已插入且未充電的摘要 。",
+        "chartUsagePatterns": "按日期時間消耗的能量和充電紀錄",
+        "nChargePoint": "充電樁數量",
+        "avgChargingSession": "平均充電紀錄",
+        "avgChargingDuration": "平均充電時間",
+        "avgEnergyConsumedUnit": "平均能耗(kWh)",
+        "nVehicleConnected": "連接的車輛數",
+        "nChargingTime": "充電次數",
+        "timeDate": "時間",
+        "chartPluggedNotCharging": "插入且充電與不充電",
+        "connectedCharging": "連接和充電",
+        "totalConnectedTime": "總連接時間",
+        "connectedChargingTime": "連接充電時間(%)"
     }
 }

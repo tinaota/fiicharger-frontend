@@ -96,7 +96,8 @@
         "billingAmt": "Billing amt.",
         "installationDate": "Installation Date",
         "onlyOneFile": "Only one file can be uploaded!",
-        "errFile": "File extension Error!"
+        "errFile": "File extension Error!",
+        "day": "Day"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -228,5 +229,21 @@
         "unsolved": "Unsolved",
         "accumulated": "Accumulated",
         "workOrdersList": "Work Orders List"
+    },
+    "report": {
+        "summaryUsagePatterns": "Summary of station usage and Energy Consumed by time of date.",
+        "summaryPluggedNotCharging": "Summary of Vehicle Plugged in & Not Charging - Report by Date",
+        "chartUsagePatterns": "Time of date,Energy Consumed & Vehicle Connected",
+        "nChargePoint": "Number of Charge Point",
+        "avgChargingSession": "Average Charging Session",
+        "avgChargingDuration": "Average Charging Duration",
+        "avgEnergyConsumedUnit": "Average Energy Consumed(kWh)",
+        "nVehicleConnected": "Number of Vehicle Connected",
+        "nChargingTime": "Number of Charging Time",
+        "timeDate": "Time of Date",
+        "chartPluggedNotCharging": "Plugged in & Charging vs Not Charging",
+        "connectedCharging": "Connected & Charging",
+        "totalConnectedTime": "Total Connected Time",
+        "connectedChargingTime": "Connected Charging Time(%)"
     }
 }

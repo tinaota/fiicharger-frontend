@@ -72,6 +72,16 @@ export const $HTTP_getChargingSessionCountTop10List = params => { return post(`$
 export const $HTTP_getFaultCountTop5List = params => { return post(`${base}/Home/Statistics/getFaultCountTop5List`, qs.stringify(params)) }
 
 /**
+ * @description 取得充電時長分析資訊
+ */
+export const $HTTP_getChargingTimeAnalysisInfo = params => { return post(`${base}/Home/Statistics/getChargingTimeAnalysisInfo`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電累積電量分析資訊
+ */
+export const $HTTP_getChargingPowerUsageAnalysisInfo = params => { return post(`${base}/Home/Statistics/getChargingPowerUsageAnalysisInfo`, qs.stringify(params)) }
+
+/**
  * @description 取得付款紀錄列表
  */
 export const $HTTP_getBillingList = params => { return post(`${base}/Home/Billing/getBillingList`, qs.stringify(params)) }

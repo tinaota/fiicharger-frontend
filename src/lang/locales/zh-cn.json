@@ -96,7 +96,8 @@
         "billingAmt": "费用",
         "installationDate": "安装日期",
         "onlyOneFile": "只能上传一个档案!",
-        "errFile": "附档名错误!"
+        "errFile": "附档名错误!",
+        "day": "日"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -228,5 +229,21 @@
         "unsolved": "未解决",
         "accumulated": "累計",
         "workOrdersList": "工单列表"
+    },
+    "report": {
+        "summaryUsagePatterns": "按日期时间站点使用情况和能源消耗資訊。",
+        "summaryPluggedNotCharging": "按日期报告车辆已插入且未充电的摘要。",
+        "chartUsagePatterns": "按日期时间消耗的能量和充电纪录",
+        "nChargePoint": "充电桩数量",
+        "avgChargingSession": "平均充电纪录",
+        "avgChargingDuration": "平均充电时间",
+        "avgEnergyConsumedUnit": "平均能耗(kWh)",
+        "nVehicleConnected": "连接的车辆数",
+        "nChargingTime": "充电次数",
+        "timeDate": "时间",
+        "chartPluggedNotCharging": "插入且充电与不充电",
+        "connectedCharging": "连接和充电",
+        "totalConnectedTime": "总连接时间",
+        "connectedChargingTime": "连接充电时间(%)"
     }
 }

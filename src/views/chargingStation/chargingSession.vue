@@ -156,7 +156,7 @@
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
-import LineChart from "@/components/charts/lineChart";
+import LineChart from "@/components/charts/threeLineChart";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail } from "@/api/api";
 export default {
     components: {

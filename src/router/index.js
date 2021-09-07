@@ -34,6 +34,7 @@ let routes = [
                 children: [
                     { path: '/location', component: () => import('@/views/info/location.vue'), name: 'menu.location', hidden: false },
                     { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: false },
+                    { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: false }
                 ]
             },
             {
