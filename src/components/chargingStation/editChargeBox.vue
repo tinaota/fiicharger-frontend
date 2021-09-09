@@ -9,14 +9,14 @@
         @close="closeDialog()">
         <div id="map-container" class="google-map"></div>
         <div class="right-form formVertical">
+            <div class="form-item" v-if="dialog.type">
+                <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
+                <el-input v-model="dialog.info.chargeBoxName" disabled></el-input>
+            </div>
             <div class="form-item">
                 <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                 <el-input v-model="dialog.info.chargeBoxId"></el-input>
             </div>
-            <!-- <div class="form-item">
-                <div class="label">{{ $t('general.name') }}</div>
-                <el-input v-model="dialog.info.chargeBoxName"></el-input>
-            </div> -->
             <div class="form-item">
                 <div class="label">{{ $t('general.lng') }}</div>
                 <el-input v-model="dialog.info.loc.lon" disabled></el-input>
@@ -291,7 +291,7 @@ export default {
             let   $API,
                   params = {
                     chargeBoxId: that.dialog.info.chargeBoxId,
-                    // chargeBoxName: that.dialog.info.chargeBoxName,
+                    // chargeBoxName: that.dialog.info.chargeBoxName, //不能改名子
                     lon: that.dialog.info.loc.lon,
                     lat: that.dialog.info.loc.lat,
                     // stationId: that.dialog.info.stationId,

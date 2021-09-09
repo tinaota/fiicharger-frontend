@@ -46,9 +46,9 @@
                     class="moreCol enable-row-click"
                     v-loading="isLoading"
                     @row-click="handleRowClick">
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="7"></el-table-column>
-                    <!-- <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column> -->
-                    <el-table-column :label="$t('general.status')" :min-width="3" class-name="center">
+                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="5"></el-table-column>
+                    <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
+                    <el-table-column :label="$t('general.status')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -58,7 +58,7 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="4">
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.power + "kW"}}
                         </template>
@@ -68,33 +68,35 @@
                             <Connector v-for="(item, idx) in scope.row.connectorList" :key="idx" :dataObj="item" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.type')" :min-width="3" class-name="center">
+                    <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
                             {{ scope.row.chargeType === 1 ? "AC" : "DC" }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.elecRate')">
-                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="4">
+                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="4">
+                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
                     </el-table-column>
                     <!-- <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column> -->
-                    <el-table-column  :label="$t('general.location')" :width="88" class-name="center">
+                    <!-- <el-table-column  :label="$t('general.location')" :width="88" class-name="center">
+                        <template slot-scope="scope">
+                            
+                        </template>
+                    </el-table-column>
+                    -->
+                    <el-table-column :label="$t('general.action')" :width="140">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="96">
-                        <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.chargeBoxId)"></el-button>
                         </template>

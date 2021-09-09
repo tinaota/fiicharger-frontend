@@ -8,6 +8,10 @@
             </el-breadcrumb>
             <div class="card-8">
                 <div class="charge-point-info">
+                <div class="item">
+                        <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
+                        <div class="content">{{ curRouteParam.chargeBoxName }}</div>
+                    </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                         <div class="content">

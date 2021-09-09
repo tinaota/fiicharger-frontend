@@ -473,6 +473,11 @@
                 }
             }
         }
+        .carDetail {
+            .el-tab-pane {
+                height: 360px;
+            }
+        }
     }
     &.dashboard-statistics .card-8 {
         display:inline-block;

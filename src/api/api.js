@@ -92,6 +92,11 @@ export const $HTTP_getBillingList = params => { return post(`${base}/Home/Billin
 export const $HTTP_getCarBrandListForSelect = params => { return post(`${base}/Home/Car/getCarBrandListForSelect`, qs.stringify(params)) }
 
 /**
+ * @description 取得汽車資訊
+ */
+ export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
+
+/**
  * @description 取得工單列表
  */
 export const $HTTP_getWorkOrderList = params => { return post(`${base}/Home/WorkOrder/getWorkOrderList`, qs.stringify(params)) }

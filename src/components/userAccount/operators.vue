@@ -12,14 +12,14 @@
                 <el-input
                     :placeholder="$t('userAccount.email')"
                     v-model="filter.tmpEmail"
-                    @fetchData="fetchData('e')"
+                    @change="fetchData('e')"
                     clearable>
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <el-input
                     :placeholder="$t('userAccount.contactPerson')"
                     v-model="filter.tmpContactPersion"
-                    @fetchData="fetchData('c')"
+                    @change="fetchData('c')"
                     clearable>
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
@@ -208,7 +208,7 @@ export default {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
             if (type === 'e') {
-                this.filter.emailSearch = this.filter.tmpSearch;
+                this.filter.emailSearch = this.filter.tmpEmail;
             } else if (type === 'c') {
                 this.filter.personSearch = this.filter.tmpContactPersion;
             }

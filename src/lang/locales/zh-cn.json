@@ -198,15 +198,31 @@
         "mobile": "手机",
         "createdDate": "创建日期"
     },
-    "setting": {
+    "cars": {
         "marker": "标记",
         "model": "模型",
         "batteryCapacity": "电池容量",
         "realRange": "实际范围",
         "acPower": "交流电源",
         "acPlug": "交流电插头",
+        "aCPhases": "交流相位",
         "dcPower": "直流电源",
-        "dcPlug": "直流电插头"
+        "dcPlug": "直流电插头",
+        "carType": "车型",
+        "battery": "电池",
+        "miscellaneous": "其他资讯",
+        "version": "版本",
+        "topSpeed": "最高速度",
+        "propulsion": "推进力",
+        "turningCircle": "回转圈",
+        "capacityUseable": "可用容量",
+        "chargePlugLocation": "充电插头位置",
+        "seats": "座位",
+        "carBody": "车身",
+        "isofix": "Isofix",
+        "isofixSeats": "Isofix座位",
+        "segment": "段",
+        "picture": "图片"
     },
     "support": {
         "workerOrderId": "工单ID",

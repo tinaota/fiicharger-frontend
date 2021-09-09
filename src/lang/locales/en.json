@@ -198,15 +198,31 @@
         "mobile": "Mobile",
         "createdDate": "Created Date"
     },
-    "setting": {
+    "cars": {
         "marker": "Marker",
         "model": "Model",
         "batteryCapacity": "Battery Capacity",
         "realRange": "Real Range",
         "acPower": "AC Power",
         "acPlug": "AC Plug",
+        "aCPhases": "AC Phase(s)",
         "dcPower": "DC Power",
-        "dcPlug": "DC Plug"
+        "dcPlug": "DC Plug",
+        "carType": "Car Type",
+        "battery": "Battery",
+        "miscellaneous": "Miscellaneous",
+        "version": "Version",
+        "topSpeed": "Top Speed",
+        "propulsion": "Propulsion",
+        "turningCircle": "Turning Circle",
+        "capacityUseable": "Capacity Useable",
+        "chargePlugLocation": "Charge Plug Location",
+        "seats": "Seats",
+        "carBody": "Car Body",
+        "isofix": "Isofix",
+        "isofixSeats": "Isofix Seats",
+        "segment": "Segment",
+        "picture": "Picture"
     },
     "support": {
         "workerOrderId": "Worker Order ID",

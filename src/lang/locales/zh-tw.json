@@ -198,15 +198,31 @@
         "mobile": "手機",
         "createdDate": "Created Date"
     },
-    "setting": {
+    "cars": {
         "marker": "標記",
         "model": "模型",
         "batteryCapacity": "電池容量",
         "realRange": "實際範圍",
         "acPower": "交流電源",
         "acPlug": "交流電插頭",
+        "aCPhases": "交流電相位",
         "dcPower": "直流電源",
-        "dcPlug": "直流電插頭"
+        "dcPlug": "直流電插頭",
+        "carType": "車型",
+        "battery": "電池",
+        "miscellaneous": "其他資訊",
+        "version": "版本",
+        "topSpeed": "最高速度",
+        "propulsion": "推進力",
+        "turningCircle": "迴轉圈",
+        "capacityUseable": "可用容量",
+        "chargePlugLocation": "充電插頭位置",
+        "seats": "座位",
+        "carBody": "車身",
+        "isofix": "Isofix",
+        "isofixSeats": "Isofix座位",
+        "segment": "段",
+        "picture": "圖片"
     },
     "support": {
         "workerOrderId": "工單ID",
