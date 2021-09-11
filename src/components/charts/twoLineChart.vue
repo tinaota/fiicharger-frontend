@@ -64,7 +64,7 @@ export default {
             that.nameList = [];
             that.legendList = [];
             const rightOffset = (this.lang === 'en') ? ['190', '20'] : ['190', '20'];
-            let maxKwh = Math.max(...that.chartData.yList[0].value) || 100;
+            let maxKwh = that.chartData.yList.length > 0 ? Math.max(...that.chartData.yList[0].value) : 100;
             that.chartData.yList && that.chartData.yList.forEach((item, idx) => {
                 let info = {
                         name: item.name,
@@ -151,7 +151,7 @@ export default {
                             }
                         }
                     ];
-            if (that.chartData.yList && !that.chartData.yList[1].value.length) {
+            if (that.chartData.yList.length && !that.chartData.yList[1].value.length) {
                 that.yAxisData[1].max = 100;
             }
         },

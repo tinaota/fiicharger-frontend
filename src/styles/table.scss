@@ -51,12 +51,9 @@
             }
         }
     }
-    thead.is-group th {
+    thead.is-group th.el-table__cell {
         background-color: transparent;
     }
-    // thead tr th.is-leaf {
-    //     border-bottom: none;
-    // }
     &::before {
         background-color: unset;
     }

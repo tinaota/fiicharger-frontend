@@ -82,7 +82,11 @@ export default {
                 },
             },
             isLoading: false,
-            chartData: {},
+            chartData: {
+                xList: [],
+                yList: [],
+                unit: '(%)'
+            },
             chargingUseSummary: {
                 sessionCount: 0,
                 chargeBoxCount: 0
@@ -113,14 +117,7 @@ export default {
     },
     methods : {
         fetchData() {
-            // const that = this;
-            this.page = 1;
-            this.chartData = {
-                xList: [],
-                yList: [],
-                unit: '(%)'
-            };
-            this.isLoading = true;
+            const that = this;
             let param = {
                 operatorTypeId: this.filter.operatorTypeId
             };
@@ -128,6 +125,8 @@ export default {
                 param.sDate = this.filter.dateRange[0];
                 param.eDate = this.filter.dateRange[1];
             }
+            this.page = 1;
+            this.isLoading = true;
             $HTTP_getChargingTimeAnalysisInfo(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {

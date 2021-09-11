@@ -87,9 +87,7 @@
                     </el-table-column>
                     <!-- <el-table-column prop="stationName" :label="$t('chargingStation.station')" :min-width="7"></el-table-column> -->
                     <!-- <el-table-column  :label="$t('general.location')" :width="88" class-name="center">
-                        <template slot-scope="scope">
-                            
-                        </template>
+                        <template slot-scope="scope"></template>
                     </el-table-column>
                     -->
                     <el-table-column :label="$t('general.action')" :width="140">
