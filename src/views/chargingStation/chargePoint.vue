@@ -132,6 +132,7 @@ export default {
     data() {
         return {
             lang: '',
+            accPermissionType: '',
             operatorList: {},
             filter: {
                 tmpSearch: '',
@@ -173,7 +174,8 @@ export default {
                     offPeakElectricityRate: 0,
                     offPeakElectricityRateType: 1,
                     parkingRate: 0,
-                    installationDate: ''
+                    installationDate: '',
+                    operatorTypeId:　''
                 }
             },
             mapDialog: {
@@ -190,6 +192,8 @@ export default {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
+        this.accPermissionType = userData.accountInfo.accPermissionType;
     },
     mounted() {
         // const that = this;
@@ -287,7 +291,17 @@ export default {
             if (type) {
                 this.dialog.info = Object.assign({}, data);
                 this.dialog.info.loc.lng = this.dialog.info.loc.lon;
+            } else {
+                if (this.accPermissionType < 3) {
+                    this.dialog.info.operatorTypeId = this.filter.operatorTypeId > 0 ? this.filter.operatorTypeId : '';
+                } else {
+                    this.dialog.info.operatorTypeId = this.filter.operatorTypeId;
+                }
             }
+            if (this.accPermissionType < 3) {
+                this.dialog.operatorList = this.operatorList;
+            }
+            this.dialog.accPermissionType = this.accPermissionType;
             this.dialogVisible = true;
         },
         deleteCheckBox(id) {

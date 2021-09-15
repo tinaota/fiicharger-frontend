@@ -213,6 +213,7 @@ export default {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
     },
     mounted() {
         this.fetchChargerBoxList();

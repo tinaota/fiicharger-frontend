@@ -17,6 +17,14 @@
                 <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                 <el-input v-model="dialog.info.chargeBoxId"></el-input>
             </div>
+            <div class="form-item" v-if="dialog.accPermissionType<3">
+                <div class="label">{{ $t('menu.operator') }}</div>
+                <el-select
+                    class="select-small"
+                    v-model="dialog.info.operatorTypeId">
+                    <el-option v-for="(item, key) in operatorListFilter" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                </el-select>
+            </div>
             <div class="form-item">
                 <div class="label">{{ $t('general.lng') }}</div>
                 <el-input v-model="dialog.info.loc.lon" disabled></el-input>
@@ -146,8 +154,11 @@ export default {
                         offPeakElectricityRate: 0,
                         offPeakElectricityRateType: 1,
                         parkingRate: 0,
-                        installationDate: ''
-                    }
+                        installationDate: '',
+                        operatorTypeId: ''
+                    },
+                    operatorList: {},
+                    accPermissionType: ''
                 };
             }
         },
@@ -185,6 +196,7 @@ export default {
                 return time.getTime() > Date.now();
                 }
             },
+            operatorListFilter: {}
         }
     },
     beforeDestroy() {
@@ -202,6 +214,11 @@ export default {
                     // if (that.name === 'stationDetail') {
                     //     this.fetchStationList();
                     // }
+                    for(var key in this.dialog.operatorList) {
+                        if (key !== '0') {
+                            this.operatorListFilter[key] = this.dialog.operatorList[key];
+                        }
+                    }
                     that.$nextTick(() => {
                         setScrollBar('.right-form', this);
                         if (that.mapInfo.initMap) {
@@ -303,7 +320,8 @@ export default {
                     offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
                     offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
                     parkingRate: that.dialog.info.parkingRate,
-                    installationDate: that.dialog.info.installationDate
+                    installationDate: that.dialog.info.installationDate,
+                    operatorTypeId: that.dialog.info.operatorTypeId
                   },
                   sucMsg = "";
             if (!that.dialog.type) {

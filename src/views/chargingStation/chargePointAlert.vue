@@ -99,6 +99,7 @@ export default {
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.operatorList = userData.operatorList;
+        this.filter.operatorTypeId = userData.operatorId;
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
