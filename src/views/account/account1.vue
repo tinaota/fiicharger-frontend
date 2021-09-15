@@ -8,7 +8,7 @@
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-input
-                        :placeholder="$t('chargingStation.userID')+'/'+$t('userAccount.userName')"
+                        :placeholder="$t('chargingStation.userID')+'/'+$t('userAccount.memberName')"
                         class="dark"
                         v-model="filter.tmpSearch"
                         @change="fetchData('s')"
@@ -22,7 +22,7 @@
                     class="moreCol enable-row-click"
                     @row-click="handleRowClick">
                     <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
-                    <el-table-column prop="memberName" :label="$t('userAccount.userName')"></el-table-column>
+                    <el-table-column prop="memberName" :label="$t('userAccount.memberName')"></el-table-column>
                     <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')"></el-table-column>
                     <el-table-column prop="cellphone" :label="$t('userAccount.phone')" ></el-table-column>
                     <el-table-column :label="$t('userAccount.thirdPartyVerification')">

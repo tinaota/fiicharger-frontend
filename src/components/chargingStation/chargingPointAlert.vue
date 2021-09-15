@@ -11,7 +11,8 @@
                 </template>
             </el-table-column>
             <el-table-column prop="alertTitle" :label="$t('chargingStation.alert')" :min-width="3"></el-table-column>
-            <el-table-column prop="sDate" :label="$t('general.time')" :min-width="3"></el-table-column>
+            <el-table-column prop="sDate" :label="$t('chargingStation.alertTime')" :min-width="3"></el-table-column>
+            <el-table-column prop="eDate" :label="$t('general.closedTime')" :min-width="3"></el-table-column>
             <el-table-column prop="workOrderCode" :label="$t('chargingStation.workeOrder')" :min-width="2"></el-table-column>
             <el-table-column :label="$t('chargingStation.workeOrderStatus')" :min-width="2">
                 <template slot-scope="scope">

@@ -12,7 +12,7 @@
                     v-loading="isLoading"
                     class="moreCol">
                     <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
-                    <el-table-column prop="memberName" :label="$t('userAccount.userName')"></el-table-column>
+                    <el-table-column prop="memberName" :label="$t('userAccount.memberName')"></el-table-column>
                     <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')"></el-table-column>
                     <el-table-column prop="cellphone" :label="$t('userAccount.phone')" ></el-table-column>
                     <el-table-column prop="email" :label="$t('userAccount.email')" >
@@ -61,7 +61,7 @@ export default {
     },
     created() {
         this.curRouteParam = this.$router.currentRoute.params;
-        if (!this.curRouteParam.stationId) {
+        if (!this.curRouteParam.memberCode) {
             let temp = window.sessionStorage.getItem("fiics-accountInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-accountInfo")) : null;
             if (temp && temp.memberCode && temp.memberName) {
                 this.curRouteParam = temp;

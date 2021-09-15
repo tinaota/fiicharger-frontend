@@ -90,7 +90,7 @@
                         <template slot-scope="scope"></template>
                     </el-table-column>
                     -->
-                    <el-table-column :label="$t('general.action')" :width="140">
+                    <el-table-column :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>

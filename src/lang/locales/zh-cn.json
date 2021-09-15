@@ -97,7 +97,8 @@
         "installationDate": "安装日期",
         "onlyOneFile": "只能上传一个档案!",
         "errFile": "附档名错误!",
-        "day": "日"
+        "day": "日",
+        "closedTime": "结束时间"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -149,6 +150,7 @@
         "totalPrice": "总价",
         "alertID": "警报ID",
         "alert": "警报",
+        "alertTime": "警报时间",
         "workeOrder": "工单",
         "workeOrderStatus": "工单状态",
         "nChargePoint": "充电桩数量",
@@ -185,7 +187,7 @@
         "failure": "失敗"
     },
     "userAccount": {
-        "userName": "会员名称",
+        "memberName": "会员名称",
         "countryCode": "国家代码",
         "phone": "电话号码",
         "thirdPartyVerification": "第三方验证",
@@ -196,7 +198,14 @@
         "logo": "标志",
         "contactPerson": "联系人",
         "mobile": "手机",
-        "createdDate": "创建日期"
+        "createdDate": "创建日期",
+        "idTag": "ID标签",
+        "company": "公司",
+        "userId": "用户ID",
+        "userName": "用户名称",
+        "reviewId": "评论ID",
+        "comment": "评论",
+        "review": "评论"
     },
     "cars": {
         "marker": "标记",

@@ -46,7 +46,6 @@
                 <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
                 <el-table-column :label="$t('general.action')" :width="65">
                     <template slot-scope="scope">
-                        <!-- <el-button class="no-bg edit"></el-button> -->
                         <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                     </template>
                 </el-table-column>

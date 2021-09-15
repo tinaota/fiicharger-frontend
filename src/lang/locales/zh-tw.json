@@ -97,7 +97,8 @@
         "installationDate": "安裝日期",
         "onlyOneFile": "只能上傳一個檔案!",
         "errFile": "附檔名錯誤!",
-        "day": "日"
+        "day": "日",
+        "closedTime": "結束時間"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -149,6 +150,7 @@
         "totalPrice": "總價",
         "alertID": "警報ID",
         "alert": "警報",
+        "alertTime": "警報時間",
         "workeOrder": "工單",
         "workeOrderStatus": "工單狀態",
         "nChargePoint": "充電樁數量",
@@ -185,7 +187,7 @@
         "failure": "失败"
     },
     "userAccount": {
-        "userName": "會員名稱",
+        "memberName": "會員名稱",
         "countryCode": "國家代碼",
         "phone": "電話號碼",
         "thirdPartyVerification": "第三方驗證",
@@ -196,7 +198,14 @@
         "logo": "標誌",
         "contactPerson": "聯繫人",
         "mobile": "手機",
-        "createdDate": "Created Date"
+        "createdDate": "創建日期",
+        "idTag": "ID標籤",
+        "company": "公司",
+        "userId": "用戶ID",
+        "userName": "用戶名稱",
+        "reviewId": "評論ID",
+        "comment": "評論",
+        "review": "評論"
     },
     "cars": {
         "marker": "標記",

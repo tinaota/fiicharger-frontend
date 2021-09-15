@@ -124,6 +124,26 @@ export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operat
 export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOperator';
 
 /**
+ * @description 取得會員RFID列表
+ */
+ export const $HTTP_getIdTagList = params => { return post(`${base}/Home/IdTag/getIdTagList`, qs.stringify(params)) }
+
+ /**
+ * @description 新增RFID
+ */
+export const $HTTP_addIdTag = params => { return post(`${base}/Home/IdTag/addIdTag`, qs.stringify(params)) }
+
+/**
+ * @description 更新RFID
+ */
+ export const $HTTP_updateIdTag = params => { return post(`${base}/Home/IdTag/updateIdTag`, qs.stringify(params)) }
+
+ /**
+ * @description 刪除RFID
+ */
+export const $HTTP_deleteIdTag = params => { return post(`${base}/Home/IdTag/deleteIdTag`, qs.stringify(params)) }
+
+/**
  * @description 新增充電站
  */
 export const $HTTP_addStation= params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }

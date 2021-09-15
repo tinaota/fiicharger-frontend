@@ -26,7 +26,7 @@
         "myAccount": "My Account",
         "operator": "Operator",
         "endUser": "End User",
-        "cars": "Cars",
+        "cars": "Vehicle",
         "report": "Report",
         "usagePatterns": "Usage Patterns",
         "pluggedNotCharging": "Plugged & Not Charging"
@@ -97,7 +97,8 @@
         "installationDate": "Installation Date",
         "onlyOneFile": "Only one file can be uploaded!",
         "errFile": "File extension Error!",
-        "day": "Day"
+        "day": "Day",
+        "closedTime": "Closed Time"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -149,6 +150,7 @@
         "totalPrice": "Total Price",
         "alertID": "Alert ID",
         "alert": "Alert",
+        "alertTime": "Alert Time",
         "workeOrder": "Work Order",
         "workeOrderStatus": "Work Order Status",
         "nChargePoint": "Number of Charger",
@@ -185,7 +187,7 @@
         "failure": "Failure"
     },
     "userAccount": {
-        "userName": "Member Name",
+        "memberName": "Member Name",
         "countryCode": "Country Code",
         "phone": "Phone Number",
         "thirdPartyVerification": "Third-Party Verification",
@@ -196,7 +198,14 @@
         "logo": "Logo",
         "contactPerson": "Contact Person",
         "mobile": "Mobile",
-        "createdDate": "Created Date"
+        "createdDate": "Created Date",
+        "idTag": "ID Tag",
+        "company": "Company",
+        "userId": "User ID",
+        "userName": "User Name",
+        "reviewId": "Review ID",
+        "comment": "Comment",
+        "review": "Review"
     },
     "cars": {
         "marker": "Marker",
