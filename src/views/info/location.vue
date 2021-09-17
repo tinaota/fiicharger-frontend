@@ -18,7 +18,7 @@
                 v-model="filter.chargeBoxId"
                 v-loading="chargerBoxList.isLoading"
                 :placeholder="$t('menu.chargePoint')"
-                @change="fetchData()"
+                @change="updateData()"
                 filterable
                 clearable
                 style="width: 200px">
@@ -139,7 +139,8 @@ export default {
                 8: ic_ac_ccs2,
                 9: ic_ac_ccs1,
                 10: ic_ac_gbt
-            }
+            },
+            timer: null
         }
     },
     created() {
@@ -154,8 +155,14 @@ export default {
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
         this.initMapboxMap(()=> {
             that.fetchData();
+            that.setTimer();
         });
         this.fetchChargerBoxList();
+    },
+    beforeDestroy() {
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
     },
     methods: {
         fetchData() {
@@ -496,9 +503,21 @@ export default {
                 that.currentPopUp.remove();
             }
             this.fetchChargerBoxList(()=> {
-                that.fetchData();
+                that.updateData();
             });
-        }
+        },
+        updateData() {
+            this.fetchData();
+            clearInterval(this.timer);
+            this.setTimer();
+
+        },
+        setTimer() {
+            const that = this;
+            this.timer = setInterval(() => {
+                that.fetchData();
+            }, 1000 * 60);
+        },
     }
 }
 </script>

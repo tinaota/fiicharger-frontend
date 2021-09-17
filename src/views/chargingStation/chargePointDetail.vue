@@ -47,6 +47,10 @@
                         <div class="label">{{ $t('general.installationDate') }}</div>
                         <div class="content">{{ curRouteParam.installationDate }}</div>
                     </div>
+                    <div class="item">
+                        <div class="label">{{ $t('menu.operator') }}</div>
+                        <div class="content">{{ curRouteParam.operatorTypeName }}</div>
+                    </div>
                 </div>
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">

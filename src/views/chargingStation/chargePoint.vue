@@ -193,8 +193,7 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
-        this.accPermissionType = userData.accountInfo.accPermissionType;
-    },
+        this.accPermissionType = userData.accountInfo.accPermissionType;    },
     mounted() {
         // const that = this;
         // this.fetchStationList(()=>{ that.fetchData()});
