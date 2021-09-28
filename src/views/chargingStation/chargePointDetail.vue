@@ -60,6 +60,9 @@
                         <el-tab-pane :label="$t('menu.chargePointAlert')" name="chargePointAlert">
                             <ChargePointAlert :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
                         </el-tab-pane>
+                        <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                            <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </div>
@@ -74,12 +77,14 @@ import Connector from "@/components/chargingStation/connector";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
+import Review from "@/components/chargingStation/review";
 export default {
     components: {
         Connector,
         ShowPostion,
         ChargingSession,
-        ChargePointAlert
+        ChargePointAlert,
+        Review
     },
     data() {
         return {

@@ -143,6 +143,11 @@ export const $HTTP_addIdTag = params => { return post(`${base}/Home/IdTag/addIdT
  */
 export const $HTTP_deleteIdTag = params => { return post(`${base}/Home/IdTag/deleteIdTag`, qs.stringify(params)) }
 
+ /**
+ * @description 取得評價列表
+ */
+  export const $HTTP_getValuationList = params => { return post(`${base}/Home/Valuation/getValuationList`, qs.stringify(params)) }
+
 /**
  * @description 新增充電站
  */

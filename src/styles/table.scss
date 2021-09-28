@@ -34,6 +34,10 @@
             &.center .cell {
                 text-align: center;
             }
+            .cell i.el-rate__icon {
+                margin-right: 0;
+                font-size: 20px;
+            }
             .el-switch {
                 line-height: unset;
                 height: unset;

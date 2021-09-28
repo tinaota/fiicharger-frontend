@@ -138,6 +138,7 @@
         "chargePointName": "充電樁名稱",
         "power": "電耗",
         "connector":"充電槍",
+        "connectorStatus": "充電槍狀態",
         "connectorList": ["", "可用", "準備中", "充電中", "結束", "連線異常", "異常"],
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
@@ -205,7 +206,8 @@
         "userName": "用戶名稱",
         "reviewId": "評論ID",
         "comment": "評論",
-        "review": "評論"
+        "review": "評論",
+        "reviewSummary": "評論總結"
     },
     "cars": {
         "marker": "標記",

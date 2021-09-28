@@ -165,7 +165,7 @@ export default {
         }
     },
     methods: {
-        fetchData() {
+        fetchData(isRefresh) {
             const that = this;
             let param = {};
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
@@ -193,12 +193,22 @@ export default {
                         let chargeBoxId = data.chargeBoxList[0].chargeBoxId;
                         let marker = that.drawMapboxMarker(that.chargeBoxData.data[chargeBoxId]);
                         this.markersOnScreen[chargeBoxId] = marker;
-                        that.MapBoxObject.setCenter([data.centerLocInfo.lon, data.centerLocInfo.lat]);
-                        that.MapBoxObject.setZoom(data.centerLocInfo.zoomSize);
+                        if (isRefresh) {
+                            const center = this.MapBoxObject.getCenter(),
+                                  zoomSize = this.MapBoxObject.getZoom();
+                            that.handleMapBoxPos(center, zoomSize);
+                        } else {
+                            that.handleMapBoxPos([data.centerLocInfo.lon, data.centerLocInfo.lat], data.centerLocInfo.zoomSize);
+                        }
                         marker.addTo(that.MapBoxObject);
                     } else {
-                        that.MapBoxObject.setCenter([data.centerLocInfo.lon, data.centerLocInfo.lat]);
-                        that.MapBoxObject.setZoom(data.centerLocInfo.zoomSize);
+                        if (isRefresh) {
+                            const center = this.MapBoxObject.getCenter(),
+                                  zoomSize = this.MapBoxObject.getZoom();
+                            that.handleMapBoxPos(center, zoomSize);
+                        } else {
+                            that.handleMapBoxPos([data.centerLocInfo.lon, data.centerLocInfo.lat], data.centerLocInfo.zoomSize);
+                        }
                         that.drawMapboxClusters();
                     }
                 } else {
@@ -515,9 +525,13 @@ export default {
         setTimer() {
             const that = this;
             this.timer = setInterval(() => {
-                that.fetchData();
+                that.fetchData(true);
             }, 1000 * 60);
         },
+        handleMapBoxPos(center, zoomSize) {
+            this.MapBoxObject.setCenter(center);
+            this.MapBoxObject.setZoom(zoomSize);
+        }
     }
 }
 </script>

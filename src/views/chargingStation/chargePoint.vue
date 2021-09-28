@@ -14,15 +14,6 @@
                         @change="fetchData()">
                         <el-option v-for="(item, key) in operatorList" :label="item" :key="key" :value="parseInt(key)"></el-option>
                     </el-select>
-                    <!-- <el-select
-                        class="select-small long"
-                        :placeholder="$t('chargingStation.station')"
-                        v-model="filter.stationId"
-                        v-loading="stationList.isLoading"
-                        @change="fetchData()"
-                        clearable>
-                        <el-option v-for="(item, key) in stationList.data" :label="item" :key="key" :value="key"></el-option>
-                    </el-select> -->
                     <el-select
                         class="select-small"
                         v-model="filter.zipCode"
@@ -39,6 +30,14 @@
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
+                    <el-select
+                        class="select-small long"
+                        :placeholder="$t('chargingStation.connectorStatus')"
+                        v-model="filter.connectorStatus"
+                        @change="fetchData()"
+                        clearable>
+                        <el-option v-for="(item, idx) in connectorList" :label="item" :key="idx" :value="idx"></el-option>
+                    </el-select>
                     <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
@@ -139,7 +138,8 @@ export default {
                 search: '',
                 // stationId: '',
                 zipCode: '',
-                operatorTypeId: ''
+                operatorTypeId: '',
+                connectorStatus: ''
             },
             isLoading: false,
             // stationList: {
@@ -185,7 +185,8 @@ export default {
                     lat: '',
                     lng: ''
                 }
-            }
+            },
+            connectorList: []
         }
     },
     created() {
@@ -193,7 +194,10 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
-        this.accPermissionType = userData.accountInfo.accPermissionType;    },
+        this.accPermissionType = userData.accountInfo.accPermissionType;
+        this.connectorList.push(i18n.t('general.all'));
+        this.connectorList = this.connectorList.concat(i18n.t('chargingStation.connectorList').filter(item => item !== ''));
+    },
     mounted() {
         // const that = this;
         // this.fetchStationList(()=>{ that.fetchData()});
@@ -251,6 +255,9 @@ export default {
             }
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
+            }
+            if (this.filter.connectorStatus) {
+                param.connectorStatus = this.filter.connectorStatus;
             }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;

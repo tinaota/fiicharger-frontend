@@ -233,8 +233,8 @@ export default {
     position: relative;
     .total {
         position: absolute;
-        right: 28px;
-        bottom: 28px;
+        right: 48px;
+        bottom: 58px;
         height: 36px;
         line-height: 36px;
         vertical-align: middle;

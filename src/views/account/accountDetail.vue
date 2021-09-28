@@ -33,6 +33,9 @@
                         <el-tab-pane :label="$t('chargingStation.billingLog')" name="billingLog">
                             <BillingLog :tableData="billingLogData" v-if="!billingLogIsLoading"></BillingLog>
                         </el-tab-pane>
+                        <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                            <Review :memberCode="curRouteParam.memberCode"></Review>
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </div>
@@ -44,9 +47,11 @@
 import { $HTTP_getAccountInfo, $HTTP_getBillingList } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import BillingLog from "@/components/userAccount/billingLog";
+import Review from "@/components/userAccount/review";
 export default {
     components: {
-        BillingLog
+        BillingLog,
+        Review
     },
     data() {
         return {

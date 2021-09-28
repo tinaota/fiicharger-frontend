@@ -138,6 +138,7 @@
         "chargePointName": "Charge Point Name",
         "power": "Power",
         "connector": "Connector",
+        "connectorStatus": "Connector Status",
         "connectorList": ["", "Available", "Preparing", "Charging", "Finishing", "Connection Lost", "Alert"],
         "sessionID": "Session ID",
         "billing": "Billing",
@@ -205,7 +206,8 @@
         "userName": "User Name",
         "reviewId": "Review ID",
         "comment": "Comment",
-        "review": "Review"
+        "review": "Review",
+        "reviewSummary": "Review Summary"
     },
     "cars": {
         "marker": "Marker",

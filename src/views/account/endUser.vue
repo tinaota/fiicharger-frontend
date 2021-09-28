@@ -14,7 +14,7 @@
                         </el-tab-pane>
                     </el-tabs>
                     <EndUser v-if="active === 'endUser'"></EndUser>
-                    <IdTag v-else></IdTag>
+                    <IdTag v-else-if="active === 'idTag'"></IdTag>
                 </div>
             </div>
         </div>
@@ -25,6 +25,7 @@
 import { setScrollBar } from "@/utils/function";
 import EndUser from "@/components/userAccount/endUser";
 import IdTag from "@/components/userAccount/idTag";
+import Review from "@/components/userAccount/review";
 export default {
     components: {
         EndUser,

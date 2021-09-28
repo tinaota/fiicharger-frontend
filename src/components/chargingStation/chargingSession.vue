@@ -43,6 +43,11 @@
                     </el-popover>
                 </template>
             </el-table-column>
+            <el-table-column :label="$t('general.action')" :width="65">
+                <template slot-scope="scope">
+                    <el-button class="no-bg" icon="el-icon-data-line" @click="openDialog(scope.row.sessionId)"></el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total})}}</div>
         <el-pagination background layout="prev, pager, next"
@@ -52,19 +57,64 @@
             :current-page.sync="page"
             @current-change="changePage">
         </el-pagination>
+        <el-dialog
+            :title="dialog.sessionId"
+            width="80%"
+            :visible.sync="dialog.visible"
+            :show-close="false">
+            <div class="sessionDetail"
+                v-loading="dialog.isLoading">
+                <div class="item">
+                    <div class="label">{{ $t('chargingStation.chargePointID')}}</div>
+                    <div class="info">{{ dialog.info.chargeBoxId }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('chargingStation.chargePointName')}}</div>
+                    <div class="info">{{ dialog.info.chargeBoxName }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('general.startTime')}}</div>
+                    <div class="info">{{ dialog.info.chargingStartTime }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('general.endTime')}}</div>
+                    <div class="info">{{ dialog.info.chargingEndTime }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('chargingStation.chargingDuration')}}</div>
+                    <div class="info">{{ dialog.info.chargingDuration }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('chargingStation.powerUsed')}}</div>
+                    <div class="info">{{ dialog.info.powerUsage + "kWh" }}</div>
+                </div>
+                <!-- <div class="item">
+                    <div class="label">{{ $t('chargingStation.minOutputPower')}}</div>
+                    <div class="info">{{ dialog.info.minOutputPower + "kW" }}</div>
+                </div> -->
+                <div class="item">
+                    <div class="label">{{ $t('chargingStation.maxOutputPower')}}</div>
+                    <div class="info">{{ dialog.info.maxOutputPower + "kW" }}</div>
+                </div>
+                <LineChart class="lineChart" :id="dialog.sessionId" :chartData="dialog.chartData"></LineChart>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { $HTTP_getChargingSessionList } from "@/api/api";
+import { setScrollBar } from "@/utils/function";
+import { $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail} from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
+import LineChart from "@/components/charts/threeLineChart";
 export default {
     props: {
         chargeBoxId: String
     },
     components: {
-        Connector
+        Connector,
+        LineChart
     },
     data() {
         return {
@@ -74,6 +124,22 @@ export default {
             page: 1,
             total: 0,
             currencyList: $GLOBAL_CURRENCY,
+            dialog: {
+                visible: false,
+                isLoading: false,
+                sessionId: '',
+                info: {
+                    chargeBoxId: '',
+                    chargeBoxName: '',
+                    chargingStartTime: '',
+                    chargingEndTime: '',
+                    chargingDuration: '',
+                    minOutputPower: '',
+                    maxOutputPower: '',
+                    powerUsage: ''
+                },
+                chartData: {}
+            }
         }
     },
     created() {
@@ -109,6 +175,46 @@ export default {
         },
         changePage(page) {
             this.page = page;
+        },
+        fetchChargingSessionDetail() {
+            const that = this;
+            let param = {
+                sessionId: this.dialog.sessionId,
+                lang: this.lang
+            };
+            this.dialog.isLoading = true;
+            $HTTP_getChargingSessionDetail(param).then((data) => {
+                that.dialog.isLoading = false;
+                if (!!data.success) {
+                    that.dialog.info = Object.assign({}, data.chargingSessionInfo);
+                    that.dialog.chartData = Object.assign({}, data.chargingChartInfo);
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('chargeBoxList', err)
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        openDialog(sessionId) {
+            const that = this;
+            this.dialog.sessionId = sessionId;
+            this.dialog.info = {
+                                chargeBoxId: '',
+                                chargeBoxName: '',
+                                chargingStartTime: '',
+                                chargingEndTime: '',
+                                chargingDuration: '',
+                                minOutputPower: '',
+                                maxOutputPower: '',
+                                powerUsage: ''
+                            };
+            this.dialog.visible = true;
+            this.$jQuery(".sessionDetail").length > 0 && this.$jQuery(".sessionDetail").mCustomScrollbar('destroy');
+            that.$nextTick(() => {
+                that.fetchChargingSessionDetail();
+                setScrollBar('.sessionDetail', that);
+            });
         }
     }
 }
@@ -125,6 +231,33 @@ export default {
         font-size: 1rem;
         color: #5A607F;
         letter-spacing: 0;
+    }
+}
+.sessionDetail {
+    max-height: calc(85vh - 50px - 7.5vh - 24px);
+    .item {
+        display: inline-block;
+        width: calc(50% - 4px);
+        margin-bottom: 12px;
+        .label {
+            display: inline-block;
+            width: 200px;
+            font-size: 1rem;
+            color: #525E69;
+            letter-spacing: 0;
+        }
+        .info {
+            display: inline-block;
+            width: calc(100% - 206px);
+            font-size: 1rem;
+            color: #151E25;
+            letter-spacing: 0;
+        }
+    }
+    .lineChart {
+        width: 100%;
+        height: 300px;
+        position: relative;
     }
 }
 </style>

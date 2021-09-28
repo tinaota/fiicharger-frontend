@@ -138,6 +138,7 @@
         "chargePointName": "充电桩名称",
         "power": "电耗",
         "connector": "充电枪",
+        "connectorStatus": "充电枪状态",
         "connectorList": ["", "可用", "准备中", "充电中", "结束", "连线异常", "异常"],
         "sessionID": "充电纪录ID",
         "billing": "帐单",
@@ -205,7 +206,8 @@
         "userName": "用户名称",
         "reviewId": "评论ID",
         "comment": "评论",
-        "review": "评论"
+        "review": "评论",
+        "reviewSummary": "评论总结"
     },
     "cars": {
         "marker": "标记",
