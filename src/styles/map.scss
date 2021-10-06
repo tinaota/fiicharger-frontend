@@ -84,6 +84,7 @@
         }
         &.pos1 {
             background-image: url('~imgs/ic_green_dot.png');
+            margin-top: -27.5px;
             &.loading::before {
                 border: 2px solid #33c85a;
                 border-right: 2px solid #FFF;
@@ -91,6 +92,7 @@
         }
         &.pos2 {
             background-image: url('~imgs/ic_orange_dot.png');
+            margin-top: -27.5px;
             &.loading::before {
                 border: 2px solid #ffa10b;
                 border-right: 2px solid #FFF;
@@ -98,6 +100,7 @@
         }
         &.pos3 {
             background-image: url('~imgs/ic_brown_dot.png');
+            margin-top: -27.5px;
             &.loading::before {
                 border: 2px solid #5e3715;
                 border-right: 2px solid #FFF;
@@ -105,6 +108,7 @@
         }
         &.pos4 {
             background-image: url('~imgs/ic_red_dot.png');
+            margin-top: -27.5px;
             &.loading::before {
                 border: 2px solid #fc2e56;
                 border-right: 2px solid #FFF;
@@ -112,6 +116,7 @@
         }
         &.pos5 {
             background-image: url('~imgs/ic_gray_dot.png');
+            margin-top: -27.5px;
             &.loading::before {
                 border: 2px solid #8c8f97;
                 border-right: 2px solid #FFF;
