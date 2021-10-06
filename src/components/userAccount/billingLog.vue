@@ -2,17 +2,17 @@
     <div class="tab">
         <el-table
             :data="tableData.slice((page - 1) * 10, page * 10)">
-            <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')" :min-width="1"></el-table-column>
-            <el-table-column prop="sDate" :label="$t('general.time')" :min-width="1"></el-table-column>
-            <el-table-column :label="$t('general.billingAmt')" :min-width="1">
+            <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')" :min-width="3"></el-table-column>
+            <el-table-column prop="sDate" :label="$t('general.time')" :min-width="3"></el-table-column>
+            <el-table-column :label="$t('general.billingAmt')" :min-width="2">
                 <template slot-scope="scope">
                     {{ currencyList[scope.row.sessionInfo.unitType] + scope.row.sessionInfo.price }}
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column> -->
-            <el-table-column prop="billingType" :label="$t('chargingStation.billingType')" :min-width="1"></el-table-column>
-            <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')" :min-width="1"></el-table-column>
-            <el-table-column :label="$t('chargingStation.sessionID')" :width="120">
+            <el-table-column prop="billingType" :label="$t('chargingStation.billingType')" :min-width="2"></el-table-column>
+            <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')" :min-width="2"></el-table-column>
+            <el-table-column :label="$t('chargingStation.sessionID')" :width="148">
                 <template slot-scope="scope">
                     <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
                         <el-table :data="[scope.row.sessionInfo]">

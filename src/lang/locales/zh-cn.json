@@ -40,7 +40,8 @@
         "pls_input_pwd": "请输入密码",
         "pls_input_captcha": "请输入图形验证码",
         "hint_logout": "你确定要登出?",
-        "err_logout": "登出错误!"
+        "err_logout": "登出错误!",
+        "timeout": "登入超时, 请重新登入!"
     },
     "general": {
         "billing": "费用",
@@ -63,7 +64,7 @@
         "active": "启用",
         "unactive": "未启用",
         "repair": "维修",
-        "clickAddMarker": "在地图上点击加入标签",
+        "clickAddMarker": "在地图上点击加入充电桩位置",
         "dragMarker": "在地图上拖移标签改变位置",
         "startDate": "开始日期",
         "endDate": "结束日期",

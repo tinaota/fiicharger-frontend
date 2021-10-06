@@ -40,7 +40,7 @@ axios.interceptors.request.use(
     });
 
 /**
- * @description 設定http 的response 請求攔截器 用於處理登錄超時等邏輯業務
+ * @description 設定http 的response 請求攔截器 用於處理登錄超時
  */
 axios.interceptors.response.use(
     response => {
@@ -48,19 +48,19 @@ axios.interceptors.response.use(
         url.splice(0, url.length-2);
         url = url.join('/');
         confirmApi(url, true);
-        // API使用內容判定未登錄或登錄超時 進入
         // 根據返回請求判斷是否重新路由
-        // if (!response.data.success) {
-        //     if (response.data.code === 401) {
-        //         store.commit(types.LOGOUT);
-        //         router.replace({ path: '/login'})
-        //         Message({ type: 'warning', message: i18n.t('login.timeout')});
-        //         return Promise.reject(error.response.data)
-        //     } else if (response.data.code === 402) {
-        //         //無新增 修改 刪除 權限不用重新登入
-        //         Message({ type: 'warning', message: i18n.t('login.noPermission') });
-        //     }
-        // }
+        if (!response.data.success) {
+            if (response.data.code === 10010) { // 登錄超時 自動登出
+                store.commit(types.LOGOUT);
+                router.replace({ path: '/login'})
+                Message({ type: 'warning', message: i18n.t('login.timeout')});
+                return Promise.reject(error.response.data)
+            }
+            //  else if (response.data.code === 402) {
+            //     //無新增 修改 刪除 權限不用重新登入
+            //     Message({ type: 'warning', message: i18n.t('login.noPermission') });
+            // }
+        }
         return response;
     },
     error => {

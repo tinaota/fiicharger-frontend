@@ -40,7 +40,8 @@
         "pls_input_pwd": "請輸入密碼",
         "pls_input_captcha": "請輸入圖形驗證碼",
         "hint_logout": "你確定要登出?",
-        "err_logout": "登出錯誤!"
+        "err_logout": "登出錯誤!",
+        "timeout": "登入超時，請重新登入!"
     },
     "general": {
         "billing": "費用",
@@ -63,7 +64,7 @@
         "active": "啟用",
         "unactive": "未啟用",
         "repair": "維修",
-        "clickAddMarker": "在地圖上點擊加入標籤",
+        "clickAddMarker": "在地圖上點擊加入充電樁位置",
         "dragMarker": "在地圖上拖移標籤改變位置",
         "startDate": "開始日期",
         "endDate": "結束日期",

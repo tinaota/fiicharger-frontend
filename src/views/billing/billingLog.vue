@@ -54,7 +54,7 @@
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')"></el-table-column> -->
                     <el-table-column prop="billingType" :label="$t('chargingStation.billingType')"></el-table-column>
                     <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.sessionID')" :width="120">
+                    <el-table-column :label="$t('chargingStation.sessionID')" :width="148">
                         <template slot-scope="scope">
                             <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
                                 <el-table :data="[scope.row.sessionInfo]">

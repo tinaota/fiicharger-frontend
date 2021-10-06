@@ -12,10 +12,11 @@
 <script>
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js'
+import { buildingsIn3D, getLastLayerId, imgIconDefGeo } from '@/assets/js/appConfig.js'
 import MapStyle from '@/assets/js/mapStyle.js'
 import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss"
+import bluePosImg from 'imgs/ic_blue_dot.png';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     props: {
@@ -61,17 +62,18 @@ export default {
                 antialias: true,
                 container: "mapboxBox",
                 style: MapStyle,
-                pitch: 0, //视野倾斜，0-60
+                // pitch: 0, //视野倾斜，0-60
                 // bearing: -17, //视野旋转角度
                 center: this.position,
                 zoom: this.zoom, // Less than 15 GetFeatureInfo does not work
-                minZoom: 11,
-                maxZoom: 22,
+                minZoom: 10,
+                maxZoom: 19,
             })
             this.MapBoxObject.on("load", () => {
                 const lastLayerId = getLastLayerId(that.MapBoxObject);
                 that.MapBoxObject.addLayer(buildingsIn3D, lastLayerId);
                 that.drawMapboxMarker();
+                // that.loadImg();
             })
         },
         drawMapboxMarker() {
@@ -79,11 +81,49 @@ export default {
             const el = document.createElement('div');
             el.className = `marker pos0`;
             const option = {
-                element: el,
-            }
+                            element: el
+                        };
             this.nowMarker = new mapboxgl.Marker(option)
                             .setLngLat(this.position)
                             .addTo(this.MapBoxObject);
+        },
+        loadImg() { //位子歪掉了
+            const that = this;
+            that.MapBoxObject.loadImage(bluePosImg,
+                (error, image) => {
+                    if (error) {
+                        console.lat(error);
+                        throw error
+                    };
+                    that.MapBoxObject.addImage('bluePosMarker', image);
+                    const imgIconGeo = {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [this.position.lng, this.position.lat, 0.0]
+                        }
+                    };
+                    const geoJson = {
+                        type: 'FeatureCollection',
+                        features: [imgIconGeo]
+                    };
+                    that.MapBoxObject.addSource('marker', {
+                        type: 'geojson',
+                        data: geoJson
+                    });
+                    // Add a layer to use the image to represent the data.
+                    that.MapBoxObject.addLayer({
+                        id: 'markerLayer',
+                        type: 'symbol',
+                        source: 'marker', // reference the data source
+                        layout: {
+                            'icon-image': 'bluePosMarker', // reference the image
+                            'icon-size': 1,
+                            'icon-anchor': 'bottom'
+                        }
+                    });
+                }
+            );
         },
         closeDialog() {
             this.$emit('close', false);

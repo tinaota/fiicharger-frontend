@@ -110,7 +110,7 @@
             </div>
             <!-- <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" :stationList="stationList" @close="closeDialog"></EditChargeBox> -->
             <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" @close="closeDialog"></EditChargeBox>
-            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog" ></ShowPostion>
         </div>
     </div>
 </template>
@@ -309,6 +309,7 @@ export default {
             }
             this.dialog.accPermissionType = this.accPermissionType;
             this.dialogVisible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         deleteCheckBox(id) {
             const that = this;
@@ -331,11 +332,17 @@ export default {
             if(isUpdated) {
                 this.fetchData();
             }
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.chargeBoxId;
             this.mapDialog.position = data.loc;
             this.mapDialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        closeShowPosDialog() {
+            this.mapDialog.visible = false;
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         },
         handleRowClick(row, column, event) {
             if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {

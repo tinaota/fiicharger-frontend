@@ -126,7 +126,7 @@ import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js';
 import MapStyle from '@/assets/js/mapStyle.js';
 import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss";
-import ic_info_green from 'imgs/ic_info_green.png';
+import ic_green_dot from 'imgs/ic_green_dot.png';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     props: {
@@ -178,16 +178,17 @@ export default {
             isLoading: false,
             isUpdate: false,
             zoom: 16,
+            maxZoom: 20,
             map: null,
             mapInfo: {
                 initMap: true,
-                zoom: 14,
+                zoom: 17,
                 marker: null,
                 initCenter: {
                     lat: 42.677811124442854,
                     lng: -87.91695010215827
                 },
-                icon: ic_info_green
+                icon: ic_green_dot
             },
             currencyList: $GLOBAL_CURRENCY,
             serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')],
@@ -264,6 +265,7 @@ export default {
             this.map = new google.maps.Map(document.getElementById('map-container'), {
                                 center: this.mapInfo.initCenter,
                                 zoom: this.mapInfo.zoom,
+                                maxZoom: this.maxZoom,
                                 streetViewControl: false, //設定是否呈現右下角街景小人
                                 mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                                 fullscreenControl: false,
@@ -281,9 +283,9 @@ export default {
         drawMarker() {
             const that = this;
             var markerImage = new google.maps.MarkerImage(this.mapInfo.icon,
-                                new google.maps.Size(38, 38), //size
-                                new google.maps.Point(0, 0), //origin point
-                                new google.maps.Point(24, 24)); // offset point
+                                new google.maps.Size(36, 55)); //size  預設位子圖案中間底
+                                // new google.maps.Point(0, 0), //origin point
+                                // new google.maps.Point(18, 55)); // offset point
             let marker = new google.maps.Marker({
                             map: this.map,
                             position: this.dialog.info.loc,

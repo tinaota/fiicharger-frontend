@@ -284,7 +284,7 @@ export default {
                     that.powerUsedTop10.data = [];
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                that.powerUsedTop10.pData = that.addPercentage(that.powerUsedTop10.data, 'chargeBoxName', 'powerUsage');
+                that.powerUsedTop10.pData = that.powerUsedTop10.data.length > 0 ? that.addPercentage(that.powerUsedTop10.data, 'chargeBoxName', 'powerUsage') : [];
             }).catch((err) => {
                 console.log('powerUsedTop10', err);
                 that.powerUsedTop10.data = [];
@@ -309,7 +309,7 @@ export default {
                     that.revenueTop10.data = [];
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                that.revenueTop10.pData = that.addPercentage(that.revenueTop10.data, 'chargeBoxName', 'price');
+                that.revenueTop10.pData = that.revenueTop10.data.length > 0 ? that.addPercentage(that.revenueTop10.data, 'chargeBoxName', 'price') : [];
             }).catch((err) => {
                 console.log('revenueTop10', err);
                 that.revenueTop10.data = [];
@@ -334,7 +334,7 @@ export default {
                     that.sessionTop10.data = [];
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                that.sessionTop10.pData = that.addPercentage(that.sessionTop10.data, 'chargeBoxName', 'chargingSessionCount');
+                that.sessionTop10.pData = that.sessionTop10.data.length > 0 ? that.addPercentage(that.sessionTop10.data, 'chargeBoxName', 'chargingSessionCount') : [];
             }).catch((err) => {
                 console.log('sessionTop10', err);
                 that.sessionTop10.data = [];
@@ -359,7 +359,7 @@ export default {
                     that.faultsTypeTop5.data = [];
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                that.faultsTypeTop5.pData = that.addPercentage(that.faultsTypeTop5.data, 'name', 'count');
+                that.faultsTypeTop5.pData = that.faultsTypeTop5.data.length > 0 ? that.addPercentage(that.faultsTypeTop5.data, 'name', 'count') : [];
             }).catch((err) => {
                 console.log('faultsTypeTop5', err);
                 that.faultsTypeTop5.data = [];
@@ -437,7 +437,7 @@ export default {
     /* width: calc(100% - 40px); */
     width: calc(25% - 40px - 9px);
     margin-right: 12px;
-    height: 580px;
+    height: 600px;
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;

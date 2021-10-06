@@ -40,7 +40,8 @@
         "pls_input_pwd": "Please input a password",
         "pls_input_captcha": "Please enter the graphic verification code",
         "hint_logout": "Are you sure to log out?",
-        "err_logout": "Log out error!"
+        "err_logout": "Log out error!",
+        "timeout": "Login timeout! Please login again!"
     },
     "general": {
         "billing": "Billing",
@@ -63,7 +64,7 @@
         "active": "Active",
         "unactive": "Unactive",
         "repair": "Repair",
-        "clickAddMarker": "Please click on the map to add a marker",
+        "clickAddMarker": "Please click on the map to add charger location",
         "dragMarker": "Drag the marker on the map to change its position",
         "startDate": "Start Date",
         "endDate": "End Date",
