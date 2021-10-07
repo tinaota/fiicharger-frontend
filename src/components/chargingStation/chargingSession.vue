@@ -61,7 +61,8 @@
             :title="dialog.sessionId"
             width="80%"
             :visible.sync="dialog.visible"
-            :show-close="false">
+            :show-close="false"
+            @close="closeDialog()">
             <div class="sessionDetail"
                 v-loading="dialog.isLoading">
                 <div class="item">
@@ -210,11 +211,15 @@ export default {
                                 powerUsage: ''
                             };
             this.dialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
             this.$jQuery(".sessionDetail").length > 0 && this.$jQuery(".sessionDetail").mCustomScrollbar('destroy');
             that.$nextTick(() => {
                 that.fetchChargingSessionDetail();
                 setScrollBar('.sessionDetail', that);
             });
+        },
+        closeDialog() {
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         }
     }
 }

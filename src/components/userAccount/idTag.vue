@@ -44,7 +44,8 @@
             :show-close="false"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
-            v-loading="dialog.isLoading">
+            v-loading="dialog.isLoading"
+            @close="closeDialog()">
             <div class="vertial formVertical">
                 <div class="form-item">
                     <div class="label">{{ $t('userAccount.idTag') }}</div>
@@ -80,8 +81,8 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
 import { $HTTP_getIdTagList, $HTTP_addIdTag, $HTTP_updateIdTag, $HTTP_deleteIdTag } from "@/api/api";
+import { setScrollBar } from "@/utils/function";
 export default {
     data() {
         return {
@@ -169,6 +170,7 @@ export default {
                 this.dialog.info = Object.assign({}, data);
             }
             this.dialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
             that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
             that.$nextTick(() => {
                 setScrollBar('.formVertical', this);
@@ -206,6 +208,9 @@ export default {
                 console.log('updateIdTagData', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
+        },
+        closeDialog() {
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         },
         deleteIdTag(id) {
             const that = this;

@@ -66,7 +66,7 @@
             :show-close="false"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
-            @close="$refs.updateImg && $refs.updateImg.clearFiles();"
+            @close="closeDialog()"
             v-loading="dialog.isLoading">
             <div class="vertial formVertical">
                 <div class="form-item">
@@ -138,15 +138,8 @@
 
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getOperatorList, AddOperator, $HTTP_updateOperator, UpdateOperator } from "@/api/api";
-import OperatorData from "@/tmpData/operatorData";
 import { setScrollBar } from "@/utils/function";
-import Operators from "@/components/userAccount/operators";
-import OperatorSelf from "@/components/userAccount/operatorSelf";
 export default {
-    components: {
-        Operators,
-        OperatorSelf
-    },
     data() {
         return {
             lang: '',
@@ -195,13 +188,13 @@ export default {
         this.filter.operatorTypeId = userData.operatorId;
     },
     mounted() {
+        setScrollBar('.scroll', this);
         this.fetchData();
         this.fetchCountryCodeList();
     },
     methods: {
         fetchData(type) {
             const that = this;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             let param = {};
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -223,7 +216,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
@@ -286,6 +278,7 @@ export default {
             }
             this.dialog.uploadParams = {};
             this.dialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
             that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
             that.$nextTick(() => {
                 setScrollBar('.formVertical', this);
@@ -376,7 +369,11 @@ export default {
             userData.operatorList = list;
             userData.operatorId = parseInt(Object.keys(list)[0]) || 0;
             window.sessionStorage.setItem("fiics-user", JSON.stringify(userData));
-        }
+        },
+        closeDialog() {
+            this.$refs.updateImg && this.$refs.updateImg.clearFiles();
+            this.$jQuery(".scroll").mCustomScrollbar("update");
+        },
     }
 }
 </script>

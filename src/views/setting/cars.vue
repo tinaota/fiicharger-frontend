@@ -88,7 +88,8 @@
                     width="50%"
                     :visible.sync="dialog.visible"
                     :show-close="false"
-                    v-loading="dialog.isLoading">
+                    v-loading="dialog.isLoading"
+                    @close="closeDialog()">
                     <div class="tabs-contain carDetail">
                         <el-tabs v-model="dialog.active" @tab-click="handleTabClick">
                             <el-tab-pane :label="$t('cars.carType')" name="carType">
@@ -258,6 +259,7 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
+        setScrollBar('.scroll', this);
         this.fetchCarBandList();
         this.fetchData();
     },
@@ -286,7 +288,6 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             let param = {};
             if (this.filter.carBrand) {
                 param.carBrand = this.filter.carBrand;
@@ -308,7 +309,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
@@ -385,8 +385,12 @@ export default {
             this.active = 'carType';
             this.fetchCarInfo();
             this.dialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleTabClick(tab, event) {
+        },
+        closeDialog() {
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         }
     }
 }

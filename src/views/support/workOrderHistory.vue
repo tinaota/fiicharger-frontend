@@ -116,18 +116,17 @@ export default {
     mounted() {
         const today = moment().format("YYYY-MM-DD");
         this.filter.dateRange = [today, today];
+        setScrollBar('.scroll', this);
         this.fetchData();
     },
     methods: {
         fetchData() {
             const that = this;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             this.tableData = HistoryData.workOrderList.map(item => {
                 item.status = that.statusList[item.workOrderStatus];
                 return item;
             });
             this.total = this.tableData.length;
-            setScrollBar('.scroll', this);
         },
         changePage(page) {
         },

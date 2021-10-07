@@ -135,6 +135,7 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
+        setScrollBar('.scroll', this);
         this.fetchData();
     },
     methods: {
@@ -142,7 +143,6 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             let param = {
                 lang: this.lang
             };
@@ -167,7 +167,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;

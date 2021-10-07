@@ -33,9 +33,9 @@
                         <el-tab-pane :label="$t('chargingStation.billingLog')" name="billingLog">
                             <BillingLog :tableData="billingLogData" v-if="!billingLogIsLoading"></BillingLog>
                         </el-tab-pane>
-                        <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                        <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
                             <Review :memberCode="curRouteParam.memberCode"></Review>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                     </el-tabs>
                 </div>
             </div>
@@ -80,6 +80,7 @@ export default {
         window.sessionStorage.removeItem("fiics-accountInfo");
     },
     mounted() {
+        setScrollBar('.scroll', this);
         this.fetchData();
         this.fetchBillingData();
     },
@@ -88,7 +89,6 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             $HTTP_getAccountInfo({ memberCode: this.curRouteParam.memberCode }).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
@@ -99,7 +99,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
@@ -123,7 +122,6 @@ export default {
                     this.billingLogData = [];
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.billingLogData = [];
                 console.log('billing log', err)
