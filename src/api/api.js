@@ -124,6 +124,11 @@ export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operat
 export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOperator';
 
 /**
+ * @description 更新運營商密碼資訊
+ */
+ export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
+
+/**
  * @description 取得會員RFID列表
  */
  export const $HTTP_getIdTagList = params => { return post(`${base}/Home/IdTag/getIdTagList`, qs.stringify(params)) }

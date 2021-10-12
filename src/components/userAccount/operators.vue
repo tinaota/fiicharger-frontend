@@ -1,6 +1,6 @@
 <template>
     <div class="operator">
-        <div class="card-8 table-result">
+        <div class="container">
             <div class="filter">
                 <el-select
                     class="select-small"
@@ -44,8 +44,9 @@
                 </el-table-column>
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
                 <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('general.action')" :width="65">
+                <el-table-column :label="$t('general.action')" :width="96">
                     <template slot-scope="scope">
+                        <el-button class="no-bg i" icon="el-icon-lock" @click="openPwdDialog(scope.row.operatorId)"></el-button>
                         <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                     </template>
                 </el-table-column>
@@ -66,9 +67,13 @@
             :show-close="false"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
-            @close="closeDialog()"
+            @close="closeDialog(true)"
             v-loading="dialog.isLoading">
             <div class="vertial formVertical">
+                <div class="form-item">
+                    <div class="label">{{ $t('userAccount.loginId') }}</div>
+                    <el-input v-model="dialog.info.opLoginId" :disabled="dialog.type===1"></el-input>
+                </div>
                 <div class="form-item">
                     <div class="label">{{ $t('userAccount.operatorName') }}</div>
                     <el-input v-model="dialog.info.operatorName"></el-input>
@@ -119,6 +124,14 @@
                     <div class="label">{{ $t('userAccount.email') }}</div>
                     <el-input v-model="dialog.info.email"></el-input>
                 </div>
+                <div class="form-item" v-if="!dialog.type">
+                    <div class="label">{{ $t('login.pwd') }}</div>
+                    <el-input v-model="dialog.info.password" type="password"></el-input>
+                </div>
+                <div class="form-item" v-if="!dialog.type">
+                    <div class="label">{{ $t('userAccount.cmfPwd') }}</div>
+                    <el-input v-model="dialog.info.confirmPassword" type="password"></el-input>
+                </div>
                 <div class="form-item" v-if="dialog.type">
                     <div class="label">{{ $t('userAccount.createdDate') }}</div>
                     <el-input v-model="dialog.info.fDate" disabled></el-input>
@@ -133,13 +146,18 @@
                 <el-button size="small" type="primary" @click="updateOperatorData">{{ $t('general.ok') }}</el-button>
             </span>
         </el-dialog>
+        <ChangePwd :show="pwdDialog.show" :name="pwdDialog.name" :id="pwdDialog.id" @close="closeDialog(false)"></ChangePwd>
     </div>
 </template>
 
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getOperatorList, AddOperator, $HTTP_updateOperator, UpdateOperator } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import ChangePwd from "@/components/userAccount/changePwd"
 export default {
+    components: {
+        ChangePwd
+    },
     data() {
         return {
             lang: '',
@@ -164,6 +182,7 @@ export default {
                 isLoading: false,
                 type: 0,
                 info: {
+                    // opLoginId: '',
                     operatorName: '',
                     file: [],
                     address: '',
@@ -171,6 +190,8 @@ export default {
                     countryCode: '',
                     phone: '',
                     email: '',
+                    // password: '',
+                    // confirmPassword: '',
                     // operatorId: '',
                     // fDate: '',
                     // eDate: '',
@@ -179,6 +200,11 @@ export default {
                 uploadParams: {},
                 $Api: null
             },
+            pwdDialog: {
+                id: '',
+                name: 'operatorId',
+                show: false
+            }
         }
     },
     created() {
@@ -246,19 +272,23 @@ export default {
             this.dialog.type = type;
             if (!type) {
                 this.dialog.info = {
+                                    opLoginId: '',
                                     operatorName: '',
                                     file: [],
                                     address: '',
                                     contactPerson: '',
                                     countryCode: '',
                                     phone: '',
-                                    email: ''
+                                    email: '',
+                                    password: '',
+                                    confirmPassword: '',
                                 };
                 this.dialog.originalImg = '';
                 this.dialog.$Api = AddOperator;
             } else {
                 const imgFileName = data.operatorPicPath.split('images/operator/')[1];
                 this.dialog.info = {
+                                    opLoginId: data.opLoginId,
                                     operatorId: data.operatorId,
                                     operatorName: data.operatorName,
                                     file: [{
@@ -309,16 +339,19 @@ export default {
                 this.dialog.isLoading = false;
                 this.dialog.visible = false;
             } else {
-                this.$message({ type: 'warning', message: that.lang === 'en' ? data.message : data.reason });
+                this.$message({ type: 'warning', message: this.lang === 'en' ? response.message : response.reason });
                 this.dialog.isLoading = false;
+                this.$refs.updateImg && this.$refs.updateImg.clearFiles();
             }
         },
         handleError(response, file, fileList) {
             this.dialog.isLoading = false;
+            this.$refs.updateImg && this.$refs.updateImg.clearFiles();
             console.log('handleError', response);
             this.$message({ type: 'error', message: i18n.t('error_network') });
         },
         updateOperatorData() {
+            console.log('click')
             const that = this;
             //有傳圖片情況
             if (this.dialog.info.file.length > 0 && this.dialog.originalImg !== this.dialog.info.file[0].url) {
@@ -330,8 +363,12 @@ export default {
                                             phone: this.dialog.info.phone,
                                             email: this.dialog.info.email
                                         };
-                if (that.dialog.type) {
+                if (that.dialog.type) { //編輯
                     this.dialog.uploadParams.operatorId = this.dialog.info.operatorId;
+                } else { //新增
+                    this.dialog.uploadParams.opLoginId = this.dialog.info.opLoginId;
+                    this.dialog.uploadParams.password = this.dialog.info.password;
+                    this.dialog.uploadParams.confirmPassword = this.dialog.info.confirmPassword;
                 }
                 this.$nextTick(()=> {
                     that.$refs.updateImg.submit();
@@ -370,17 +407,24 @@ export default {
             userData.operatorId = parseInt(Object.keys(list)[0]) || 0;
             window.sessionStorage.setItem("fiics-user", JSON.stringify(userData));
         },
-        closeDialog() {
-            this.$refs.updateImg && this.$refs.updateImg.clearFiles();
+        closeDialog(isEdit) {
+            if(isEdit) {
+                this.$refs.updateImg && this.$refs.updateImg.clearFiles();
+            } else {
+                this.pwdDialog.show = false;
+            }
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
+        openPwdDialog(id) {
+            this.pwdDialog.id = id;
+            this.pwdDialog.show = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        }
     }
 }
 </script>
 <style lang = "scss" scoped>
-.operator .card-8 {
-    padding: 28px;
-    width: calc(100% - 56px);
+.operator .container {
     position: relative;
     img.logo {
         height: auto;
@@ -389,7 +433,7 @@ export default {
     .total {
         position: absolute;
         right: 28px;
-        bottom: 28px;
+        bottom: 0px;
         height: 36px;
         line-height: 36px;
         vertical-align: middle;

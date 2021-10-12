@@ -6,7 +6,7 @@
                 <el-breadcrumb-item>{{ $t('menu.operator') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div v-if="accPermissionType !== 3">
-                <Operators></Operators>
+                <SuperUser></SuperUser>
             </div>
             <div v-else>
                 <OperatorSelf></OperatorSelf>
@@ -16,12 +16,11 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
-import Operators from "@/components/userAccount/operators";
+import SuperUser from "@/components/userAccount/superUser";
 import OperatorSelf from "@/components/userAccount/operatorSelf";
 export default {
     components: {
-        Operators,
+        SuperUser,
         OperatorSelf
     },
     data() {

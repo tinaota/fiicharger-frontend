@@ -41,7 +41,10 @@
         "pls_input_captcha": "Please enter the graphic verification code",
         "hint_logout": "Are you sure to log out?",
         "err_logout": "Log out error!",
-        "timeout": "Login timeout! Please login again!"
+        "timeout": "Login timeout! Please login again!",
+        "oriPwd": "Original Password",
+        "newPwd": "New Password",
+        "cfmNewPwd": "Confirm the New Password Again"
     },
     "general": {
         "billing": "Billing",
@@ -208,7 +211,9 @@
         "reviewId": "Review ID",
         "comment": "Comment",
         "review": "Review",
-        "reviewSummary": "Review Summary"
+        "reviewSummary": "Review Summary",
+        "loginId": "Login ID",
+        "cmfPwd": "Confirm Password"
     },
     "cars": {
         "marker": "Marker",

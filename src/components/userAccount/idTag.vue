@@ -114,6 +114,7 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
+        setScrollBar('.scroll', this);
         this.fetchData();
     },
     methods: {

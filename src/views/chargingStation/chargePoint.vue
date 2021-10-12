@@ -117,7 +117,7 @@
 
 <script>
 import { setScrollBar } from "@/utils/function";
-import EditChargeBox from "@/components/chargingStation/editChargeBox"
+import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getChargeBoxList, $HTTP_getZipCodeListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
@@ -201,6 +201,7 @@ export default {
     mounted() {
         // const that = this;
         // this.fetchStationList(()=>{ that.fetchData()});
+        setScrollBar('.scroll', this);
         this.fetchData();
         this.fetchLocationList();
     },
@@ -280,7 +281,6 @@ export default {
                     this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
-                setScrollBar('.scroll', this);
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;

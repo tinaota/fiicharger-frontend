@@ -41,7 +41,10 @@
         "pls_input_captcha": "请输入图形验证码",
         "hint_logout": "你确定要登出?",
         "err_logout": "登出错误!",
-        "timeout": "登入超时, 请重新登入!"
+        "timeout": "登入超时, 请重新登入!",
+        "oriPwd": "原始密码",
+        "newPwd": "新密码",
+        "cfmNewPwd": "再次输入新密码"
     },
     "general": {
         "billing": "费用",
@@ -208,7 +211,9 @@
         "reviewId": "评论ID",
         "comment": "评论",
         "review": "评论",
-        "reviewSummary": "评论总结"
+        "reviewSummary": "评论总结",
+        "loginId": "登录ID",
+        "cmfPwd": "确认密码"
     },
     "cars": {
         "marker": "标记",

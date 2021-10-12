@@ -654,9 +654,20 @@ button,
         background-size: contain;
         background-position: center;
         border: unset;
+        &.i {
+            padding: 0;
+            .el-icon-lock {
+                font-size: 22px;
+                font-weight: bold;
+                color: #1e5eff;
+                padding: 0;
+            }
+        }
         .el-icon-data-line {
-            font-size: 24px;
+            font-size: 22px;
+            font-weight: bold;
             color: #1e5eff;
+            padding: 0;
         }
     }
     &.loc {
@@ -806,7 +817,7 @@ button:disabled {
             margin-bottom: 12px;
             color: #525E69;
             letter-spacing: 0;
-            .el-button {
+            .el-button:not(.refresh) {
                 width: 36px;
                 height: 36px;
                 padding: 8px;
@@ -818,6 +829,12 @@ button:disabled {
                     font-size: 1rem;
                     font-weight: bold;
                 }
+            }
+            .el-button.refresh {
+                width: 24px;
+                height: 24px;
+                margin-top: 8px;
+                vertical-align: top;
             }
         }
         .el-input,
