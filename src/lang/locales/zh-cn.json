@@ -213,7 +213,9 @@
         "review": "评论",
         "reviewSummary": "评论总结",
         "loginId": "登录ID",
-        "cmfPwd": "确认密码"
+        "cmfPwd": "确认密码",
+        "maintainer": "维护人员",
+        "customerServices": "客服人员"
     },
     "cars": {
         "marker": "标记",

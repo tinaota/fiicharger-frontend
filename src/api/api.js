@@ -126,14 +126,14 @@ export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOp
 /**
  * @description 更新運營商密碼資訊
  */
- export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
+export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
 
 /**
  * @description 取得會員RFID列表
  */
- export const $HTTP_getIdTagList = params => { return post(`${base}/Home/IdTag/getIdTagList`, qs.stringify(params)) }
+export const $HTTP_getIdTagList = params => { return post(`${base}/Home/IdTag/getIdTagList`, qs.stringify(params)) }
 
- /**
+/**
  * @description 新增RFID
  */
 export const $HTTP_addIdTag = params => { return post(`${base}/Home/IdTag/addIdTag`, qs.stringify(params)) }
@@ -141,17 +141,67 @@ export const $HTTP_addIdTag = params => { return post(`${base}/Home/IdTag/addIdT
 /**
  * @description 更新RFID
  */
- export const $HTTP_updateIdTag = params => { return post(`${base}/Home/IdTag/updateIdTag`, qs.stringify(params)) }
+export const $HTTP_updateIdTag = params => { return post(`${base}/Home/IdTag/updateIdTag`, qs.stringify(params)) }
 
- /**
+/**
  * @description 刪除RFID
  */
 export const $HTTP_deleteIdTag = params => { return post(`${base}/Home/IdTag/deleteIdTag`, qs.stringify(params)) }
 
- /**
+/**
  * @description 取得評價列表
  */
-  export const $HTTP_getValuationList = params => { return post(`${base}/Home/Valuation/getValuationList`, qs.stringify(params)) }
+export const $HTTP_getValuationList = params => { return post(`${base}/Home/Valuation/getValuationList`, qs.stringify(params)) }
+
+/**
+ * @description 取得維修商列表
+ */
+export const $HTTP_getMaintainerList = params => { return post(`${base}/Home/Maintainer/getMaintainerList`, qs.stringify(params)) }
+
+/**
+ * @description 新增維修人員
+ */
+export const $HTTP_addMaintainer = params => { return post(`${base}/Home/Maintainer/addMaintainer`, qs.stringify(params)) }
+
+/**
+ * @description 更新維修人員資訊
+ */
+export const $HTTP_updateMaintainer = params => { return post(`${base}/Home/Maintainer/updateMaintainer`, qs.stringify(params)) }
+
+/**
+ * @description 更新維修人員密碼資訊
+ */
+export const $HTTP_updateMaintainerPassword = params => { return post(`${base}/Home/Maintainer/updateMaintainerPassword`, qs.stringify(params)) }
+
+/**
+ * @description 刪除維修人員
+ */
+export const $HTTP_deleteMaintainer = params => { return post(`${base}/Home/Maintainer/deleteMaintainer`, qs.stringify(params)) }
+
+/**
+ * @description 取得客服人員列表
+ */
+export const $HTTP_getCustomerServiceList = params => { return post(`${base}/Home/CustomerService/getCustomerServiceList`, qs.stringify(params)) }
+
+/**
+ * @description 新增客服人員
+ */
+export const $HTTP_addCustomerService = params => { return post(`${base}/Home/CustomerService/addCustomerService`, qs.stringify(params)) }
+
+/**
+ * @description 更新客服人員資訊
+ */
+export const $HTTP_updateCustomerService = params => { return post(`${base}/Home/CustomerService/updateCustomerService`, qs.stringify(params)) }
+
+/**
+ * @description 更新客服人員密碼資訊
+*/
+export const $HTTP_updateCustomerServicePassword = params => { return post(`${base}/Home/CustomerService/updateCustomerServicePassword`, qs.stringify(params)) }
+
+/**
+ * @description 刪除客服人員
+ */
+export const $HTTP_deleteCustomerService = params => { return post(`${base}/Home/CustomerService/deleteCustomerService`, qs.stringify(params)) }
 
 /**
  * @description 新增充電站
@@ -254,4 +304,3 @@ export const $HTTP_getChargeAlertList = params => { return post(`${base}/ChargeS
  * @description 取得充電歷史告警列表
  */
 export const $HTTP_getChargeHistoryAlertList = params => { return post(`${base}/ChargeStation/Alert/getChargeHistoryAlertList`, qs.stringify(params)) }
-

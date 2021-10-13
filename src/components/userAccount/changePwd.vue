@@ -36,7 +36,8 @@
 </template>
 
 <script>
-import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword } from "@/api/api";
+import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword, $HTTP_updateMaintainerPassword, $HTTP_updateCustomerServicePassword } from "@/api/api";
+import { setScrollBar } from "@/utils/function";
 export default {
     props: {
         name: String,
@@ -72,7 +73,17 @@ export default {
                         case 'operatorId':
                             this.$Api = $HTTP_updateOperatorPassword;
                             break;
+                        case 'maintainerId':
+                            this.$Api = $HTTP_updateMaintainerPassword;
+                            break;
+                        case 'customerServiceId':
+                            this.$Api = $HTTP_updateCustomerServicePassword;
+                            break;
                     }
+                    that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
+                    that.$nextTick(() => {
+                        setScrollBar('.formVertical', that);
+                    });
                     this.fetchCaptcha();
                     this.setTimer();
                 }
@@ -82,12 +93,6 @@ export default {
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.lang = window.sessionStorage.getItem('fiics-lang');
-        this.param = {
-                        oldPassword: '',
-                        password: '',
-                        confirmPassword: '',
-                        captcha: ''
-                    };
     },
     beforeDestroy() {
         if (this.captchaTimer) {
@@ -138,6 +143,12 @@ export default {
             });
         },
         closeDialog() {
+            this.param = {
+                            oldPassword: '',
+                            password: '',
+                            confirmPassword: '',
+                            captcha: ''
+                        };
             this.$emit('close', this.isUpdate);
         }
     }

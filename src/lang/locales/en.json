@@ -213,7 +213,9 @@
         "review": "Review",
         "reviewSummary": "Review Summary",
         "loginId": "Login ID",
-        "cmfPwd": "Confirm Password"
+        "cmfPwd": "Confirm Password",
+        "maintainer": "Maintainer",
+        "customerServices": "Customer Services"
     },
     "cars": {
         "marker": "Marker",

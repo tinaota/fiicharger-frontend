@@ -351,7 +351,6 @@ export default {
             this.$message({ type: 'error', message: i18n.t('error_network') });
         },
         updateOperatorData() {
-            console.log('click')
             const that = this;
             //有傳圖片情況
             if (this.dialog.info.file.length > 0 && this.dialog.originalImg !== this.dialog.info.file[0].url) {
