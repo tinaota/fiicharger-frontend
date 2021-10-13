@@ -17,12 +17,12 @@
             </el-table-column>
             <el-table-column prop="chargingStartTime" :label="$t('general.startTime')" :min-width="3"></el-table-column>
             <el-table-column prop="chargingEndTime" :label="$t('general.endTime')" :min-width="3"></el-table-column>
-            <el-table-column :label="$t('general.billingAmt')" :min-width="2">
+            <el-table-column v-if="permissionShowBillingAble" :label="$t('general.billingAmt')" :min-width="2">
                 <template slot-scope="scope">
                     {{ currencyList[scope.row.billingInfo.unitType] + scope.row.billingInfo.price }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.billingID')" :width="120">
+            <el-table-column v-if="permissionShowBillingAble" :label="$t('chargingStation.billingID')" :width="120">
                 <template slot-scope="scope">
                     <el-popover trigger="click" popper-class="dark" width="420" placement="left" :offset="-20" :visible-arrow="false">
                         <el-table :data="[scope.row.billingInfo]">
@@ -120,6 +120,7 @@ export default {
     data() {
         return {
             lang: '',
+            permissionShowBillingAble: true,
             tableData: [],
             isLoading: false,
             page: 1,
@@ -144,6 +145,11 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
+              accPermissionType = userData.accountInfo.accPermissionType;
+        if (accPermissionType === 4 || accPermissionType === 5) {
+            this.permissionShowBillingAble = false;
+        }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {

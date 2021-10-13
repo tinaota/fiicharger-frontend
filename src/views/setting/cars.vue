@@ -34,41 +34,54 @@
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
+                    <!-- <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus"></el-button> -->
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
                     <el-table-column prop="carId" label="ID" :min-width="2"></el-table-column>
-                    <el-table-column prop="carBrand" :label="$t('cars.marker')" :min-width="2"></el-table-column>
-                    <el-table-column prop="carModel" :label="$t('cars.model')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="2">
+                    <el-table-column prop="carBrand" :label="$t('cars.marker')" :min-width="3"></el-table-column>
+                    <el-table-column prop="carModel" :label="$t('cars.model')" :min-width="4"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.carPower + "hp"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('cars.batteryCapacity')" :min-width="2">
+                    <el-table-column :label="$t('cars.batteryCapacity')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.batteryCapacity + "kWh"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('cars.realRange')" :min-width="2">
+                    <el-table-column :label="$t('cars.realRange')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.realRange + "km"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('cars.acPower')" :min-width="2">
+                    <el-table-column :label="$t('cars.acPower')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.acPower ? scope.row.acPower + "kW" : ''}}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="acPlug" :label="$t('cars.acPlug')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('cars.dcPower')" :min-width="2">
+                    <el-table-column prop="acPlug" :label="$t('cars.acPlug')" :min-width="3"></el-table-column>
+                    <el-table-column :label="$t('cars.dcPower')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.dcPower ? scope.row.dcPower + "kW" : ''}}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="dcPlug" :label="$t('cars.dcPlug')" :min-width="2"></el-table-column>
+                    <el-table-column prop="dcPlug" :label="$t('cars.dcPlug')" :min-width="3"></el-table-column>
+                    <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="140">
+                        <template slot-scope="scope">
+                            <el-button class="no-bg detail" @click="openDialog(scope.row.carId)"></el-button>
+                            <el-button class="no-bg edit"></el-button>
+                            <el-button class="no-bg delete"></el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-else :label="$t('general.action')" :width="65">
+                        <template slot-scope="scope">
+                            <el-button class="no-bg detail" @click="openDialog(scope.row.carId)"></el-button>
+                        </template>
+                    </el-table-column> -->
                     <el-table-column :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg detail" @click="openDialog(scope.row.carId)"></el-button>
@@ -203,6 +216,7 @@ export default {
     data() {
         return {
             lang: '',
+            permissionEditAble: false,
             filter: {
                 carBrand: '',
                 carModel: '',
@@ -256,6 +270,11 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
+              accPermissionType = userData.accountInfo.accPermissionType;
+        if (accPermissionType === 1) {
+            this.permissionEditAble = true;
+        }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {

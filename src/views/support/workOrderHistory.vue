@@ -58,7 +58,7 @@
                     <el-table-column prop="lastUpdateTime" :label="$t('support.lastUpdateTime')" :min-width="4"></el-table-column>
                     <el-table-column prop="lastUpdateName" :label="$t('support.lastUpdateBy')" :min-width="4"></el-table-column>
                     <el-table-column prop="status" :label="$t('general.status')" :min-width="4"></el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="65">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit"></el-button>
                         </template>
@@ -86,6 +86,7 @@ export default {
     data() {
         return {
             lang: '',
+            permissionEditAble: false,
             operatorList: {},
             filter: {
                 operatorTypeId: '',
@@ -108,7 +109,11 @@ export default {
         }
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
+              accPermissionType = userData.accountInfo.accPermissionType;
+        if (accPermissionType === 3 || accPermissionType === 4 || accPermissionType === 6) {
+            this.permissionEditAble = true;
+        }
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
         this.lang = window.sessionStorage.getItem('fiics-lang');

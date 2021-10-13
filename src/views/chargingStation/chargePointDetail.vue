@@ -57,7 +57,7 @@
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
                             <ChargingSession :chargeBoxId="curRouteParam.chargeBoxId"></ChargingSession>
                         </el-tab-pane>
-                        <el-tab-pane :label="$t('menu.chargePointAlert')" name="chargePointAlert">
+                        <el-tab-pane v-if="permissionShowAlertAble" :label="$t('menu.chargePointAlert')" name="chargePointAlert">
                             <ChargePointAlert :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
                         </el-tab-pane>
                         <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
@@ -89,6 +89,7 @@ export default {
     data() {
         return {
             lang: '',
+            permissionShowAlertAble: true,
             curRouteParam: {},
             active: 'chargingSession',
             mapDialog: {
@@ -102,6 +103,11 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
+              accPermissionType = userData.accountInfo.accPermissionType;
+        if (accPermissionType === 6) {
+            this.permissionShowAlertAble = false;
+        }
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.chargeBoxId) {
             let temp = window.sessionStorage.getItem("fiics-chargePointInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo")) : null;

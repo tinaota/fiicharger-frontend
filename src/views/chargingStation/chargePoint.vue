@@ -38,7 +38,7 @@
                         clearable>
                         <el-option v-for="(item, idx) in connectorList" :label="item" :key="idx" :value="idx"></el-option>
                     </el-select>
-                    <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
+                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
@@ -89,13 +89,20 @@
                         <template slot-scope="scope"></template>
                     </el-table-column>
                     -->
-                    <el-table-column :label="$t('general.action')" :width="146">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
                             <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.chargeBoxId)"></el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column v-else :label="$t('general.action')" :width="65">
+                        <template slot-scope="scope">
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
+                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -132,6 +139,7 @@ export default {
         return {
             lang: '',
             accPermissionType: '',
+            permissionEditAble: false,
             operatorList: {},
             filter: {
                 tmpSearch: '',
@@ -195,6 +203,9 @@ export default {
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
         this.accPermissionType = userData.accountInfo.accPermissionType;
+        if (this.accPermissionType === 3) {
+            this.permissionEditAble = true;
+        }
         this.connectorList.push(i18n.t('general.all'));
         this.connectorList = this.connectorList.concat(i18n.t('chargingStation.connectorList').filter(item => item !== ''));
     },
@@ -298,13 +309,13 @@ export default {
                 this.dialog.info = Object.assign({}, data);
                 this.dialog.info.loc.lng = this.dialog.info.loc.lon;
             } else {
-                if (this.accPermissionType < 3) {
+                if (this.accPermissionType !== 3 || this.accPermissionType !== 4) {
                     this.dialog.info.operatorTypeId = this.filter.operatorTypeId > 0 ? this.filter.operatorTypeId : '';
                 } else {
                     this.dialog.info.operatorTypeId = this.filter.operatorTypeId;
                 }
             }
-            if (this.accPermissionType < 3) {
+            if (this.accPermissionType !== 3 || this.accPermissionType !== 4) {
                 this.dialog.operatorList = this.operatorList;
             }
             this.dialog.accPermissionType = this.accPermissionType;

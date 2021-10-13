@@ -22,10 +22,15 @@
             <el-table-column prop="staffNameMask" :label="$t('userAccount.userName')" :min-width="2"></el-table-column>
             <el-table-column prop="emailMask" :label="$t('userAccount.email')" :min-width="3"></el-table-column>
             <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="2"></el-table-column>
-            <el-table-column :label="$t('general.action')" :width="96">
+            <el-table-column v-if="permissionDelAble" :label="$t('general.action')" :width="96">
                 <template slot-scope="scope">
                     <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                     <el-button class="no-bg delete" @click="deleteIdTag(scope.row.idTagCode)"></el-button>
+                </template>
+            </el-table-column>
+            <el-table-column v-else :label="$t('general.action')" :width="65">
+                <template slot-scope="scope">
+                    <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -87,6 +92,7 @@ export default {
     data() {
         return {
             lang: '',
+            permissionDelAble: false,
             filter: {
                 tmpSearch: '',
                 search: ''
@@ -111,6 +117,11 @@ export default {
         }
     },
     created() {
+        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
+              accPermissionType = userData.accountInfo.accPermissionType;
+        if (accPermissionType === 1) {
+            this.permissionDelAble = true;
+        }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {

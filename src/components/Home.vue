@@ -52,7 +52,7 @@
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children" >
-                                            <el-menu-item v-if="subMenuShowCtrl(subChild)" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{ "-"+$t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>
@@ -159,25 +159,47 @@ export default {
     },
     methods: {
         menuShowCtrl: function(child) {
-            if (this.userData.accPermissionType !== 4 ) {
-                return !child.hidden;
+            //運營商操作維修員
+            if (this.userData.accPermissionType === 4 &&
+                (child.path === '/info' || child.path === '/billing' || child.path === '/account')) {
+                return false;
+            //維修人員
+            } else if (this.userData.accPermissionType === 5 &&
+                (child.path === '/info' || child.path === '/billing' || child.path === '/account' || child.path === '/setting')) {
+                return false;
+            //客服人員
+            } else if (this.userData.accPermissionType === 6 && child.path === '/info') {
+                return false;
             } else {
-                if (child.path !== '/info' && child.path !== '/billing' && child.path !== '/account') {
-                    return !child.hidden;
-                } else {
-                    return false;
-                }
+                return !child.hidden;
             }
         },
-        subMenuShowCtrl: function(subChild) {
-            if (this.userData.accPermissionType !== 2) {
-                return !subChild.hidden;
-            } else {
-                if (subChild.path !== '/endUser') {
-                    return !subChild.hidden;
-                } else {
+// 1：Demo、FiiAdmin，
+// 2：(空 維持原先狀態不改)，
+// 3：運營商，
+// 4：運營商操作維修員，
+// 5：維修人員，
+// 6：客服人員
+        subMenuShowCtrl: function(childPath, subChild) {
+            //客服人員
+            if (this.userData.accPermissionType === 6) {
+                if (childPath === '/chargingStation') {
+                    if (subChild.path === '/chargingSession' || subChild.path === '/chargePointAlert') {
+                        return false;
+                    } else {
+                        return !subChild.hidden;
+                    }
+                } else if (childPath === '/account' && subChild.path === '/operator') {
                     return false;
+                } else {
+                    return !subChild.hidden;
                 }
+            //運營商
+            } else if (this.userData.accPermissionType === 3 &&
+                (childPath === '/account' && subChild.path === '/endUser')) {
+                return false;
+            } else {
+                return !subChild.hidden;
             }
         },
         handleChangeLang(lang) {

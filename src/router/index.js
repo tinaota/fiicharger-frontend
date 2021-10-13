@@ -133,11 +133,6 @@ if (window.sessionStorage.getItem('fiics-token')) {
  * @description 处理页面跳转前后的路由逻辑操作
  */
 router.beforeEach((to, from, next) => {
-    // if (from.path === '/' && to.path === '/') {
-    //     next({ path: '/location' });
-    // } else {
-    //     next();
-    // }
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
             // var userData = window.sessionStorage.getItem('fiics-user') || null;
@@ -146,14 +141,13 @@ router.beforeEach((to, from, next) => {
             //     if (accPermissionType !== 2 && accPermissionType !== 4 ) {
             //         next();
             //     } else if (this.userData.accPermissionType === 2) {
-            //         if (to.path !== '/account/accountDetail' && to.path !== '/operator' && to.path !== '/endUser') {
+            //         if (to.path !== '/account/accountDetail'...) {
             //             next();
             //         } else {
             //             next({ path: '/404' });
             //         }
             //     } else {
-            //         if (to.path !== '/location' && to.path !== '/statistics' && to.path !== '/billingLog'
-            //             && to.path !== '/account/accountDetail' && to.path !== '/operator' && to.path !== '/endUser') {
+            //         if (to.path !== '/location'...) {
             //             next();
             //         } else {
             //             next({ path: '/404' });
