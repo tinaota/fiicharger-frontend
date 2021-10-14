@@ -44,6 +44,10 @@
                         <div class="content">{{ $t('chargingStation.offPeak') + ' '+ curRouteParam.currency + curRouteParam.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.offPeakElectricityRateType] }}</div>
                     </div>
                     <div class="item">
+                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                        <div class="content">{{ curRouteParam.currency + curRouteParam.parkingRate + '/' +  $t("chargingStation.parkingRateUnit")[curRouteParam.parkingRateType] }}</div>
+                    </div>
+                    <div class="item">
                         <div class="label">{{ $t('general.installationDate') }}</div>
                         <div class="content">{{ curRouteParam.installationDate }}</div>
                     </div>

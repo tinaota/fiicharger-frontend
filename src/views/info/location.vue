@@ -420,7 +420,7 @@ export default {
                                     <div class="item-msg">${i18n.t('chargingStation.offPeak') + ' ' + currency + item.offPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.offPeakElectricityRateType || 1]}</div>
 
                                     <div class="item-title">${i18n.t('chargingStation.parkingRate')}</div>
-                                    <div class="item-msg">${currency + item.parkingRate + '/' + i18n.t('chargingStation.elecRateUnit')[1]} </div>
+                                    <div class="item-msg">${currency + item.parkingRate + '/' + i18n.t('chargingStation.parkingRateUnit')[item.parkingRateType]} </div>
                                 </li>
                             </ul>
                         </div>`;

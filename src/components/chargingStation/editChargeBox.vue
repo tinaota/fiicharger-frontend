@@ -94,7 +94,15 @@
             </div>
             <div class="form-item">
                 <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+                <div class="elecRateItem">
+                    <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+                    /
+                    <el-select
+                        class="select-small"
+                        v-model="dialog.info.parkingRateType">
+                        <el-option v-for="(item, key) in $t('chargingStation.parkingRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                    </el-select>
+                </div>
             </div>
             <div class="form-item">
                 <div class="label">{{ $t('general.installationDate') }}</div>
@@ -154,6 +162,7 @@ export default {
                         offPeakElectricityRate: 0,
                         offPeakElectricityRateType: 1,
                         parkingRate: 0,
+                        parkingRateType: 1,
                         installationDate: '',
                         operatorTypeId: ''
                     },
@@ -322,6 +331,7 @@ export default {
                     offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
                     offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
                     parkingRate: that.dialog.info.parkingRate,
+                    parkingRateType: that.dialog.info.parkingRateType,
                     installationDate: that.dialog.info.installationDate,
                     operatorTypeId: that.dialog.info.operatorTypeId
                   },

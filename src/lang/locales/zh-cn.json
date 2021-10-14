@@ -138,6 +138,10 @@
             "2": "kWh",
             "3": "次"
         },
+        "parkingRateUnit": {
+            "1": "分钟",
+            "2": "次"
+        },
         "chargePointID": "充电桩ID",
         "chargePointName": "充电桩名称",
         "power": "电耗",

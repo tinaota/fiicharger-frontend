@@ -138,6 +138,10 @@
             "2": "kWh",
             "3": "次"
         },
+        "parkingRateUnit": {
+            "1": "分鐘",
+            "2": "次"
+        },
         "chargePointID": "充電樁ID",
         "chargePointName": "充電樁名稱",
         "power": "電耗",
