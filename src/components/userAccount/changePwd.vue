@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword, $HTTP_updateMaintainerPassword, $HTTP_updateCustomerServicePassword } from "@/api/api";
+import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword, $HTTP_updateMaintainerPassword, $HTTP_updateCustomerServicePassword, $HTTP_updateOperatorMaintainerPassword } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 export default {
     props: {
@@ -78,6 +78,9 @@ export default {
                             break;
                         case 'customerServiceId':
                             this.$Api = $HTTP_updateCustomerServicePassword;
+                            break;
+                        case 'operatorMaintainerId':
+                            this.$Api = $HTTP_updateOperatorMaintainerPassword;
                             break;
                     }
                     that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');

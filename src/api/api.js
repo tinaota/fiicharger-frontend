@@ -129,6 +129,31 @@ export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOp
 export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
 
 /**
+ * @description 取得運營商操作維修員列表
+ */
+export const $HTTP_getOperatorMaintainerList = params => { return post(`${base}/Home/Operator/getOperatorMaintainerList`, qs.stringify(params)) }
+
+/**
+ * @description 新增運營商操作維修員
+ */
+export const $HTTP_addOperatorMaintainer = params => { return post(`${base}/Home/Operator/addOperatorMaintainer`, qs.stringify(params)) }
+
+/**
+ * @description 更新運營商操作維修員資訊
+ */
+export const $HTTP_updateOperatorMaintainer = params => { return post(`${base}/Home/Operator/updateOperatorMaintainer`, qs.stringify(params)) }
+
+/**
+ * @description 更新運營商操作維修員密碼資訊
+ */
+export const $HTTP_updateOperatorMaintainerPassword = params => { return post(`${base}/Home/Operator/updateOperatorMaintainerPassword`, qs.stringify(params)) }
+
+/**
+ * @description 刪除運營商操作維修員
+ */
+export const $HTTP_deleteOperatorMaintainer = params => { return post(`${base}/Home/Operator/deleteOperatorMaintainer`, qs.stringify(params)) }
+
+/**
  * @description 取得會員RFID列表
  */
 export const $HTTP_getIdTagList = params => { return post(`${base}/Home/IdTag/getIdTagList`, qs.stringify(params)) }

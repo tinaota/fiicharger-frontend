@@ -1,32 +1,52 @@
 <template>
     <div class="operator">
-        <div class="card-8 table-result">
-            <el-table
-                :data="tableData"
-                class="moreCol"
-                v-loading="isLoading">
-                <el-table-column prop="operatorName" :label="$t('userAccount.operatorName')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('userAccount.logo')" :min-width="3">
-                    <template slot-scope="scope">
-                        <img :src="scope.row.operatorPicPath" class="logo">
-                    </template>
-                </el-table-column>
-                <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column>
-                <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('userAccount.mobile')" :min-width="3">
-                    <template slot-scope="scope">
-                        {{ scope.row.countryCode + " " + scope.row.phone }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
-                <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('general.action')" :width="65">
-                    <template slot-scope="scope">
-                        <!-- <el-button class="no-bg edit"></el-button> -->
-                        <el-button class="no-bg edit" @click="openDialog(scope.row)"></el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+        <div class="card-8">
+            <div class="info" v-loading="isLoading">
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.operatorName') }}</div>
+                    <div class="content">{{ operatorData.operatorName }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.logo') }}</div>
+                    <div class="content"><img :src="operatorData.operatorPicPath" class="logo"></div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('general.address') }}</div>
+                    <div class="content">{{ operatorData.address }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.contactPerson') }}</div>
+                    <div class="content">{{ operatorData.contactPerson }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.countryCode') }}</div>
+                    <div class="content">{{ operatorData.countryCode + '(' + operatorData.countryName + ')' }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.mobile') }}</div>
+                    <div class="content">{{ operatorData.phone }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.email') }}</div>
+                    <div class="content">{{ operatorData.email }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('userAccount.createdDate') }}</div>
+                    <div class="content">{{ operatorData.fDate }}</div>
+                </div>
+                <div class="item">
+                    <div class="label">{{ $t('general.latestModification') }}</div>
+                    <div class="content">{{ operatorData.eDate }}</div>
+                </div>
+            </div>
+            <el-button class="no-bg edit" @click="openDialog()"></el-button>
+            <div class="tabs-contain">
+                <el-tabs v-model="active" @tab-click="handleTabClick">
+                    <el-tab-pane :label="$t('userAccount.maintainer')" name="maintainer">
+                        <OpMaintainer :countryCodeList="countryCode.data"></OpMaintainer>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
         <el-dialog
             :title="$t('general.modify')"
@@ -108,16 +128,32 @@
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getOperatorList, $HTTP_updateOperator, UpdateOperator } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import OpMaintainer from "@/components/userAccount/opMaintainer";
 export default {
+    components: {
+        OpMaintainer
+    },
     data() {
         return {
             lang: '',
             operatorTypeId: '',
             isLoading: false,
-            tableData: [],
             countryCode: {
                 isLoading: false,
                 data: []
+            },
+            operatorData: {
+                operatorId: '',
+                operatorName: '',
+                operatorPicPath: '',
+                address: '',
+                contactPerson: '',
+                countryCode: '',
+                countryName: '',
+                phone: '',
+                email: '',
+                fDate: '',
+                eDate: '',
             },
             dialog: {
                 visible: false,
@@ -139,6 +175,7 @@ export default {
                 uploadParams: {},
                 $Api: null
             },
+            active: 'maintainer'
         }
     },
     created() {
@@ -148,8 +185,10 @@ export default {
     },
     mounted() {
         setScrollBar('.scroll', this);
-        this.fetchData();
-        this.fetchCountryCodeList();
+        const that = this;
+        this.fetchCountryCodeList(()=>{
+            that.fetchData();
+        });
     },
     methods: {
         fetchData() {
@@ -157,24 +196,21 @@ export default {
             let param = {
                 operatorTypeId: this.operatorTypeId
             };
+            this.isLoading = true;
             $HTTP_getOperatorList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.operatorList.slice();
-                    this.total = this.tableData.length;
+                    this.operatorData = Object.assign({},data.operatorList[0]);
+                    this.operatorData.countryName = this.countryCode.data.filter(item => item.countryCode === this.operatorData.countryCode)[0].countryName || ''
                 } else {
-                    this.tableData = [];
-                    this.total = 0;
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
             }).catch((err) => {
-                this.tableData = [];
-                this.total = 0;
                 console.log(err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        fetchCountryCodeList() {
+        fetchCountryCodeList(callBack) {
             const that = this;
             this.countryCode.isLoading = true;
             $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
@@ -184,30 +220,32 @@ export default {
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
+                callBack && callBack();
             }).catch((err) => {
                 console.log('countryCode', err);
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        openDialog(data) {
+        handleTabClick(tab, event) {},
+        openDialog() {
             const that = this;
-            const imgFileName = data.operatorPicPath.split('images/operator/')[1];
+            const imgFileName = that.operatorData.operatorPicPath.split('images/operator/')[1];
             this.dialog.info = {
-                                operatorId: data.operatorId,
-                                operatorName: data.operatorName,
+                                operatorId: that.operatorData.operatorId,
+                                operatorName: that.operatorData.operatorName,
                                 file: [{
                                     name: imgFileName,
-                                    url: data.operatorPicPath
+                                    url: that.operatorData.operatorPicPath
                                 }],
-                                address: data.address,
-                                contactPerson: data.contactPerson,
-                                countryCode: data.countryCode,
-                                phone: data.phone,
-                                email: data.email,
-                                fDate: data.fDate,
-                                eDate: data.eDate
+                                address: that.operatorData.address,
+                                contactPerson: that.operatorData.contactPerson,
+                                countryCode: that.operatorData.countryCode,
+                                phone: that.operatorData.phone,
+                                email: that.operatorData.email,
+                                fDate: that.operatorData.fDate,
+                                eDate: that.operatorData.eDate
                             };
-            this.dialog.originalImg = data.operatorPicPath;
+            this.dialog.originalImg = that.operatorData.operatorPicPath;
             this.dialog.$Api = UpdateOperator;
             this.dialog.uploadParams = {};
             this.dialog.visible = true;
@@ -320,20 +358,34 @@ export default {
     padding: 28px;
     width: calc(100% - 56px);
     position: relative;
-    img.logo {
-        height: auto;
-        width: 100%;
+    .info {
+        margin-bottom: 28px;
+        .item {
+            margin-bottom: 12px;
+            .label {
+                display: inline-block;
+                width: 180px;
+                font-size: 1rem;
+                color: #525E69;
+                letter-spacing: 0;
+            }
+            .content {
+                display: inline-block;
+                width: calc(100% - 206px);
+                font-size: 1rem;
+                color: #151E25;
+                letter-spacing: 0;
+                img.logo {
+                    max-width: 300px;
+                    height: auto;
+                }
+            }
+        }
     }
-    .total {
+    .el-button.edit {
         position: absolute;
+        top: 28px;
         right: 28px;
-        bottom: 28px;
-        height: 36px;
-        line-height: 36px;
-        vertical-align: middle;
-        font-size: 1rem;
-        color: #5A607F;
-        letter-spacing: 0;
     }
 }
 </style>
