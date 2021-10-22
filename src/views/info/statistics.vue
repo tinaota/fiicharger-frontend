@@ -129,15 +129,9 @@
                     </li>
                 </ul>
             </div>
-            <div class="card-8 rank-area">
+            <!-- <div class="card-8 rank-area">
                 <div class="header">
                     <div class="title">{{ $t('dashboard.faultsTypeTop5') }}</div>
-                    <!-- <el-select
-                        class="select-small right"
-                        v-model="faultsTypeTop5Day"
-                        @change="handleSelected('f5')">
-                        <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="key"></el-option>
-                    </el-select> -->
                 </div>
                 <ul class="rank">
                     <li v-for="(item, idx) in faultsTypeTop5.pData" :key="idx">
@@ -148,7 +142,7 @@
                         <el-progress :class="{'spec': !idx}" :percentage="item.val" :show-text="false" :stroke-width="8"></el-progress>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -224,7 +218,7 @@ export default {
             this.fetchPowerUsedTop10();
             this.fetchRevenueTop10();
             this.fetchSessionTop10();
-            this.fetchFaultsTypeTop5();
+            // this.fetchFaultsTypeTop5();
         },
         fetchChargingStatisticsInfo() {
             const that = this;
@@ -434,8 +428,11 @@ export default {
     }
 }
 .rank-area {
-    /* width: calc(100% - 40px); */
-    width: calc(25% - 40px - 9px);
+    /* 4個 */
+    /*width: calc(25% - 40px - 9px);
+    margin-right: 12px; */
+    /* 3個 */
+    width: calc(33.05% - 40px - 8px);
     margin-right: 12px;
     height: 600px;
     position: relative;
@@ -473,38 +470,9 @@ export default {
         }
     }
 }
-
-/* @media only screen and (max-width: 1600px) and (min-width: 1201px) {
-    .statistics .s-contain .item {
-        width: calc(33.33% - 11px);
-    }
-}
-@media (min-width: 1601px) {
-    .statistics .s-contain .item {
-        width: calc(16.667% - 5.34px);
-    }
-} */
 @media (min-width: 1251px) {
     .statistics .s-contain .item {
         width: calc(16.667% - 3px);
     }
 }
-/* @media only screen and (max-width: 1850px) and (min-width: 1201px) {
-    .rank-area {
-        width: calc(50% - 40px - 12px);
-        margin-right: 24px;
-        &:nth-child(2n+1) {
-            margin-right: 0px;
-        }
-    }
-} */
-/* @media (min-width: 1851px) {
-    .rank-area {
-        width: calc(25% - 40px - 18px);
-        margin-right: 24px;
-        &:nth-child(4n+1) {
-            margin-right: 0px;
-        }
-    }
-} */
 </style>
