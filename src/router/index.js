@@ -63,17 +63,17 @@ let routes = [
                     { path: '/billingLog', component: () => import('@/views/billing/billingLog.vue'), name: 'menu.billingLog', hidden: false },
                 ]
             },
-            {
-                path: '/support',
-                iconCls: 'ic_support_o',
-                name: 'menu.support',
-                hasChild: true,
-                component: () => import('@/components/data.vue'),
-                children: [
-                    { path: '/workOrder/summary', component: () => import('@/views/support/workOrderSum.vue'), name: 'menu.workOrder', hidden: false },
-                    { path: '/workOrder/history', component: () => import('@/views/support/workOrderHistory.vue'), hidden: true }
-                ]
-            },
+            // {
+            //     path: '/support',
+            //     iconCls: 'ic_support_o',
+            //     name: 'menu.support',
+            //     hasChild: true,
+            //     component: () => import('@/components/data.vue'),
+            //     children: [
+            //         { path: '/workOrder/summary', component: () => import('@/views/support/workOrderSum.vue'), name: 'menu.workOrder', hidden: false },
+            //         { path: '/workOrder/history', component: () => import('@/views/support/workOrderHistory.vue'), hidden: true }
+            //     ]
+            // },
             {
                 path: '/account',
                 iconCls: 'ic_user_o',

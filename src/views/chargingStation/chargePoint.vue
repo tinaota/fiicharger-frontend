@@ -347,7 +347,7 @@ export default {
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.chargeBoxId;
-            this.mapDialog.position = data.loc;
+            this.mapDialog.position = { lat: data.loc.lat, lng: data.loc.lon };
             this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },

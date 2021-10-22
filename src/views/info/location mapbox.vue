@@ -1,6 +1,6 @@
 <template>
     <div class="mainctrl">
-        <div id="map-container" class="google-map" v-loading="chargeBoxData.isLoading"></div>
+        <div id="mapboxBox" v-loading="chargeBoxData.isLoading" />
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
@@ -56,7 +56,12 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { buildingsIn3D, clusters, clusterCount, getLastLayerId } from '@/assets/js/appConfig.js'
+import MapStyle from '@/assets/js/mapStyle.js'
+import 'threebox-plugin/dist/threebox';
+import "@/styles/map.scss";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getChargeBoxListForMap, $HTTP_getChargeBoxInfoForMap } from "@/api/api";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import ic_info_green from 'imgs/ic_info_green.png';
@@ -75,27 +80,18 @@ import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
 import ic_ac_chademo from 'imgs/ic_ac_chademo.png';
 import ic_ac_ccs2 from 'imgs/ic_ac_ccs2.png';
 import ic_ac_ccs1 from 'imgs/ic_ac_ccs1.png';
-import MarkerClusterer from '@googlemaps/markerclustererplus';
-import 'snazzy-info-window/dist/snazzy-info-window.min.css';
-import "@/styles/map.scss";
-import SnazzyInfoWindow from 'snazzy-info-window';
-
-import markerPos1 from 'imgs/ic_green_dot.png';
-import markerPos2 from 'imgs/ic_orange_dot.png';
-import markerPos3 from 'imgs/ic_brown_dot.png';
-import markerPos4 from 'imgs/ic_red_dot.png';
-import markerPos5 from 'imgs/ic_gray_dot.png';
+const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
         return {
             lang: '',
             operatorList: {},
             center: {
-                lat: 0,
-                lng: 0
+                lat: 67.87946334072687,
+                lng: 173.85862513198617
             },
             defaultZoomSize: 16,
-            minZoomSize: 3,
+            minZoomSize: 1.5,
             maxZoomSize: 22,
             icon: {
                 normal: ic_info_green,
@@ -105,7 +101,7 @@ export default {
                 serviceUnavailable: ic_info_orange,
                 deviceInfo: ic_device_info,
                 charging: ic_charging,
-                revenue: ic_revenue,
+                revenue: ic_revenue
             },
             filter: {
                 operatorTypeId: '',
@@ -127,9 +123,8 @@ export default {
                 alertCount: 0,
                 connectionLostCount: 0
             },
-            map: null,
             markers: {},
-            currentInfoWindow: null,
+            markersOnScreen: {},
             MapBoxObject: null,
             mapboxLoadingPromise: {},
             currentPopUp: null,
@@ -145,8 +140,7 @@ export default {
                 9: ic_ac_ccs1,
                 10: ic_ac_gbt
             },
-            timer: null,
-            markerImgList: [markerPos1, markerPos2, markerPos3, markerPos4, markerPos5]
+            timer: null
         }
     },
     created() {
@@ -159,9 +153,10 @@ export default {
         const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width()/2 + 12;
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
-        this.initMap();
-        this.fetchData();
-        // this.setTimer();
+        this.initMapboxMap(()=> {
+            that.fetchData();
+            that.setTimer();
+        });
         this.fetchChargerBoxList();
     },
     beforeDestroy() {
@@ -179,43 +174,42 @@ export default {
             if (this.filter.chargeBoxId) {
                 param.chargeBoxId = this.filter.chargeBoxId;
             }
-            this.removeAllMarkers();
+            this.removeMapboxMarkers();
             this.chargeBoxData.data = {};
             this.chargeBoxData.isLoading = true;
             $HTTP_getChargeBoxListForMap(param).then((data) => {
                 that.chargeBoxData.isLoading = false;
                 if (!!data.success) {
                     this.statisticsInfo = Object.assign({}, data.chargeBoxStatusStatisticsInfo);
-                    let maxLat = -90, maxLng = -180, minLat = 90, minLng = 180;
                     data.chargeBoxList.forEach(item => {
                         item.loc = {
                             lng: item.lon,
                             lat: item.lat
                         }
                         that.chargeBoxData.data[item.chargeBoxId] = Object.assign({}, item);
-                        that.drawMarker(that.chargeBoxData.data[item.chargeBoxId]);
-
-                        if (item.lon > maxLng) {
-                            maxLng = item.lon;
-                        } else if (item.lon < minLng) {
-                            minLng = item.lon;
-                        }
-                        if (item.lat > maxLat) {
-                            maxLat = item.lat;
-                        } else if (item.lat < minLat) {
-                            minLat = item.lat;
-                        }
                     });
-                    if (!isRefresh) {
-                        if (that.filter.chargeBoxId) {
-                            that.map.setCenter(that.chargeBoxData.data[that.filter.chargeBoxId].loc);
-                            that.map.setZoom(that.defaultZoomSize);
+                    if (that.filter.chargeBoxId) {
+                        this.removeMapboxClusters();
+                        let chargeBoxId = data.chargeBoxList[0].chargeBoxId;
+                        let marker = that.drawMapboxMarker(that.chargeBoxData.data[chargeBoxId]);
+                        this.markersOnScreen[chargeBoxId] = marker;
+                        if (isRefresh) {
+                            const center = this.MapBoxObject.getCenter(),
+                                  zoomSize = this.MapBoxObject.getZoom();
+                            that.handleMapBoxPos(center, zoomSize);
                         } else {
-                            const nePoint = new google.maps.LatLng(maxLat, maxLng),
-                                  swPoint = new google.maps.LatLng(minLat, minLng),
-                                  bounds = new google.maps.LatLngBounds(swPoint, nePoint);
-                            that.map.fitBounds(bounds);
+                            that.handleMapBoxPos([data.centerLocInfo.lon, data.centerLocInfo.lat], data.centerLocInfo.zoomSize);
                         }
+                        marker.addTo(that.MapBoxObject);
+                    } else {
+                        if (isRefresh) {
+                            const center = this.MapBoxObject.getCenter(),
+                                  zoomSize = this.MapBoxObject.getZoom();
+                            that.handleMapBoxPos(center, zoomSize);
+                        } else {
+                            that.handleMapBoxPos([data.centerLocInfo.lon, data.centerLocInfo.lat], data.centerLocInfo.zoomSize);
+                        }
+                        that.drawMapboxClusters();
                     }
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
@@ -248,73 +242,112 @@ export default {
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        initMap() {
-            this.map = new google.maps.Map(document.getElementById('map-container'), {
-                                center: this.center,
-                                zoom: this.minZoomSize,
-                                minZoom: this.minZoomSize,
-                                maxZoom: this.maxZoomSize,
-                                streetViewControl: false, //設定是否呈現右下角街景小人
-                                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                                fullscreenControl: false,
-                                zoomControl: false
-                            });
-        },
-        drawMarker(item) {
+        initMapboxMap(callBack) {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.chargeBoxStatus-1 ],
-                                new google.maps.Size(36, 55)); //size  預設位子圖案中間底
-            const marker = new google.maps.Marker({
-                map: that.map,
-                position: item.loc,
-                icon: markerImage,
-                type: item.chargeBoxStatus
+            mapboxgl.accessToken = MAPBOXTOKEN;
+            this.MapBoxObject = new mapboxgl.Map({
+                antialias: true,
+                container: "mapboxBox",
+                style: MapStyle,
+                pitch: 60, //视野倾斜，0-60
+                // bearing: -17, //视野旋转角度
+                center: this.center,
+                zoom: this.minZoomSize, // Less than 15 GetFeatureInfo does not work,
+                minZoom: this.minZoomSize,
+                maxZoom: this.maxZoomSize,
+            })
+            window.tb = new window.Threebox(
+                this.MapBoxObject,
+                this.MapBoxObject.getCanvas().getContext('webgl'),
+                {
+                    defaultLights: true,
+                }
+            );
+            this.MapBoxObject.on("load", () => {
+                that.mapLoadLayer();
+                callBack && callBack();
             });
-
-            marker.addListener("click", () => {
-                that.chargeBoxData.isLoading = true;
-                that.getChargePointInfoHtml(item.chargeBoxId, (htmlContent) => {
-                    that.chargeBoxData.isLoading = false;
-                    that.$jQuery(".si-content .info-msg").length > 0 && that.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
-                    this.currentInfoWindow && that.currentInfoWindow.close();
-                    that.currentInfoWindow = null;
-                    var infowindow = new SnazzyInfoWindow($.extend({}, {
-                                        marker: marker,
-                                        placement: 'right',
-                                        content: htmlContent,
-                                        panOnOpen: false,
-                                        borderRadius: '4px',
-                                        maxHeight: 'px',
-                                        offset: {
-                                            top: '-36px',
-                                            left: '22px'
-                                        },
-                                        callbacks: {
-                                            afterOpen: function() {
-                                                setScrollBar('.si-content .info-msg', that);
-                                            }
-                                        }
-                                    }));
-                    infowindow.open();
-                    that.currentInfoWindow = infowindow;
+            this.MapBoxObject.on('click', 'clusters', function (e) {
+                var features = that.MapBoxObject.queryRenderedFeatures(e.point, {
+                    layers: ['clusters']
                 });
+                var clusterId = features[0].properties.cluster_id;
+                that.MapBoxObject.getSource('custom').getClusterExpansionZoom(
+                    clusterId,
+                    function (err, zoom) {
+                        if (err) return;
+                        that.MapBoxObject.easeTo({
+                            center: features[0].geometry.coordinates,
+                            zoom: zoom,
+                            // duration: 400
+                        });
+                        window.setTimeout(() => {
+                            that.updateMarkers();
+                        }, 800);
+                    }
+                );
             });
-            that.markers[item.chargeBoxId] = marker;
+            this.MapBoxObject.on('mousemove', function() {
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
+                    that.updateMarkers();
+                };
+            });
+            this.MapBoxObject.on('zoom', function () {
+                // console.log(that.MapBoxObject.getZoom());
+                if (that.MapBoxObject.getSource('custom') && that.MapBoxObject.getLayer('clusters')) {
+                    that.updateMarkers();
+                };
+            });
         },
-        removeAllMarkers() {
-            this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
-            this.currentInfoWindow && this.currentInfoWindow.close();
-            this.currentInfoWindow = null;
+        mapLoadLayer() {
+            const lastLayerId = getLastLayerId(this.MapBoxObject);
+            this.MapBoxObject.addLayer(buildingsIn3D, lastLayerId);
+        },
+        removeMapboxMarkers() {
             for(let key in this.markers) {
-                this.markers[key].setMap(null);
+                this.markers[key].remove();
+            }
+            for(let key in this.markersOnScreen) {
+                this.markersOnScreen[key].remove();
             }
             this.markers = {};
+            this.markersOnScreen = {};
         },
         removeMapboxClusters() {
             if (this.MapBoxObject.getLayer('clusters')) {
                 this.MapBoxObject.removeLayer('clusters');
                 this.MapBoxObject.removeLayer('cluster-count');
             }
+        },
+        updateMarkers() {
+            let newMarkers = {};
+            let features = this.MapBoxObject.querySourceFeatures('custom');
+            features.forEach(feature => {
+                let coords = feature.geometry.coordinates;
+                let props = feature.properties;
+                if (!props.cluster) {
+                    let item = {
+                        chargeBoxId: props.chargeBoxId,
+                        loc: {
+                            lng: props.lng,
+                            lat: props.lat
+                        },
+                        chargeBoxStatus: props.chargeBoxStatus
+                    };
+                    var marker = this.markers[props.chargeBoxId];
+                    if (!marker) {
+                        marker = this.drawMapboxMarker(item);
+                    }
+                    if (!this.markersOnScreen[props.chargeBoxId]) marker.addTo(this.MapBoxObject);
+                    newMarkers[props.chargeBoxId] = marker;
+                }
+            });
+            for( let id in this.markersOnScreen) {
+                if (!newMarkers[id]) {
+                    this.markersOnScreen[id].remove();
+                }
+            }
+            this.markersOnScreen = newMarkers;
         },
         drawMapboxMarker(item) {
             const that = this,
@@ -327,7 +360,7 @@ export default {
                             .setLngLat(item.loc);
             marker.getElement().addEventListener('click', () => {
                 that.getMarkerLoading(marker, true);
-                that.getChargePointInfoHtml(item.chargeBoxId, (info) => {
+                that.getMapboxPosInfoHtml(item.chargeBoxId, (info) => {
                     that.getMarkerLoading(marker, false);
                     const option = {
                         offset: [20,-10],
@@ -350,7 +383,7 @@ export default {
             classList.remove('loading');
             if(loadingBool) classList.add("loading");
         },
-        getChargePointInfoHtml(chargeBoxId, callBack) {
+        getMapboxPosInfoHtml(chargeBoxId, callBack) {
             const that = this;
             $HTTP_getChargeBoxInfoForMap({ chargeBoxId: chargeBoxId }).then((data) => {
                 if (data.success) {
@@ -361,7 +394,7 @@ export default {
                     return that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
             }).catch((err) => {
-                console.log('getChargePointInfoHtml', err)
+                console.log('getMapboxPosInfoHtml', err)
                 that.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
@@ -517,14 +550,17 @@ export default {
         left: calc(208px + 1.6vw);
     }
 }
-.google-map {
+#mapboxBox {
     width: calc(100vw - 208px);
+    /* height: calc(95.2vh - 68px - 58px - 2vh); */
     height: calc(100vh - 68px);
+    position: absolute;
     background: #a1c1fb;
     border-top-left-radius: 20px;
+    top: 68px;
+    left: 208px;
     z-index: 0;
-    margin-top: -2.4vh;
-    margin-left: -1.6vw;
+    /* box-shadow: 0 1px 8px 0 rgba(20, 46, 110, 0.10); */
 }
 .hint-bar {
     position: absolute;

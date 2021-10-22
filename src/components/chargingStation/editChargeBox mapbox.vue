@@ -126,8 +126,16 @@
 <script>
 import { setScrollBar } from "@/utils/function";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
+// import { $HTTP_getStationListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { buildingsIn3D, getLastLayerId } from '@/assets/js/appConfig.js';
+import MapStyle from '@/assets/js/mapStyle.js';
+import 'threebox-plugin/dist/threebox';
+import "@/styles/map.scss";
 import ic_green_dot from 'imgs/ic_green_dot.png';
+const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     props: {
         name: String,

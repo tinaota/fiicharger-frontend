@@ -5,19 +5,12 @@
         :visible.sync="visible"
         :show-close="false"
         @close="closeDialog()">
-        <div id="mapboxBox" />
+        <div id="map-container" class="google-map"></div>
     </el-dialog>
 </template>
 
 <script>
-import mapboxgl from 'mapbox-gl'
-import 'mapbox-gl/dist/mapbox-gl.css'
-import { buildingsIn3D, getLastLayerId, imgIconDefGeo } from '@/assets/js/appConfig.js'
-import MapStyle from '@/assets/js/mapStyle.js'
-import 'threebox-plugin/dist/threebox';
-import "@/styles/map.scss"
 import bluePosImg from 'imgs/ic_blue_dot.png';
-const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN
 export default {
     props: {
         itemId: String,
@@ -35,9 +28,15 @@ export default {
     data() {
         return {
             visible: false,
-            zoom: 16,
             MapBoxObject: null,
             nowMarker: {},
+            map: null,
+            mapInfo: {
+                initMap: true,
+                zoom: 17,
+                minZoom: 12,
+                maxZoom: 20
+            },
         }
     },
     watch: {
@@ -48,82 +47,36 @@ export default {
                 that.visible = that.show;
                 if (that.visible) {
                     that.$nextTick(() => {
-                        that.initMapboxMap();
+                        that.initMap();
+                        that.drawMarker();
                     });
                 }
             }
         }
     },
     methods: {
-        initMapboxMap() {
-            const that = this;
-            mapboxgl.accessToken = MAPBOXTOKEN
-            this.MapBoxObject = new mapboxgl.Map({
-                antialias: true,
-                container: "mapboxBox",
-                style: MapStyle,
-                // pitch: 0, //视野倾斜，0-60
-                // bearing: -17, //视野旋转角度
-                center: this.position,
-                zoom: this.zoom, // Less than 15 GetFeatureInfo does not work
-                minZoom: 10,
-                maxZoom: 19,
-            })
-            this.MapBoxObject.on("load", () => {
-                const lastLayerId = getLastLayerId(that.MapBoxObject);
-                that.MapBoxObject.addLayer(buildingsIn3D, lastLayerId);
-                that.drawMapboxMarker();
-                // that.loadImg();
-            })
+        initMap() {
+            this.map = new google.maps.Map(document.getElementById('map-container'), {
+                                center: this.position,
+                                zoom: this.mapInfo.zoom,
+                                minZoom: this.mapInfo.minZoom,
+                                maxZoom: this.mapInfo.maxZoom,
+                                streetViewControl: false, //設定是否呈現右下角街景小人
+                                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                                fullscreenControl: false,
+                                zoomControl: false
+                            });
         },
-        drawMapboxMarker() {
-            const that = this;
-            const el = document.createElement('div');
-            el.className = `marker pos0`;
-            const option = {
-                            element: el
-                        };
-            this.nowMarker = new mapboxgl.Marker(option)
-                            .setLngLat(this.position)
-                            .addTo(this.MapBoxObject);
-        },
-        loadImg() { //位子歪掉了
-            const that = this;
-            that.MapBoxObject.loadImage(bluePosImg,
-                (error, image) => {
-                    if (error) {
-                        console.lat(error);
-                        throw error
-                    };
-                    that.MapBoxObject.addImage('bluePosMarker', image);
-                    const imgIconGeo = {
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [this.position.lng, this.position.lat, 0.0]
-                        }
-                    };
-                    const geoJson = {
-                        type: 'FeatureCollection',
-                        features: [imgIconGeo]
-                    };
-                    that.MapBoxObject.addSource('marker', {
-                        type: 'geojson',
-                        data: geoJson
-                    });
-                    // Add a layer to use the image to represent the data.
-                    that.MapBoxObject.addLayer({
-                        id: 'markerLayer',
-                        type: 'symbol',
-                        source: 'marker', // reference the data source
-                        layout: {
-                            'icon-image': 'bluePosMarker', // reference the image
-                            'icon-size': 1,
-                            'icon-anchor': 'bottom'
-                        }
-                    });
-                }
-            );
+        drawMarker() {
+            var markerImage = new google.maps.MarkerImage(bluePosImg,
+                                new google.maps.Size(36, 55)); //size  預設位子圖案中間底
+                                // new google.maps.Point(0, 0), //origin point
+                                // new google.maps.Point(18, 55)); // offset point
+            new google.maps.Marker({
+                    map: this.map,
+                    position: this.position,
+                    icon: markerImage
+                });
         },
         closeDialog() {
             this.$emit('close', false);
@@ -132,7 +85,7 @@ export default {
 }
 </script>
 <style lang = "scss" scoped>
-#mapboxBox {
+.google-map {
     width: 100%;
     height: 400px;
     margin-bottom: 2vh;

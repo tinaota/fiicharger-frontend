@@ -140,3 +140,86 @@
         }
     }
 }
+
+.si-close-button {
+    top: 4px;
+    right: 2px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5rem;
+    color: #151E25;
+}
+
+.si-has-border {
+    .si-content-wrapper {
+        width: 300px;
+        // height: 400px;
+        padding: 8px 0px 16px 12px;
+        // border: 1px solid #FFFFFF;
+        // box-shadow: 0 1px 4px 0 rgba(21,34,50,0.08);
+        background: rgba(230, 238, 248, 0.9);
+        border: unset;
+        flex: unset;
+        .info-tite {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #151E25;
+            letter-spacing: 0.35px;
+            margin-bottom: 16px;
+        }
+        .info-msg {
+            max-height: 300px;
+            ul {
+                padding-left: 0;
+                padding-right: 16px;
+                margin: 0;
+                li {
+                    list-style: none;
+                    min-height: 18px;
+                    line-height: 18px;
+                    font-size: 0.9rem;
+                    + li {
+                        margin-top: 20px;
+                    }
+                    .item-title-img {
+                        color: #525E69;
+                        letter-spacing: 0;
+                        img {
+                            margin-right: 6px;
+                            width: 18px;
+                            height: auto;
+                            vertical-align: middle;
+                        }
+                    }
+                    .item-title {
+                        padding-left: 24px;
+                        color: #525E69;
+                        letter-spacing: 0;
+                    }
+                    .item-msg {
+                        color: #000013;
+                        letter-spacing: 0;
+                        padding-left: 24px;
+                        margin-top: 4px;
+                        div.connector-obj .circle-number {
+                            width: 24px;
+                            height: 24px;
+                            margin: 2px;
+                        }
+                        + .item-title {
+                            margin-top: 12px;
+                        }
+                    }
+                }
+            }
+            .mCustomScrollBox {
+                .mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+                    background-color: #686A68;
+                }
+            }
+        }
+    }
+    .si-pointer-bg-right {
+        border-right-color: rgba(230, 238, 248, 1);
+    }
+}
