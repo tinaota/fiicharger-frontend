@@ -130,9 +130,6 @@ export default {
             map: null,
             markers: {},
             currentInfoWindow: null,
-            MapBoxObject: null,
-            mapboxLoadingPromise: {},
-            currentPopUp: null,
             connectorIcon: {
                 1: ic_ac_iec,
                 2: ic_ac_tesla,
@@ -161,7 +158,7 @@ export default {
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
         this.initMap();
         this.fetchData();
-        // this.setTimer();
+        this.setTimer();
         this.fetchChargerBoxList();
     },
     beforeDestroy() {
@@ -310,46 +307,6 @@ export default {
             }
             this.markers = {};
         },
-        removeMapboxClusters() {
-            if (this.MapBoxObject.getLayer('clusters')) {
-                this.MapBoxObject.removeLayer('clusters');
-                this.MapBoxObject.removeLayer('cluster-count');
-            }
-        },
-        drawMapboxMarker(item) {
-            const that = this,
-                  el = document.createElement('div');
-            el.className = `marker pos${item.chargeBoxStatus}`;
-            const option = {
-                            element: el
-                        },
-                  marker = new mapboxgl.Marker(option)
-                            .setLngLat(item.loc);
-            marker.getElement().addEventListener('click', () => {
-                that.getMarkerLoading(marker, true);
-                that.getChargePointInfoHtml(item.chargeBoxId, (info) => {
-                    that.getMarkerLoading(marker, false);
-                    const option = {
-                        offset: [20,-10],
-                        anchor: 'left',
-                        maxWidth: '300px'
-                    };
-                    const popup = new mapboxgl.Popup(option).setHTML(info);
-
-                    marker.setPopup(popup);
-                    // marker.togglePopup();
-                    that.currentPopUp = popup;
-                    that.currentPopUp.addTo(this.MapBoxObject);
-                });
-            });
-            that.markers[item.chargeBoxId] = marker;
-            return marker;
-        },
-        getMarkerLoading(marker, loadingBool) {
-            const classList = marker.getElement().classList;
-            classList.remove('loading');
-            if(loadingBool) classList.add("loading");
-        },
         getChargePointInfoHtml(chargeBoxId, callBack) {
             const that = this;
             $HTTP_getChargeBoxInfoForMap({ chargeBoxId: chargeBoxId }).then((data) => {
@@ -427,58 +384,11 @@ export default {
             });
             return info;
         },
-        drawMapboxClusters() {
-            const that = this;
-            const geoJson = {
-                type: 'FeatureCollection',
-                features: []
-            };
-            const setOneFeature = (key, obj) => {
-                const { lat, lng } = obj.loc;
-                return {
-                    type: 'Feature',
-                    properties: {
-                        chargeBoxId: key,
-                        lng: lng,
-                        lat: lat,
-                        chargeBoxStatus: obj.chargeBoxStatus
-                    },
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [lng, lat, 0.0]
-                    }
-                }
-            }
-            const mySource = this.MapBoxObject.getSource('custom');
-            for(let key in this.chargeBoxData.data) {
-                const feature = setOneFeature(key, this.chargeBoxData.data[key]);
-                geoJson.features.push(feature);
-            }
-            if (!mySource) {
-                this.MapBoxObject.addSource('custom', {
-                    type: 'geojson',
-                    data: geoJson,
-                    cluster: true,
-                    // clusterMaxZoom: 18,
-                    clusterRadius: 50,
-                    clusterMinPoints: 5
-                });
-            } else {
-                mySource.setData(geoJson);
-            }
-            if (!this.MapBoxObject.getLayer('clusters')) {
-                this.MapBoxObject.addLayer(clusters);
-                this.MapBoxObject.addLayer(clusterCount);
-            }
-            window.setTimeout(() => {
-                that.updateMarkers();
-            }, 1500);
-        },
         handleOperatorChanged() {
             const that = this;
-            if (that.currentPopUp) {
-                that.currentPopUp.remove();
-            }
+            this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
+            this.currentInfoWindow && this.currentInfoWindow.close();
+            this.currentInfoWindow = null;
             this.fetchChargerBoxList(()=> {
                 that.updateData();
             });
@@ -494,10 +404,6 @@ export default {
             this.timer = setInterval(() => {
                 that.fetchData(true);
             }, 1000 * 60);
-        },
-        handleMapBoxPos(center, zoomSize) {
-            this.MapBoxObject.setCenter(center);
-            this.MapBoxObject.setZoom(zoomSize);
         }
     }
 }

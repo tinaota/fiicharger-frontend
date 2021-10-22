@@ -136,7 +136,7 @@ export default {
     methods: {
         handleShowDialog() {
             this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
-            this.mapDialog.position = this.curRouteParam.loc;
+            this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
             this.mapDialog.visible = true;
         },
         handleTabClick(tab, event) {}
