@@ -18,7 +18,7 @@
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
                 <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
                 <el-table-column prop="eDate" :label="$t('general.latestModification')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('general.action')" :width="130">
+                <el-table-column :label="$t('general.action')" :width="140">
                     <template slot-scope="scope">
                         <el-button class="no-bg i" icon="el-icon-lock" @click="openPwdDialog(scope.row.maintainerId)"></el-button>
                         <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>

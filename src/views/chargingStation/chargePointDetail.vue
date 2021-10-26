@@ -70,7 +70,7 @@
                     </el-tabs>
                 </div>
             </div>
-            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
         </div>
     </div>
 </template>
@@ -138,8 +138,13 @@ export default {
             this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
             this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
             this.mapDialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        handleTabClick(tab, event) {}
+        handleTabClick(tab, event) {},
+        closeShowPosDialog() {
+            this.mapDialog.visible = false;
+            this.$jQuery(".scroll").mCustomScrollbar("update");
+        }
     }
 }
 </script>

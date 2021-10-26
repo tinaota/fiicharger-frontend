@@ -95,7 +95,7 @@ export default {
                 lng: 0
             },
             defaultZoomSize: 16,
-            minZoomSize: 3,
+            minZoomSize: 2,
             maxZoomSize: 22,
             icon: {
                 normal: ic_info_green,
@@ -128,7 +128,31 @@ export default {
                 connectionLostCount: 0
             },
             map: null,
-            markers: {},
+            markers: [],
+            clusterMarkers: null,
+            clusterStyles: [
+                MarkerClusterer.withDefaultStyle({
+                    width: 48,
+                    height: 48,
+                    url: require("imgs/ic_group1.png"),
+                    textColor: "#ffffff",
+                    textSize: 16
+                }),
+                MarkerClusterer.withDefaultStyle({
+                    width: 48,
+                    height: 48,
+                    url: require("imgs/ic_group2.png"),
+                    textColor: "#ffffff",
+                    textSize: 16
+                }),
+                MarkerClusterer.withDefaultStyle({
+                    width: 48,
+                    height: 48,
+                    url: require("imgs/ic_group3.png"),
+                    textColor: "#ffffff",
+                    textSize: 16
+                })
+            ],
             currentInfoWindow: null,
             connectorIcon: {
                 1: ic_ac_iec,
@@ -203,6 +227,9 @@ export default {
                             minLat = item.lat;
                         }
                     });
+                    if (!that.filter.chargeBoxId) {
+                        this.drawClusters();
+                    }
                     if (!isRefresh) {
                         if (that.filter.chargeBoxId) {
                             that.map.setCenter(that.chargeBoxData.data[that.filter.chargeBoxId].loc);
@@ -296,16 +323,17 @@ export default {
                     that.currentInfoWindow = infowindow;
                 });
             });
-            that.markers[item.chargeBoxId] = marker;
+            that.markers.push(marker);
         },
         removeAllMarkers() {
             this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
             this.currentInfoWindow && this.currentInfoWindow.close();
             this.currentInfoWindow = null;
-            for(let key in this.markers) {
-                this.markers[key].setMap(null);
-            }
-            this.markers = {};
+            this.clusterMarkers && this.clusterMarkers.clearMarkers();
+            this.markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            this.markers = [];
         },
         getChargePointInfoHtml(chargeBoxId, callBack) {
             const that = this;
@@ -404,7 +432,27 @@ export default {
             this.timer = setInterval(() => {
                 that.fetchData(true);
             }, 1000 * 60);
-        }
+        },
+        drawClusters() {
+            const clusterOpt = {
+                                maxZoom: 16, //17開始小點
+                                gridSize: 50,
+                                styles: this.clusterStyles,
+                            };
+            this.clusterMarkers = new MarkerClusterer(this.map, this.markers, clusterOpt);
+            this.clusterMarkers.setCalculator(function(markers, numStyles) {
+                let hasAlert = false;
+                markers.forEach(marker => {
+                    if (marker.type === 4 ) {
+                        hasAlert = true;
+                    }
+                });
+                return {
+                    text: markers.length,
+                    index: hasAlert ? 3:0
+                }
+            });
+        },
     }
 }
 </script>

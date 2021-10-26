@@ -136,11 +136,11 @@
         "elecRateUnit": {
             "1": "min",
             "2": "kWh",
-            "3": "Time"
+            "3": "times"
         },
         "parkingRateUnit": {
             "1": "min",
-            "2": "Time"
+            "2": "times"
         },
         "chargePointID": "Charge Point ID",
         "chargePointName": "Charge Point Name",
