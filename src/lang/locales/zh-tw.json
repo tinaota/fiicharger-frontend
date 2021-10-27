@@ -219,7 +219,8 @@
         "loginId": "登入ID",
         "cmfPwd": "確認密碼",
         "maintainer": "維護人員",
-        "customerServices": "客服人員"
+        "customerServices": "客服人員",
+        "telephone": "電話"
     },
     "cars": {
         "marker": "標記",

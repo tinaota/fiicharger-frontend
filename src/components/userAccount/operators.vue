@@ -37,13 +37,18 @@
                 </el-table-column>
                 <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column>
                 <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column>
+                <el-table-column :label="$t('userAccount.telephone')" :min-width="3">
+                    <template slot-scope="scope">
+                        {{ scope.row.telephone ? scope.row.countryCode + " " + scope.row.telephone : '' }}
+                    </template>
+                </el-table-column>
                 <el-table-column :label="$t('userAccount.mobile')" :min-width="3">
                     <template slot-scope="scope">
-                        {{ scope.row.countryCode + " " + scope.row.phone }}
+                        {{ scope.row.phone ? scope.row.countryCode + " " + scope.row.phone : '' }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
-                <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column>
+                <!-- <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column> -->
                 <el-table-column :label="$t('general.action')" :width="96">
                     <template slot-scope="scope">
                         <el-button class="no-bg i" icon="el-icon-lock" @click="openPwdDialog(scope.row.operatorId)"></el-button>
@@ -117,6 +122,10 @@
                     </el-select>
                 </div>
                 <div class="form-item">
+                    <div class="label">{{ $t('userAccount.telephone') }}</div>
+                    <el-input v-model="dialog.info.telephone"></el-input>
+                </div>
+                <div class="form-item">
                     <div class="label">{{ $t('userAccount.mobile') }}</div>
                     <el-input v-model="dialog.info.phone"></el-input>
                 </div>
@@ -188,6 +197,7 @@ export default {
                     address: '',
                     contactPerson: '',
                     countryCode: '',
+                    telephone: '',
                     phone: '',
                     email: '',
                     // password: '',
@@ -278,6 +288,7 @@ export default {
                                     address: '',
                                     contactPerson: '',
                                     countryCode: '',
+                                    telephone: '',
                                     phone: '',
                                     email: '',
                                     password: '',
@@ -298,6 +309,7 @@ export default {
                                     address: data.address,
                                     contactPerson: data.contactPerson,
                                     countryCode: data.countryCode,
+                                    telephone: data.telephone,
                                     phone: data.phone,
                                     email: data.email,
                                     fDate: data.fDate,
@@ -359,6 +371,7 @@ export default {
                                             address: this.dialog.info.address,
                                             contactPerson: this.dialog.info.contactPerson,
                                             countryCode: this.dialog.info.countryCode,
+                                            telephone: this.dialog.info.telephone,
                                             phone: this.dialog.info.phone,
                                             email: this.dialog.info.email
                                         };
@@ -379,6 +392,7 @@ export default {
                                 address: this.dialog.info.address,
                                 contactPerson: this.dialog.info.contactPerson,
                                 countryCode: this.dialog.info.countryCode,
+                                telephone: this.dialog.info.telephone,
                                 phone: this.dialog.info.phone,
                                 email: this.dialog.info.email
                             };

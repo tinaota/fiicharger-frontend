@@ -219,7 +219,8 @@
         "loginId": "Login ID",
         "cmfPwd": "Confirm Password",
         "maintainer": "Maintainer",
-        "customerServices": "Customer Services"
+        "customerServices": "Customer Services",
+        "telephone": "Telephone"
     },
     "cars": {
         "marker": "Marker",

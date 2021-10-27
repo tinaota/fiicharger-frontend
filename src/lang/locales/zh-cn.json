@@ -219,7 +219,8 @@
         "loginId": "登录ID",
         "cmfPwd": "确认密码",
         "maintainer": "维护人员",
-        "customerServices": "客服人员"
+        "customerServices": "客服人员",
+        "telephone": "电话"
     },
     "cars": {
         "marker": "标记",

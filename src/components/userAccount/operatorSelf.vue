@@ -23,6 +23,10 @@
                     <div class="content">{{ operatorData.countryCode + '(' + operatorData.countryName + ')' }}</div>
                 </div>
                 <div class="item">
+                    <div class="label">{{ $t('userAccount.telephone') }}</div>
+                    <div class="content">{{ operatorData.telephone }}</div>
+                </div>
+                <div class="item">
                     <div class="label">{{ $t('userAccount.mobile') }}</div>
                     <div class="content">{{ operatorData.phone }}</div>
                 </div>
@@ -101,6 +105,10 @@
                     </el-select>
                 </div>
                 <div class="form-item">
+                    <div class="label">{{ $t('userAccount.telephone') }}</div>
+                    <el-input v-model="dialog.info.telephone"></el-input>
+                </div>
+                <div class="form-item">
                     <div class="label">{{ $t('userAccount.mobile') }}</div>
                     <el-input v-model="dialog.info.phone"></el-input>
                 </div>
@@ -150,6 +158,7 @@ export default {
                 contactPerson: '',
                 countryCode: '',
                 countryName: '',
+                telephone: '',
                 phone: '',
                 email: '',
                 fDate: '',
@@ -165,6 +174,7 @@ export default {
                     address: '',
                     contactPerson: '',
                     countryCode: '',
+                    telephone: '',
                     phone: '',
                     email: '',
                     operatorId: '',
@@ -240,6 +250,7 @@ export default {
                                 address: that.operatorData.address,
                                 contactPerson: that.operatorData.contactPerson,
                                 countryCode: that.operatorData.countryCode,
+                                telephone: that.operatorData.telephone,
                                 phone: that.operatorData.phone,
                                 email: that.operatorData.email,
                                 fDate: that.operatorData.fDate,
@@ -302,6 +313,7 @@ export default {
                                             address: this.dialog.info.address,
                                             contactPerson: this.dialog.info.contactPerson,
                                             countryCode: this.dialog.info.countryCode,
+                                            telephone: this.dialog.info.telephone,
                                             phone: this.dialog.info.phone,
                                             email: this.dialog.info.email
                                         };
@@ -315,6 +327,7 @@ export default {
                                 address: this.dialog.info.address,
                                 contactPerson: this.dialog.info.contactPerson,
                                 countryCode: this.dialog.info.countryCode,
+                                telephone: this.dialog.info.telephone,
                                 phone: this.dialog.info.phone,
                                 email: this.dialog.info.email
                             };
