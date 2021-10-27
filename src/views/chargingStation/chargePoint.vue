@@ -260,7 +260,6 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
             let param = {};
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
