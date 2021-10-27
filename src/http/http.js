@@ -52,7 +52,7 @@ axios.interceptors.response.use(
         if (!response.data.success) {
             if (response.data.code === 10010) { // 登錄超時 自動登出
                 store.commit(types.LOGOUT);
-                router.replace({ path: '/login'})
+                router.replace({ path: '/login'});
                 Message({ type: 'warning', message: i18n.t('login.timeout')});
                 return Promise.reject(error.response.data)
             }

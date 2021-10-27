@@ -106,6 +106,8 @@ export default {
             this.loginForm.lang = lang;
             this.$store.dispatch('setLang', this.loginForm.lang);
         }
+        this.fetchCaptcha();
+        this.setTimer();
         this.vantaEffect = TOPOLOGY({
             el: this.$refs.loginContainer,
             mouseControls: true,
@@ -119,8 +121,6 @@ export default {
             backgroundColor: 0xcde8ff,
             p5: p5
         });
-        this.fetchCaptcha();
-        this.setTimer();
     },
     beforeDestroy() {
         if (this.vantaEffect) {
