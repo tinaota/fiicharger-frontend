@@ -37,6 +37,7 @@ export default {
                 minZoom: 12,
                 maxZoom: 20
             },
+            marker: null
         }
     },
     watch: {
@@ -53,6 +54,9 @@ export default {
                 }
             }
         }
+    },
+    beforeDestroy() {
+        this.marker.setMap(null);
     },
     methods: {
         initMap() {
@@ -72,7 +76,7 @@ export default {
                                 new google.maps.Size(36, 55)); //size  預設位子圖案中間底
                                 // new google.maps.Point(0, 0), //origin point
                                 // new google.maps.Point(18, 55)); // offset point
-            new google.maps.Marker({
+            this.marker = new google.maps.Marker({
                     map: this.map,
                     position: this.position,
                     icon: markerImage

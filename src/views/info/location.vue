@@ -189,6 +189,7 @@ export default {
         if (this.timer) {
             clearInterval(this.timer);
         }
+        this.removeAllMarkers();
     },
     methods: {
         fetchData(isRefresh) {
@@ -331,6 +332,7 @@ export default {
             this.currentInfoWindow = null;
             this.clusterMarkers && this.clusterMarkers.clearMarkers();
             this.markers.forEach(marker => {
+                google.maps.event.clearInstanceListeners(marker);
                 marker.setMap(null);
             });
             this.markers = [];

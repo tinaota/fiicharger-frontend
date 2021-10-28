@@ -9,10 +9,10 @@
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
                         <el-tab-pane :label="$t('menu.endUser')" name="endUser"></el-tab-pane>
-                        <!-- <el-tab-pane :label="$t('userAccount.idTag')" name="idTag"></el-tab-pane> -->
+                        <el-tab-pane :label="$t('userAccount.idTag')" name="idTag"></el-tab-pane>
                     </el-tabs>
                     <EndUser v-if="active === 'endUser'"></EndUser>
-                    <!-- <IdTag v-else-if="active === 'idTag'"></IdTag> -->
+                    <IdTag v-else-if="active === 'idTag'"></IdTag>
                 </div>
             </div>
         </div>

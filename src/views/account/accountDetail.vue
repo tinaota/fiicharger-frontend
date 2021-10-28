@@ -33,9 +33,9 @@
                         <el-tab-pane :label="$t('chargingStation.billingLog')" name="billingLog">
                             <BillingLog :tableData="billingLogData" v-if="!billingLogIsLoading"></BillingLog>
                         </el-tab-pane>
-                        <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                        <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
                             <Review :memberCode="curRouteParam.memberCode"></Review>
-                        </el-tab-pane> -->
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </div>
