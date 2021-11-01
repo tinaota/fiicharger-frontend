@@ -193,7 +193,8 @@
         "chargingDuration": "Charging Duration",
         "minOutputPower": "Minimum Output Power",
         "maxOutputPower": "Maximum Output Power",
-        "failure": "Failure"
+        "failure": "Failure",
+        "chargePointAlert": "Issue history"
     },
     "userAccount": {
         "memberName": "Member Name",

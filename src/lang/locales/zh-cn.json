@@ -193,7 +193,8 @@
         "chargingDuration": "充电时间",
         "minOutputPower": "最小输出功率",
         "maxOutputPower": "最大输出功率",
-        "failure": "失敗"
+        "failure": "失败",
+        "chargePointAlert": "历史问题"
     },
     "userAccount": {
         "memberName": "会员名称",

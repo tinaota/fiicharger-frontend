@@ -29,18 +29,18 @@
                         <div class="label">{{ $t('general.billing') }}</div>
                         <div class="content">
                             <span>{{ "$" + new Intl.NumberFormat('en-IN').format(statistics.data.price) }}</span>
-                            <i v-if="statistics.data.priceRate>0" class="el-icon-top"><span> {{ statistics.data.priceRate }}% </span></i>
+                            <!-- <i v-if="statistics.data.priceRate>0" class="el-icon-top"><span> {{ statistics.data.priceRate }}% </span></i>
                             <i v-else-if="statistics.data.priceRate<0" class="el-icon-bottom"><span>{{ statistics.data.priceRate }}% </span></i>
-                            <span v-else class="rate">{{ statistics.data.priceRate }}%</span>
+                            <span v-else class="rate">{{ statistics.data.priceRate }}%</span> -->
                         </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('dashboard.energyUsedUnit') }}</div>
                         <div class="content">
                             <span>{{ new Intl.NumberFormat('en-IN').format(statistics.data.powerUsage) }}</span>
-                            <i v-if="statistics.data.powerUsageRate>0" class="el-icon-top"><span>{{ statistics.data.powerUsageRate }}%</span></i>
+                            <!-- <i v-if="statistics.data.powerUsageRate>0" class="el-icon-top"><span>{{ statistics.data.powerUsageRate }}%</span></i>
                             <i v-else-if="statistics.data.powerUsageRate<0" class="el-icon-bottom"><span>{{ statistics.data.powerUsageRate }}%</span></i>
-                            <span v-else class="rate">{{ statistics.data.powerUsageRate }}%</span>
+                            <span v-else class="rate">{{ statistics.data.powerUsageRate }}%</span> -->
                         </div>
                     </div>
                     <div class="item">
@@ -160,7 +160,7 @@ export default {
             daySelectList: i18n.t('dashboard.daySelectList'),
             statistics: {
                 isLoading: false,
-                filter: 1,
+                filter: 5,
                 data: {
                     price: 0,
                     priceRate: 0,
@@ -174,28 +174,28 @@ export default {
             },
             powerUsedTop10: {
                 isLoading: false,
-                filter: 1,
+                filter: 5,
                 most: "",
                 data: [],
                 pData: []
             },
             revenueTop10: {
                 isLoading: false,
-                filter: 1,
+                filter: 5,
                 most: "",
                 data: [],
                 pData: []
             },
             sessionTop10: {
                 isLoading: false,
-                filter: 1,
+                filter: 5,
                 most: "",
                 data: [],
                 pData: []
             },
             faultsTypeTop5: {
                 isLoading: false,
-                filter: 1,
+                filter: 5,
                 most: "",
                 data: [],
                 pData: []
@@ -406,7 +406,8 @@ export default {
             }
             .content {
                 font-size: 1.875rem;
-                color: #151E25;
+                /* color: #151E25; */
+                color: #1E90FF;
                 letter-spacing: 0;
                 i {
                     /* margin-left: 12px; */
