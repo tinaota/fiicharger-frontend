@@ -133,6 +133,8 @@
         "chargeType": "充电类型",
         "onPeak": "尖峰",
         "offPeak": "离峰",
+        "onPeakHint": "周一至周五上午9点至晚上9点之间",
+        "offPeakHint": "周一至周五晚上9点至上午9点之间、周末和指定假期",
         "elecRateUnit": {
             "1": "分钟",
             "2": "kWh",

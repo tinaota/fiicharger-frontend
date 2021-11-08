@@ -53,16 +53,16 @@ let routes = [
                     { path: '/chargePointDetail', component: () => import('@/views/chargingStation/chargePointDetail.vue'), name: 'chargePointDetail', hidden: true },
                 ]
             },
-            {
-                path: '/billing',
-                iconCls: 'ic_billing_o',
-                name: 'menu.billing',
-                hasChild: true,
-                component: () => import('@/components/data.vue'),
-                children: [
-                    { path: '/billingLog', component: () => import('@/views/billing/billingLog.vue'), name: 'menu.billingLog', hidden: false },
-                ]
-            },
+            // {
+            //     path: '/billing',
+            //     iconCls: 'ic_billing_o',
+            //     name: 'menu.billing',
+            //     hasChild: true,
+            //     component: () => import('@/components/data.vue'),
+            //     children: [
+            //         { path: '/billingLog', component: () => import('@/views/billing/billingLog.vue'), name: 'menu.billingLog', hidden: false },
+            //     ]
+            // },
             // {
             //     path: '/support',
             //     iconCls: 'ic_support_o',

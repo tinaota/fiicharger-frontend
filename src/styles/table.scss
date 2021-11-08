@@ -99,6 +99,13 @@
                 padding: 4px 8px;
                 text-align: center;
             }
+            &.el-table__expanded-cell {
+                background: #DCE6f3;
+                padding: 20px 0px 10px 50px;
+                &:hover {
+                    background-color: #DCE6f3 !important;
+                }
+            }
         }
     }
 }

@@ -50,6 +50,27 @@
                     :data="tableData.slice((page - 1) * 10, page * 10)"
                     class="moreCol"
                     v-loading="isLoading">
+                    <el-table-column type="expand">
+                        <template slot-scope="scope">
+                            <el-table :data="[scope.row.billingInfo]" class="expand-inner-table">
+                                <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')" :min-width="2"></el-table-column>
+                                <el-table-column prop="memberCode" :label="$t('chargingStation.userID')" :min-width="2"></el-table-column>
+                                <el-table-column prop="sDate" :label="$t('general.time')" :min-width="2"></el-table-column>
+                                <el-table-column :label="$t('general.billingAmt')" :min-width="2">
+                                    <template slot-scope="scope">
+                                        {{ currencyList[scope.row.unitType] + scope.row.price }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="2">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.powerUsage + 'kWh' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="billingType" :label="$t('chargingStation.billingType')" :min-width="2"></el-table-column>
+                                <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')" :min-width="2"></el-table-column>
+                            </el-table>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column> -->
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="4"></el-table-column>
@@ -70,27 +91,30 @@
                             {{ currencyList[scope.row.billingInfo.unitType] + scope.row.billingInfo.price }}
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="permissionShowBillingAble" :label="$t('chargingStation.billingID')" :width="120">
+                    <!-- <el-table-column v-if="permissionShowBillingAble" :label="$t('chargingStation.billingID')" :width="120">
                         <template slot-scope="scope">
-                            <el-popover trigger="click" popper-class="dark" width="420" placement="left" :offset="-20" :visible-arrow="false">
+                            <el-popover trigger="click" popper-class="dark" width="760" placement="left" :offset="-20" :visible-arrow="false">
                                 <el-table :data="[scope.row.billingInfo]">
                                     <el-table-column prop="billingCode" :label="$t('chargingStation.billingID')"></el-table-column>
                                     <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
-                                    <el-table-column :label="$t('chargingStation.powerUsed')">
-                                        <template slot-scope="scope">
-                                            {{ scope.row.powerUsage + 'kWh' }}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="power" :label="$t('general.billingAmt')">
+                                    <el-table-column prop="sDate" :label="$t('general.time')"></el-table-column>
+                                    <el-table-column :label="$t('general.billingAmt')">
                                         <template slot-scope="scope">
                                             {{ currencyList[scope.row.unitType] + scope.row.price }}
                                         </template>
                                     </el-table-column>
+                                    <el-table-column prop="power" :label="$t('chargingStation.powerUsed')">
+                                        <template slot-scope="scope">
+                                            {{ scope.row.powerUsage + 'kWh' }}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="billingType" :label="$t('chargingStation.billingType')"></el-table-column>
+                                    <el-table-column prop="billingStatus" :label="$t('chargingStation.billingStatus')"></el-table-column>
                                 </el-table>
                                 <div slot="reference" class="name-wrapper">{{scope.row.billingInfo.billingCode }}</div>
                             </el-popover>
                         </template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column :label="$t('general.action')" :width="72">
                         <template slot-scope="scope">
                             <el-button class="no-bg" icon="el-icon-data-line" @click="openDialog(scope.row.sessionId)"></el-button>
@@ -265,7 +289,9 @@ export default {
             const that = this;
             this.page = 1;
             this.isLoading = true;
-            let param = {};
+            let param = {
+                lang: that.lang
+            };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }

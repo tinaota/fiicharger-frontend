@@ -133,6 +133,8 @@
         "chargeType": "Type",
         "onPeak": "On-Peak",
         "offPeak": "Off-Peak",
+        "onPeakHint": "Between 9 a.m. and 9 p.m. Monday – Friday",
+        "offPeakHint": "Between 9 p.m. and 9 a.m. Monday – Friday, weekends and designated holidays",
         "elecRateUnit": {
             "1": "min",
             "2": "kWh",

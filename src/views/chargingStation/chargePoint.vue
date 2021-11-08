@@ -73,12 +73,12 @@
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.elecRate')">
-                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3">
+                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3">
+                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, false)">
                             <template slot-scope="scope">
                                 {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
                             </template>
@@ -361,6 +361,26 @@ export default {
                 this.$router.push({ name: "chargePointDetail", params: data }).catch();
             }
         },
+        renderTipsHeader(h, {column}, isOnPeak) {
+            return h (
+                    'div', [
+                        h('span', column.label),
+                        h('el-tooltip', {
+                            props: {
+                                effect: 'light',
+                                content: isOnPeak ? i18n.t('chargingStation.onPeakHint'): i18n.t('chargingStation.offPeakHint'),
+                                placement: 'bottom',
+                                "popper-class": "custom"
+                            },
+                　　　　 }, [
+                            h('i', {
+                                class:'el-icon-warning-outline',
+                                style: 'color:#0C83FF; margin-left:4px; font-weight: bold;'
+                            })
+                        ])
+                    ]
+            );
+        }
     }
 }
 </script>

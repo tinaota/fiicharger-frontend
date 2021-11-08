@@ -69,7 +69,11 @@
                 <div class="label">{{ $t('chargingStation.elecRate') }}</div>
             </div>
             <div class="form-item">
-                <div class="label">{{ "● " + $t('chargingStation.onPeak') }}</div>
+                <div class="label">
+                    {{ "● " + $t('chargingStation.onPeak') }}
+                    <br/>
+                    <span class="hint">{{ "  " + $t('chargingStation.onPeakHint') }}</span>
+                </div>
                 <div class="elecRateItem">
                     <el-input-number v-model="dialog.info.onPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
                     /
@@ -81,7 +85,11 @@
                 </div>
             </div>
             <div class="form-item">
-                <div class="label">{{ "● " + $t('chargingStation.offPeak') }}</div>
+                <div class="label">
+                    {{ "● " + $t('chargingStation.offPeak') }}
+                    <br/>
+                    <span class="hint">{{ "  " + $t('chargingStation.offPeakHint') }}</span>
+                </div>
                 <div class="elecRateItem">
                     <el-input-number v-model="dialog.info.offPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
                     /
