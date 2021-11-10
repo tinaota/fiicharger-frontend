@@ -79,7 +79,7 @@
         "unavailable": "Unavailable",
         "maintenance": "Maintenance",
         "alert": "Alert",
-        "connectionLost": "Connection lost",
+        "connectionLost": "Connection Lost",
         "serviceUnavailable": "Service unavailable",
         "zipCode": "ZIP code",
         "hint": "Hint",
@@ -196,7 +196,7 @@
         "minOutputPower": "Minimum Output Power",
         "maxOutputPower": "Maximum Output Power",
         "failure": "Failure",
-        "chargePointAlert": "Issue history"
+        "chargePointAlert": "Issue History"
     },
     "userAccount": {
         "memberName": "Member Name",

@@ -157,6 +157,13 @@ export default {
     mounted() {
         setScrollBar('.home-menu', this);
     },
+    watch: {
+        "$route.path": function() {
+            if (this.routerName !== this.$route.path && this.routerName === '/location' && this.$route.path === '/chargePoint') {
+                this.handleMenuSelect('/chargePoint', ['/chargingStation', '/chargePoint'])
+            }
+        },
+    },
     methods: {
         menuShowCtrl: function(child) {
             //運營商操作維修員
@@ -219,7 +226,7 @@ export default {
                 this.routerParent = indexPath[0];
             }
             // setScrollBar('.home-menu', this);
-            // this.routerName = index;
+            this.routerName = index;
         },
         getImgUrl(iconName) {
             return require('imgs/'+iconName+'.png');

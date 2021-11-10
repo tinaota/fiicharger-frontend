@@ -136,6 +136,7 @@ import { setScrollBar } from "@/utils/function";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
 import ic_green_dot from 'imgs/ic_green_dot.png';
+import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 export default {
     props: {
         name: String,
@@ -278,7 +279,8 @@ export default {
                                 streetViewControl: false, //設定是否呈現右下角街景小人
                                 mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                                 fullscreenControl: false,
-                                zoomControl: false
+                                zoomControl: false,
+                                styles: googleMapStyle
                             });
             google.maps.event.addListener(this.map, 'click', function(event) {
                 if (!that.dialog.type) {

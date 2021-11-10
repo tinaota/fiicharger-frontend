@@ -26,6 +26,31 @@
                         <div class="content">{{ curRouteParam.power + "kW" }}</div>
                     </div>
                     <div class="item">
+                        <div class="label">{{ $t('general.status') }}</div>
+                        <div class="content">
+                            <div v-if="curRouteParam.chargeBoxStatus===1">
+                                <span class="circle-status color1"></span>
+                                <span> {{ $t('general.available') }}</span>
+                            </div>
+                            <div v-else-if="curRouteParam.chargeBoxStatus===2">
+                                <span class="circle-status color2"></span>
+                                <span> {{ $t('general.unavailable') }}</span>
+                            </div>
+                            <div v-else-if="curRouteParam.chargeBoxStatus===3">
+                                <span class="circle-status color3"></span>
+                                <span> {{ $t('general.maintenance') }}</span>
+                            </div>
+                            <div v-else-if="curRouteParam.chargeBoxStatus===4">
+                                <span class="circle-status color4"></span>
+                                <span> {{ $t('general.alert') }}</span>
+                            </div>
+                            <div v-else>
+                                <span class="circle-status color5"></span>
+                                <span> {{ $t('general.connectionLost') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
                         <div class="label">{{ $t('chargingStation.connector') }}</div>
                         <div class="content">
                             <Connector v-for="(item, idx) in curRouteParam.connectorList" :key="idx" :dataObj="item"></Connector>
@@ -170,6 +195,9 @@ export default {
                 font-size: 1rem;
                 color: #151E25;
                 letter-spacing: 0;
+                .circle-status {
+                    vertical-align: top;
+                }
             }
         }
     }

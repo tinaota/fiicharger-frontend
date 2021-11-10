@@ -278,7 +278,7 @@ export default {
                                 streetViewControl: false, //設定是否呈現右下角街景小人
                                 mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                                 fullscreenControl: false,
-                                zoomControl: false
+                                zoomControl: false,
                             });
             google.maps.event.addListener(this.map, 'click', function(event) {
                 if (!that.dialog.type) {

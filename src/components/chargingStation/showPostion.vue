@@ -11,6 +11,7 @@
 
 <script>
 import bluePosImg from 'imgs/ic_blue_dot.png';
+import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 export default {
     props: {
         itemId: String,
@@ -56,7 +57,7 @@ export default {
         }
     },
     beforeDestroy() {
-        this.marker.setMap(null);
+        this.marker && this.marker.setMap(null);
     },
     methods: {
         initMap() {
@@ -68,7 +69,8 @@ export default {
                                 streetViewControl: false, //設定是否呈現右下角街景小人
                                 mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                                 fullscreenControl: false,
-                                zoomControl: false
+                                zoomControl: false,
+                                styles: googleMapStyle
                             });
         },
         drawMarker() {

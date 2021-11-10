@@ -32,12 +32,21 @@
                     </el-input>
                     <el-select
                         class="select-small long"
+                        :placeholder="$t('general.status')"
+                        v-model="filter.chargeBoxStatus"
+                        @change="fetchData()"
+                        clearable>
+                        <el-option :label="$t('general.all')" value=""></el-option>
+                        <el-option v-for="(item, idx) in chargeBoxStatusList" :label="item" :key="idx" :value="parseInt(idx)"></el-option>
+                    </el-select>
+                    <!-- <el-select
+                        class="select-small long"
                         :placeholder="$t('chargingStation.connectorStatus')"
                         v-model="filter.connectorStatus"
                         @change="fetchData()"
                         clearable>
                         <el-option v-for="(item, idx) in connectorList" :label="item" :key="idx" :value="idx"></el-option>
-                    </el-select>
+                    </el-select> -->
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
@@ -47,19 +56,28 @@
                     @row-click="handleRowClick">
                     <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="5"></el-table-column>
                     <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('general.status')" :min-width="2" class-name="center">
-                        <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('chargingStation.connection')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color1"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else :content="$t('chargingStation.disconnection')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color5"></span>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
                     <el-table-column :label="$t('chargingStation.power')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.power + "kW"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('general.status')" :min-width="2" class-name="center">
+                        <template slot-scope="scope">
+                            <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color1"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color2"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.maintenance')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color3"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===4" :content="$t('general.alert')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color4"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else :content="$t('general.connectionLost')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color5"></span>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')" :width="100">
@@ -147,7 +165,8 @@ export default {
                 // stationId: '',
                 zipCode: '',
                 operatorTypeId: '',
-                connectorStatus: ''
+                // connectorStatus: '',
+                chargeBoxStatus: null
             },
             isLoading: false,
             // stationList: {
@@ -194,7 +213,14 @@ export default {
                     lng: ''
                 }
             },
-            connectorList: []
+            connectorList: [],
+            chargeBoxStatusList: {
+                1: i18n.t('general.available'),
+                2: i18n.t('general.unavailable'),
+                3: i18n.t('general.maintenance'),
+                4: i18n.t('general.alert'),
+                5: i18n.t('general.connectionLost'),
+            }
         }
     },
     created() {
@@ -212,6 +238,10 @@ export default {
     mounted() {
         // const that = this;
         // this.fetchStationList(()=>{ that.fetchData()});
+        if (this.$router.currentRoute.params.chargeBoxStatus) {
+            this.filter.chargeBoxStatus = this.$router.currentRoute.params.chargeBoxStatus;
+            console.log('chargebox status= '+ this.$router.currentRoute.params.chargeBoxStatus)
+        }
         setScrollBar('.scroll', this);
         this.fetchData();
         this.fetchLocationList();
@@ -267,8 +297,11 @@ export default {
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
-            if (this.filter.connectorStatus) {
-                param.connectorStatus = this.filter.connectorStatus;
+            // if (this.filter.connectorStatus) {
+            //     param.connectorStatus = this.filter.connectorStatus;
+            // }
+            if (this.filter.chargeBoxStatus) {
+                param.chargeBoxStatus = this.filter.chargeBoxStatus;
             }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;

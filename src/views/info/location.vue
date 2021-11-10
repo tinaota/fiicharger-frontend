@@ -28,27 +28,27 @@
         <div class="hint-bar">
             <div class="item">
                 <img :src="icon.normal">
-                <span class="num" v-if="statisticsInfo.availableCount !== 0">{{statisticsInfo.availableCount}}</span>
+                <span class="num" v-if="statisticsInfo.availableCount !== 0" @click="goChargePointPage(1)">{{statisticsInfo.availableCount}}</span>
                 <span class="text">{{$t('general.available')}}</span>
             </div>
             <div class="item">
                 <img :src="icon.serviceUnavailable">
-                <span class="num" v-if="statisticsInfo.unavailableCount !== 0">{{statisticsInfo.unavailableCount}}</span>
+                <span class="num" v-if="statisticsInfo.unavailableCount !== 0" @click="goChargePointPage(2)">{{statisticsInfo.unavailableCount}}</span>
                 <span class="text">{{$t('general.unavailable')}}</span>
             </div>
-            <div class="item">
+            <!-- <div class="item">
                 <img :src="icon.maintenance">
-                <span class="num" v-if="statisticsInfo.maintenanceCount !== 0">{{statisticsInfo.maintenanceCount}}</span>
+                <span class="num" v-if="statisticsInfo.maintenanceCount !== 0" @click="goChargePointPage(3)">{{statisticsInfo.maintenanceCount}}</span>
                 <span class="text">{{$t('general.maintenance')}}</span>
-            </div>
+            </div> -->
             <div class="item">
                 <img :src="icon.abnormal">
-                <span class="num" v-if="statisticsInfo.alertCount !== 0">{{statisticsInfo.alertCount}}</span>
+                <span class="num" v-if="statisticsInfo.alertCount !== 0" @click="goChargePointPage(4)">{{statisticsInfo.alertCount}}</span>
                 <span class="text">{{$t('general.alert')}}</span>
             </div>
             <div class="item">
                 <img :src="icon.connectionLost">
-                <span class="num" v-if="statisticsInfo.connectionLostCount !== 0">{{statisticsInfo.connectionLostCount}}</span>
+                <span class="num" v-if="statisticsInfo.connectionLostCount !== 0" @click="goChargePointPage(5)">{{statisticsInfo.connectionLostCount}}</span>
                 <span class="text">{{$t('general.connectionLost')}}</span>
             </div>
         </div>
@@ -85,6 +85,7 @@ import markerPos2 from 'imgs/ic_orange_dot.png';
 import markerPos3 from 'imgs/ic_brown_dot.png';
 import markerPos4 from 'imgs/ic_red_dot.png';
 import markerPos5 from 'imgs/ic_gray_dot.png';
+import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 export default {
     data() {
         return {
@@ -282,7 +283,8 @@ export default {
                                 streetViewControl: false, //設定是否呈現右下角街景小人
                                 mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                                 fullscreenControl: false,
-                                zoomControl: false
+                                zoomControl: false,
+                                styles: googleMapStyle
                             });
         },
         drawMarker(item) {
@@ -455,6 +457,9 @@ export default {
                 }
             });
         },
+        goChargePointPage(chargeBoxStatus) {
+            this.$router.push({ name: 'menu.chargePoint', params: { chargeBoxStatus: chargeBoxStatus }});
+        }
     }
 }
 </script>
@@ -520,6 +525,7 @@ export default {
                 padding: 2px 4px;
                 border-radius: 16px;
                 font-size: 0.875rem;
+                cursor: pointer;
             }
         }
         img {
