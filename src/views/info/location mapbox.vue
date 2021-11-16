@@ -77,9 +77,12 @@ import ic_ac_iec from 'imgs/ic_ac_iec.png';
 import ic_ac_tesla from 'imgs/ic_ac_tesla.png';
 import ic_ac_sae from 'imgs/ic_ac_sae.png';
 import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
-import ic_ac_chademo from 'imgs/ic_ac_chademo.png';
-import ic_ac_ccs2 from 'imgs/ic_ac_ccs2.png';
-import ic_ac_ccs1 from 'imgs/ic_ac_ccs1.png';
+import ic_dc_iec from 'imgs/ic_dc_iec.png';
+import ic_dc_tesla from 'imgs/ic_dc_tesla.png';
+import ic_dc_chademo from 'imgs/ic_dc_chademo.png';
+import ic_dc_ccs2 from 'imgs/ic_dc_ccs2.png';
+import ic_dc_ccs1 from 'imgs/ic_dc_ccs1.png';
+import ic_dc_gbt from 'imgs/ic_dc_gbt.png';
 const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     data() {
@@ -133,12 +136,12 @@ export default {
                 2: ic_ac_tesla,
                 3: ic_ac_sae,
                 4: ic_ac_gbt,
-                5: ic_ac_iec,
-                6: ic_ac_tesla,
-                7: ic_ac_chademo,
-                8: ic_ac_ccs2,
-                9: ic_ac_ccs1,
-                10: ic_ac_gbt
+                5: ic_dc_iec,
+                6: ic_dc_tesla,
+                7: ic_dc_chademo,
+                8: ic_dc_ccs2,
+                9: ic_dc_ccs1,
+                10: ic_dc_gbt
             },
             timer: null
         }
