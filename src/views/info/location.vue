@@ -239,6 +239,9 @@ export default {
                         if (that.filter.chargeBoxId) {
                             that.map.setCenter(that.chargeBoxData.data[that.filter.chargeBoxId].loc);
                             that.map.setZoom(that.defaultZoomSize);
+                        } else if (data.chargeBoxList.length === 1) {
+                            that.map.setCenter(that.chargeBoxData.data[data.chargeBoxList[0].chargeBoxId].loc);
+                            that.map.setZoom(that.defaultZoomSize);
                         } else {
                             const nePoint = new google.maps.LatLng(maxLat, maxLng),
                                   swPoint = new google.maps.LatLng(minLat, minLng),
