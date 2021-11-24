@@ -464,7 +464,12 @@ export default {
             });
         },
         goChargePointPage(chargeBoxStatus) {
-            this.$router.push({ name: 'menu.chargePoint', params: { chargeBoxStatus: chargeBoxStatus }});
+            const params = {
+                chargeBoxStatus: chargeBoxStatus,
+                operatorTypeId: this.filter.operatorTypeId,
+                chargeBoxId: this.filter.chargeBoxId
+            }
+            this.$router.push({ name: 'menu.chargePoint', params: params});
         }
     }
 }

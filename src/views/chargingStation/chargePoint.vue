@@ -240,7 +240,8 @@ export default {
         // this.fetchStationList(()=>{ that.fetchData()});
         if (this.$router.currentRoute.params.chargeBoxStatus) {
             this.filter.chargeBoxStatus = this.$router.currentRoute.params.chargeBoxStatus;
-            console.log('chargebox status= '+ this.$router.currentRoute.params.chargeBoxStatus)
+            this.filter.operatorTypeId = this.$router.currentRoute.params.operatorTypeId;
+            this.filter.search = this.filter.tmpSearch = this.$router.currentRoute.params.chargeBoxId;
         }
         setScrollBar('.scroll', this);
         this.fetchData();
