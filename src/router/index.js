@@ -83,9 +83,9 @@ let routes = [
                 children: [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
-                    { path: '/endUser', component: () => import('@/views/account/endUser.vue'), name: 'menu.endUser', hidden: false },
-                    { path: '/endUser/endUserDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
-                    { path: '/endUser/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
+                    { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: false },
+                    { path: '/member/memberDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
+                    { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
                 ]
             },
             {

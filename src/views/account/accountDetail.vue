@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.account') }}</el-breadcrumb-item>
-                <el-breadcrumb-item :to="{ path: '/endUser' }">{{ $t('menu.endUser') }}</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/member' }">{{ $t('menu.member') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.memberCode + " " + curRouteParam.memberName }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
@@ -11,22 +11,22 @@
                     :data="tableData"
                     v-loading="isLoading"
                     class="moreCol">
-                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')"></el-table-column>
-                    <el-table-column prop="memberName" :label="$t('userAccount.memberName')"></el-table-column>
-                    <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')"></el-table-column>
-                    <el-table-column prop="cellphone" :label="$t('userAccount.phone')" ></el-table-column>
-                    <el-table-column prop="email" :label="$t('userAccount.email')" >
+                    <el-table-column prop="memberCode" :label="$t('chargingStation.userID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="memberName" :label="$t('userAccount.memberName')" :min-width="2"></el-table-column>
+                    <el-table-column prop="countryCode" :label="$t('userAccount.countryCode')" :min-width="2"></el-table-column>
+                    <el-table-column prop="cellphone" :label="$t('userAccount.phone')" :min-width="2"></el-table-column>
+                    <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="3">
                         <template slot-scope="scope">
                             <span v-for="(email, idx) in scope.row.email" :key="email">{{ email }} <br v-if="idx+1 !== scope.row.email.length"/></span>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('userAccount.thirdPartyVerification')">
+                    <el-table-column :label="$t('userAccount.thirdPartyVerification')" :min-width="2">
                         <template slot-scope="scope">
                             <span v-for="(type, idx) in scope.row.loginType" :key="type">{{ type }} <br v-if="idx+1 !== scope.row.loginType.length"/></span>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="carBrand" :label="$t('userAccount.carType')"></el-table-column>
-                    <el-table-column prop="creditCard" :label="$t('userAccount.creditCard')"></el-table-column>
+                    <el-table-column prop="carBrand" :label="$t('userAccount.carType')" :min-width="2"></el-table-column>
+                    <el-table-column prop="creditCard" :label="$t('userAccount.creditCard')" :min-width="2"></el-table-column>
                 </el-table>
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">

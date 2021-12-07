@@ -26,6 +26,7 @@
         "myAccount": "My Account",
         "operator": "Operator",
         "endUser": "End User",
+        "member": "Member",
         "cars": "Vehicle",
         "report": "Report",
         "usagePatterns": "Usage Patterns",
@@ -177,12 +178,6 @@
         "powerUsedAnalysis": "Power Used Analysis",
         "rateID": "Rate ID",
         "rateName": "Rate Name",
-        "elecRateListT": {
-            "AC On-Peak": "AC On-Peak",
-            "AC Off-Peak": "AC Off-Peak",
-            "DC On-Peak": "DC On-Peak",
-            "DC Off-Peak": "DC Off-Peak"
-        },
         "elecRateList": {
             "acOnPeak": "AC On-Peak",
             "acOffPeak": "AC Off-Peak",

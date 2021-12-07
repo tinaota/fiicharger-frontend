@@ -19,11 +19,6 @@
                     class="moreCol">
                     <el-table-column prop="rateId" :label="$t('chargingStation.rateID')"></el-table-column>
                     <el-table-column prop="rateName" :label="$t('chargingStation.rateName')"></el-table-column>
-                    <!-- <el-table-column :label="$t('chargingStation.elecRate')" label-class-name="center">
-                        <el-table-column v-for="(item, key) in $t('chargingStation.elecRateListT')" :key="key" :label="item">
-                            <template slot-scope="scope">{{ scope.row.electricityRate[item] +"/kWh" }}</template>
-                        </el-table-column>
-                    </el-table-column> -->
                     <el-table-column :label="$t('general.action')">
                         <template slot-scope="scope">
                             <el-button @click="openDialog(1, scope.row)">{{ $t('general.modify') }}</el-button>
@@ -56,10 +51,6 @@
                     <div class="form-item">
                         <div class="label">{{ $t('chargingStation.elecRate') }}</div>
                     </div>
-                    <!-- <div class="form-item" v-for="(item, key) in $t('chargingStation.elecRateListT')" :key="key">
-                        <div class="label">{{ "● "+item }}</div>
-                        <el-input v-model="dialog.info.electricityRate[key]"></el-input>
-                    </div> -->
                 </div>
                 <span slot="footer" class="dialog-footer">
                     <el-button size="small" @click="dialog.visible = false">{{ $t('general.cancel') }}</el-button>

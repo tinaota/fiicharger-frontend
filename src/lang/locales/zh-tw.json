@@ -26,6 +26,7 @@
         "myAccount": "我的帳戶",
         "operator": "運營商",
         "endUser": "終端用戶",
+        "member": "會員",
         "cars": "車輛",
         "report": "報告",
         "usagePatterns": "使用模式",
@@ -177,12 +178,6 @@
         "powerUsedAnalysis": "使用功率分析",
         "rateID": "費率ID",
         "rateName": "費率名稱",
-        "elecRateListT": {
-            "AC On-Peak": "交流電-尖峰",
-            "AC Off-Peak": "交流電-離峰",
-            "DC On-Peak": "直流電-尖峰",
-            "DC Off-Peak": "直流電-離峰"
-        },
         "elecRateList": {
             "acOnPeak": "交流電-尖峰",
             "acOffPeak": "交流電-離峰",
