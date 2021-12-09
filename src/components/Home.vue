@@ -203,7 +203,7 @@ export default {
                 }
             //運營商
             } else if (this.userData.accPermissionType === 3 &&
-                (childPath === '/account' && subChild.path === '/endUser')) {
+                (childPath === '/account' && subChild.path === '/member')) {
                 return false;
             } else {
                 return !subChild.hidden;
