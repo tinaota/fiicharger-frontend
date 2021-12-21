@@ -1,5 +1,3 @@
-export const lazyLoading = (name) => import (`@/views/${name}.vue`)
-
 /**
  * @description 在視窗發生改變時，重新渲染圖表
  * @param {Array} chartsId 放置圖表的HTML ID 數組

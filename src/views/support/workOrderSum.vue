@@ -114,7 +114,6 @@ import { buildingsIn3D, clusters, clusterCount, getLastLayerId } from '@/assets/
 import MapStyle from '@/assets/js/mapStyle.js'
 import 'threebox-plugin/dist/threebox';
 import "@/styles/map.scss";
-const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 import { setScrollBar } from "@/utils/function";
 import WorkerOrderInfo from "@/components/support/workerOrderInfo";
 import ic_info_green from 'imgs/ic_info_green.png';
@@ -136,6 +135,7 @@ import ic_dc_chademo from 'imgs/ic_dc_chademo.png';
 import ic_dc_ccs2 from 'imgs/ic_dc_ccs2.png';
 import ic_dc_ccs1 from 'imgs/ic_dc_ccs1.png';
 import ic_dc_gbt from 'imgs/ic_dc_gbt.png';
+const MAPBOXTOKEN = process.env.VUE_APP_MAPBOXTOKEN;
 export default {
     components: {
         WorkerOrderInfo
