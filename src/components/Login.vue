@@ -62,8 +62,8 @@ import * as types from "@/store/types";
 import { $HTTP_login, $HTTP_getCaptcha } from "@/api/api";
 import { $GLOBAL_LANG } from "@/utils/global";
 import md5 from "js-md5";
-import p5 from 'libs/vanta/p5.min.js';
-import TOPOLOGY  from 'libs/vanta/vanta.topology.min.js';
+// import p5 from 'libs/vanta/p5.min.js';
+// import TOPOLOGY  from 'libs/vanta/vanta.topology.min.js';
 import fiicharger_logo from 'imgs/fiicharger_logo.png';
 import icon_account_p from 'imgs/icon_account_p.png';
 import icon_account_n from 'imgs/icon_account_n.png';
@@ -92,7 +92,7 @@ export default {
                 password: [{ required: true, message: i18n.t("login.pls_input_pwd"), trigger: "blur" }],
                 captcha: [{ required: true, message: i18n.t("login.pls_input_captcha"), trigger: "blur" }]
             },
-            vantaEffect: null,
+            // vantaEffect: null,
             captchaImg: '',
             captchaTimer: null
         };
@@ -108,19 +108,19 @@ export default {
         }
         this.fetchCaptcha();
         this.setTimer();
-        this.vantaEffect = TOPOLOGY({
-            el: this.$refs.loginContainer,
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xf8fbff,
-            backgroundColor: 0xcde8ff,
-            p5: p5
-        });
+        // this.vantaEffect = TOPOLOGY({
+        //     el: this.$refs.loginContainer,
+        //     mouseControls: true,
+        //     touchControls: true,
+        //     gyroControls: false,
+        //     minHeight: 200.00,
+        //     minWidth: 200.00,
+        //     scale: 1.00,
+        //     scaleMobile: 1.00,
+        //     color: 0xf8fbff,
+        //     backgroundColor: 0xcde8ff,
+        //     p5: p5
+        // });
     },
     beforeDestroy() {
         if (this.vantaEffect) {
@@ -229,6 +229,11 @@ html, body{
     width: 100%;
     height: 100%;
     // background-color: 0xcde8ff;
+    background-image: url('~imgs/login_bg.jpg');
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     .login-container {
         width: 30vw;
         max-width: 540px;
