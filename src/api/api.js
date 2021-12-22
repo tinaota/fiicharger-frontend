@@ -268,6 +268,10 @@ export const $HTTP_getChargingSessionAnalysisInfo = params => { return post(`${b
  */
 export const $HTTP_getPowerUsageAnalysisInfo = params => { return post(`${base}/ChargeStation/Station/getPowerUsageAnalysisInfo`, qs.stringify(params)) }
 
+/**
+ * @description 新增充電站充電樁綁定
+ */
+ export const $HTTP_addStationChargeBoxMatch = params => { return post(`${base}/ChargeStation/Station/addStationChargeBoxMatch`, params) }
 
 /**
  * @description 取得費率列表(選單用)
@@ -304,6 +308,11 @@ export const $HTTP_getChargeBoxListForSelect = params => { return post(`${base}/
  * @description 取得充電樁地圖打點列表
  */
 export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForMap`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電樁列表（綁定用）
+ */
+ export const $HTTP_getChargeBoxListForBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
 
 /**
  * @description 取得充電樁地圖打點資訊

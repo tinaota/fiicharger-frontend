@@ -1,0 +1,153 @@
+{
+    "stationInfo": {
+        "stationId": "C093315",
+        "stationName": "Station12",
+        "zipCode": "53177",
+        "address": "efsegf",
+        "loc": {
+            "lon": -87.92998826464846,
+            "lat": 42.68591929400621
+        },
+        "serviceStartTime": "08:00",
+        "serviceEndTime": "23:59",
+        "countryCode": "+886",
+        "phone": "(02)22676511",
+        "chargeBoxCount": 2,
+        "acChargeBoxInfo": {
+            "count": 1,
+            "chargeConnectorTypeList": [
+                {
+                    "typeId": "3",
+                    "name": "J1772",
+                    "count": 2
+                },
+                {
+                    "typeId": "2",
+                    "name": "Tesla",
+                    "count": 1
+                }
+            ]
+        },
+        "dcChargeBoxInfo": {
+            "count": 1,
+            "chargeConnectorTypeList": [
+                {
+                    "typeId": "9",
+                    "name": "CCS1",
+                    "count": 1
+                }
+            ]
+        },
+        "chargeBoxTotalPower": 123
+    },
+    "smartChargingSettingInfo": {
+        "onOffStatus": 0,
+        "maxDemandPowerLimit": 0,
+        "intervalMaxPower": 0,
+        "intervalTime": 5
+    },
+    "smartChargingConnectorAnalysisInfo": [
+        {
+            "chargeBoxId": "AWLU770001T201D20513375A0",
+            "chargeBoxName": "TW000327-3375A0",
+            "connectorList": [
+                {
+                    "chargeBoxId": "AWLU770001T201D20513375A0",
+                    "chargeBoxName": "TW000327-3375A0",
+                    "connectorInfo": {
+                        "connectorId": "1",
+                        "connectorType": "J1772",
+                        "connectorTypeId": "3",
+                        "status": 5
+                    },
+                    "vipStatus": 0,
+                    "battery": 50,
+                    "chartInfo": {
+                        "intervalMaxPower": 350,
+                        "settingMaxPowerLimit": 500,
+                        "connectorDefaultMaxPower": 0,
+                        "powerGap": 100
+                    }
+                },
+                {
+                    "chargeBoxId": "AWLU770001T201D20513375A0",
+                    "chargeBoxName": "TW000327-3375A0",
+                    "connectorInfo": {
+                        "connectorId": "2",
+                        "connectorType": "J1772",
+                        "connectorTypeId": "3",
+                        "status": 1
+                    },
+                    "vipStatus": 1,
+                    "battery": 70,
+                    "chartInfo": {
+                        "intervalMaxPower": 750,
+                        "settingMaxPowerLimit": 1000,
+                        "connectorDefaultMaxPower": 0,
+                        "powerGap": 250
+                    }
+                },
+                {
+                    "chargeBoxId": "AWLU770001T201D20513375A0",
+                    "chargeBoxName": "TW000327-3375A0",
+                    "connectorInfo": {
+                        "connectorId": "3",
+                        "connectorType": "Type2",
+                        "connectorTypeId": "3",
+                        "status": 3
+                    },
+                    "vipStatus": 0,
+                    "battery": 100,
+                    "chartInfo": {
+                        "intervalMaxPower": 100,
+                        "settingMaxPowerLimit": 500,
+                        "connectorDefaultMaxPower": 0,
+                        "powerGap": 100
+                    }
+                },
+                {
+                    "chargeBoxId": "AWLU770001T201D20513375A0",
+                    "chargeBoxName": "TW000327-3375A0",
+                    "connectorInfo": {
+                        "connectorId": "3",
+                        "connectorType": "Type2",
+                        "connectorTypeId": "3",
+                        "status": 3
+                    },
+                    "vipStatus": 0,
+                    "battery": 100,
+                    "chartInfo": {
+                        "intervalMaxPower": 100,
+                        "settingMaxPowerLimit": 500,
+                        "connectorDefaultMaxPower": 0,
+                        "powerGap": 100
+                    }
+                }
+            ]
+        },
+        {
+            "chargeBoxId": "DWWW601J0UD101D20481249A0",
+            "chargeBoxName": "TW000110-1249A0",
+            "connectorList": [
+                {
+                    "chargeBoxId": "DWWW601J0UD101D20481249A0",
+                    "chargeBoxName": "TW000110-1249A0",
+                    "connectorInfo": {
+                        "connectorId": "2",
+                        "connectorType": "CCS1",
+                        "connectorTypeId": "9",
+                        "status": 5
+                    },
+                    "vipStatus": 0,
+                    "battery": 20,
+                    "chartInfo": {
+                        "intervalMaxPower": 350,
+                        "settingMaxPowerLimit": 599,
+                        "connectorDefaultMaxPower": 0,
+                        "powerGap": 100
+                    }
+                }
+            ]
+        }
+    ]
+}

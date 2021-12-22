@@ -58,6 +58,7 @@
         "delete": "Xóa",
         "create": "Tạo",
         "unbind": "Unbind",
+        "bind": "Bind",
         "result": "{item} kết quả",
         "ok": "Ok",
         "cancel": "Hủy",
@@ -103,7 +104,9 @@
         "onlyOneFile": "Chỉ có thể tải lên một tệp!",
         "errFile": "Lỗi tệp!",
         "day": "Ngày",
-        "closedTime": "Thời gian kết thúc"
+        "closedTime": "Thời gian kết thúc",
+        "enable": "Enable",
+        "disable": "Disable"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -147,6 +150,7 @@
         },
         "chargePointID": "ID điểm sạc",
         "chargePointName": "Tên điểm sạc",
+        "chargePoint#": "Điểm sạc #",
         "power": "Năng lượng",
         "connector": "Đầu nối",
         "connectorStatus": "Trạng thái đầu nối",
@@ -191,7 +195,20 @@
         "minOutputPower": "Công suất đầu ra tối thiểu",
         "maxOutputPower": "Công suất đầu ra tối đa",
         "failure": "Thất bại",
-        "chargePointAlert": "Lịch sử vấn đề"
+        "chargePointAlert": "Lịch sử vấn đề",
+        "noChargePointBind": "No charge point can be bound.",
+        "stationInfo": "Station Info",
+        "smartChargingSetting": "Smart Charging Setting",
+        "nAC": "Number of AC",
+        "acConnectors": "AC Connectors",
+        "nDC": "Number of DC",
+        "dcConnectors": "DC Connectors",
+        "curPowerConsumption": "Current Power Consumption",
+        "smartCharging": "Smart Charging",
+        "onPeakDemandMaxLimit": "On-Peak Demand Max. Limit",
+        "csMaxPower": "CS MAx. Power",
+        "intervalTime": "Interval Time",
+        "loadBalance": "Load Balance"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

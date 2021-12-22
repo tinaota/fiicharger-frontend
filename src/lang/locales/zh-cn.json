@@ -58,6 +58,7 @@
         "delete": "删除",
         "create": "新增",
         "unbind": "解绑",
+        "bind": "绑定",
         "result": "{item}笔结果",
         "ok": "确定",
         "cancel": "取消",
@@ -103,7 +104,9 @@
         "onlyOneFile": "只能上传一个档案!",
         "errFile": "附档名错误!",
         "day": "日",
-        "closedTime": "结束时间"
+        "closedTime": "结束时间",
+        "enable": "启用",
+        "disable": "关闭"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -147,6 +150,7 @@
         },
         "chargePointID": "充电桩ID",
         "chargePointName": "充电桩名称",
+        "chargePoint#": "充电桩#",
         "power": "电耗",
         "connector": "充电枪",
         "connectorStatus": "充电枪状态",
@@ -191,7 +195,20 @@
         "minOutputPower": "最小输出功率",
         "maxOutputPower": "最大输出功率",
         "failure": "失败",
-        "chargePointAlert": "历史问题"
+        "chargePointAlert": "历史问题",
+        "noChargePointBind": "无充电装可以被绑定",
+        "stationInfo": "充电站信息",
+        "smartChargingSetting": "智能充电设置",
+        "nAC": "AC数量",
+        "acConnectors": "AC充电枪",
+        "nDC": "DC数量",
+        "dcConnectors": "DC充电枪",
+        "curPowerConsumption": "当前功耗",
+        "smartCharging": "智能充电",
+        "onPeakDemandMaxLimit": "峰值需求最大限制",
+        "csMaxPower": "充电桩最大功率",
+        "intervalTime": "间隔时间",
+        "loadBalance": "负载均衡"
     },
     "userAccount": {
         "memberName": "会员名称",

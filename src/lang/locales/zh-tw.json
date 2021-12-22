@@ -58,6 +58,7 @@
         "delete": "刪除",
         "create": "新增",
         "unbind": "解綁",
+        "bind": "綁定",
         "result": "{item}筆結果",
         "ok": "確定",
         "cancel": "取消",
@@ -103,7 +104,9 @@
         "onlyOneFile": "只能上傳一個檔案!",
         "errFile": "附檔名錯誤!",
         "day": "日",
-        "closedTime": "結束時間"
+        "closedTime": "結束時間",
+        "enable": "啟用",
+        "disable": "關閉"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -147,6 +150,7 @@
         },
         "chargePointID": "充電樁ID",
         "chargePointName": "充電樁名稱",
+        "chargePoint#": "充電樁#",
         "power": "電耗",
         "connector":"充電槍",
         "connectorStatus": "充電槍狀態",
@@ -191,7 +195,20 @@
         "minOutputPower": "最小輸出功率",
         "maxOutputPower": "最大輸出功率",
         "failure": "失敗",
-        "chargePointAlert": "歷史問題"
+        "chargePointAlert": "歷史問題",
+        "noChargePointBind": "無充電裝可以被綁定",
+        "stationInfo": "充電站信息",
+        "smartChargingSetting": "智能充電設置",
+        "nAC": "AC數量",
+        "acConnectors": "AC充電槍",
+        "nDC": "DC數量",
+        "dcConnectors": "DC充電槍",
+        "curPowerConsumption": "當前功耗",
+        "smartCharging": "智能充電",
+        "onPeakDemandMaxLimit": "峰值需求最大限制",
+        "csMaxPower": "充電樁最大功率",
+        "intervalTime": "間隔時間",
+        "loadBalance": "負仔均衡"
     },
     "userAccount": {
         "memberName": "會員名稱",

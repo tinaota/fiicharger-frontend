@@ -58,6 +58,7 @@
         "delete": "Delete",
         "create": "Create",
         "unbind": "Unbind",
+        "bind": "Bind",
         "result": "{item} Results",
         "ok": "Ok",
         "cancel": "Cancel",
@@ -103,7 +104,9 @@
         "onlyOneFile": "Only one file can be uploaded!",
         "errFile": "File extension Error!",
         "day": "Day",
-        "closedTime": "Closed Time"
+        "closedTime": "Closed Time",
+        "enable": "Enable",
+        "disable": "Disable"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -147,6 +150,7 @@
         },
         "chargePointID": "Charge Point ID",
         "chargePointName": "Charge Point Name",
+        "chargePoint#": "Charge Point #",
         "power": "Power",
         "connector": "Connector",
         "connectorStatus": "Connector Status",
@@ -191,7 +195,20 @@
         "minOutputPower": "Minimum Output Power",
         "maxOutputPower": "Maximum Output Power",
         "failure": "Failure",
-        "chargePointAlert": "Issue History"
+        "chargePointAlert": "Issue History",
+        "noChargePointBind": "No charge point can be bound.",
+        "stationInfo": "Station Info",
+        "smartChargingSetting": "Smart Charging Setting",
+        "nAC": "Number of AC",
+        "acConnectors": "AC Connectors",
+        "nDC": "Number of DC",
+        "dcConnectors": "DC Connectors",
+        "curPowerConsumption": "Current Power Consumption",
+        "smartCharging": "Smart Charging",
+        "onPeakDemandMaxLimit": "On-Peak Demand Max. Limit",
+        "csMaxPower": "CS MAx. Power",
+        "intervalTime": "Interval Time",
+        "loadBalance": "Load Balance"
     },
     "userAccount": {
         "memberName": "Member Name",

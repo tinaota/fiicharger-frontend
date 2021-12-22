@@ -52,6 +52,19 @@
                     text-align: center;
                     line-height: 28px;
                 }
+                div.address {
+                    display: inline-block;
+                    width: calc(100% - 20px);
+                }
+                div.position {
+                    .el-button {
+                        position: absolute;
+                        top: 0;
+                        right: 4px;
+                        bottom: 0;
+                        margin: auto;
+                    }
+                }
             }
         }
     }
@@ -104,6 +117,39 @@
                 padding: 20px 0px 10px 50px;
                 &:hover {
                     background-color: #DCE6f3 !important;
+                }
+            }
+        }
+    }
+}
+.mainctrl .el-table {
+    &.thNoBorder {
+        tr {
+            th {
+                border-bottom: unset;
+            }
+        }
+    }
+    &.center {
+        tr th .cell,
+        tr td .cell {
+            text-align: center;
+        }
+    }
+    &.statistic {
+        tr {
+            th {
+                font-size: 0.875rem;
+            }
+            td {
+                font-size: 1.875rem;
+                color: #0C83FF;
+                .cell {
+                    letter-spacing: 0;
+                    .unit {
+                        font-size: 0.875rem;
+                        margin-left: -4px;
+                    }
                 }
             }
         }

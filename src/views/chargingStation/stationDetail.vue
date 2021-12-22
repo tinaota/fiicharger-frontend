@@ -6,147 +6,172 @@
                 <el-breadcrumb-item :to="{ path: '/station' }">{{ $t('menu.station') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div class="card-8 station-detail">
-                <div class="header">
-                    {{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}
-                    <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
-                        <el-button type="primary" icon="el-icon-map-location" circle @click="handleShowDialog()"></el-button>
-                    </el-tooltip>
-                </div>
-                <div>
-                    <div class="sec-header long"><i class="el-icon-office-building"></i> {{ curRouteParam.address }}</div>
-                    <!-- <div class="sec-header"><i class="el-icon-alarm-clock"></i> {{ curRouteParam.serviceStartTime + ' ~ ' + curRouteParam.serviceEndTime }}</div>
-                    <div class="sec-header" style="margin-left: 16px"><i class="el-icon-phone-outline"></i> {{ curRouteParam.countryCode + " " + curRouteParam.phone }}</div> -->
-                </div>
-                <div class="s-contain" v-loading="detail.isLoading">
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.nChargePoint') }}</div>
-                        <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(detail.data.chargeBoxCount) }}</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('menu.chargingSession') }}</div>
-                        <div class="content">
-                            <span>{{ new Intl.NumberFormat('en-IN').format(detail.data.stationSessionCount) }}</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.accumCharging') }}</div>
-                        <div class="content">
-                            <span>{{ detail.data.stationAccumulativeEnergy + "kWh" }}</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.avgPrice') }}</div>
-                        <div class="content">
-                            <span>{{ detail.data.electricityRateCurrency + detail.data.electricityRate + "/kWh" }}</span>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                        <div class="content">
-                            <span>{{ detail.data.parkingRateCurrency + detail.data.parkingRate + "/" + $t('chargingStation.elecRateUnit')[1] }}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="tabs-contain">
-                    <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <el-tab-pane :label="$t('menu.chargePoint')" name="chargeBoxList">
-                            <ChargeBoxList :stationId="curRouteParam.stationId"></ChargeBoxList>
-                        </el-tab-pane>
-                        <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
-                            <ChargingSession :stationId="curRouteParam.stationId"></ChargingSession>
-                        </el-tab-pane>
-                    </el-tabs>
-                </div>
-                <div class="chart">
-                    <div class="header">{{ $t('chargingStation.chargingSessionAnalysis') }}
-                        <el-select
-                            class="select-small right"
-                            v-model="chartChargingSesstion.search"
-                            @change="handleSelected('chartChargingSesstion')">
-                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                        </el-select>
-                    </div>
-                    <BarChart class="barChart" id="chartChargingSesstion" :chartData="chartChargingSesstion.chartData"></BarChart>
-                </div>
-                <div class="chart">
-                    <div class="header">{{ $t('chargingStation.powerUsedAnalysis') }}
-                        <el-select
-                            class="select-small right"
-                            v-model="chartPowerUsed.search"
-                            @change="handleSelected('chartPowerUsed')">
-                            <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                        </el-select>
-                    </div>
-                    <BarChart class="barChart" id="chartPowerUsed" :chartData="chartPowerUsed.chartData"></BarChart>
+            <div class="card-8">
+                <div class="header">{{ $t('chargingStation.stationInfo')}}</div>
+                <el-table
+                    :data="[stationInfo]"
+                    v-loading="isLoading"
+                    class="center">
+                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
+                    <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('general.address')" :min-width="5">
+                        <template slot-scope="scope">
+                            {{ scope.row.address }}
+                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
+                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('general.businessHours')" :min-width="5">
+                        <template slot-scope="scope">
+                            {{ scope.row.serviceStartTime + '-' + scope.row.serviceEndTime }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('userAccount.countryCode')" :min-width="5">
+                        <template slot-scope="scope">
+                            {{ scope.row.countryCode + ' ' + scope.row.phone }}
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="card-8">
+                <div class="header">{{ $t('menu.summary')}}</div>
+                <el-table
+                    :data="[summary]"
+                    v-loading="isLoading"
+                    class="center thNoBorder statistic">
+                    <el-table-column prop="chargeBoxCount" :label="$t('support.total')" :min-width="2"></el-table-column>
+                    <el-table-column prop="acChargeBoxInfo.count" :label="$t('chargingStation.nAC')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.acConnectors')" :min-width="3">
+                        <template slot-scope="scope">
+                            <div v-for="(item, idx) in scope.row.acChargeBoxInfo.chargeConnectorTypeList" :key="idx">
+                                {{ item.count }}
+                                <span class="unit">{{ '(' + item.name +')' }}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="dcChargeBoxInfo.count" :label="$t('chargingStation.nDC')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.dcConnectors')" :min-width="3">
+                        <template slot-scope="scope">
+                            <div v-for="(item, idx) in scope.row.dcChargeBoxInfo.chargeConnectorTypeList" :key="idx">
+                                {{ item.count }}
+                                <span class="unit">{{ '(' + item.name +')' }}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('chargingStation.curPowerConsumption')" :min-width="3">
+                        <template slot-scope="scope">
+                            {{ scope.row.chargeBoxTotalPower }}
+                            <span class="unit">kW</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="card-8">
+                <div class="header">{{ $t('chargingStation.smartChargingSetting')}}</div>
+                <el-table
+                    :data="[smartChargingSettingInfo]"
+                    v-loading="isLoading"
+                    class="center">
+                    <el-table-column :label="$t('chargingStation.smartCharging')" :min-width="2">
+                        <template slot-scope="scope">
+                            {{ scope.row.onOffStatus ? $t('general.enable'):$t('general.disable') }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('chargingStation.onPeakDemandMaxLimit')" :min-width="3">
+                        <template slot-scope="scope">
+                            {{ scope.row.maxDemandPowerLimit + "kW"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('chargingStation.csMaxPower')+'/'+$t('chargingStation.intervalTime')" :min-width="3">
+                        <template slot-scope="scope">
+                            {{ scope.row.intervalMaxPower + "kW" + '/' + scope.row.intervalTime + $t('chargingStation.elecRateUnit')[1]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('general.action')" :min-width="2">
+                        <el-button class="no-bg edit" @click="openSmartSettingDialog"></el-button>
+                    </el-table-column>
+                </el-table>
+            </div>
+            <div class="card-8">
+                <div class="header">{{ $t('general.detail')}}</div>
+                <div class="chargePoint" v-for="(item, idx) in smartChargingConnectorAnalysisInfo" :key="idx" v-loading="isLoading">
+                    <div class="title">{{ item.chargeBoxName }}</div>
+                    <ConnectorDetail v-for="(connector, i) in item.connectorList" :data="connector" :key="i" :class="{'even': (i%2==1)}"></ConnectorDetail>
                 </div>
             </div>
-            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="()=> {this.mapDialog.visible=false}" ></ShowPostion>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog" ></ShowPostion>
         </div>
     </div>
 </template>
 
 <script>
-import { $HTTP_getStationDetail, $HTTP_getChargingSessionAnalysisInfo, $HTTP_getPowerUsageAnalysisInfo } from "@/api/api";
-import { $GLOBAL_CURRENCY } from '@/utils/global';
-import StationDetailData from "@/tmpData/stationDetailData";
+import { $HTTP_getStationDetail } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
-import moment from "moment";
-import BarChart from "@/components/charts/barChart";
-import ChargeBoxList from "@/components/chargingStation/chargeBoxList";
-import ChargingSession from "@/components/chargingStation/chargingSession";
 import ShowPostion from "@/components/chargingStation/showPostion";
+import ConnectorDetail from "@/components/chargingStation/connectorDetail";
+import detailData from "@/tmpData/stationDetailInfoData";
 export default {
     components: {
-        BarChart,
-        ChargeBoxList,
-        ChargingSession,
-        ShowPostion
+        ShowPostion,
+        ConnectorDetail
     },
     data() {
         return {
-            curRouteParam: {},
+            curRouteParam: {
+                stationId: '',
+                stationName: ''
+            },
             lang: '',
-            detail: {
-                isLoading: false,
-                data: {
-                    chargeBoxCount: 0,
-                    stationSessionCount: 0,
-                    stationAccumulativeEnergy: 0,
-                    electricityRateCurrency: '',
-                    electricityRate: 0,
-                    parkingRateCurrency: '',
-                    parkingRate: 0
-                }
+            isLoading: false,
+            stationInfo: {
+                zipCode: '',
+                address: '',
+                loc: {
+                    lng: '',
+                    lon: '',
+                    lat: ''
+                },
+                serviceStartTime: '',
+                serviceEndTime: '',
+                countryCode: '',
+                phone: ''
             },
-            daySelectList: i18n.t('chargingStation.daySelectList'),
-            chartChargingSesstion: {
-                search: 1,
-                isLoading: false,
-                chartData: {
-                    timeList: [],
-                    data: [],
-                    unit: ''
-                }
+            summary: {
+                chargeBoxCount: 0,
+                acChargeBoxInfo: {
+                    count: 0,
+                    chargeConnectorTypeList: []
+                },
+                dcChargeBoxInfo: {
+                    count: 0,
+                    chargeConnectorTypeList: []
+                },
+                chargeBoxTotalPower: 0,
             },
-            chartPowerUsed: {
-                search: 1,
-                isLoading: false,
-                chartData: {
-                    timeList: [],
-                    data: [],
-                    unit: 'kWh'
-                }
+            smartChargingSettingInfo: {
+                onOffStatus: 0,
+                maxDemandPowerLimit: 0,
+                intervalMaxPower: 0,
+                intervalTime: 5
             },
-            active: 'chargeBoxList',
+            smartChargingConnectorAnalysisInfo: [],
             mapDialog: {
                 visible: false,
                 itemId: '',
                 position: {
                     lat: '',
                     lng: ''
+                }
+            },
+            smartSettingDialog: {
+                visible: false,
+                info: {
+                    onOffStatus: 0,
+                    maxDemandPowerLimit: 0,
+                    intervalMaxPower: 0,
+                    intervalTime: 5
                 }
             }
         }
@@ -155,21 +180,18 @@ export default {
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.stationId) {
             let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
-            if (temp && temp.stationId && temp.stationName
-                && temp.loc && temp.loc.lon && temp.loc.lat
-                && temp.address) {
-                this.curRouteParam = temp;
-            } else {
+            if (!(temp && temp.stationId && temp.stationName)) {
                 this.$router.go(-1);
+            } else {
+                this.curRouteParam = Object.assign({}, temp);
             }
         }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
-        this.fetchStationDetail();
-        this.fetchChartSesstionData();
-        this.fetchChartPowerUsedData();
         setScrollBar('.scroll', this);
+        this.fetchStationDetail();
+
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
@@ -180,166 +202,88 @@ export default {
             let param = {
                 stationId: that.curRouteParam.stationId
             };
-            this.detail.isLoading = true;
-            $HTTP_getStationDetail(param).then((data) => {
-                this.detail.isLoading = false;
-                if (!!data.success) {
-                    this.detail.data = Object.assign({}, data.stationInfo);
-                    this.detail.data.electricityRateCurrency = $GLOBAL_CURRENCY[data.stationInfo.electricityRateUnitType] || 1;
-                    this.detail.data.parkingRateCurrency = $GLOBAL_CURRENCY[data.stationInfo.parkingRateUnitType] || 1;
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log(err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
-        fetchChartSesstionData() {
-            const that = this;
-            let param = {
-                stationId: that.curRouteParam.stationId,
-                dateType: that.chartChargingSesstion.search
-            };
-            this.chartChargingSesstion.isLoading = true;
-            $HTTP_getChargingSessionAnalysisInfo(param).then((data) => {
-                this.chartChargingSesstion.isLoading = false;
-                if (!!data.success) {
-                    this.chartChargingSesstion.chartData.data = data.dataList;
-                    this.chartChargingSesstion.chartData.timeList = data.timeList;
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('chartChargingSesstion', err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
-        fetchChartPowerUsedData() {
-            const that = this;
-            let param = {
-                stationId: that.curRouteParam.stationId,
-                dateType: that.chartPowerUsed.search
-            };
-            this.chartPowerUsed.isLoading = true;
-            $HTTP_getPowerUsageAnalysisInfo(param).then((data) => {
-                this.chartPowerUsed.isLoading = false;
-                if (!!data.success) {
-                    this.chartPowerUsed.chartData.data = data.dataList;
-                    this.chartPowerUsed.chartData.timeList = data.timeList;
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('chartPowerUsed', err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
+            // this.isLoading = true;
+            // $HTTP_getStationDetail(param).then((data) => {
+            //     this.isLoading = false;
+            //     if (!!data.success) {
+                var data = Object.assign({}, detailData);
+                    this.stationInfo = {
+                                            stationId: data.stationInfo.stationId,
+                                            stationName: data.stationInfo.stationName,
+                                            zipCode: data.stationInfo.zipCode,
+                                            address: data.stationInfo.address,
+                                            loc: {
+                                                lng: data.stationInfo.loc.lon,
+                                                lon: data.stationInfo.loc.lon,
+                                                lat: data.stationInfo.loc.lat
+                                            },
+                                            serviceStartTime: data.stationInfo.serviceStartTime,
+                                            serviceEndTime: data.stationInfo.serviceEndTime,
+                                            countryCode: data.stationInfo.countryCode,
+                                            phone: data.stationInfo.phone
+                                        };
+                    this.summary = {
+                                        chargeBoxCount: data.stationInfo.chargeBoxCount,
+                                        acChargeBoxInfo: {
+                                            count: data.stationInfo.acChargeBoxInfo.count,
+                                            chargeConnectorTypeList: data.stationInfo.acChargeBoxInfo.chargeConnectorTypeList.slice()
+                                        },
+                                        dcChargeBoxInfo: {
+                                            count: data.stationInfo.dcChargeBoxInfo.count,
+                                            chargeConnectorTypeList: data.stationInfo.dcChargeBoxInfo.chargeConnectorTypeList.slice()
+                                        },
+                                        chargeBoxTotalPower: data.stationInfo.chargeBoxTotalPower
+                                    };
+                    this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
+                    this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
+            //     } else {
+            //         this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+            //     }
+            // }).catch((err) => {
+            //     console.log(err)
+            //     this.$message({ type: "warning", message: i18n.t("error_network") });
+            // });
         },
         handleShowDialog() {
-            this.mapDialog.itemId = this.curRouteParam.stationId;
-            this.mapDialog.position = this.curRouteParam.loc;
+            this.mapDialog.itemId = this.stationId;
+            this.mapDialog.position = this.stationInfo.loc;
             this.mapDialog.visible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        handleSelected(item) {
-            if (item === 'chartChargingSesstion') {
-                this.fetchChartSesstionData();
-            } else {
-                this.fetchChartPowerUsedData()
-            }
+        closeShowPosDialog() {
+            this.mapDialog.visible = false;
+            this.$jQuery(".scroll").mCustomScrollbar("update");
         },
-        handleTabClick(tab, event) {}
+        openSmartSettingDialog() {
+            // this.smartSettingDialog.info = Object.assign({}, this,this.smartChargingSettingInfo);
+            // this.smartSettingDialog.visible = true;
+            // this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        closeSmartSettingDialog() {
+            this.$jQuery(".scroll").mCustomScrollbar("update");
+        }
     }
 }
 </script>
 <style lang = "scss" scoped>
-.station-detail {
-    width: calc(100% - 40px);
+.card-8 {
     .header {
         color: #151E25;
         font-size: 1.25rem;
     }
-    .sec-header {
-        font-size: 0.875rem;
-        color: #525E69;
-        &.long {
-            margin: 12px 0;
+    .chargePoint {
+        padding-top: 8px;
+        .title {
+            font-size: 1.125rem;
+            color: #151E25;
         }
-        &:not(.long) {
-            width: auto;
+        .connector-obj.detail {
             display: inline-block;
-            margin-bottom: 12px;
-        }
-    }
-    .s-contain {
-        width: calc(100% - 32px);
-        height: 246px;
-        padding: 0 0 0 32px;
-        background: #DDE7F5;
-        border-radius: 4px;
-        margin-bottom: 28px;
-        .item {
-            padding: 12px 0;
-            display: inline-block;
-            width: calc(50% - 16px);
-            float: left;
-            .label {
-                font-size: 1rem;
-                color: #525E69;
-                letter-spacing: 0;
-                margin-bottom: 6px;
+            width: calc(50% - 6px);
+            box-sizing: border-box;
+            + .connector-obj.detail:not(.even) {
+                margin-left: 0;
             }
-            .content {
-                font-size: 1.875rem;
-                color: #151E25;
-                letter-spacing: 0;
-                .name-wrapper {
-                    color: #89c0f9;
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-    .chart {
-        width: 100%;
-        height: calc(18px + 30vh);
-        position: relative;
-        margin-bottom: 28px;
-        .header {
-            font-size: 1rem;
-            color: #525E69;
-        }
-        .barChart {
-            height: 30vh;
-        }
-    }
-    .tabs-contain {
-        margin-bottom: 28px;
-    }
-}
-@media only screen and (max-width: 1600px) and (min-width: 1201px) {
-    .station-detail {
-        .s-contain {
-            height: 164px;
-            .item {
-                width: calc(33.33% - 11px);
-            }
-        }
-        .chart {
-            width: calc(50% - 18px);
-            display: inline-block;
-            /* float: left; */
-            + .chart {
-                margin-left: 36px;
-                float: right;
-            }
-        }
-    }
-}
-@media (min-width: 1601px) {
-    .station-detail .s-contain {
-        height: 82px;
-        .item {
-            width: calc(16.67% - 5.34px);
         }
     }
 }

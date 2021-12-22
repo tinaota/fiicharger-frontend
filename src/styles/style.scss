@@ -376,25 +376,6 @@
                 background: #8c8f97;
             }
         }
-        &.station-detail {
-            .chart .el-select {
-                width: 136px;
-                input {
-                    background: transparent;
-                    border: unset;
-                    color: #525E69;
-                    font-size: 0.875rem;
-                }
-                input::-webkit-input-placeholder {
-                    color: #525E69;
-                }
-                .el-input__suffix .el-input__suffix-inner i,
-                .el-input__suffix .el-input__suffix-inner i:hover {
-                    color: #525E69;
-                    font-weight: bold;
-                }
-            }
-        }
         &.report {
             margin-bottom: 0;
             .tabs-contain .tab {
@@ -526,7 +507,7 @@
         }
         .el-progress {
             .el-progress-bar__outer {
-                background-color: #D5D4D4;;
+                background-color: #D5D4D4;
                 border-radius: 6px;
                 border-radius: 6px;
                 .el-progress-bar__inner {
@@ -697,10 +678,15 @@ button,
     &.detail {
         width: 24px;
         height: 24px;
-        background-image: url('~imgs/ic_device_info.png')
+        background-image: url('~imgs/ic_detail.png')
     }
     &.refresh {
         background-image: url('~imgs/ic_reboot.png')
+    }
+    &.bind {
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_bind.png')
     }
     + .el-button {
         margin-left: 8px;
@@ -891,11 +877,34 @@ button:disabled {
         .el-date-editor .el-icon-date {
             color: #151E25;
         }
+        .el-checkbox {
+            margin-bottom: 12px;
+            display: block;
+            .el-checkbox__inner {
+                width: 20px;
+                height: 20px;
+                &::after {
+                    top: 2px;
+                    height: 10px;
+                    left: 7px;
+                }
+            }
+            .el-checkbox__label {
+                line-height: 24px;
+                font-size: 1rem;
+                color: #151E25;
+            }
+        }
     }
     .hint {
         margin: 8px 20px 18px 0;
         font-size: 0.95rem;
         color: #1E5EFF;
+    }
+    .err {
+        margin: 8px 20px 18px 0;
+        font-size: 0.95rem;
+        color: #fc2e56;
     }
 }
 .el-message-box.custom {
@@ -1048,5 +1057,100 @@ div.connector-obj {
     &.nextLine {
         display: block;
         margin-top: 4px;
+    }
+    &.detail {
+        padding: 16px 20px 0 20px;
+        .header {
+            font-size: 1rem;
+            color: #525E69;
+            .name {
+                display: inline-block;
+                &.circular {
+                    vertical-align: super;
+                }
+            }
+            .battery {
+                display: inline-block;
+                float: right;
+                margin-top: 6.5px;
+            }
+        }
+        .info {
+            font-size: 0.875rem;
+            color: #525E69;
+            height: 20px;
+            .loadBalance {
+                display: inline-block;
+                float: right;
+            }
+        }
+        .circle-number {
+            line-height: 18px;
+            vertical-align: unset;
+            margin-top: 3.5px;
+        }
+        .circular .number {
+            top: 5px;
+            left: 9px;
+            color: #FFF;
+        }
+    }
+}
+.el-slider {
+    .el-slider__marks-text {
+        top: 8px;
+        font-size: 0.875rem;
+        color: #525E69;
+        span {
+            display: inline-block;
+            height: 8px !important;
+            overflow: hidden;
+        }
+    }
+    .el-slider__marks-text:last-child {
+        -webkit-transform: translateX(-13px);
+        transform: translateX(-13px);
+        width: 36px;
+        word-break: break-word;
+    }
+    .el-slider__runway {
+        height: 14px;
+        border-radius: 7px;
+        &.disabled {
+            background-color: #D5D4D4;
+            .el-slider__button-wrapper {
+                top: -10px;
+            }
+            .el-slider__bar {
+                height: 14px;
+                border-radius: 7px;
+            }
+            .el-slider__button {
+                border-color: #FCFCFC;
+            }
+        }
+    }
+    .el-slider__stop {
+        display: none;
+    }
+}
+.el-slider:not(.spec) {
+    .el-slider__runway.disabled {
+        .el-slider__bar {
+            background: #0C83FF ;
+        }
+        .el-slider__button {
+            background:#0C83FF;
+        }
+    }
+}
+.el-slider.spec {
+    .el-slider__runway.disabled {
+        .el-slider__bar {
+            background: #FFA10B;
+        }
+        .el-slider__button {
+            background:#FFA10B;
+        }
     }
 }
