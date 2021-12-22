@@ -4,7 +4,8 @@ export const $GLOBAL_VERSION = '2.1.1';
 export const $GLOBAL_LANG = {
     "en": "English",
     "zh-tw": "繁體中文",
-    "zh-cn": "简体中文"
+    "zh-cn": "简体中文",
+    "vi": "Tiếng Việt"
 };
 export const $GLOBAL_CURRENCY = {
     1: "$",
