@@ -49,6 +49,7 @@
                                 {{ item.count }}
                                 <span class="unit">{{ '(' + item.name +')' }}</span>
                             </div>
+                            <div v-if='scope.row.acChargeBoxInfo.chargeConnectorTypeList.length==0'>0</div>
                         </template>
                     </el-table-column>
                     <el-table-column prop="dcChargeBoxInfo.count" :label="$t('chargingStation.nDC')" :min-width="2"></el-table-column>
@@ -58,6 +59,7 @@
                                 {{ item.count }}
                                 <span class="unit">{{ '(' + item.name +')' }}</span>
                             </div>
+                            <div v-if='scope.row.dcChargeBoxInfo.chargeConnectorTypeList.length==0'>0</div>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.curPowerConsumption')" :min-width="3">
@@ -89,18 +91,58 @@
                             {{ scope.row.intervalMaxPower + "kW" + '/' + scope.row.intervalTime + $t('chargingStation.elecRateUnit')[1]}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :min-width="2">
+                    <!-- <el-table-column :label="$t('general.action')" :min-width="2">
                         <el-button class="no-bg edit" @click="openSmartSettingDialog"></el-button>
-                    </el-table-column>
+                    </el-table-column> -->
                 </el-table>
             </div>
             <div class="card-8">
                 <div class="header">{{ $t('general.detail')}}</div>
                 <div class="chargePoint" v-for="(item, idx) in smartChargingConnectorAnalysisInfo" :key="idx" v-loading="isLoading">
-                    <div class="title">{{ item.chargeBoxName }}</div>
+                    <div class="title" @click="goChargePointDetail(item.chargeBoxId)">{{ item.chargeBoxName }}</div>
                     <ConnectorDetail v-for="(connector, i) in item.connectorList" :data="connector" :key="i" :class="{'even': (i%2==1)}"></ConnectorDetail>
                 </div>
             </div>
+            <!-- 功能尚未確定 -->
+            <!-- <el-dialog
+                :title="$t('general.modify')"
+                width="400px"
+                :visible.sync="smartSettingDialog.visible"
+                :show-close="false"
+                v-loading="smartSettingDialog.isLoading"
+                @close="closeSmartSettingDialog">
+                <div class="vertial formVertical">
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.smartCharging') }}</div>
+                        <el-switch v-model="smartSettingDialog.info.onOffStatus" active-color="#0263FF" inactive-color="#D5D4D4"></el-switch>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.onPeakDemandMaxLimit') + '(kw)' }}</div>
+                        <el-slider
+                            v-model="smartSettingDialog.info.maxDemandPowerLimit"
+                            :min="0"
+                            :max="smartSettingDialog.info.intervalMaxPower"
+                            :step="5">
+                        </el-slider>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.csMaxPower')+ '(kw)' }}</div>
+                        <el-input v-model="smartSettingDialog.info.intervalMaxPower" disabled></el-input>
+                    </div>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.intervalTime') }}</div>
+                        <el-select
+                            class="select-small"
+                            v-model="smartSettingDialog.info.intervalTime">
+                            <el-option v-for="item in smartSettingDialog.intervalTimeList" :label="item + ' ' + $t('chargingStation.elecRateUnit')[1]" :key="item" :value="item"></el-option>
+                        </el-select>
+                    </div>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                    <el-button size="small" @click="smartSettingDialog.visible = false">{{ $t('general.cancel') }}</el-button>
+                    <el-button size="small" type="primary">{{ $t('general.ok') }}</el-button>
+                </span>
+            </el-dialog> -->
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog" ></ShowPostion>
         </div>
     </div>
@@ -111,7 +153,6 @@ import { $HTTP_getStationDetail } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ConnectorDetail from "@/components/chargingStation/connectorDetail";
-import detailData from "@/tmpData/stationDetailInfoData";
 export default {
     components: {
         ShowPostion,
@@ -168,11 +209,12 @@ export default {
             smartSettingDialog: {
                 visible: false,
                 info: {
-                    onOffStatus: 0,
+                    onOffStatus: false,
                     maxDemandPowerLimit: 0,
                     intervalMaxPower: 0,
                     intervalTime: 5
-                }
+                },
+                intervalTimeList: [5, 10, 15, 20, 30, 60]
             }
         }
     },
@@ -202,11 +244,10 @@ export default {
             let param = {
                 stationId: that.curRouteParam.stationId
             };
-            // this.isLoading = true;
-            // $HTTP_getStationDetail(param).then((data) => {
-            //     this.isLoading = false;
-            //     if (!!data.success) {
-                var data = Object.assign({}, detailData);
+            this.isLoading = true;
+            $HTTP_getStationDetail(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
                     this.stationInfo = {
                                             stationId: data.stationInfo.stationId,
                                             stationName: data.stationInfo.stationName,
@@ -236,13 +277,13 @@ export default {
                                     };
                     this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
                     this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
-            //     } else {
-            //         this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-            //     }
-            // }).catch((err) => {
-            //     console.log(err)
-            //     this.$message({ type: "warning", message: i18n.t("error_network") });
-            // });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
         },
         handleShowDialog() {
             this.mapDialog.itemId = this.stationId;
@@ -254,13 +295,20 @@ export default {
             this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
-        openSmartSettingDialog() {
-            // this.smartSettingDialog.info = Object.assign({}, this,this.smartChargingSettingInfo);
-            // this.smartSettingDialog.visible = true;
-            // this.$jQuery(".scroll").mCustomScrollbar("disable");
-        },
-        closeSmartSettingDialog() {
-            this.$jQuery(".scroll").mCustomScrollbar("update");
+        // openSmartSettingDialog() {
+        //     this.smartSettingDialog.info = Object.assign({}, this,this.smartChargingSettingInfo);
+        //     this.smartSettingDialog.info.onOffStatus = (this.smartSettingDialog.info.onOffStatus) ? true:false;
+        //     this.smartSettingDialog.visible = true;
+        //     this.$jQuery(".scroll").mCustomScrollbar("disable");
+        // },
+        // closeSmartSettingDialog() {
+        //     this.$jQuery(".scroll").mCustomScrollbar("update");
+        // }
+        goChargePointDetail(chargeBoxId) {
+            const params = {
+                chargeBoxId: chargeBoxId
+            }
+            this.$router.push({ name: 'chargePointDetail', params: params});
         }
     }
 }
@@ -276,6 +324,7 @@ export default {
         .title {
             font-size: 1.125rem;
             color: #151E25;
+            cursor: pointer;
         }
         .connector-obj.detail {
             display: inline-block;

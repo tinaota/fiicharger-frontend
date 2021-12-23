@@ -41,7 +41,7 @@
         "chargeBoxTotalPower": 123
     },
     "smartChargingSettingInfo": {
-        "onOffStatus": 0,
+        "onOffStatus": 1,
         "maxDemandPowerLimit": 0,
         "intervalMaxPower": 0,
         "intervalTime": 5
@@ -64,8 +64,8 @@
                     "battery": 50,
                     "chartInfo": {
                         "intervalMaxPower": 350,
-                        "settingMaxPowerLimit": 500,
-                        "connectorDefaultMaxPower": 0,
+                        "loadBalancePowerLimit": 500,
+                        "connectorDefaultMaxPower": 499,
                         "powerGap": 100
                     }
                 },
@@ -81,9 +81,9 @@
                     "vipStatus": 1,
                     "battery": 70,
                     "chartInfo": {
-                        "intervalMaxPower": 750,
-                        "settingMaxPowerLimit": 1000,
-                        "connectorDefaultMaxPower": 0,
+                        "intervalMaxPower": 50,
+                        "loadBalancePowerLimit": 100,
+                        "connectorDefaultMaxPower": 500,
                         "powerGap": 250
                     }
                 },
@@ -100,8 +100,8 @@
                     "battery": 100,
                     "chartInfo": {
                         "intervalMaxPower": 100,
-                        "settingMaxPowerLimit": 500,
-                        "connectorDefaultMaxPower": 0,
+                        "loadBalancePowerLimit": 500,
+                        "connectorDefaultMaxPower": 500,
                         "powerGap": 100
                     }
                 },
@@ -118,8 +118,8 @@
                     "battery": 100,
                     "chartInfo": {
                         "intervalMaxPower": 100,
-                        "settingMaxPowerLimit": 500,
-                        "connectorDefaultMaxPower": 0,
+                        "loadBalancePowerLimit": 500,
+                        "connectorDefaultMaxPower": 500,
                         "powerGap": 100
                     }
                 }
@@ -142,8 +142,8 @@
                     "battery": 20,
                     "chartInfo": {
                         "intervalMaxPower": 350,
-                        "settingMaxPowerLimit": 599,
-                        "connectorDefaultMaxPower": 0,
+                        "loadBalancePowerLimit": 499,
+                        "connectorDefaultMaxPower": 500,
                         "powerGap": 100
                     }
                 }

@@ -19,15 +19,16 @@
             <div class="battery">{{ $t('cars.battery') + ' ' + data.battery + '%' }}</div>
         </div>
         <div class="info">
-            <!-- 還不確定後台還沒寫好文件 -->
-            <div class="loadBalance">{{ $t('chargingStation.loadBalance') + ' ' + data.chartInfo.settingMaxPowerLimit + 'kw' }}</div>
+            <div class="loadBalance">{{ $t('chargingStation.loadBalance') + ' ' + data.chartInfo.loadBalancePowerLimit + 'kw' }}</div>
         </div>
         <el-slider
-            :class="{'spec': data.vipStatus}" disabled
+            :class="{'spec': data.vipStatus}"
             v-model="data.chartInfo.intervalMaxPower"
-            :max="data.chartInfo.settingMaxPowerLimit"
-            :step="data.chartInfo.powerGap"
-            :marks="getSliderMarks">
+            :min="0"
+            :max="data.chartInfo.connectorDefaultMaxPower"
+            :step="1"
+            :marks="getSliderMarks(0, data.chartInfo.connectorDefaultMaxPower, data.chartInfo.powerGap, 'kw')"
+            disabled>
         </el-slider>
     </div>
 </template>
@@ -59,7 +60,7 @@ export default {
                     battery: 0,
                     chartInfo: {
                         intervalMaxPower: 0,
-                        settingMaxPowerLimit: 0,
+                        loadBalancePowerLimit: 0,
                         connectorDefaultMaxPower: 0,
                         powerGap: 100
                     }
@@ -84,15 +85,19 @@ export default {
         }
     },
     methods: {
-        getSliderMarks() {
-            const max = this.data.chartInfo.settingMaxPowerLimit;
-            let mark = {};
-            for(let i=0;i<=this.data.chartInfo.settingMaxPowerLimit;i+=this.data.chartInfo.powerGap) {
+        getSliderMarks(min, max, step, unit) {
+            let mark = {},
+                lastValue = 0;
+            for(let i = min; i <= max ; i += step) {
                 if (i < max) {
                     mark[i] = i + "";
                 } else if (i == max) {
-                    mark[i] = i + " kw";
+                    mark[i] = i + " " + unit;
                 }
+                lastValue = i;
+            }
+            if (lastValue !== max) {
+                mark[max] = max + " " + unit;
             }
             return mark;
         },

@@ -320,6 +320,11 @@ export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/Cha
 export const $HTTP_getChargeBoxInfoForMap = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxInfoForMap`, qs.stringify(params)) }
 
 /**
+ * @description 取得充電樁明細
+ */
+ export const $HTTP_getChargeBoxDetail = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxDetail`, qs.stringify(params)) }
+
+/**
  * @description 取得充電紀錄列表
  */
 export const $HTTP_getChargingSessionList = params => { return post(`${base}/ChargeStation/ChargingSession/getChargingSessionList`, qs.stringify(params)) }

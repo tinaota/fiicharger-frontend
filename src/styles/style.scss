@@ -1059,7 +1059,7 @@ div.connector-obj {
         margin-top: 4px;
     }
     &.detail {
-        padding: 16px 20px 0 20px;
+        padding: 16px 28px 28px 20px;
         .header {
             font-size: 1rem;
             color: #525E69;
@@ -1108,14 +1108,15 @@ div.connector-obj {
         }
     }
     .el-slider__marks-text:last-child {
-        -webkit-transform: translateX(-13px);
-        transform: translateX(-13px);
-        width: 36px;
+        -webkit-transform: translateX(-30px);
+        transform: translateX(-30px);
+        width: 60px;
         word-break: break-word;
     }
     .el-slider__runway {
         height: 14px;
         border-radius: 7px;
+        margin-top: 6px;
         &.disabled {
             background-color: #D5D4D4;
             .el-slider__button-wrapper {

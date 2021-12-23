@@ -7,7 +7,7 @@
                 <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
-                <div class="charge-point-info">
+                <div class="charge-point-info" v-loading="isLoading">
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
                         <div class="content">{{ curRouteParam.chargeBoxName }}</div>
@@ -16,7 +16,7 @@
                         <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                         <div class="content">
                             {{ curRouteParam.chargeBoxId }}
-                            <el-tooltip :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
+                            <el-tooltip v-if="curRouteParam.loc && curRouteParam.loc.lon && curRouteParam.loc.lat" :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog"></el-button>
                             </el-tooltip>
                         </div>
@@ -107,6 +107,7 @@ import ShowPostion from "@/components/chargingStation/showPostion";
 import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Review from "@/components/chargingStation/review";
+import { $HTTP_getChargeBoxDetail } from "@/api/api";
 export default {
     components: {
         Connector,
@@ -119,7 +120,28 @@ export default {
         return {
             lang: '',
             permissionShowAlertAble: true,
-            curRouteParam: {},
+            curRouteParam: {
+                chargeBoxId: '',
+                chargeBoxName: '',
+                loc: {
+                    lon: '',
+                    lat: ''
+                },
+                power: '',
+                chargeBoxStatus: '',
+                connectorList: [],
+                chargeType: '',
+                currency: '',
+                onPeakElectricityRate: '',
+                onPeakElectricityRateType: 1,
+                offPeakElectricityRate: '',
+                offPeakElectricityRateType: 1,
+                parkingRate: '',
+                parkingRateType: 1,
+                installationDate: '',
+                operatorTypeName: ''
+            },
+            isLoading: false,
             active: 'chargingSession',
             mapDialog: {
                 visible: false,
@@ -149,6 +171,31 @@ export default {
             } else {
                 this.$router.go(-1);
             }
+        } else if (!this.curRouteParam.chargeBoxName) {
+            //從station detail連過來 沒有詳細資料
+            //api尚未完成
+            this.curRouteParam = {
+                chargeBoxId: this.curRouteParam.chargeBoxId,
+                chargeBoxName: '',
+                loc: {
+                    lon: '',
+                    lat: ''
+                },
+                power: 0,
+                chargeBoxStatus: '',
+                connectorList: [],
+                chargeType: '',
+                currency: '',
+                onPeakElectricityRate: 0,
+                onPeakElectricityRateType: 1,
+                offPeakElectricityRate: 0,
+                offPeakElectricityRateType: 1,
+                parkingRate: 0,
+                parkingRateType: 1,
+                installationDate: '',
+                operatorTypeName: ''
+            };
+            // this.fetchData(); //api尚未完成
         }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
@@ -159,6 +206,24 @@ export default {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
     },
     methods: {
+        fetchData() {
+            const that = this,
+                  params = {
+                      chargeBoxId: this.curRouteParam.chargeBoxId
+                  }
+            this.isLoading = true;
+            $HTTP_getChargeBoxDetail(params).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log('getChargeBoxDetail', err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         handleShowDialog() {
             this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
             this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
