@@ -196,7 +196,7 @@
         "maxOutputPower": "最大輸出功率",
         "failure": "失敗",
         "chargePointAlert": "歷史問題",
-        "noChargePointBind": "無充電裝可以被綁定",
+        "noChargePointBind": "無充電樁可以被綁定",
         "stationInfo": "充電站信息",
         "smartChargingSetting": "智能充電設置",
         "nAC": "AC數量",
@@ -205,10 +205,10 @@
         "dcConnectors": "DC充電槍",
         "curPowerConsumption": "當前功耗",
         "smartCharging": "智能充電",
-        "onPeakDemandMaxLimit": "峰值需求最大限制",
+        "onPeakDemandMaxLimit": "尖峰期間需求最大限制",
         "csMaxPower": "充電樁最大功率",
         "intervalTime": "間隔時間",
-        "loadBalance": "負仔均衡"
+        "loadBalance": "負載平衡"
     },
     "userAccount": {
         "memberName": "會員名稱",

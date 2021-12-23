@@ -28,7 +28,7 @@
                             {{ scope.row.serviceStartTime + '-' + scope.row.serviceEndTime }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('userAccount.countryCode')" :min-width="5">
+                    <el-table-column :label="$t('general.telephone')" :min-width="5">
                         <template slot-scope="scope">
                             {{ scope.row.countryCode + ' ' + scope.row.phone }}
                         </template>

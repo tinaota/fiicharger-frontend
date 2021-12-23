@@ -196,7 +196,7 @@
         "maxOutputPower": "最大输出功率",
         "failure": "失败",
         "chargePointAlert": "历史问题",
-        "noChargePointBind": "无充电装可以被绑定",
+        "noChargePointBind": "无充电桩可以被绑定",
         "stationInfo": "充电站信息",
         "smartChargingSetting": "智能充电设置",
         "nAC": "AC数量",
@@ -205,10 +205,10 @@
         "dcConnectors": "DC充电枪",
         "curPowerConsumption": "当前功耗",
         "smartCharging": "智能充电",
-        "onPeakDemandMaxLimit": "峰值需求最大限制",
+        "onPeakDemandMaxLimit": "尖峰期间需求最大限制",
         "csMaxPower": "充电桩最大功率",
         "intervalTime": "间隔时间",
-        "loadBalance": "负载均衡"
+        "loadBalance": "负载平衡"
     },
     "userAccount": {
         "memberName": "会员名称",
