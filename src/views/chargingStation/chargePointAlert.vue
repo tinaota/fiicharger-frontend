@@ -33,6 +33,7 @@
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
+                    <div class="alertPageComment">{{ alertPageComment }} </div>
                 </div>
                 <el-table
                     :data="tableData.slice((page - 1) * 10, page * 10)"
@@ -93,7 +94,8 @@ export default {
                 disabledDate(time) {
                 return time.getTime() > Date.now();
                 },
-            }
+            },
+            alertPageComment: ''
         }
     },
     created() {
@@ -111,7 +113,9 @@ export default {
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {};
+            let param = {
+                lang: this.lang
+            };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
@@ -128,6 +132,7 @@ export default {
                 if (!!data.success) {
                     this.tableData = data.chargeAlertList.slice();
                     this.total = this.tableData.length;
+                    this.alertPageComment = data.alertPageComment;
                 } else {
                     this.tableData = [];
                     this.total = 0;
@@ -163,6 +168,12 @@ export default {
         font-size: 1rem;
         color: #5A607F;
         letter-spacing: 0;
+    }
+    .alertPageComment {
+        display: inline-block;
+        color: #151E25;
+        font-size: 0.875rem;
+        line-height: 40px;
     }
 }
 </style>

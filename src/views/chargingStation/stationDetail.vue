@@ -320,7 +320,7 @@ export default {
         font-size: 1.25rem;
     }
     .chargePoint {
-        padding-top: 8px;
+        margin-top: 16px;
         .title {
             font-size: 1.125rem;
             color: #151E25;

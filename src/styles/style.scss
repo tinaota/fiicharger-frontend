@@ -1059,7 +1059,7 @@ div.connector-obj {
         margin-top: 4px;
     }
     &.detail {
-        padding: 16px 28px 28px 20px;
+        padding: 16px 28px 16px 16px;
         .header {
             font-size: 1rem;
             color: #525E69;
@@ -1083,6 +1083,9 @@ div.connector-obj {
                 display: inline-block;
                 float: right;
             }
+        }
+        .el-slider {
+            margin: 0 10px;
         }
         .circle-number {
             line-height: 18px;
