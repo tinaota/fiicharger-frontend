@@ -348,7 +348,7 @@ export default {
         setScrollBar('.scroll', this);
         this.fetchStationList();
         this.fetchLocationList();
-        this.fetchData();
+        this.fetchData(); //
         // this.fetchCountryCodeList();
     },
     beforeDestroy() {
