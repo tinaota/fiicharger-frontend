@@ -234,14 +234,31 @@ export const $HTTP_deleteCustomerService = params => { return post(`${base}/Home
 export const $HTTP_addStation= params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }
 
 /**
+ * @description 新增Kiosk
+ */
+ export const $HTTP_addKiosk= params => { return post(`${base}/ChargeStation/Kiosk/addKiosk`, qs.stringify(params)) }
+
+/**
  * @description 更新充電站資訊
  */
 export const $HTTP_updateStation = params => { return post(`${base}/ChargeStation/Station/updateStation`, qs.stringify(params)) }
 
 /**
+ * @description 更新Kiosk資訊
+ */
+ export const $HTTP_updateKiosk = params => { return post(`${base}/ChargeStation/Kiosk/updateKiosk`, qs.stringify(params)) }
+
+
+/**
  * @description 刪除充電站資訊
  */
 export const $HTTP_deleteStation = params => { return post(`${base}/ChargeStation/Station/deleteStation`, qs.stringify(params)) }
+
+/**
+ * @description 刪除Kiosk資訊
+ */
+ export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/Kiosk/deleteKiosk`, qs.stringify(params)) }
+
 
 /**
  * @description 取得充電站列表
@@ -259,6 +276,18 @@ export const $HTTP_getStationListForSelect = params => { return post(`${base}/Ch
 export const $HTTP_getStationDetail = params => { return post(`${base}/ChargeStation/Station/getStationDetail`, qs.stringify(params)) }
 
 /**
+ * @description 取得Kiosk明細
+ */
+ export const $HTTP_getKioskDetail = params => { return post(`${base}/ChargeStation/Kiosk/getKioskDetail`, qs.stringify(params)) }
+
+
+/**
+ * @description 取得Kiosk列表
+ */
+ export const $HTTP_getKioskList = params => { return post(`${base}/ChargeStation/Kiosk/getKioskList`, qs.stringify(params)) }
+
+
+/**
  * @description 取得充電紀錄分析資訊
  */
 export const $HTTP_getChargingSessionAnalysisInfo = params => { return post(`${base}/ChargeStation/Station/getChargingSessionAnalysisInfo`, qs.stringify(params)) }
@@ -272,6 +301,12 @@ export const $HTTP_getPowerUsageAnalysisInfo = params => { return post(`${base}/
  * @description 新增充電站充電樁綁定
  */
  export const $HTTP_addStationChargeBoxMatch = params => { return post(`${base}/ChargeStation/Station/addStationChargeBoxMatch`, params) }
+
+/**
+ * @description 新增Kiosk充電樁綁定
+ */
+ export const $HTTP_addKioskChargeBoxMatch = params => { return post(`${base}/ChargeStation/Kiosk/addKioskChargeBoxMatch`, params) }
+
 
 /**
  * @description 取得費率列表(選單用)
@@ -313,6 +348,11 @@ export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/Cha
  * @description 取得充電樁列表（綁定用）
  */
  export const $HTTP_getChargeBoxListForBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
+
+/**
+ * @description 取得充電樁列表（Kiosk綁定用）
+ */
+ export const $HTTP_getChargeBoxListForKioskBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForKioskBinding`, qs.stringify(params)) }
 
 /**
  * @description 取得充電樁地圖打點資訊

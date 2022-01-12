@@ -3,14 +3,14 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.station') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.kiosk') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <el-tabs :value="$store.state.nowSelectTab" @tab-click="e => $store.commit(SELECT_NOW_TAB, { path: e.name, router: $router, changePath: true})">
                   <el-tab-pane :label="$t(`menu.${tab}`)" :name="tab" v-for="tab in $store.state.tabsArr" :key="tab"></el-tab-pane>
                 </el-tabs>
                 <div class="filter">
-                    <el-select
+                    <!-- <el-select
                         class="select-small"
                         v-model="filter.operatorTypeId"
                         :placeholder="$t('general.operator')"
@@ -33,7 +33,7 @@
                         @change="fetchData('s')"
                         clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
+                    </el-input> -->
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table
@@ -41,7 +41,7 @@
                     class="moreCol enable-row-click"
                     v-loading="isLoading"
                     @row-click="handleRowClick">
-                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="kioskId" :label="$t('chargingStation.kioskID')" :min-width="2"></el-table-column>
                     <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
                     <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('general.address')" :min-width="5">
@@ -74,8 +74,8 @@
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-button class="no-bg bind" @click="openBindDialog(scope.row)"></el-button>
-                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="deleteStation(scope.row.stationId, scope.row.stationName)"></el-button>
+                            <!-- <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button> -->
+                            <el-button class="no-bg delete" @click="deleteKiosk(scope.row.kioskId, scope.row.kioskId)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -98,21 +98,36 @@
                 @close="closeDialog(true)">
                 <div id="map-container" class="google-map"></div>
                 <div class="right-form formVertical">
-                    <div class="form-item" v-if="dialog.type">
-                        <div class="label">{{ $t('chargingStation.stationID') }}</div>
-                        <el-input v-model="dialog.info.stationId" disabled></el-input>
+                    <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.station') }}</div>
+                        <el-select
+                            class="select-small"
+                            v-model="dialog.info.stationId"
+                            v-loading="stationObj.isLoading"
+                            @change="changeStation"
+                        >
+                            <el-option v-for="(item, key) in stationObj.data" :label="item.stationName" :key="key" :value="key">
+                                <span style="float: left">{{ item.stationName }}</span>
+                                <span style="float: right; color: #8492a6; font-size: 13px">{{ key }}</span>
+                            </el-option>
+                        </el-select>
+                        <!-- <el-input v-model="dialog.info.stationId" disabled></el-input> -->
                     </div>
                     <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.stationName') }}</div>
-                        <el-input v-model="dialog.info.stationName"></el-input>
+                        <div class="label">{{ $t('chargingStation.kioskID') }}</div>
+                        <el-input v-model="dialog.info.kioskId"></el-input>
                     </div>
+                    <!-- <div class="form-item">
+                        <div class="label">{{ $t('chargingStation.kioskName') }}</div>
+                        <el-input v-model="dialog.info.kioskName"></el-input>
+                    </div> -->
                     <div class="form-item">
                         <div class="label">{{ $t('general.zipCode') }}</div>
-                        <el-input v-model="dialog.info.zipCode"></el-input>
+                        <el-input v-model="dialog.info.zipCode" disabled></el-input>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.address') }}</div>
-                        <el-input v-model="dialog.info.address"></el-input>
+                        <el-input v-model="dialog.info.address" disabled></el-input>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.lng') }}</div>
@@ -132,6 +147,7 @@
                                 v-model="dialog.info.serviceStartTime"
                                 format="HH:mm"
                                 value-format="HH:mm"
+                                disabled
                                 :picker-options="{
                                     selectableRange:`00:00:00-${dialog.info.serviceEndTime ? dialog.info.serviceEndTime+':00' : '23:59:00'}`
                                 }">
@@ -142,6 +158,7 @@
                                 v-model="dialog.info.serviceEndTime"
                                 format="HH:mm"
                                 value-format="HH:mm"
+                                disabled
                                 :picker-options="{
                                     selectableRange:`${dialog.info.serviceStartTime ? dialog.info.serviceStartTime+':00' : '00:00:00'}-23:59:00`
                                 }">
@@ -153,13 +170,15 @@
                         <el-select
                             class="select-small"
                             v-model="dialog.info.countryCode"
-                            v-loading="countryCode.isLoading" >
+                            v-loading="countryCode.isLoading"
+                            disabled
+                        >
                             <el-option v-for="(item, idx) in countryCode.data" :label="item.countryCode+' ('+item.countryName+')'" :key="idx" :value="item.countryCode"></el-option>
                         </el-select>
                     </div>
                     <div class="form-item">
                         <div class="label">{{ $t('general.telephone') }}</div>
-                        <el-input v-model="dialog.info.phone"></el-input>
+                        <el-input v-model="dialog.info.phone" disabled></el-input>
                     </div>
                     <!-- <div class="form-item">
                         <div class="label">{{ $t('general.currency') }}</div>
@@ -175,8 +194,8 @@
                     </div> -->
                 </div>
                 <span slot="footer" class="dialog-footer">
-                    <el-button size="small" @click="dialog.visible = false">{{ $t('general.cancel') }}</el-button>
-                    <el-button size="small" type="primary" @click="updateStation">{{ $t('general.ok') }}</el-button>
+                    <el-button size="small" @click="cancelFun">{{ $t('general.cancel') }}</el-button>
+                    <el-button size="small" type="primary" @click="updateKiosk">{{ $t('general.ok') }}</el-button>
                 </span>
             </el-dialog>
             <el-dialog
@@ -215,7 +234,7 @@
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { $HTTP_getZipCodeListForSelect, $HTTP_getStationList, $HTTP_getCountryCodeSelectList, $HTTP_addStation, $HTTP_updateStation, $HTTP_deleteStation, $HTTP_getChargeBoxListForBinding, $HTTP_addStationChargeBoxMatch } from "@/api/api";
+import { $HTTP_getZipCodeListForSelect, $HTTP_getStationList, $HTTP_getKioskList, $HTTP_getCountryCodeSelectList, $HTTP_addKiosk, $HTTP_updateKiosk, $HTTP_deleteKiosk, $HTTP_getChargeBoxListForKioskBinding, $HTTP_addKioskChargeBoxMatch } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ic_green_dot from 'imgs/ic_green_dot.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
@@ -226,6 +245,24 @@ export default {
         ShowPostion
     },
     data() {
+        const emptyInfo = {
+            stationId: '',
+            kioskName: '',
+            kioskId: '',
+            zipCode: '',
+            countryCode: '',
+            phone: '',
+            address: '',
+            serviceStartTime: '',
+            serviceEndTime: '',
+            // unitType: '',
+            // parkingRate: 0
+            loc: {
+                lng: '',
+                lon: '',
+                lat: ''
+            }
+        }
         return {
             SELECT_NOW_TAB,
             operatorList: {},
@@ -244,6 +281,10 @@ export default {
             },
             isLoading: false,
             tableData: [],
+            stationObj: {
+                isLoading: false,
+                data: []
+            },
             page: 1,
             total: 0,
             countryCode: {
@@ -251,27 +292,12 @@ export default {
                 data: []
             },
             currencyList: $GLOBAL_CURRENCY,
+            emptyInfo,
             dialog: {
                 visible: false,
                 isLoading: false,
                 type: 0,
-                info: {
-                    stationId: '',
-                    stationName: '',
-                    zipCode: '',
-                    countryCode: '',
-                    phone: '',
-                    address: '',
-                    serviceStartTime: '',
-                    serviceEndTime: '',
-                    // unitType: '',
-                    // parkingRate: 0
-                    loc: {
-                        lng: '',
-                        lon: '',
-                        lat: ''
-                    }
-                },
+                info: { ...emptyInfo },
                 map: null,
                 mapInfo: {
                     initMap: true,
@@ -316,17 +342,52 @@ export default {
         if (this.accPermissionType === 3) {
             this.permissionEditAble = true;
         }
+        this.$store.commit(SELECT_NOW_TAB, { path: 'kiosk', router: this.$router, changePath: false})
     },
     mounted() {
         setScrollBar('.scroll', this);
+        this.fetchStationList();
         this.fetchLocationList();
         this.fetchData();
-        this.fetchCountryCodeList();
+        // this.fetchCountryCodeList();
     },
     beforeDestroy() {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, 'click');
+        this.$store.commit(SELECT_NOW_TAB, { path: 'station', router: this.$router, changePath: false})
     },
     methods: {
+        fetchStationList(type) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
+            let param = {};
+            // if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+            //     param.operatorTypeId = this.filter.operatorTypeId;
+            // }
+            // if (this.filter.zipCode) {
+            //     param.zipCode = this.filter.zipCode;
+            // }
+            // if (type) {
+            //     this.filter.search = this.filter.tmpSearch;
+            // }
+            param.search = this.filter.search;
+            $HTTP_getStationList(param).then((data) => {
+                this.isLoading = false;
+                if (!!data.success) {
+                    this.stationObj.data = {}
+                    data.stationList.map(item => {
+                        this.stationObj.data[item.stationId] = item
+                    });
+                } else {
+                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                this.tableData = [];
+                this.total = 0;
+                console.log(err)
+                this.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
         fetchLocationList() {
             const that = this;
             this.loctionList.isLoading = true;
@@ -357,10 +418,10 @@ export default {
                 this.filter.search = this.filter.tmpSearch;
             }
             param.search = this.filter.search;
-            $HTTP_getStationList(param).then((data) => {
+            $HTTP_getKioskList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.stationList.map(item => {
+                    this.tableData = data.kioskList.map(item => {
                         item.loc.lng = item.loc.lon;
                         // item.connectorCountInfo.acUnavailable = item.connectorCountInfo.acTotal - item.connectorCountInfo.acAvailable;
                         // item.connectorCountInfo.dcUnavailable = item.connectorCountInfo.dcTotal - item.connectorCountInfo.dcAvailable;
@@ -376,9 +437,25 @@ export default {
             }).catch((err) => {
                 this.tableData = [];
                 this.total = 0;
-                console.log(err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
+        },
+        changeStation() {
+            const {
+                address, zipCode, serviceEndTime, serviceStartTime,
+                loc, phone, countryCode
+            } = this.stationObj.data[this.dialog.info.stationId]
+            this.dialog.info.zipCode = zipCode
+            this.dialog.info.countryCode = countryCode
+            this.dialog.info.phone = phone
+            this.dialog.info.address = address
+            this.dialog.info.serviceStartTime = serviceStartTime
+            this.dialog.info.serviceEndTime = serviceEndTime
+            this.dialog.info.loc.lng = loc.lon
+            this.dialog.info.loc.lon = loc.lon
+            this.dialog.info.loc.lat = loc.lat
+            this.drawMarker();
+            this.dialog.map.setCenter(this.dialog.info.loc);
         },
         changePage(page) {
             this.page = page;
@@ -401,14 +478,14 @@ export default {
         fetchChargeBoxListForBinding() {
             const that = this,
                   params = {
-                      zipCode: this.bindDialog.info.zipCode,
+                      kioskId: this.bindDialog.info.kioskId,
                       stationId: this.bindDialog.info.stationId
                   };
             this.bindDialog.oriChargePointList = {};
             this.bindDialog.chargeBoxNameArr = [];
             this.bindDialog.info.selectedChargeBoxNameArr = [];
             this.bindDialog.isLoading = true;
-            $HTTP_getChargeBoxListForBinding(params).then((data) => {
+            $HTTP_getChargeBoxListForKioskBinding(params).then((data) => {
                 that.bindDialog.isLoading = false;
                 if (!!data.success) {
                     data.chargeBoxList.forEach(item => {
@@ -431,10 +508,11 @@ export default {
             if ($(event.path[0]).attr('class')!==undefined && $(event.path[0]).attr('class').includes('cell')) {
                 const stationData = {
                                         stationId: row.stationId,
-                                        stationName: row.stationName
+                                        stationName: row.stationName,
+                                        kioskId: row.kioskId
                                     };
                 window.sessionStorage.setItem('fiics-stationInfo', JSON.stringify(stationData));
-                this.$router.push({ name: "stationDetail", params: stationData }).catch();
+                this.$router.push({ name: "kioskDetail", params: stationData }).catch();
             }
         },
         openDialog(type, data) {
@@ -515,6 +593,7 @@ export default {
                                         stationId: data.stationId,
                                         stationName: data.stationName,
                                         zipCode: data.zipCode,
+                                        kioskId: data.kioskId,
                                         selectedChargeBoxNameArr: []
                                     };
             this.fetchChargeBoxListForBinding();
@@ -529,14 +608,14 @@ export default {
         updateBindStation() {
             const that = this,
                   params = {
-                                stationId: that.bindDialog.info.stationId,
+                                kioskId: that.bindDialog.info.kioskId,
                                 chargeBoxIdArr: []
                             };
             that.bindDialog.info.selectedChargeBoxNameArr.forEach(name=> {
                 params.chargeBoxIdArr.push(that.bindDialog.oriChargePointList[name]);
             })
             that.bindDialog.isLoading = true;
-            $HTTP_addStationChargeBoxMatch(params).then(data => {
+            $HTTP_addKioskChargeBoxMatch(params).then(data => {
                 that.bindDialog.isLoading = false;
                 if (!!data.success) {
                     that.$message({ type: "success", message: i18n.t('general.sucUpdateMsg') });
@@ -546,13 +625,13 @@ export default {
                 }
             });
         },
-        deleteStation(id, name) {
+        deleteKiosk(id, name) {
             const that = this;
             this.$confirm(i18n.t('general.deleteItem', { item: name }), i18n.t('general.hint'), {
                 showClose: false,
                 customClass: 'custom'
             }).then(() => {
-                $HTTP_deleteStation({stationId: id}).then(data => {
+                $HTTP_deleteKiosk({kioskId: id}).then(data => {
                     if (!!data.success) {
                         that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
                         that.fetchData();
@@ -562,28 +641,26 @@ export default {
                 });
             });
         },
-        updateStation() {
+        cancelFun() {
+            this.dialog.visible = false
+            this.dialog.info = { ...this.emptyInfo }
+        },
+        updateKiosk() {
             const that = this;
             let   $API,
                   params = {
-                    stationName: that.dialog.info.stationName,
-                    zipCode: that.dialog.info.zipCode,
-                    countryCode: that.dialog.info.countryCode,
-                    phone: that.dialog.info.phone,
-                    address: that.dialog.info.address,
-                    serviceStartTime: that.dialog.info.serviceStartTime,
-                    serviceEndTime: that.dialog.info.serviceEndTime,
-                    // unitType: that.dialog.info.unitType,
-                    // parkingRate: that.dialog.info.parkingRate,
+                    stationId: that.dialog.info.stationId,
+                    kioskId: that.dialog.info.kioskId,
+                    // name: that.dialog.info.kioskName,
                     lon: that.dialog.info.loc.lon,
                     lat: that.dialog.info.loc.lat,
                   },
                   sucMsg = "";
             if (!that.dialog.type) {
-                $API = $HTTP_addStation;
+                $API = $HTTP_addKiosk;
                 sucMsg = i18n.t('general.sucAddMsg');
             } else {
-                $API = $HTTP_updateStation;
+                $API = $HTTP_updateKiosk;
                 params.stationId = that.dialog.info.stationId;
                 sucMsg = i18n.t('general.sucUpdateMsg');
             }
