@@ -154,7 +154,7 @@
         },
         "chargePointID": "充电桩ID",
         "chargePointName": "充电桩名称",
-        "chargePoint#": "充电桩#",
+        "chargePoint#": "充电桩数量#",
         "power": "电耗",
         "connector": "充电枪",
         "connectorStatus": "充电枪状态",
@@ -239,6 +239,7 @@
         "loginId": "登录ID",
         "cmfPwd": "确认密码",
         "maintainer": "维护人员",
+        "superuser": "系统管理员",
         "customerServices": "客服人员",
         "telephone": "电话"
     },

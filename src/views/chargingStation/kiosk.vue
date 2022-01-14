@@ -488,6 +488,11 @@ export default {
             $HTTP_getChargeBoxListForKioskBinding(params).then((data) => {
                 that.bindDialog.isLoading = false;
                 if (!!data.success) {
+                    const obj = {}
+                    data.chargeBoxList.map(item => {
+                      obj[item.chargeBoxId] = item
+                    })
+                    data.chargeBoxList = Object.values(obj)
                     data.chargeBoxList.forEach(item => {
                         that.bindDialog.oriChargePointList[item.chargeBoxName] = item.chargeBoxId;
                         that.bindDialog.chargeBoxNameArr.push(item.chargeBoxName);
@@ -606,6 +611,9 @@ export default {
         handleBindChargePointChange(value) {
         },
         updateBindStation() {
+            const obj = {}
+            this.bindDialog.info.selectedChargeBoxNameArr.map(string => obj[string] = true)
+            this.bindDialog.info.selectedChargeBoxNameArr = Object.keys(obj)
             const that = this,
                   params = {
                                 kioskId: that.bindDialog.info.kioskId,
@@ -620,6 +628,7 @@ export default {
                 if (!!data.success) {
                     that.$message({ type: "success", message: i18n.t('general.sucUpdateMsg') });
                     that.bindDialog.visible = false;
+                    that.fetchData()
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }

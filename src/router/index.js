@@ -53,6 +53,7 @@ let routes = [
                     { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: false },
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     { path: '/chargePointDetail', component: () => import('@/views/chargingStation/chargePointDetail.vue'), name: 'chargePointDetail', hidden: true },
+                    { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
                 ]
             },
             // {
@@ -90,16 +91,16 @@ let routes = [
                     { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
                 ]
             },
-            {
-                path: '/setting',
-                iconCls: 'ic_setting_o',
-                name: 'menu.setting',
-                hasChild: true,
-                component: () => import('@/components/data.vue'),
-                children: [
-                    { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
-                ]
-            },
+            // {
+            //     path: '/setting',
+            //     iconCls: 'ic_setting_o',
+            //     name: 'menu.setting',
+            //     hasChild: true,
+            //     component: () => import('@/components/data.vue'),
+            //     children: [
+            //         { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
+            //     ]
+            // },
         ]
     },
     {

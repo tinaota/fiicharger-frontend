@@ -239,6 +239,7 @@
         "loginId": "ID đăng nhập",
         "cmfPwd": "Xác nhận mật khẩu",
         "maintainer": "Nhân viên bảo trì",
+        "superuser": "Superuser",
         "customerServices": "Dịch vụ khách hàng",
         "telephone": "Số điện thoại"
     },

@@ -60,7 +60,7 @@
                         </template>
                     </template>
                 </el-menu>
-                <div class="version">{{ $t('version') + version }}</div>
+                <div class="version">{{ `${$t('version')}${version}(${roleNameObj[this.userData.accPermissionType]})` }}</div>
             </aside>
             <section class="right-container">
                 <transition name="fade" mode="out-in">
@@ -99,7 +99,15 @@ export default {
             langList: $GLOBAL_LANG,
             systemLogo: fiics_logo,
             sysUserAvatar: '',
-            appLogo: app_icon
+            appLogo: app_icon,
+            roleNameObj: {
+              1: this.$t('userAccount.superuser'), //Demo、FiiAdmin，
+              2: '', //(空 維持原先狀態不改)，
+              3: this.$t('general.operator'), //運營商，
+              4: this.$t('general.operator') + this.$t('userAccount.maintainer'), //運營商操作維修員，
+              5: this.$t('userAccount.maintainer'), //維修人員，
+              6: this.$t('userAccount.customerServices'), //客服人員
+            }
         };
     },
     created() {
@@ -205,7 +213,9 @@ export default {
             } else if (this.userData.accPermissionType === 3 &&
                 (childPath === '/account' && subChild.path === '/member')) {
                 return false;
-            } else {
+            } else if(childPath === '/chargingStation' && subChild.path === '/cars') {
+              if(![1, 6].includes(this.userData.accPermissionType)) return false
+            }else {
                 return !subChild.hidden;
             }
         },

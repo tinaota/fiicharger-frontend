@@ -154,7 +154,7 @@
         },
         "chargePointID": "充電樁ID",
         "chargePointName": "充電樁名稱",
-        "chargePoint#": "充電樁#",
+        "chargePoint#": "充電樁數量#",
         "power": "電耗",
         "connector":"充電槍",
         "connectorStatus": "充電槍狀態",
@@ -239,6 +239,7 @@
         "loginId": "登入ID",
         "cmfPwd": "確認密碼",
         "maintainer": "維護人員",
+        "superuser": "系統管理員",
         "customerServices": "客服人員",
         "telephone": "電話"
     },
