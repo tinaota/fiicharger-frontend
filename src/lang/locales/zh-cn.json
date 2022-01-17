@@ -154,7 +154,7 @@
         },
         "chargePointID": "充电桩ID",
         "chargePointName": "充电桩名称",
-        "chargePoint#": "充电桩数量#",
+        "chargePoint#": "充电桩数量",
         "power": "电耗",
         "connector": "充电枪",
         "connectorStatus": "充电枪状态",

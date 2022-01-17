@@ -154,7 +154,7 @@
         },
         "chargePointID": "充電樁ID",
         "chargePointName": "充電樁名稱",
-        "chargePoint#": "充電樁數量#",
+        "chargePoint#": "充電樁數量",
         "power": "電耗",
         "connector":"充電槍",
         "connectorStatus": "充電槍狀態",

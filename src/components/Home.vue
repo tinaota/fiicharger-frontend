@@ -215,6 +215,7 @@ export default {
                 return false;
             } else if(childPath === '/chargingStation' && subChild.path === '/cars') {
               if(![1, 6].includes(this.userData.accPermissionType)) return false
+              else return true
             }else {
                 return !subChild.hidden;
             }

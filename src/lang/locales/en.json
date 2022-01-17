@@ -154,7 +154,7 @@
         },
         "chargePointID": "Charge Point ID",
         "chargePointName": "Charge Point Name",
-        "chargePoint#": "Number of Charge Point #",
+        "chargePoint#": "Number of Charge Point",
         "power": "Power",
         "connector": "Connector",
         "connectorStatus": "Connector Status",
@@ -239,7 +239,7 @@
         "loginId": "Login ID",
         "cmfPwd": "Confirm Password",
         "maintainer": "Maintainer",
-        "superuser": "Superuser",
+        "superuser": "Administrator",
         "customerServices": "Customer Services",
         "telephone": "Telephone"
     },
