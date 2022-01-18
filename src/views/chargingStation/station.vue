@@ -541,6 +541,7 @@ export default {
                 if (!!data.success) {
                     that.$message({ type: "success", message: i18n.t('general.sucUpdateMsg') });
                     that.bindDialog.visible = false;
+                    that.fetchData()
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }

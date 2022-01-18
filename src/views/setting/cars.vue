@@ -2,7 +2,7 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.setting') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.cars') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8 table-result">
