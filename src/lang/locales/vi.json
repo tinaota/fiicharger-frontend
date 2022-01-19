@@ -239,7 +239,7 @@
         "loginId": "ID đăng nhập",
         "cmfPwd": "Xác nhận mật khẩu",
         "maintainer": "Nhân viên bảo trì",
-        "superuser": "Administrator",
+        "superuser": "Ban quản lý",
         "customerServices": "Dịch vụ khách hàng",
         "telephone": "Số điện thoại"
     },
@@ -286,7 +286,7 @@
         "assignedQueue": "Sắp xếp",
         "inprocess": "Xử lý",
         "validating": "Đang xác minh",
-        "total": "Total",
+        "total": "Tổng cộng",
         "unsolved": "Chưa được giải quyết",
         "accumulated": "Tích lũy",
         "workOrdersList": "Work Orders List"

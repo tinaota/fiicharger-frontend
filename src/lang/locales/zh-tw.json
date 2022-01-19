@@ -100,7 +100,7 @@
         "businessHours": "營業時間",
         "type": "類型",
         "name": "名稱",
-        "operator": "操作員",
+        "operator": "運營商",
         "billingAmt": "費用",
         "installationDate": "安裝日期",
         "onlyOneFile": "只能上傳一個檔案!",
