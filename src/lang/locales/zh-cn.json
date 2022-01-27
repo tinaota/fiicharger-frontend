@@ -163,7 +163,7 @@
         "billing": "帐单",
         "billingID": "帐单ID",
         "billingType": "帐单类型",
-        "bullingStatus": "帐单状态",
+        "billingStatus": "付费状态",
         "billingLog": "帐单纪录",
         "userID": "会员ID",
         "powerUsed": "使用功率",

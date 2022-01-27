@@ -2,7 +2,7 @@
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/kiosk' }">{{ $t('menu.kiosk') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ curRouteParam.kioskId }}</el-breadcrumb-item>
             </el-breadcrumb>
