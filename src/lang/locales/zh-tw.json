@@ -31,8 +31,14 @@
         "member": "會員",
         "cars": "車輛",
         "report": "報告",
+        "fmcs":"設施監控",
         "usagePatterns": "使用模式",
-        "pluggedNotCharging": "插電&不充電"
+        "pluggedNotCharging": "插電&不充電",
+        "costRevenue":"成本和收入",
+        "costRevenueDay":"成本和收入（天）",
+        "costRevenueNight":"成本和收入（夜間）",
+        "energyPhm":"活力"
+
     },
     "login": {
         "login": "登入",

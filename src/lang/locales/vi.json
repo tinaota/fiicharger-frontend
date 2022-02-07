@@ -31,8 +31,13 @@
         "member": "Thành viên",
         "cars": "Phương tiện",
         "report": "Báo cáo",
+        "fmcs":"Giám sát cơ sở",
         "usagePatterns": "Chế độ sử dụng",
-        "pluggedNotCharging": "Cấm và không sạc"
+        "pluggedNotCharging": "Cấm và không sạc",
+        "costRevenue":"Chi phí và doanh thu",
+        "costRevenueDay":"Chi phí và doanh thu (ngày)",
+        "costRevenueNight":"Chi phí và doanh thu (đêm)",
+        "energyPhm":"năng lượng"
     },
     "login": {
         "login": "Đăng nhập",
