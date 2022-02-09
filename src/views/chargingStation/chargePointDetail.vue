@@ -108,6 +108,7 @@ import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Review from "@/components/chargingStation/review";
 import { $HTTP_getChargeBoxDetail } from "@/api/api";
+import { $GLOBAL_CURRENCY } from '@/utils/global';
 export default {
     components: {
         Connector,
@@ -195,7 +196,7 @@ export default {
                 installationDate: '',
                 operatorTypeName: ''
             };
-            // this.fetchData(); //api尚未完成
+            this.fetchData(); //api尚未完成
         }
         this.lang = window.sessionStorage.getItem('fiics-lang');
     },
@@ -216,6 +217,7 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
+                    this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType]
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
