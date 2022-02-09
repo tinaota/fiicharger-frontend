@@ -151,7 +151,8 @@ export default {
                     lat: '',
                     lng: ''
                 }
-            }
+            },
+            timer: null
         }
     },
     created() {
@@ -161,58 +162,47 @@ export default {
             this.permissionShowAlertAble = false;
         }
         this.curRouteParam = this.$router.currentRoute.params;
-        if (!this.curRouteParam.chargeBoxId) {
-            let temp = window.sessionStorage.getItem("fiics-chargePointInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo")) : null;
-            if (temp && temp.chargeBoxId
-                // && temp.stationName
-                // && temp.loc && temp.loc.lon && temp.loc.lat
-                // && temp.address
-            ) {
-                this.curRouteParam = temp;
-            } else {
-                this.$router.go(-1);
-            }
-        } else if (!this.curRouteParam.chargeBoxName) {
-            //從station detail連過來 沒有詳細資料
-            //api尚未完成
-            this.curRouteParam = {
-                chargeBoxId: this.curRouteParam.chargeBoxId,
-                chargeBoxName: '',
-                loc: {
-                    lon: '',
-                    lat: ''
-                },
-                power: 0,
-                chargeBoxStatus: '',
-                connectorList: [],
-                chargeType: '',
-                currency: '',
-                onPeakElectricityRate: 0,
-                onPeakElectricityRateType: 1,
-                offPeakElectricityRate: 0,
-                offPeakElectricityRateType: 1,
-                parkingRate: 0,
-                parkingRateType: 1,
-                installationDate: '',
-                operatorTypeName: ''
-            };
-            this.fetchData(); //api尚未完成
-        }
+        this.curRouteParam = {
+            chargeBoxId: this.curRouteParam.chargeBoxId,
+            chargeBoxName: '',
+            loc: {
+                lon: '',
+                lat: ''
+            },
+            power: 0,
+            chargeBoxStatus: '',
+            connectorList: [],
+            chargeType: '',
+            currency: '',
+            onPeakElectricityRate: 0,
+            onPeakElectricityRateType: 1,
+            offPeakElectricityRate: 0,
+            offPeakElectricityRateType: 1,
+            parkingRate: 0,
+            parkingRateType: 1,
+            installationDate: '',
+            operatorTypeName: ''
+        };
+        this.fetchData(); //api尚未完成
         this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.timer = setInterval(() => {
+          this.fetchData(true);
+        }, 5000);
     },
     mounted() {
         setScrollBar('.scroll', this);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
+        clearInterval(this.timer)
     },
     methods: {
-        fetchData() {
+        fetchData(notLoading) {
             const that = this,
                   params = {
                       chargeBoxId: this.curRouteParam.chargeBoxId
                   }
-            this.isLoading = true;
+            if(!notLoading) this.isLoading = true;
             $HTTP_getChargeBoxDetail(params).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
