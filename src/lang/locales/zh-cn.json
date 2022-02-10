@@ -115,7 +115,7 @@
         "nAccount": "帐户数量",
         "nStation": "充电站数量",
         "nSession": "充电纪录数量",
-        "nConnector": "充电枪数量",
+        "nConnector": "新增充电枪数量",
         "powerUsedTop10": "用电量前十名(kWh)",
         "revenueTop10": "收入前十名(美金)",
         "sessionTop10": "充电数据前十名(次)",
@@ -173,7 +173,7 @@
         "alertTime": "警报时间",
         "workeOrder": "工单",
         "workeOrderStatus": "工单状态",
-        "nChargePoint": "充电桩数量",
+        "nChargePoint": "新增充电桩数量",
         "accumCharging": "累积功耗",
         "avgPrice": "均价",
         "daySelectList": {

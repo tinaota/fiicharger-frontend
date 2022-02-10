@@ -10,15 +10,15 @@
         <div class="formVertical">
             <div class="form-item">
                 <div class="label">{{ $t('login.oriPwd') }}</div>
-                <el-input v-model="param.oldPassword" type="password"></el-input>
+                <el-input v-model="param.oldPassword" type="text" class="inputPassword" autocomplete="new-password"></el-input>
             </div>
             <div class="form-item">
                 <div class="label">{{ $t('login.newPwd') }}</div>
-                <el-input v-model="param.password" type="password"></el-input>
+                <el-input v-model="param.password" type="text" class="inputPassword" autocomplete="new-password"></el-input>
             </div>
             <div class="form-item">
                 <div class="label">{{ $t('login.cfmNewPwd') }}</div>
-                <el-input v-model="param.confirmPassword" type="password"></el-input>
+                <el-input v-model="param.confirmPassword" type="text" class="inputPassword" autocomplete="new-password"></el-input>
             </div>
             <div class="form-item">
                 <div class="label">

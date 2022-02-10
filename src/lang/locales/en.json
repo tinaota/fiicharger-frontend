@@ -115,7 +115,7 @@
         "nAccount": "Number of Account",
         "nStation": "Number of Station",
         "nSession": "Number of Session",
-        "nConnector": "Number of Connector",
+        "nConnector": "Number of New Connector",
         "powerUsedTop10": "Energy Consumed Top 10(kWh)",
         "revenueTop10": "Revenue Top 10(USD)",
         "sessionTop10": "Session Top 10(Times)",
@@ -173,7 +173,7 @@
         "alertTime": "Alert Time",
         "workeOrder": "Work Order",
         "workeOrderStatus": "Work Order Status",
-        "nChargePoint": "Number of Charger",
+        "nChargePoint": "Number of New Charger",
         "accumCharging": "Accumulative Charging",
         "avgPrice": "Avg Price",
         "daySelectList": {

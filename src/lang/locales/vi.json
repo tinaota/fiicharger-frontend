@@ -115,7 +115,7 @@
         "nAccount": "Tài khoản",
         "nStation": "Trạm",
         "nSession": "Số lượng bản giao dịch",
-        "nConnector": "Số lượng đầu nối",
+        "nConnector": "Thêm số lượng súng sạc",
         "powerUsedTop10": "Năng lượng tiêu thụ(kWh)",
         "revenueTop10": "Doanh thu top 10(USD)",
         "sessionTop10": "Top 10 số liệu sạc điện(Times)",
@@ -173,7 +173,7 @@
         "alertTime": "Thời gian cảnh báo",
         "workeOrder": "Thứ tự làm việc",
         "workeOrderStatus": "Trạng thái làm việc",
-        "nChargePoint": "Số lượng sạc",
+        "nChargePoint": "Số lượng cọc sạc mới",
         "accumCharging": "Công suất tiêu thụ tích lũy",
         "avgPrice": "Avg Price",
         "daySelectList": {

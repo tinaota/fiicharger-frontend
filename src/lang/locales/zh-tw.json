@@ -115,7 +115,7 @@
         "nAccount": "帳戶數量",
         "nStation": "充電站數量",
         "nSession": "充電紀錄數量",
-        "nConnector": "充電槍數量",
+        "nConnector": "新增充電槍數量",
         "powerUsedTop10": "用電量前十名(kWh)",
         "revenueTop10": "收入前十名(美金)",
         "sessionTop10": "充電數據前十名(次)",
@@ -173,7 +173,7 @@
         "alertTime": "警報時間",
         "workeOrder": "工單",
         "workeOrderStatus": "工單狀態",
-        "nChargePoint": "充電樁數量",
+        "nChargePoint": "新增充電樁數量",
         "accumCharging": "累積功耗",
         "avgPrice": "均價",
         "daySelectList": {
