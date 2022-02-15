@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_CTRL } from '@/utils/global'
 import { fetch, post, fetchImg } from '@/http/http'
-import apiConfig from "&apiConfig";
+import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
 
 /**

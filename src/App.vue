@@ -34,8 +34,8 @@ export default {
 </script>
 
 <style lang="scss">
-@import "scss_table";
-@import "scss_style";
+@import "~@/styles/table";
+@import "~@/styles/style";
 
 body {
     height : 100%;

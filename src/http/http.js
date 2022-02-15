@@ -1,5 +1,5 @@
 import axios from 'axios'
-import apiConfig from '../../config/apiConfig'
+import { apiConfig } from '@/assets/js/appConfig'
 import store from '../store/store'
 import * as types from '../store/types'
 import router from '../router/index'

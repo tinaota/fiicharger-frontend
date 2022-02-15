@@ -1,6 +1,13 @@
 import turf from 'turf'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import _ from 'lodash'
+const isPro = Object.is(process.env.NODE_ENV, 'production')
+import { $GLOBAL_PROJECT } from '@/utils/global';
+export const apiConfig = {
+    isProduction: isPro,
+    baseUrl: isPro ? '' : '/api',
+    staticUrl: isPro ? '' : `/${$GLOBAL_PROJECT}`,
+}
 export const buildingsIn3D = {
     id: '3d-buildings',
     source: 'composite',
