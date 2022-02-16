@@ -147,6 +147,7 @@ import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getChargeBoxList, $HTTP_getZipCodeListForSelect, $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_deleteChargeBox } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
+import $ from 'jquery'
 export default {
     components: {
         EditChargeBox,

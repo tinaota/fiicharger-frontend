@@ -52,6 +52,7 @@
 <script>
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_getAccountList, $HTTP_deleteAccount } from "@/api/api";
+import $ from 'jquery'
 export default {
     data() {
         return {

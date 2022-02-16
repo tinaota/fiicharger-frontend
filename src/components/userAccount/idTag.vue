@@ -88,6 +88,7 @@
 <script>
 import { $HTTP_getIdTagList, $HTTP_addIdTag, $HTTP_updateIdTag, $HTTP_deleteIdTag } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import $ from 'jquery'
 export default {
     data() {
         return {

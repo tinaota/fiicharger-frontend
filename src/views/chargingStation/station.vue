@@ -221,6 +221,7 @@ import ic_green_dot from 'imgs/ic_green_dot.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { SELECT_NOW_TAB } from '@/store/types'
+import $ from 'jquery'
 export default {
     components: {
         ShowPostion
