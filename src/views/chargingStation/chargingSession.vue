@@ -25,7 +25,13 @@
                         :picker-options="pickerOptions"
                         @change="fetchData()">
                     </el-date-picker>
-                    <el-select
+                    <el-input
+                        v-model="filter.sessionId"
+                        :placeholder="$t('chargingStation.sessionID')"
+                        @input="changeInput"
+                        clearable
+                    ></el-input>
+                    <!-- <el-select
                         class="select-small"
                         v-model="filter.zipCode"
                         :placeholder="$t('general.location')"
@@ -33,7 +39,7 @@
                         @change="fetchData()"
                         clearable>
                         <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
-                    </el-select>
+                    </el-select> -->
                     <el-select
                         class="select-small"
                         v-model="filter.chargeBoxId"
@@ -182,6 +188,7 @@ import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { setScrollBar } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import LineChart from "@/components/charts/threeLineChart";
+import _ from 'lodash'
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail } from "@/api/api";
 export default {
     components: {
@@ -197,7 +204,8 @@ export default {
                 operatorTypeId: '',
                 dateRange: [],
                 chargeBoxId: '',
-                zipCode: ''
+                zipCode: '',
+                sessionId: ''
             },
             chargerBoxList: {
                 isLoading: false,
@@ -252,6 +260,9 @@ export default {
         this.fetchLocationList();
     },
     methods: {
+        changeInput: _.debounce(function() {
+            this.fetchData();
+        }, 1000),
         fetchLocationList() {
             const that = this;
             this.loctionList.isLoading = true;
@@ -304,6 +315,9 @@ export default {
             }
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
+            }
+            if (this.filter.sessionId) {
+                param.sessionId = this.filter.sessionId;
             }
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
