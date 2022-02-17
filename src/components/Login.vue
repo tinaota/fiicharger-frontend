@@ -229,7 +229,7 @@ html, body{
     width: 100%;
     height: 100%;
     // background-color: 0xcde8ff;
-    background-image: url(/imgs/login_bg.jpg);
+    background-image: url('~imgs/login_bg.jpg');
     background-color: transparent;
     background-repeat: no-repeat;
     background-size: cover;
