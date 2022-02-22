@@ -15,14 +15,29 @@
             </el-select>
             <br/>
             <div class="card-8 statistics">
-                <div class="header">{{ $t('menu.statistics') }}
-                    <el-select
+                <div class="header" style="height: auto; line-height: 1">
+                    <!-- <el-select
                         class="select-small"
                         style="vertical-align: top;"
                         v-model="statistics.filter"
                         @change="handleSelected()">
                         <el-option v-for="(item, key) in daySelectList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                    </el-select>
+                    </el-select> -->
+                    <div class="filter horizontal alignItemCenter" style="margin-bottom: 0">
+                      <p class="mr-10">{{ $t('menu.statistics') }}</p>
+                      <el-date-picker
+                          v-model="statistics.filter"
+                          type="daterange"
+                          value-format="yyyy-MM-dd"
+                          format="yyyy-MM-dd"
+                          range-separator="-"
+                          :start-placeholder="$t('general.startDate')"
+                          :end-placeholder="$t('general.endDate')"
+                          :picker-options="pickerOptions"
+                          :clearable="false"
+                          @change="handleSelected()">
+                      </el-date-picker>
+                    </div>
                 </div>
                 <div class="s-contain">
                     <div class="item">
@@ -149,9 +164,16 @@
 <script>
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_getChargingStatisticsInfo, $HTTP_getPowerUsageTop10List, $HTTP_getRevenueTop10List, $HTTP_getChargingSessionCountTop10List, $HTTP_getFaultCountTop5List } from "@/api/api";
+import moment from "moment";
+const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 export default {
     data() {
         return {
+            pickerOptions: {
+                disabledDate(time) {
+                  return time.getTime() > Date.now();
+                },
+            },
             lang: '',
             filter: {
                 operatorTypeId: ''
@@ -160,7 +182,7 @@ export default {
             daySelectList: i18n.t('dashboard.daySelectList'),
             statistics: {
                 isLoading: false,
-                filter: 5,
+                filter: [moment().add(-1, 'years').format(), moment().endOf('days').format()],
                 data: {
                     price: 0,
                     priceRate: 0,
@@ -174,28 +196,28 @@ export default {
             },
             powerUsedTop10: {
                 isLoading: false,
-                filter: 5,
+                filter: [moment().add(-1, 'years').format(), moment().endOf('days').format()],
                 most: "",
                 data: [],
                 pData: []
             },
             revenueTop10: {
                 isLoading: false,
-                filter: 5,
+                filter: [moment().add(-1, 'years').format(), moment().endOf('days').format()],
                 most: "",
                 data: [],
                 pData: []
             },
             sessionTop10: {
                 isLoading: false,
-                filter: 5,
+                filter: [moment().add(-1, 'years').format(), moment().endOf('days').format()],
                 most: "",
                 data: [],
                 pData: []
             },
             faultsTypeTop5: {
                 isLoading: false,
-                filter: 5,
+                filter: [moment().add(-1, 'years').format(), moment().endOf('days').format()],
                 most: "",
                 data: [],
                 pData: []
@@ -223,7 +245,9 @@ export default {
         fetchChargingStatisticsInfo() {
             const that = this;
             let param = {
-                dateType: this.statistics.filter
+                // dateType: 5,
+                startTime: moment(this.statistics.filter[0]).utc().format(dateFormat),
+                endTime: moment(this.statistics.filter[1]).utc().format(dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -264,7 +288,9 @@ export default {
         fetchPowerUsedTop10() {
             const that = this;
             let param = {
-                dateType: this.powerUsedTop10.filter
+                // dateType: 5,
+                startTime: moment(this.powerUsedTop10.filter[0]).utc().format(dateFormat),
+                endTime: moment(this.powerUsedTop10.filter[1]).utc().format(dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -289,7 +315,9 @@ export default {
         fetchRevenueTop10() {
             const that = this;
             let param = {
-                dateType: this.revenueTop10.filter
+                // dateType: 5,
+                startTime: moment(this.revenueTop10.filter[0]).utc().format(dateFormat),
+                endTime: moment(this.revenueTop10.filter[1]).utc().format(dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -314,7 +342,9 @@ export default {
         fetchSessionTop10() {
             const that = this;
             let param = {
-                dateType: this.sessionTop10.filter
+                // dateType: 5,
+                startTime: moment(this.sessionTop10.filter[0]).utc().format(dateFormat),
+                endTime: moment(this.sessionTop10.filter[1]).utc().format(dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -373,7 +403,8 @@ export default {
             return pData;
         },
         handleSelected() {
-            const tmp = this.statistics.filter;
+            const tmp = [this.statistics.filter[0], moment(this.statistics.filter[1]).endOf('days').format()];
+            this.statistics.filter = tmp;
             this.powerUsedTop10.filter = tmp;
             this.revenueTop10.filter = tmp;
             this.sessionTop10.filter = tmp;
