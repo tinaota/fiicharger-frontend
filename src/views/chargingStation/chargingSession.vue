@@ -40,7 +40,7 @@
                         clearable>
                         <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
                     </el-select> -->
-                    <el-select
+                    <!-- <el-select
                         class="select-small"
                         v-model="filter.chargeBoxId"
                         :placeholder="$t('chargingStation.chargePointID')"
@@ -49,7 +49,14 @@
                         clearable
                         style="width: 280px">
                         <el-option v-for="(item, key) in chargerBoxList.data" :label="key" :key="key" :value="key"></el-option>
-                    </el-select>
+                    </el-select> -->
+                    <el-input
+                        v-model="filter.chargeBoxInfo"
+                        :placeholder="`${$t('chargingStation.chargePointID')}/${$t('chargingStation.chargePointName')}`"
+                        @input="changeInput"
+                        clearable
+                        style="width: 280px"
+                    ></el-input>
                     <el-button class="right" icon="el-icon-refresh-right" @click="fetchData()"></el-button>
                 </div>
                 <el-table
@@ -79,7 +86,8 @@
                     </el-table-column>
                     <el-table-column prop="sessionId" :label="$t('chargingStation.sessionID')" :min-width="3"></el-table-column>
                     <!-- <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column> -->
-                    <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="4"></el-table-column>
+                    <!-- <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="4"></el-table-column> -->
+                    <el-table-column prop="chargeBoxName" :label="$t('chargingStation.chargePointName')" :min-width="4"></el-table-column>
                     <el-table-column prop="power" :label="$t('chargingStation.powerUsed')" :min-width="3">
                         <template slot-scope="scope">
                             {{ scope.row.billingInfo.powerUsage + 'kWh' }}
@@ -205,7 +213,8 @@ export default {
                 dateRange: [],
                 chargeBoxId: '',
                 zipCode: '',
-                sessionId: ''
+                sessionId: '',
+                chargeBoxInfo: ''
             },
             chargerBoxList: {
                 isLoading: false,
@@ -318,6 +327,9 @@ export default {
             }
             if (this.filter.sessionId) {
                 param.sessionId = this.filter.sessionId;
+            }
+            if (this.filter.chargeBoxInfo) {
+                param.chargeBoxInfo = this.filter.chargeBoxInfo;
             }
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
