@@ -89,6 +89,7 @@ import markerPos3 from 'imgs/ic_brown_dot.png';
 import markerPos4 from 'imgs/ic_red_dot.png';
 import markerPos5 from 'imgs/ic_gray_dot.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
+import $ from 'jquery'
 export default {
     data() {
         return {
