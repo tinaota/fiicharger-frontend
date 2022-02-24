@@ -161,7 +161,7 @@ export default {
             this.page = 1;
             this.isLoading = true;
             let param = {
-                chargeBoxId: this.chargeBoxId
+                chargeBoxInfo: this.chargeBoxId
             };
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
