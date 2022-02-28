@@ -71,12 +71,13 @@ test_build_image:
     - sudo scp -P $TEST_CLUSTER_SSH_PORT -o StrictHostKeyChecking=no -i /home/gitlab-runner/.ssh/id_rsa -r $ARCHIVE_NAME $TEST_CLUSTER_USER@$TEST_CLUSTER_IP:~/downloads
 
 generate_alpha_release:
-  image: 10.20.199.207:5000/fii-semantic-release:v0.0.1
+  image: node:16.13.2
   stage: release
   tags: [ docker_runner ]
   rules:
     - if: $CI_COMMIT_BRANCH == "master" && $CI_COMMIT_MESSAGE !~ /ci\(release\):/
-  needs: [ ]
+  needs:
+    - verify_build
   dependencies: [ ]
   before_script:
     - npm ci --cache .npm --prefer-offline
@@ -98,13 +99,14 @@ generate_alpha_release:
       - CHANGELOG.md
 
 generate_prod_release:
-  image: 10.20.199.207:5000/fii-semantic-release:v0.0.1
+  image: node:16.13.2
   stage: release
   tags: [ docker_runner ]
   rules:
     - if: $CI_COMMIT_BRANCH == "prod" && $CI_COMMIT_MESSAGE !~ /ci\(release\):/
     - if: $CI_COMMIT_BRANCH == "prod" && $CI_COMMIT_MESSAGE =~ /ci\(release\):[\s\S]+alpha/
-  needs: [ ]
+  needs:
+    - verify_build
   dependencies: [ ]
   before_script:
     - npm ci --cache .npm --prefer-offline
