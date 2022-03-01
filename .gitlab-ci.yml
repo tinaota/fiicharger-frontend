@@ -65,6 +65,7 @@ test_build_image:
     - cp FiiCharger/favicon.* FiiCharger/static/
     - cp -r FiiCharger/imgs FiiCharger/static/
     - cp -r FiiCharger/libs FiiCharger/static/
+    - cp .htaccess FiiCharger/
     - echo "Building archive..."
     - export ARCHIVE_NAME=fiicharger_frontend_test_$(date +"%m%d%Y").tar.gz
     - sudo tar -pczf $ARCHIVE_NAME FiiCharger/
