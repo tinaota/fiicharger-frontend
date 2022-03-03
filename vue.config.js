@@ -22,7 +22,7 @@ module.exports = {
         port: 8080,
         proxy: {
           '/api': {
-              target: 'http://210.61.29.146:5566',//'10.64.32.208',//'http://61.129.93.20',
+              target: 'https://test-charger.fiimart.com',//'10.64.32.208',//'http://61.129.93.20',
               changeOrigin: true,
               pathRewrite: {
                   '^/api': '/'
