@@ -89,9 +89,9 @@
                         <el-tab-pane v-if="permissionShowAlertAble" :label="$t('chargingStation.chargePointAlert')" name="chargePointAlert">
                             <ChargePointAlert :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
                         </el-tab-pane>
-                        <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                        <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
                             <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
-                        </el-tab-pane>
+                        </el-tab-pane> -->
                     </el-tabs>
                 </div>
             </div>

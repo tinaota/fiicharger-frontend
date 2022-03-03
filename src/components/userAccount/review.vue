@@ -3,7 +3,7 @@
         <el-table
             :data="tableData.slice((page - 1) * 10, page * 10)">
             <el-table-column prop="valuationCode" :label="$t('userAccount.reviewId')" :min-width="4"></el-table-column>
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="5"></el-table-column>
+            <!-- <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="5"></el-table-column>
             <el-table-column :label="$t('chargingStation.power')" :min-width="3">
                 <template slot-scope="scope">
                     {{scope.row.power + "kW"}}
@@ -18,9 +18,10 @@
                 <template slot-scope="scope">
                     {{ scope.row.chargeType === 1 ? "AC" : "DC" }}
                 </template>
-            </el-table-column>
-            <el-table-column prop="content" :label="$t('userAccount.comment')" :min-width="6" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column :label="$t('userAccount.review')" :width="148">
+            </el-table-column> -->
+            <el-table-column prop="content" :label="$t('userAccount.comment')" :min-width="5" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column :label="$t('userAccount.review')" :min-width="4" >
+                <!-- :width="148"> -->
                 <template slot-scope="scope">
                     <el-rate
                         v-model="scope.row.point"
