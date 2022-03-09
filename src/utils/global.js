@@ -11,3 +11,7 @@ export const $GLOBAL_CURRENCY = {
     1: "$",
     2: "NT$"
 };
+
+export const $GLOBAL_GRAFANA_DEV = "http://10.20.199.203:31000/grafana/d";
+export const $GLOBAL_GRAFANA_TEST = "https://test-charger.fiimart.com/grafana/d";
+export const $GLOBAL_GRAFANA_PROD = "https://test-charger.fiimart.com/grafana/d";

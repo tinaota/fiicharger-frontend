@@ -65,15 +65,17 @@
 import { setScrollBar } from "@/utils/function";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 import moment from "moment";
+import { $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from '@/utils/global'
+const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
 
 var costRevenueUrl =
-  "http://10.20.199.203:31000/d/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light";
+  `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
 var costRevenueDayURl =
-  "http://10.20.199.203:31000/d/yp-R2617k/cost-and-revenue-day-scenario-demo?orgId=1&kiosk&refresh=1m&theme=light";
+  `${baseGrafanaUrl}/yp-R2617k/cost-and-revenue-day-scenario-demo?orgId=1&kiosk&refresh=1m&theme=light`;
 var costRevenueNightURL =
-  "http://10.20.199.203:31000/d/JBTcTkb7k/cost-and-revenue-night-scenario?orgId=1&kiosk&refresh=1m&theme=light";
+  `${baseGrafanaUrl}/JBTcTkb7k/cost-and-revenue-night-scenario?orgId=1&kiosk&refresh=1m&theme=light`;
 var energyPhmURL =
-  "http://10.20.199.203:31000/d/EEcCuCA7k/energy-and-phm?orgId=1&kiosk&refresh=1m&theme=light";
+  `${baseGrafanaUrl}/EEcCuCA7k/energy-and-phm?orgId=1&kiosk&refresh=1m&theme=light`;
 
 export default {
   components: {
