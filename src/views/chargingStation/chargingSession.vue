@@ -26,8 +26,8 @@
                         @change="fetchData()">
                     </el-date-picker>
                     <el-input
-                        v-model="filter.sessionId"
-                        :placeholder="$t('chargingStation.sessionID')"
+                        v-model="filter.billingCode"
+                        :placeholder="$t('chargingStation.billingID')"
                         @input="changeInput"
                         clearable
                     ></el-input>
@@ -325,8 +325,11 @@ export default {
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
-            if (this.filter.sessionId) {
-                param.sessionId = this.filter.sessionId;
+            // if (this.filter.sessionId) {
+            //     param.sessionId = this.filter.sessionId;
+            // }
+            if (this.filter.billingCode) {
+                param.billingCode = this.filter.billingCode;
             }
             if (this.filter.chargeBoxInfo) {
                 param.chargeBoxInfo = this.filter.chargeBoxInfo;
