@@ -14,7 +14,9 @@
                 </span>
             </el-tooltip>
             <span v-if="data.connectorInfo.status===0" class="circle-number color0">{{ data.connectorInfo.connectorId }}</span>
-            <div class="imgItem"><img :src="imgIcon[data.connectorInfo.connectorTypeId]"></div>
+            <div class="imgItem">
+                <img v-if="data.connectorInfo.connectorTypeId!=='1' && data.connectorInfo.connectorTypeId!=='5' && data.connectorInfo.connectorTypeId!=='4' && data.connectorInfo.connectorTypeId!=='10'" :src="imgIcon[data.connectorInfo.connectorTypeId]">
+            </div>
             <div class="name" :class="{'circular': data.connectorInfo.status===3}">{{ data.connectorInfo.connectorType }}</div>
             <div class="battery">{{ $t('cars.battery') + ' ' + data.battery + '%' }}</div>
         </div>

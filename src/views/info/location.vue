@@ -418,8 +418,14 @@ export default {
                     default:
                         info += `<span class="circle-number color0">${item.connectorId}</span>`;
                 }
-                info +=`<div class="imgItem"><img src="${this.connectorIcon[item.connectorTypeId]}"></div>
-                        </div>`
+                if (item.connectorTypeId !== '1' && item.connectorTypeId !== '5' && item.connectorTypeId !== '4' && item.connectorTypeId !== '10') {
+                    info +=`<div class="imgItem"><img src="${this.connectorIcon[item.connectorTypeId]}"></div>
+                        </div>`;
+                } else {
+                    info +=`<div class="imgItem">
+                        <span style="vertical-align: sub; margin-left: 4px;">${ item.connectorType }</span>
+                    </div></div>`;
+                }
             });
             return info;
         },

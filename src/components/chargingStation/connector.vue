@@ -14,9 +14,10 @@
             </span>
         </el-tooltip>
         <span v-if="dataObj.status===0" class="circle-number color0">{{ dataObj.connectorId }}</span>
-        <el-tooltip :content="dataObj.connectorType" placement="bottom" effect="light" popper-class="custom">
+        <el-tooltip v-if="dataObj.connectorTypeId !== '1' && dataObj.connectorTypeId !== '5' && dataObj.connectorTypeId !== '4' && dataObj.connectorTypeId !== '10'" :content="dataObj.connectorType" placement="bottom" effect="light" popper-class="custom">
             <div class="imgItem"><img :src="imgIcon[dataObj.connectorTypeId]"></div>
         </el-tooltip>
+        <span v-else style="vertical-align: text-top; margin-left: 4px;">{{ dataObj.connectorType }}</span>
     </div>
 </template>
 
