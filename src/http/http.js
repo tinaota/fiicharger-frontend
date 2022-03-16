@@ -12,16 +12,16 @@ axios.defaults.timeout = 120000
 axios.defaults.retry = 3
 axios.defaults.retryDelay = 3000
 axios.__axiosPromiseArr = [];
-axios.defaults.headers.post['zone'] = getZone();
-function getZone() {
-    const locTimeOffset = new Date().getTimezoneOffset(),
-          zoneHour = parseInt(locTimeOffset/-60),
-          zoneMin = locTimeOffset % 60;
-    let rsp = zoneHour > 0 ? "+":'-';
-    rsp += Math.abs(zoneHour).toString().padStart(2,'0')+":"+zoneMin.toString().padStart(2,'0');
-    return rsp;
-}
-// axios.defaults.headers.post['lang'] = 'en';
+axios.defaults.headers.post['zone'] = parseInt(-new Date().getTimezoneOffset());
+//時區回復+08:00
+// function getZone() {
+//     const locTimeOffset = new Date().getTimezoneOffset(),
+//           zoneHour = parseInt(locTimeOffset/-60),
+//           zoneMin = locTimeOffset % 60;
+//     let rsp = zoneHour > 0 ? "+":'-';
+//     rsp += Math.abs(zoneHour).toString().padStart(2,'0')+":"+zoneMin.toString().padStart(2,'0');
+//     return rsp;
+// }
 /**
  * @description 檢查api是否重複請求，若重複則取消前次請求。並適時更新當前api請求清單。
  */
