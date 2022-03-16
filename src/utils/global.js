@@ -1,6 +1,6 @@
 export const $GLOBAL_PROJECT = 'FiiCharger';
 export const $GLOBAL_HTTP = '/EV_Charging_Web'; //EV_Charging_Web EV_Charging_Web_test
-export const $GLOBAL_VERSION = '2.2.3';
+export const $GLOBAL_VERSION = '2.3.0';
 export const $GLOBAL_LANG = {
     "en": "English",
     "zh-tw": "繁體中文",
