@@ -1,6 +1,6 @@
 <template>
-    <div class="mainctrl">
-        <div id="map-container" class="google-map" v-loading="chargeBoxData.isLoading"></div>
+    <div class="mainctrl" v-loading="stationData.isLoading">
+        <div id="map-container" class="google-map"></div>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
@@ -15,14 +15,14 @@
             </el-select>
             <el-select
                 class="select-small"
-                v-model="filter.chargeBoxId"
-                v-loading="chargerBoxList.isLoading"
-                :placeholder="$t('menu.chargePoint')"
-                @change="updateData()"
+                v-model="filter.stationId"
+                v-loading="stationSearchList.isLoading"
+                :placeholder="$t('menu.station')"
+                @change="handleStationChanged()"
                 filterable
                 clearable
                 style="width: 200px">
-                <el-option v-for="(item, key) in chargerBoxList.data" :label="item" :key="key" :value="key"></el-option>
+                <el-option v-for="(item, key) in stationSearchList.data" :label="item" :key="key" :value="key"></el-option>
             </el-select>
         </div>
         <div class="hint-bar">
@@ -36,11 +36,6 @@
                 <span class="num" v-if="statisticsInfo.unavailableCount !== 0" @click="goChargePointPage(2)">{{statisticsInfo.unavailableCount}}</span>
                 <span class="text">{{$t('general.unavailable')}}</span>
             </div>
-            <!-- <div class="item">
-                <img :src="icon.maintenance">
-                <span class="num" v-if="statisticsInfo.maintenanceCount !== 0" @click="goChargePointPage(3)">{{statisticsInfo.maintenanceCount}}</span>
-                <span class="text">{{$t('general.maintenance')}}</span>
-            </div> -->
             <div class="item">
                 <img :src="icon.abnormal">
                 <span class="num" v-if="statisticsInfo.alertCount !== 0" @click="goChargePointPage(4)">{{statisticsInfo.alertCount}}</span>
@@ -52,12 +47,56 @@
                 <span class="text">{{$t('general.connectionLost')}}</span>
             </div>
         </div>
+        <div v-show="chargeBoxDrawer.visible"
+            class="chargeBox-drawer">
+            <button class="drawer-closeBtn" :class="{ 'open': (chargeBoxDrawer.isOpen)}"
+                    @click="chargeBoxDrawer.isOpen = !chargeBoxDrawer.isOpen">
+                {{ chargeBoxDrawer.isOpen ?  `&gt;` : `&lt;` }}
+            </button>
+            <div class="drawer-body" v-show="chargeBoxDrawer.isOpen" v-loading="chargeBoxDrawer.isLoading">
+                <ul>
+                    <li v-for="item in chargeBoxDrawer.data" :key="item.chargeBoxId">
+                        <!-- :class="{'long': chargeBoxDrawer.data.length > 3}"> -->
+                        <div class="title">{{ item.chargeBoxName }}</div>
+                        <div class="info">
+                            <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
+                                <div class="msg">{{ item.chargeBoxId }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.power') }}</div>
+                                <div class="msg">{{ item.power }}kw</div>
+                            </div>
+                            <div class="info-item connector" :class="{ 'doubleHeight': item.connectorList.length > 3}">
+                                <div class="label">{{ $t('chargingStation.connector') }}</div>
+                                <div class="msg">
+                                    <Connector v-for="(connector, idx) in item.connectorList" :key="idx" :dataObj="connector.connectorInfo" :isBreak="false"></Connector>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.onPeak') }}</div>
+                                <div class="msg">{{ item.currency +  item.onPeakElectricityRate + '/' + $t('chargingStation.elecRateUnit')[item.onPeakElectricityRateType || 1] }}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.offPeak') }}</div>
+                                <div class="msg">{{ item.currency + item.offPeakElectricityRate + '/' + $t('chargingStation.elecRateUnit')[item.offPeakElectricityRateType || 1]}}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                                <div class="msg">{{ item.currency + item.parkingRate + '/' + $t('chargingStation.parkingRateUnit')[item.parkingRateType] }}</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getChargeBoxListForMap, $HTTP_getChargeBoxInfoForMap } from "@/api/api";
+import { $HTTP_getStationList, $HTTP_getStationDetailList } from "@/api/api";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import ic_info_green from 'imgs/ic_info_green.png';
 import ic_info_brown from 'imgs/ic_info_brown.png';
@@ -68,29 +107,23 @@ import ic_device_info from 'imgs/ic_device_info.png';
 import ic_charging from 'imgs/ic_charging.png';
 import ic_revenue from 'imgs/ic_revenue.png';
 
-import ic_ac_iec from 'imgs/ic_ac_iec.png';
-import ic_ac_tesla from 'imgs/ic_ac_tesla.png';
-import ic_ac_sae from 'imgs/ic_ac_sae.png';
-import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
-import ic_dc_iec from 'imgs/ic_dc_iec.png';
-import ic_dc_tesla from 'imgs/ic_dc_tesla.png';
-import ic_dc_chademo from 'imgs/ic_dc_chademo.png';
-import ic_dc_ccs2 from 'imgs/ic_dc_ccs2.png';
-import ic_dc_ccs1 from 'imgs/ic_dc_ccs1.png';
-import ic_dc_gbt from 'imgs/ic_dc_gbt.png';
-import MarkerClusterer from '@googlemaps/markerclustererplus';
 import 'snazzy-info-window/dist/snazzy-info-window.min.css';
 import "@/styles/map.scss";
 import SnazzyInfoWindow from 'snazzy-info-window';
 
-import markerPos1 from 'imgs/ic_green_dot.png';
-import markerPos2 from 'imgs/ic_orange_dot.png';
-import markerPos3 from 'imgs/ic_brown_dot.png';
-import markerPos4 from 'imgs/ic_red_dot.png';
-import markerPos5 from 'imgs/ic_gray_dot.png';
+import markerPos1 from 'imgs/ic_green_dot_number.png';
+import markerPos2 from 'imgs/ic_orange_dot_number.png';
+import markerPos3 from 'imgs/ic_orange_dot_number.png'; //'imgs/ic_brown_dot_number.png';
+import markerPos4 from 'imgs/ic_red_dot_number.png';
+import markerPos5 from 'imgs/ic_gray_dot_number.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 import $ from 'jquery'
+import { MarkerWithLabel } from '@googlemaps/markerwithlabel';
+import Connector from "@/components/chargingStation/connector";
 export default {
+    components: {
+        Connector
+    },
     data() {
         return {
             lang: '',
@@ -114,12 +147,11 @@ export default {
             },
             filter: {
                 operatorTypeId: '',
-                chargeBoxId: ''
+                stationId: ''
             },
-            chargerBoxList: {
+            stationSearchList: {
                 isLoading: false,
-                data: {},
-                zoomSize: 16
+                data: {}
             },
             chargeBoxData: {
                 isLoading: false,
@@ -134,45 +166,22 @@ export default {
             },
             map: null,
             markers: [],
-            clusterMarkers: null,
-            clusterStyles: [
-                MarkerClusterer.withDefaultStyle({
-                    width: 48,
-                    height: 48,
-                    url: require("imgs/ic_group1.png"),
-                    textColor: "#ffffff",
-                    textSize: 16
-                }),
-                MarkerClusterer.withDefaultStyle({
-                    width: 48,
-                    height: 48,
-                    url: require("imgs/ic_group2.png"),
-                    textColor: "#ffffff",
-                    textSize: 16
-                }),
-                MarkerClusterer.withDefaultStyle({
-                    width: 48,
-                    height: 48,
-                    url: require("imgs/ic_group3.png"),
-                    textColor: "#ffffff",
-                    textSize: 16
-                })
-            ],
+            currentInfoWindowStationId: '',
             currentInfoWindow: null,
-            connectorIcon: {
-                1: ic_ac_iec,
-                2: ic_ac_tesla,
-                3: ic_ac_sae,
-                4: ic_ac_gbt,
-                5: ic_dc_iec,
-                6: ic_dc_tesla,
-                7: ic_dc_chademo,
-                8: ic_dc_ccs2,
-                9: ic_dc_ccs1,
-                10: ic_dc_gbt
-            },
             timer: null,
-            markerImgList: [markerPos1, markerPos2, markerPos3, markerPos4, markerPos5]
+            frequence: 1000 * 60, //1 min:1000*60
+            markerImgList: [markerPos1, markerPos2, markerPos3, markerPos4, markerPos5],
+            stationData: {
+                isLoading: false,
+                data: []
+            },
+            chargeBoxDrawer: {
+                visible: false,
+                isLoading: false,
+                isOpen: false,
+                data: [],
+                frequence: 1000 * 1.5
+            }
         }
     },
     created() {
@@ -186,9 +195,10 @@ export default {
         let halfHintBarWidth = this.$jQuery(".hint-bar").width()/2 + 12;
         this.$jQuery(".hint-bar").css('left', `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
         this.initMap();
+        this.fetchStationList();
         this.fetchData();
         this.setTimer();
-        this.fetchChargerBoxList();
+        setScrollBar('.chargeBox-drawer .drawer-body', that);
     },
     beforeDestroy() {
         if (this.timer) {
@@ -197,16 +207,16 @@ export default {
         this.removeAllMarkers();
     },
     methods: {
-        fetchData(isRefresh) {
+        fetchChargeBoxData(isRefresh) {
             const that = this;
             let param = {};
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
-            if (this.filter.chargeBoxId) {
-                param.chargeBoxId = this.filter.chargeBoxId;
+            if (this.filter.stationId) {
+                param.stationId = this.filter.stationId;
             }
-            this.removeAllMarkers();
+            this.removeAllMarkers(!isRefresh);
             this.chargeBoxData.data = {};
             this.chargeBoxData.isLoading = true;
             $HTTP_getChargeBoxListForMap(param).then((data) => {
@@ -233,9 +243,6 @@ export default {
                             minLat = item.lat;
                         }
                     });
-                    if (!that.filter.chargeBoxId) {
-                        this.drawClusters();
-                    }
                     if (!isRefresh) {
                         if (that.filter.chargeBoxId) {
                             that.map.setCenter(that.chargeBoxData.data[that.filter.chargeBoxId].loc);
@@ -249,6 +256,8 @@ export default {
                                   bounds = new google.maps.LatLngBounds(swPoint, nePoint);
                             that.map.fitBounds(bounds);
                         }
+                    } else {
+                        that.currentInfoWindow && that.currentInfoWindow.open();
                     }
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
@@ -258,26 +267,115 @@ export default {
                 that.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        fetchChargerBoxList(callBack) {
+        fetchData(isRefresh) {
             const that = this;
             let param = {};
-            if (this.filter.operatorTypeId) {
-                param.operatorTypeId = (this.filter.operatorTypeId === 1)? '': this.filter.operatorTypeId;
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
             }
-            this.chargerBoxList.isLoading = true;
-            $HTTP_getChargeBoxListForSelect(param).then((data) => {
-                this.chargerBoxList.isLoading = false;
-                this.chargerBoxList.data = {};
+            if (this.filter.stationId) {
+                param.stationId = this.filter.stationId;
+            }
+            this.removeAllMarkers(!isRefresh);
+            this.stationData.data = {};
+            this.stationData.isLoading = true;
+            $HTTP_getStationDetailList(param).then((data) => {
+                that.stationData.isLoading = false;
                 if (!!data.success) {
-                    data.chargeBoxList.forEach(item => {
-                        this.chargerBoxList.data[item.chargeBoxId] = item.chargeBoxName;
+                    let availableCount = 0, unavailableCount = 0, connectionLostCount = 0, alertCount = 0;
+                    let maxLat = -90, maxLng = -180, minLat = 90, minLng = 180;
+                    data.stationList.forEach(item => {
+                        item.location = {
+                            lng: parseFloat(item.lon),
+                            lat: parseFloat(item.lat),
+                        }
+                        if (item.lon > maxLng) {
+                            maxLng = item.lon;
+                        } else if (item.lon < minLng) {
+                            minLng = item.lon;
+                        }
+                        if (item.lat > maxLat) {
+                            maxLat = item.lat;
+                        } else if (item.lat < minLat) {
+                            minLat = item.lat;
+                        }
+                        if (!item.chargeBoxCount) {
+                            item.chargeBoxCount = 0;
+                            item.stationStatus = "2";
+                        } else {
+                            item.stationStatus = 0;
+                            if (item.chargeBoxStatusCount.Alert) {
+                                item.stationStatus = '4';
+                            } else if (item.chargeBoxStatusCount.ConnectionLost) {
+                                item.stationStatus = '5';
+                            } else if (item.chargeBoxStatusCount.Unavailable) {
+                                item.stationStatus = '2';
+                            } else if (item.chargeBoxStatusCount.Available) {
+                                item.stationStatus = '1';
+                            } else {
+                                item.stationStatus = '2';
+                            }
+                            alertCount += item.chargeBoxStatusCount.Alert;
+                            connectionLostCount += item.chargeBoxStatusCount.ConnectionLost;
+                            unavailableCount += item.chargeBoxStatusCount.Unavailable;
+                            availableCount += item.chargeBoxStatusCount.Available;
+                            item.smartChargingConnectorAnalysisInfo.forEach(chargeBox => {
+                                chargeBox.currency = $GLOBAL_CURRENCY[chargeBox.unitType || 1];
+                            })
+                        }
+                        that.stationData.data[item.stationId] = Object.assign({}, item);
+                        that.drawMarker(that.stationData.data[item.stationId], isRefresh);
+                    });
+                    if (!isRefresh) {
+                        // if (that.filter.stationId) {
+                        //     that.map.setCenter(that.stationData.data[that.filter.stationId].location);
+                        //     that.map.setZoom(that.defaultZoomSize);
+                        // } else
+                        if (data.stationList.length === 1) { //that.filter.stationId
+                            that.map.setCenter(that.stationData.data[data.stationList[0].stationId].location);
+                            that.map.setZoom(that.defaultZoomSize);
+                        } else {
+                            const nePoint = new google.maps.LatLng(maxLat, maxLng),
+                                  swPoint = new google.maps.LatLng(minLat, minLng),
+                                  bounds = new google.maps.LatLngBounds(swPoint, nePoint);
+                            that.map.fitBounds(bounds);
+                        }
+                    }
+                    this.statisticsInfo = {
+                        availableCount: availableCount,
+                        unavailableCount: unavailableCount,
+                        connectionLostCount: connectionLostCount,
+                        alertCount: alertCount
+                    };
+                } else {
+                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                }
+            }).catch((err) => {
+                console.log(err)
+                that.$message({ type: "warning", message: i18n.t("error_network") });
+            });
+        },
+        fetchStationList(callBack) {
+            const that = this;
+            this.page = 1;
+            this.isLoading = true;
+            let param = {};
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            this.stationSearchList.isLoading = true;
+            $HTTP_getStationList(param).then((data) => {
+                this.stationSearchList.isLoading = false;
+                if (!!data.success) {
+                    data.stationList.forEach(item => {
+                        this.stationSearchList.data[item.stationId] = item.stationName;
                     });
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
                 }
                 callBack && callBack();
             }).catch((err) => {
-                console.log('chargeBoxList', err)
+                console.log('stationSearchList', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
@@ -293,182 +391,113 @@ export default {
                                 zoomControl: false,
                                 styles: googleMapStyle
                             });
-        },
-        drawMarker(item) {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.chargeBoxStatus-1 ],
+            //如果click地圖其他地方 充電樁列表隱藏才要用
+            // this.map.addListener('click', function(event) {
+            //     that.chargeBoxDrawer.isOpen ? that.chargeBoxDrawer.isOpen = false : '';
+            // });
+        },
+        drawMarker(item, isRefresh = false) {
+            const that = this;
+            var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.stationStatus-1 || 1], //這裡要判斷顯是哪個
                                 new google.maps.Size(36, 55)); //size  預設位子圖案中間底
-            const marker = new google.maps.Marker({
-                map: that.map,
-                position: item.loc,
-                icon: markerImage,
-                type: item.chargeBoxStatus
-            });
+            var className = (item.chargeBoxCount > 99) ? 'google-map-marker-label-ts' : 'google-map-marker-label-tl'; //三位數字小一點
+            const marker = new MarkerWithLabel({
+                            position: item.location,
+                            clickable: true,
+                            draggable: false,
+                            map: that.map,
+                            labelContent: item.chargeBoxCount.toString(),
+                            labelAnchor: new google.maps.Point(-18, -47),
+                            labelClass: className, // the CSS class for the label
+                            labelStyle: { opacity: 1.0 },
+                            icon: markerImage,
+                        });
 
             marker.addListener("click", () => {
-                that.chargeBoxData.isLoading = true;
-                that.getChargePointInfoHtml(item.chargeBoxId, (htmlContent) => {
-                    that.chargeBoxData.isLoading = false;
-                    that.$jQuery(".si-content .info-msg").length > 0 && that.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
-                    this.currentInfoWindow && that.currentInfoWindow.close();
-                    that.currentInfoWindow = null;
-                    var infowindow = new SnazzyInfoWindow($.extend({}, {
-                                        marker: marker,
-                                        placement: 'right',
-                                        content: htmlContent,
-                                        panOnOpen: false,
-                                        borderRadius: '4px',
-                                        maxHeight: 'px',
-                                        offset: {
-                                            top: '-36px',
-                                            left: '22px'
-                                        },
-                                        callbacks: {
-                                            afterOpen: function() {
-                                                setScrollBar('.si-content .info-msg', that);
-                                            }
-                                        }
-                                    }));
-                    infowindow.open();
-                    that.currentInfoWindow = infowindow;
-                });
+                const htmlContent = `<div class="info-tite">${item.stationId}</div>
+                                     <div class="info-msg">${item.stationName}</div>`;
+                var infowindow = new SnazzyInfoWindow($.extend({}, {
+                                    marker: marker,
+                                    content: htmlContent,
+                                    placement: 'right',
+                                    wrapperClass: 'station-infoWindow',
+                                    panOnOpen: true,
+                                    borderRadius: '8px',
+                                    offset: {
+                                        top: '-36px',
+                                        left: '20px'
+                                    },
+                                    border: false,
+                                    backgroundColor: '#F7F9FD',
+                                    padding: '12px 16px',
+                                    shadow: {
+                                        h: '0px',
+                                        v: '1px',
+                                        blur: '3px',
+                                        spread: '0px',
+                                        opacity: 0.3,
+                                        color: '#000'
+                                    },
+                                    maxWidth: 200,
+                                    showCloseButton: false,
+                                    closeOnMapClick: false
+                                }));
+                this.currentInfoWindowStationId = item.stationId;
+                this.currentInfoWindow && that.currentInfoWindow.close();
+                that.currentInfoWindow = null;
+                that.map.setCenter(item.location);
+                infowindow.open();
+                that.currentInfoWindow = infowindow;
+                that.changeChargeBoxDrawerData(true, item.stationId);
             });
+            if (isRefresh && item.stationId === that.currentInfoWindowStationId) {
+                google.maps.event.trigger(that.map, marker, 'click' );
+            }
             that.markers.push(marker);
         },
-        removeAllMarkers() {
-            this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
-            this.currentInfoWindow && this.currentInfoWindow.close();
-            this.currentInfoWindow = null;
-            this.clusterMarkers && this.clusterMarkers.clearMarkers();
+        removeAllMarkers(isClearInfoWindow) {
+            //this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
+            if (isClearInfoWindow) {
+                this.currentInfoWindow && this.currentInfoWindow.close();
+                this.currentInfoWindow = null;
+                this.currentInfoWindowStationId = '';
+            }
             this.markers.forEach(marker => {
                 google.maps.event.clearInstanceListeners(marker);
                 marker.setMap(null);
             });
             this.markers = [];
         },
-        getChargePointInfoHtml(chargeBoxId, callBack) {
-            const that = this;
-            $HTTP_getChargeBoxInfoForMap({ chargeBoxId: chargeBoxId }).then((data) => {
-                if (data.success) {
-                    const info = that.getPosInfoHtml(data.chargeBoxInfo)
-                    return callBack(info);
-                } else {
-                    callBack('');
-                    return that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('getChargePointInfoHtml', err)
-                that.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
-        getPosInfoHtml: function(item) {
-            const currency = $GLOBAL_CURRENCY[item.unitType || 1],
-                  connectorHtml = this.getConnectorHtml(item.connectorList);
-            let info = `<div class="info-tite">${item.chargeBoxName}</div>
-                        <div class="info-msg">
-                            <ul>
-                                <li>
-                                    <div class="item-title-img"><img src='${this.icon.deviceInfo}'>${i18n.t('chargingStation.chargePointID')}</div>
-                                    <div class="item-msg">${item.chargeBoxId}</div>
-                                </li>
-                                <li>
-                                    <div class="item-title-img"><img src='${this.icon.charging}'>${i18n.t('chargingStation.power')}</div>
-                                    <div class="item-msg">${item.power}kW</div>
-
-                                    <div class="item-title">${i18n.t('chargingStation.connector')}</div>
-                                    <div class="item-msg">${connectorHtml}</div>
-
-                                    <div class="item-title">${i18n.t('chargingStation.elecRate')}</div>
-                                    <div class="item-msg">${i18n.t('chargingStation.onPeak') + ' ' + currency + item.onPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.onPeakElectricityRateType || 1]}</div>
-                                    <div class="item-msg">${i18n.t('chargingStation.offPeak') + ' ' + currency + item.offPeakElectricityRate + '/' + i18n.t('chargingStation.elecRateUnit')[item.offPeakElectricityRateType || 1]}</div>
-
-                                    <div class="item-title">${i18n.t('chargingStation.parkingRate')}</div>
-                                    <div class="item-msg">${currency + item.parkingRate + '/' + i18n.t('chargingStation.parkingRateUnit')[item.parkingRateType]} </div>
-                                </li>
-                            </ul>
-                        </div>`;
-            return info;
-        },
-        getConnectorHtml(connectorList) {
-            let info = '';
-            connectorList.forEach((item, idx) => {
-                info += '<div class="connector-obj">';
-                switch(item.status) {
-                    case 1:
-                        info += `<span class="circle-number color1">${item.connectorId}</span>`;
-                        break;
-                    case 2:
-                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
-                        break;
-                    case 4:
-                        info += `<span class="circle-number color2">${item.connectorId}</span>`;
-                        break;
-                    case 5:
-                        info += `<span class="circle-number color5">${item.connectorId}</span>`;
-                        break;
-                    case 6:
-                        info += `<span class="circle-number color4">${item.connectorId}</span>`;
-                        break;
-                    case 3:
-                        info += `<span class="circular">
-                                    <div class="color6"></div>
-                                    <div class="number">${item.connectorId}</div>
-                                </span>`;
-                        break;
-                    default:
-                        info += `<span class="circle-number color0">${item.connectorId}</span>`;
-                }
-                if (item.connectorTypeId !== '1' && item.connectorTypeId !== '5' && item.connectorTypeId !== '4' && item.connectorTypeId !== '10') {
-                    info +=`<div class="imgItem"><img src="${this.connectorIcon[item.connectorTypeId]}"></div>
-                        </div>`;
-                } else {
-                    info +=`<div class="imgItem">
-                        <span style="vertical-align: sub; margin-left: 4px;">${ item.connectorType }</span>
-                    </div></div>`;
-                }
-            });
-            return info;
-        },
         handleOperatorChanged() {
             const that = this;
-            this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
+            that.filter.stationId = '';
+            //this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
             this.currentInfoWindow && this.currentInfoWindow.close();
             this.currentInfoWindow = null;
-            this.fetchChargerBoxList(()=> {
-                that.updateData();
+            this.currentInfoWindowStationId = '';
+            this.changeChargeBoxDrawerData(false);
+            this.stationData.isLoading = true;
+            this.fetchStationList(()=> {
+                that.fetchData();
+                clearInterval(that.timer);
+                that.setTimer();
             });
         },
-        updateData() {
+        handleStationChanged() {
+            this.currentInfoWindow && this.currentInfoWindow.close();
+            this.currentInfoWindow = null;
+            this.currentInfoWindowStationId = '';
+            this.changeChargeBoxDrawerData(false);
             this.fetchData();
             clearInterval(this.timer);
             this.setTimer();
-
         },
         setTimer() {
             const that = this;
             this.timer = setInterval(() => {
                 that.fetchData(true);
-            }, 1000 * 60);
-        },
-        drawClusters() {
-            const clusterOpt = {
-                                maxZoom: 16, //17開始小點
-                                gridSize: 50,
-                                styles: this.clusterStyles,
-                            };
-            this.clusterMarkers = new MarkerClusterer(this.map, this.markers, clusterOpt);
-            this.clusterMarkers.setCalculator(function(markers, numStyles) {
-                let hasAlert = false;
-                markers.forEach(marker => {
-                    if (marker.type === 4 ) {
-                        hasAlert = true;
-                    }
-                });
-                return {
-                    text: markers.length,
-                    index: hasAlert ? 3:0
-                }
-            });
+            }, that.frequence);
         },
         goChargePointPage(chargeBoxStatus) {
             const params = {
@@ -477,6 +506,21 @@ export default {
                 chargeBoxId: this.filter.chargeBoxId
             }
             this.$router.push({ name: 'menu.chargePoint', params: params});
+        },
+        changeChargeBoxDrawerData(isVisible, stationId) {
+            this.chargeBoxDrawer.visible = isVisible;
+            this.chargeBoxDrawer.isOpen = isVisible;
+            if (isVisible) {
+                this.chargeBoxDrawer.isLoading = isVisible;
+                setTimeout(() => {
+                    this.chargeBoxDrawer.data =  this.stationData.data[stationId].smartChargingConnectorAnalysisInfo && this.stationData.data[stationId].smartChargingConnectorAnalysisInfo.slice() || [];
+                    console.log(this.chargeBoxDrawer.data )
+                    this.chargeBoxDrawer.isLoading = !isVisible;
+                }, this.chargeBoxDrawer.frequence);
+            } else {
+                this.chargeBoxDrawer.isLoading = isVisible;
+                this.chargeBoxDrawer.data = [];
+            }
         }
     }
 }
@@ -551,6 +595,81 @@ export default {
         }
         + .item {
             margin-left: 24px;
+        }
+    }
+}
+.chargeBox-drawer {
+    .drawer-closeBtn {
+        position: fixed;
+        top: 68px;
+        /* top: calc(50% - 34px); */
+        right: 0px;
+        background: #0C83FF;
+        color: #F7F9FD;
+        padding: 8px;
+        border-radius: 8px 0 0 8px;
+        border: none;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.30);
+        /* transform: translate(0,50%); */
+        font-size: 20px;
+        &.open {
+            right: 340px;
+        }
+    }
+    .drawer-body {
+        position: fixed;
+        width: 340px;
+        height: calc(100vh - 68px);
+        top: 68px;
+        right: 0;
+        background: #F7F9FD;
+        box-shadow: 0 1px 3px 0 rgba(0,0,0,0.30);
+        &.mCustomScrollbar ul li {
+            margin-right: 16px;
+            padding: 16px 0 16px 16px;
+        }
+        &:not(.mCustomScrollbar) ul li {
+            padding: 16px;
+        }
+        ul {
+            padding-left: 0;
+            margin: 0;
+            height: 100%;
+            li {
+                list-style: none;
+                border-bottom: 1px solid #D4DCEA;
+                .title {
+                    font-size: 1rem;
+                    color: #1E2423;
+                    margin-bottom: 8px;
+                }
+                .info-item {
+                    font-size: 0.78rem;
+                    color: #525E69;
+                    .label {
+                        display: inline;
+                        margin-right: 8px;
+                    }
+                    .msg {
+                        display: inline;
+                    }
+                    + .info-item {
+                        margin-top: 8px;
+                    }
+                    &.connector {
+                        line-height: 24px;
+                        height: 24px;
+                        margin-top: 2px;
+                        margin-bottom: 12px;
+                        .label {
+                            vertical-align: text-top;
+                        }
+                        &.doubleHeight {
+                            height: 48px;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -143,6 +143,7 @@
     height: 100%;
 }
 .scroll,
+.chargeBox-drawer,
 .home-menu,
 .formVertical,
 .el-popover.dark .el-table {
@@ -987,6 +988,7 @@ div.connector-obj {
     .imgItem {
         display: inline-block;
         vertical-align: top;
+        margin-left: 2px;
     }
     .circle-number {
         display: inline-block;
@@ -997,7 +999,7 @@ div.connector-obj {
         line-height: 16px;
         text-align: center;
         padding: 4px;
-        vertical-align: text-top;
+        vertical-align: sub;
     }
     .color0 {
         background: transparent;

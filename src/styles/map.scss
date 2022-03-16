@@ -149,7 +149,7 @@
     font-size: 1.5rem;
     color: #151E25;
 }
-
+// charge box
 .si-has-border {
     .si-content-wrapper {
         width: 300px;
@@ -222,4 +222,43 @@
     .si-pointer-bg-right {
         border-right-color: rgba(230, 238, 248, 1);
     }
+}
+//station
+.station-infoWindow .si-content-wrapper .si-content {
+    width: 200px;
+    .info-tite {
+        font-size: 1rem;
+        color: #404142;
+        letter-spacing: 1.43px;
+        margin-bottom: 8px;
+        word-break: break-all;
+    }
+    .info-msg {
+        font-size: 0.75rem;
+        color: #525E69;
+        letter-spacing: 1.07px;
+        margin-bottom: 8px;
+        word-break: break-all;
+    }
+}
+
+.google-map-marker-label-ts {
+    color: #525E69;
+    background-color: white;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 28.2px;
+    white-space: nowrap;
+    border-radius: 36px;
+    margin-left: 3.5px;
+}
+.google-map-marker-label-tl {
+    color: #525E69;
+    background-color: white;
+    font-size: 1rem;
+    text-align: center;
+    width: 28.2px;
+    white-space: nowrap;
+    border-radius: 36px;
+    margin-left: 3.5px;
 }

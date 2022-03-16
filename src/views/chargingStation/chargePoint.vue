@@ -242,7 +242,7 @@ export default {
         if (this.$router.currentRoute.params.chargeBoxStatus) {
             this.filter.chargeBoxStatus = this.$router.currentRoute.params.chargeBoxStatus;
             this.filter.operatorTypeId = this.$router.currentRoute.params.operatorTypeId;
-            this.filter.search = this.filter.tmpSearch = this.$router.currentRoute.params.chargeBoxId;
+            // this.filter.search = this.filter.tmpSearch = this.$router.currentRoute.params.chargeBoxId; //station 來的不用
         }
         setScrollBar('.scroll', this);
         this.fetchData();

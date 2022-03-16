@@ -244,6 +244,11 @@ export const $HTTP_addStation= params => { return post(`${base}/ChargeStation/St
 export const $HTTP_updateStation = params => { return post(`${base}/ChargeStation/Station/updateStation`, qs.stringify(params)) }
 
 /**
+ * @description 取得充電站明細列表
+ */
+ export const $HTTP_getStationDetailList = params => { return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params)) }
+
+/**
  * @description 更新Kiosk資訊
  */
  export const $HTTP_updateKiosk = params => { return post(`${base}/ChargeStation/Kiosk/updateKiosk`, qs.stringify(params)) }
