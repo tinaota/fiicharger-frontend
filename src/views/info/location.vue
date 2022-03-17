@@ -415,8 +415,8 @@ export default {
                         });
 
             marker.addListener("click", () => {
-                const htmlContent = `<div class="info-tite">${item.stationId}</div>
-                                     <div class="info-msg">${item.stationName}</div>`;
+                const htmlContent = `<div class="info-tite">${item.stationName}</div>
+                                     <div class="info-msg">${item.address}</div>`;
                 var infowindow = new SnazzyInfoWindow($.extend({}, {
                                     marker: marker,
                                     content: htmlContent,
@@ -441,14 +441,13 @@ export default {
                                     },
                                     maxWidth: 200,
                                     showCloseButton: false,
-                                    closeOnMapClick: false
+                                    closeOnMapClick: false,
+                                    closeWhenOthersOpen: true
                                 }));
-                this.currentInfoWindowStationId = item.stationId;
-                this.currentInfoWindow && that.currentInfoWindow.close();
-                that.currentInfoWindow = null;
                 that.map.setCenter(item.location);
-                infowindow.open();
                 that.currentInfoWindow = infowindow;
+                infowindow.open();
+                that.currentInfoWindowStationId = item.stationId;
                 that.changeChargeBoxDrawerData(true, item.stationId);
             });
             if (isRefresh && item.stationId === that.currentInfoWindowStationId) {
@@ -514,7 +513,6 @@ export default {
                 this.chargeBoxDrawer.isLoading = isVisible;
                 setTimeout(() => {
                     this.chargeBoxDrawer.data =  this.stationData.data[stationId].smartChargingConnectorAnalysisInfo && this.stationData.data[stationId].smartChargingConnectorAnalysisInfo.slice() || [];
-                    console.log(this.chargeBoxDrawer.data )
                     this.chargeBoxDrawer.isLoading = !isVisible;
                 }, this.chargeBoxDrawer.frequence);
             } else {
