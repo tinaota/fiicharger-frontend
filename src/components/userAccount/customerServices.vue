@@ -98,7 +98,7 @@
 
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getCustomerServiceList, $HTTP_addCustomerService, $HTTP_updateCustomerService, $HTTP_deleteCustomerService } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd"
 export default {
     components: {
@@ -154,7 +154,11 @@ export default {
             $HTTP_getCustomerServiceList().then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.customerServiceList.slice();
+                    this.tableData = data.customerServiceList.map(item => {
+                        item.fDate = transformUtcToLocTime(item.fDate);
+                        item.eDate = transformUtcToLocTime(item.eDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

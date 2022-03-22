@@ -116,9 +116,9 @@
                 <div class="label">{{ $t('general.installationDate') }}</div>
                 <el-date-picker
                     v-model="dialog.info.installationDate"
-                    type="date"
-                    value-format="yyyy-MM-dd"
-                    format="yyyy-MM-dd"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm"
+                    format="yyyy-MM-dd HH:mm"
                     :picker-options="pickerOptions"
                     :clearable="false">
                 </el-date-picker>
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformLocTimeToUtc } from "@/utils/function";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
 import ic_green_dot from 'imgs/ic_green_dot.png';
@@ -318,6 +318,7 @@ export default {
         },
         updateCheckBox() {
             const that = this;
+            var installationDate = transformLocTimeToUtc(that.dialog.info.installationDate, "YYYY-MM-DD HH:mm");
             let   $API,
                   params = {
                     chargeBoxId: that.dialog.info.chargeBoxId,
@@ -334,7 +335,7 @@ export default {
                     offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
                     parkingRate: that.dialog.info.parkingRate,
                     parkingRateType: that.dialog.info.parkingRateType,
-                    installationDate: that.dialog.info.installationDate,
+                    installationDate: installationDate,
                     operatorTypeId: that.dialog.info.operatorTypeId
                   },
                   sucMsg = "";

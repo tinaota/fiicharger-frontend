@@ -87,7 +87,7 @@
 
 <script>
 import { $HTTP_getIdTagList, $HTTP_addIdTag, $HTTP_updateIdTag, $HTTP_deleteIdTag } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import $ from 'jquery'
 export default {
     data() {
@@ -142,7 +142,10 @@ export default {
             $HTTP_getIdTagList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.idTagList.slice();
+                    this.tableData = data.idTagList.map(item => {
+                        item.fDate = transformUtcToLocTime(item.fDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

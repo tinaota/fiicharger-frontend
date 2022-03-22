@@ -98,7 +98,7 @@
 
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getMaintainerList, $HTTP_addMaintainer, $HTTP_updateMaintainer, $HTTP_deleteMaintainer } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd"
 export default {
     components: {
@@ -154,7 +154,11 @@ export default {
             $HTTP_getMaintainerList().then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.maintainerList.slice();
+                    this.tableData = data.maintainerList.map(item => {
+                        item.fDate = transformUtcToLocTime(item.fDate);
+                        item.eDate = transformUtcToLocTime(item.eDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

@@ -12,7 +12,7 @@ axios.defaults.timeout = 120000
 axios.defaults.retry = 3
 axios.defaults.retryDelay = 3000
 axios.__axiosPromiseArr = [];
-axios.defaults.headers.post['zone'] = parseInt(-new Date().getTimezoneOffset());
+//axios.defaults.headers.post['zone'] = parseInt(-new Date().getTimezoneOffset());
 //時區回復+08:00
 // function getZone() {
 //     const locTimeOffset = new Date().getTimezoneOffset(),

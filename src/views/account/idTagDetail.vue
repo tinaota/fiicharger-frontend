@@ -32,7 +32,7 @@
 
 <script>
 import { $HTTP_getAccountInfo, $HTTP_getBillingList } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import BillingLog from "@/components/userAccount/billingLog";
 export default {
     components: {
@@ -78,7 +78,12 @@ export default {
             $HTTP_getBillingList(param).then((data) => {
                 this.billingLogIsLoading = false;
                 if (!!data.success) {
-                    this.billingLogData = data.billingList.slice();
+                    this.billingLogData = data.billingList.map(item => {
+                        item.sDate = transformUtcToLocTime(item.sDate);
+                        item.sessionInfo.chargingStartTime = transformUtcToLocTime(item.sessionInfo.chargingStartTime);
+                        item.sessionInfo.chargingEndTime = transformUtcToLocTime(item.sessionInfo.chargingEndTime);
+                        return item;
+                    });
                 } else {
                     this.billingLogData = [];
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });

@@ -96,6 +96,7 @@
 import { $HTTP_getChargingPowerUsageAnalysisInfo } from "@/api/api";
 import LineChart from "@/components/charts/twoLineChart";
 import moment from "moment";
+import { transformLocTimeToUtc, transformUtcToLocTime } from "@/utils/function";
 export default {
     components: {
         LineChart
@@ -139,14 +140,14 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        const todaySplit = moment().format("YYYY-MM-DD").split('-');
-        const thisMonth1st = todaySplit[0] + '-' + todaySplit[1] + '-01';
+        const today = moment().format("YYYY-MM-DD");
+        const thisMonth1st = moment().startOf('month').format("YYYY-MM-DD");
 
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
 
-        if (todaySplit[2] === '01') {
+        if (today === thisMonth1st) {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
             const yesterday = moment().subtract(1, 'days').format("YYYY-MM-DD");
@@ -163,17 +164,22 @@ export default {
                 operatorTypeId: this.filter.operatorTypeId
             };
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                param.sDate = this.filter.dateRange[0];
-                param.eDate = this.filter.dateRange[1];
+                var eDate = moment(this.filter.dateRange[1]).endOf('day').format();
+                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
+                param.eDate = transformLocTimeToUtc(eDate);
             }
             this.page = 1;
             this.isLoading = true;
             $HTTP_getChargingPowerUsageAnalysisInfo(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
+                    data.chargingPowerUsageChartInfo.xList = data.chargingPowerUsageChartInfo.xList.map(period => that.transformTimePeriod(period));
                     this.summary = Object.assign({}, data.chargingPowerUsageSummary);
                     this.chartData = Object.assign({}, data.chargingPowerUsageChartInfo);
-                    this.tableData = data.chargingPowerUsageDetail.slice();
+                    this.tableData = data.chargingPowerUsageDetail.map(item => {
+                        item.time = that.transformTimePeriod(item.time);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -186,6 +192,11 @@ export default {
                 console.log('alert', err)
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
+        },
+        transformTimePeriod(period) {
+            const time = period.split('~'),
+                  today = moment().format("YYYY-MM-DD");
+            return transformUtcToLocTime(today+' '+time[0], "HH:mm")+'~'+ transformUtcToLocTime(today+' '+time[1], "HH:mm");
         },
         changePage(page) {
             this.page = page;

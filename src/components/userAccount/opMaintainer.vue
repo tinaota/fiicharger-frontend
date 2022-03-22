@@ -98,7 +98,7 @@
 
 <script>
 import { $HTTP_getOperatorMaintainerList, $HTTP_addOperatorMaintainer, $HTTP_updateOperatorMaintainer, $HTTP_deleteOperatorMaintainer } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd"
 export default {
     components: {
@@ -155,7 +155,11 @@ export default {
             $HTTP_getOperatorMaintainerList().then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.operatorMaintainerList.slice();
+                    this.tableData = data.operatorMaintainerList.map(item => {
+                        item.eDate = transformUtcToLocTime(item.eDate);
+                        item.fDate = transformUtcToLocTime(item.fDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

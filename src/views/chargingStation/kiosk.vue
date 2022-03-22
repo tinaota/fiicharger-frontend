@@ -235,7 +235,7 @@
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getZipCodeListForSelect, $HTTP_getStationList, $HTTP_getKioskList, $HTTP_getCountryCodeSelectList, $HTTP_addKiosk, $HTTP_updateKiosk, $HTTP_deleteKiosk, $HTTP_getChargeBoxListForKioskBinding, $HTTP_addKioskChargeBoxMatch } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ic_green_dot from 'imgs/ic_green_dot.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 import ShowPostion from "@/components/chargingStation/showPostion";
@@ -343,9 +343,9 @@ export default {
         if (this.accPermissionType === 3) {
             this.permissionEditAble = true;
         }
-        this.$store.commit(SELECT_NOW_TAB, { path: 'kiosk', router: this.$router, changePath: false})
     },
     mounted() {
+        this.$store.commit(SELECT_NOW_TAB, { path: 'kiosk', router: this.$router, changePath: false})
         setScrollBar('.scroll', this);
         this.fetchStationList();
         this.fetchLocationList();
@@ -424,6 +424,7 @@ export default {
                 if (!!data.success) {
                     this.tableData = data.kioskList.map(item => {
                         item.loc.lng = item.loc.lon;
+                        item.eDate = transformUtcToLocTime(item.eDate);
                         // item.connectorCountInfo.acUnavailable = item.connectorCountInfo.acTotal - item.connectorCountInfo.acAvailable;
                         // item.connectorCountInfo.dcUnavailable = item.connectorCountInfo.dcTotal - item.connectorCountInfo.dcAvailable;
                         // item.currency = $GLOBAL_CURRENCY[item.unitType];

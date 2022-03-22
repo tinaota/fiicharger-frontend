@@ -162,7 +162,7 @@
     </div>
 </template>
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformLocTimeToUtc } from "@/utils/function";
 import { $HTTP_getChargingStatisticsInfo, $HTTP_getPowerUsageTop10List, $HTTP_getRevenueTop10List, $HTTP_getChargingSessionCountTop10List, $HTTP_getFaultCountTop5List } from "@/api/api";
 import moment from "moment";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
@@ -246,8 +246,8 @@ export default {
             const that = this;
             let param = {
                 // dateType: 5,
-                startTime: moment(this.statistics.filter[0]).utc().format(dateFormat),
-                endTime: moment(this.statistics.filter[1]).utc().format(dateFormat),
+                startTime: transformLocTimeToUtc(this.statistics.filter[0], dateFormat),
+                endTime: transformLocTimeToUtc(this.statistics.filter[1], dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -289,8 +289,8 @@ export default {
             const that = this;
             let param = {
                 // dateType: 5,
-                startTime: moment(this.powerUsedTop10.filter[0]).utc().format(dateFormat),
-                endTime: moment(this.powerUsedTop10.filter[1]).utc().format(dateFormat),
+                startTime: transformLocTimeToUtc(this.powerUsedTop10.filter[0], dateFormat),
+                endTime: transformLocTimeToUtc(this.powerUsedTop10.filter[1], dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -316,8 +316,8 @@ export default {
             const that = this;
             let param = {
                 // dateType: 5,
-                startTime: moment(this.revenueTop10.filter[0]).utc().format(dateFormat),
-                endTime: moment(this.revenueTop10.filter[1]).utc().format(dateFormat),
+                startTime: transformLocTimeToUtc(this.revenueTop10.filter[0], dateFormat),
+                endTime: transformLocTimeToUtc(this.revenueTop10.filter[1], dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -343,8 +343,8 @@ export default {
             const that = this;
             let param = {
                 // dateType: 5,
-                startTime: moment(this.sessionTop10.filter[0]).utc().format(dateFormat),
-                endTime: moment(this.sessionTop10.filter[1]).utc().format(dateFormat),
+                startTime: transformLocTimeToUtc(this.sessionTop10.filter[0], dateFormat),
+                endTime: transformLocTimeToUtc(this.sessionTop10.filter[1], dateFormat),
             };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
                 param.operatorTypeId = this.filter.operatorTypeId;
@@ -366,6 +366,7 @@ export default {
                 that.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
+        // 目前沒有用到
         fetchFaultsTypeTop5() {
             const that = this;
             let param = {
@@ -403,12 +404,12 @@ export default {
             return pData;
         },
         handleSelected() {
-            const tmp = [this.statistics.filter[0], moment(this.statistics.filter[1]).endOf('days').format()];
+            const tmp = [this.statistics.filter[0], moment(this.statistics.filter[1]).endOf('day').format()];
             this.statistics.filter = tmp;
             this.powerUsedTop10.filter = tmp;
             this.revenueTop10.filter = tmp;
             this.sessionTop10.filter = tmp;
-            this.faultsTypeTop5.filter = tmp;
+            // this.faultsTypeTop5.filter = tmp;
             this.fetchAllData();
         }
     }

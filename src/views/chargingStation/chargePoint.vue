@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { $GLOBAL_CURRENCY } from '@/utils/global';
@@ -203,7 +203,8 @@ export default {
                     offPeakElectricityRateType: 1,
                     parkingRate: 0,
                     installationDate: '',
-                    operatorTypeId:　''
+                    operatorTypeId: '',
+                    dateTimeTest: ''
                 }
             },
             mapDialog: {
@@ -318,6 +319,7 @@ export default {
                     this.tableData = data.chargeBoxList.map(item => {
                         item.currency = $GLOBAL_CURRENCY[item.unitType];
                         // item.stationName = that.stationList.data[item.stationId];
+                        item.installationDate = transformUtcToLocTime(item.installationDate, "YYYY-MM-DD HH:mm")
                         return item;
                     });
                     this.total = this.tableData.length;
@@ -407,7 +409,7 @@ export default {
                                 placement: 'bottom',
                                 "popper-class": "custom"
                             },
-                　　　　 }, [
+                        }, [
                             h('i', {
                                 class:'el-icon-warning-outline',
                                 style: 'color:#0C83FF; margin-left:4px; font-weight: bold;'

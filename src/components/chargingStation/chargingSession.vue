@@ -105,7 +105,7 @@
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import { $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail} from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 import LineChart from "@/components/charts/threeLineChart";
@@ -166,7 +166,11 @@ export default {
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargingSessionList.slice();
+                    this.tableData = data.chargingSessionList.map(item => {
+                        item.chargingStartTime = transformUtcToLocTime(item.chargingStartTime);
+                        item.chargingEndTime = transformUtcToLocTime(item.chargingEndTime);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -194,6 +198,8 @@ export default {
                 that.dialog.isLoading = false;
                 if (!!data.success) {
                     that.dialog.info = Object.assign({}, data.chargingSessionInfo);
+                    that.dialog.info.chargingStartTime = transformUtcToLocTime(that.dialog.info.chargingStartTime);
+                    that.dialog.info.chargingEndTime = transformUtcToLocTime(that.dialog.info.chargingEndTime);
                     that.dialog.chartData = Object.assign({}, data.chargingChartInfo);
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });

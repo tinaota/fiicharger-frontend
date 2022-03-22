@@ -135,7 +135,7 @@
 
 <script>
 import { $HTTP_getCountryCodeSelectList, $HTTP_getOperatorList, $HTTP_updateOperator, UpdateOperator } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import OpMaintainer from "@/components/userAccount/opMaintainer";
 export default {
     components: {
@@ -211,6 +211,8 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.operatorData = Object.assign({},data.operatorList[0]);
+                    this.operatorData.fDate = transformUtcToLocTime(this.operatorData.fDate);
+                    this.operatorData.eDate = transformUtcToLocTime(this.operatorData.eDate);
                     this.operatorData.countryName = this.countryCode.data.filter(item => item.countryCode === this.operatorData.countryCode)[0].countryName || ''
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });

@@ -216,7 +216,7 @@
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
 import { $HTTP_getZipCodeListForSelect, $HTTP_getStationList, $HTTP_getCountryCodeSelectList, $HTTP_addStation, $HTTP_updateStation, $HTTP_deleteStation, $HTTP_getChargeBoxListForBinding, $HTTP_addStationChargeBoxMatch } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ic_green_dot from 'imgs/ic_green_dot.png';
 import googleMapStyle from '@/assets/js/googleMapStyle_normal';
 import ShowPostion from "@/components/chargingStation/showPostion";
@@ -363,6 +363,7 @@ export default {
                 if (!!data.success) {
                     this.tableData = data.stationList.map(item => {
                         item.loc.lng = item.loc.lon;
+                        item.eDate = transformUtcToLocTime(item.eDate);
                         // item.connectorCountInfo.acUnavailable = item.connectorCountInfo.acTotal - item.connectorCountInfo.acAvailable;
                         // item.connectorCountInfo.dcUnavailable = item.connectorCountInfo.dcTotal - item.connectorCountInfo.dcAvailable;
                         // item.currency = $GLOBAL_CURRENCY[item.unitType];

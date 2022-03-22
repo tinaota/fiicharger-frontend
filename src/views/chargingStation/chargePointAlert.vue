@@ -70,8 +70,9 @@
 </template>
 <script>
 import { $HTTP_getChargeAlertList } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformLocTimeToUtc } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
+import moment from "moment";
 export default {
     components: {
         Connector
@@ -120,8 +121,8 @@ export default {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                param.sDate = this.filter.dateRange[0];
-                param.eDate = this.filter.dateRange[1];
+                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
+                param.eDate = transformLocTimeToUtc(moment(this.filter.dateRange[1]).endOf('day').format());
             }
             if (type) {
                 this.filter.search = this.filter.tmpSearch;
@@ -130,7 +131,10 @@ export default {
             $HTTP_getChargeAlertList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargeAlertList.slice();
+                    this.tableData = data.chargeAlertList.map(item => {
+                        item.sDate = transformUtcToLocTime(item.sDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                     this.alertPageComment = data.alertPageComment;
                 } else {

@@ -33,6 +33,7 @@
 
 <script>
 import { $HTTP_getChargeHistoryAlertList } from "@/api/api";
+import { transformUtcToLocTime } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 export default {
     props: {
@@ -67,7 +68,11 @@ export default {
             $HTTP_getChargeHistoryAlertList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargeAlertList.slice();
+                    this.tableData = data.chargeAlertList.map(item => {
+                        item.sDate = transformUtcToLocTime(item.sDate);
+                        item.eDate = transformUtcToLocTime(item.eDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

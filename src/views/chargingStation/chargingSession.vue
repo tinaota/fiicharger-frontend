@@ -193,11 +193,12 @@
 
 <script>
 import { $GLOBAL_CURRENCY } from '@/utils/global';
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformLocTimeToUtc } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import LineChart from "@/components/charts/threeLineChart";
 import _ from 'lodash'
 import { $HTTP_getChargeBoxListForSelect, $HTTP_getZipCodeListForSelect, $HTTP_getChargingSessionList, $HTTP_getChargingSessionDetail } from "@/api/api";
+import moment from "moment";
 export default {
     components: {
         Connector,
@@ -316,8 +317,8 @@ export default {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                param.sDate = this.filter.dateRange[0];
-                param.eDate = this.filter.dateRange[1];
+                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
+                param.eDate = transformLocTimeToUtc(moment(this.filter.dateRange[1]).endOf('day').format());
             }
             if (this.filter.chargeBoxId) {
                 param.chargeBoxId = this.filter.chargeBoxId;
@@ -337,7 +338,12 @@ export default {
             $HTTP_getChargingSessionList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.chargingSessionList.slice();
+                    this.tableData = data.chargingSessionList.map(item => {
+                        item.chargingStartTime = transformUtcToLocTime(item.chargingStartTime);
+                        item.chargingEndTime = transformUtcToLocTime(item.chargingEndTime);
+                        item.billingInfo.sDate = transformUtcToLocTime(item.billingInfo.sDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -362,6 +368,8 @@ export default {
                 that.dialog.isLoading = false;
                 if (!!data.success) {
                     that.dialog.info = Object.assign({}, data.chargingSessionInfo);
+                    that.dialog.info.chargingStartTime = transformUtcToLocTime(that.dialog.info.chargingStartTime);
+                    that.dialog.info.chargingEndTime = transformUtcToLocTime(that.dialog.info.chargingEndTime);
                     that.dialog.chartData = Object.assign({}, data.chargingChartInfo);
                 } else {
                     that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });

@@ -47,6 +47,7 @@
 <script>
 import { $HTTP_getValuationList } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
+import { transformUtcToLocTime } from "@/utils/function";
 export default {
     props: {
         memberCode: String
@@ -78,7 +79,10 @@ export default {
             $HTTP_getValuationList(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
-                    this.tableData = data.valuationList.slice();
+                    this.tableData = data.valuationList.map(item => {
+                        item.fDate = transformUtcToLocTime(item.fDate);
+                        return item;
+                    });
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

@@ -64,6 +64,8 @@
 import { $HTTP_getChargingTimeAnalysisInfo } from "@/api/api";
 import BarChart from "@/components/charts/barChart";
 import moment from "moment";
+import { transformLocTimeToUtc, transformUtcToLocTime } from "@/utils/function";
+const DATE_FORMATE = "YYYY-MM-DD";
 export default {
     components: {
         BarChart
@@ -98,17 +100,17 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        const todaySplit = moment().format("YYYY-MM-DD").split('-');
-        const thisMonth1st = todaySplit[0] + '-' + todaySplit[1] + '-01';
-
+        const today = moment().format(DATE_FORMATE);
+        // const thisMonth1st = todaySplit[0] + '-' + todaySplit[1] + '-01';
+        const thisMonth1st = moment().startOf('month').format(DATE_FORMATE);
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
 
-        if (todaySplit[2] === '01') {
+        if (today === thisMonth1st) {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
-            const yesterday = moment().subtract(1, 'days').format("YYYY-MM-DD");
+            const yesterday = moment().subtract(1, 'days').format(DATE_FORMATE);
             this.filter.dateRange = [thisMonth1st, yesterday];
         }
     },
@@ -122,17 +124,22 @@ export default {
                 operatorTypeId: this.filter.operatorTypeId
             };
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                param.sDate = this.filter.dateRange[0];
-                param.eDate = this.filter.dateRange[1];
+                var eDate = moment(this.filter.dateRange[1]).endOf('day').format();
+                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
+                param.eDate = transformLocTimeToUtc(eDate);
             }
             this.page = 1;
             this.isLoading = true;
             $HTTP_getChargingTimeAnalysisInfo(param).then((data) => {
                 this.isLoading = false;
                 if (!!data.success) {
+                    data.chargingUsePercentageChartInfo.xList = data.chargingUsePercentageChartInfo.xList.map(time => transformUtcToLocTime(time, DATE_FORMATE));
                     this.chargingUseSummary = Object.assign({}, data.chargingUseSummary);
                     this.chartData = Object.assign({unit: '(%)'}, data.chargingUsePercentageChartInfo);
-                    this.tableData = data.chargingUsePercentagDetail.slice();
+                    this.tableData = data.chargingUsePercentagDetail.map((item=> {
+                        item.date = transformUtcToLocTime(item.date, DATE_FORMATE);
+                        return item;
+                    }));
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];

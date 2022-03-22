@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ChargingSession from "@/components/chargingStation/chargingSession";
@@ -207,6 +207,7 @@ export default {
                 this.isLoading = false;
                 if (!!data.success) {
                     this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
+                    this.curRouteParam.installationDate = transformUtcToLocTime(this.curRouteParam.installationDate);
                     this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType]
                 } else {
                     this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
