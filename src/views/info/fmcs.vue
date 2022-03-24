@@ -26,7 +26,7 @@
           <el-tabs v-model="active" @tab-click="handleTabClick">
             <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue">
             </el-tab-pane>
-            <el-tab-pane
+            <!-- <el-tab-pane
               :label="$t('menu.costRevenueDay')"
               name="costRevenueDay"
             >
@@ -37,7 +37,7 @@
             >
             </el-tab-pane>
             <el-tab-pane :label="$t('menu.energyPhm')" name="energyPhm">
-            </el-tab-pane>
+            </el-tab-pane> -->
           </el-tabs>
           <FMCSTemplate
             v-if="active === 'costRevenue'"
