@@ -119,14 +119,17 @@ export default {
     },
     methods : {
         fetchData() {
+            // 目前呈現UTC時間
             const that = this;
             let param = {
                 operatorTypeId: this.filter.operatorTypeId
             };
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                var eDate = moment(this.filter.dateRange[1]).endOf('day').format();
-                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
-                param.eDate = transformLocTimeToUtc(eDate);
+                // var eDate = moment(this.filter.dateRange[1]).endOf('day').format();
+                // param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
+                // param.eDate = transformLocTimeToUtc(eDate);
+                param.sDate = this.filter.dateRange[0];
+                param.eDate = this.filter.dateRange[1];
             }
             this.page = 1;
             this.isLoading = true;
@@ -137,7 +140,7 @@ export default {
                     this.chargingUseSummary = Object.assign({}, data.chargingUseSummary);
                     this.chartData = Object.assign({unit: '(%)'}, data.chargingUsePercentageChartInfo);
                     this.tableData = data.chargingUsePercentagDetail.map((item=> {
-                        item.date = transformUtcToLocTime(item.date, DATE_FORMATE);
+                        // item.date = transformUtcToLocTime(item.date, DATE_FORMATE);
                         return item;
                     }));
                     this.total = this.tableData.length;
