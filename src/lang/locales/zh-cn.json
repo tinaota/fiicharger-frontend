@@ -113,7 +113,7 @@
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
-        "nAccount": "帐户数量",
+        "nAccount": "新增会员数量",
         "nStation": "充电站数量",
         "nSession": "充电纪录数量",
         "nConnector": "新增充电枪数量",

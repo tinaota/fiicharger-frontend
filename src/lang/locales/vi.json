@@ -113,7 +113,7 @@
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
-        "nAccount": "Tài khoản",
+        "nAccount": "Số tài khoản mới",
         "nStation": "Trạm",
         "nSession": "Số lượng bản giao dịch",
         "nConnector": "Thêm số lượng súng sạc",

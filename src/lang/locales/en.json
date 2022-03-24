@@ -113,7 +113,7 @@
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
-        "nAccount": "Number of Account",
+        "nAccount": "Number of New Account",
         "nStation": "Number of Station",
         "nSession": "Number of Session",
         "nConnector": "Number of New Connector",

@@ -505,7 +505,7 @@ export default {
 }
 @media (min-width: 1251px) {
     .statistics .s-contain .item {
-        width: calc(16.667% - 3px);
+        width: calc(16.667% - 5px);
     }
 }
 </style>
