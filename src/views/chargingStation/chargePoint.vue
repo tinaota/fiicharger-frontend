@@ -66,7 +66,7 @@
                             <el-tooltip v-if="scope.row.chargeBoxStatus===1" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
+                            <el-tooltip v-else-if="scope.row.chargeBoxStatus===2" :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color2"></span>
                             </el-tooltip>
                             <el-tooltip v-else-if="scope.row.chargeBoxStatus===3" :content="$t('general.maintenance')" placement="bottom" effect="light" popper-class="custom">
@@ -218,7 +218,7 @@ export default {
             connectorList: [],
             chargeBoxStatusList: {
                 1: i18n.t('general.available'),
-                2: i18n.t('general.unavailable'),
+                2: i18n.t('general.inUse'),
                 3: i18n.t('general.maintenance'),
                 4: i18n.t('general.alert'),
                 5: i18n.t('general.connectionLost'),

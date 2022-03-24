@@ -34,7 +34,7 @@
                             </div>
                             <div v-else-if="curRouteParam.chargeBoxStatus===2">
                                 <span class="circle-status color2"></span>
-                                <span> {{ $t('general.unavailable') }}</span>
+                                <span> {{ $t('general.inUse') }}</span>
                             </div>
                             <div v-else-if="curRouteParam.chargeBoxStatus===3">
                                 <span class="circle-status color3"></span>

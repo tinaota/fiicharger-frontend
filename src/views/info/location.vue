@@ -1,6 +1,6 @@
 <template>
-    <div class="mainctrl" v-loading="stationData.isLoading">
-        <div id="map-container" class="google-map"></div>
+    <div class="mainctrl">
+        <div id="map-container" class="google-map"  v-loading="stationData.isLoading"></div>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
@@ -34,7 +34,7 @@
             <div class="item">
                 <img :src="icon.serviceUnavailable">
                 <span class="num" v-if="statisticsInfo.unavailableCount !== 0" @click="goChargePointPage(2)">{{statisticsInfo.unavailableCount}}</span>
-                <span class="text">{{$t('general.unavailable')}}</span>
+                <span class="text">{{$t('general.inUse')}}</span>
             </div>
             <div class="item">
                 <img :src="icon.abnormal">
@@ -304,14 +304,14 @@ export default {
                             item.stationStatus = "2";
                         } else {
                             item.stationStatus = 0;
-                            if (item.chargeBoxStatusCount.Alert) {
+                            if (item.chargeBoxStatusCount.Available) {
+                                item.stationStatus = '1'
+                            } else if (item.chargeBoxStatusCount.Unavailable) {
+                                item.stationStatus = '2';
+                            } else if (item.chargeBoxStatusCount.Alert) {
                                 item.stationStatus = '4';
                             } else if (item.chargeBoxStatusCount.ConnectionLost) {
                                 item.stationStatus = '5';
-                            } else if (item.chargeBoxStatusCount.Unavailable) {
-                                item.stationStatus = '2';
-                            } else if (item.chargeBoxStatusCount.Available) {
-                                item.stationStatus = '1';
                             } else {
                                 item.stationStatus = '2';
                             }
@@ -401,14 +401,22 @@ export default {
             const that = this;
             var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.stationStatus-1 || 1], //這裡要判斷顯是哪個
                                 new google.maps.Size(36, 55)); //size  預設位子圖案中間底
-            var className = (item.chargeBoxCount > 99) ? 'google-map-marker-label-ts' : 'google-map-marker-label-tl'; //三位數字小一點
+            var className = '';
+            // item.chargeBoxCount = 9;
+            if (item.chargeBoxCount < 10) {
+                className = 'google-map-marker-label-tl';
+            } else if (item.chargeBoxCount > 99) {
+                className = 'google-map-marker-label-ts';
+            } else {
+                className = 'google-map-marker-label-tm'
+            }
             const marker = new MarkerWithLabel({
                             position: item.location,
                             clickable: true,
                             draggable: false,
                             map: that.map,
                             labelContent: item.chargeBoxCount.toString(),
-                            labelAnchor: new google.maps.Point(-18, -47),
+                            labelAnchor: new google.maps.Point(-18, -50),
                             labelClass: className, // the CSS class for the label
                             labelStyle: { opacity: 1.0 },
                             icon: markerImage,

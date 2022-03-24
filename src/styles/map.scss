@@ -245,20 +245,43 @@
 .google-map-marker-label-ts {
     color: #525E69;
     background-color: white;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     text-align: center;
-    width: 28.2px;
+    width: 28.8px;
+    height: 28px;
     white-space: nowrap;
     border-radius: 36px;
     margin-left: 3.5px;
+    line-height: 28px;
+    vertical-align: middle;
 }
+.google-map-marker-label-tm {
+    color: #525E69;
+    background-color: white;
+    font-size: 1.2rem;
+    // font-size: 0.85rem;
+    text-align: center;
+    width: 28.8px;
+    height: 28px;
+    white-space: nowrap;
+    border-radius: 36px;
+    margin-left: 3.5px;
+    line-height: 28px;
+    vertical-align: middle;
+}
+
 .google-map-marker-label-tl {
     color: #525E69;
     background-color: white;
-    font-size: 1rem;
+    // font-size: 1.5rem;
+    // font-size: 0.75rem;
+    font-size: 1.2rem;
     text-align: center;
-    width: 28.2px;
+    width: 28.8px;
+    height: 28px;
     white-space: nowrap;
     border-radius: 36px;
     margin-left: 3.5px;
+    line-height: 28px;
+    vertical-align: middle;
 }

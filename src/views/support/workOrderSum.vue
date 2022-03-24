@@ -82,7 +82,7 @@
                 <div class="item">
                     <img :src="icon.serviceUnavailable">
                     <span class="num" v-if="statisticsInfo.unavailableCount !== 0">{{statisticsInfo.unavailableCount}}</span>
-                    <span class="text">{{$t('general.unavailable')}}</span>
+                    <span class="text">{{$t('general.inUse')}}</span>
                 </div>
                 <div class="item">
                     <img :src="icon.maintenance">
