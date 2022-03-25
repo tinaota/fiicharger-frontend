@@ -46,7 +46,7 @@
                             </div>
                             <div v-else>
                                 <span class="circle-status color5"></span>
-                                <span> {{ $t('general.connectionLost') }}</span>
+                                <span> {{ $t('general.unavailable') }}</span>
                             </div>
                         </div>
                     </div>

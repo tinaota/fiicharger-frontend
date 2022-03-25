@@ -44,7 +44,7 @@
             <div class="item">
                 <img :src="icon.connectionLost">
                 <span class="num" v-if="statisticsInfo.connectionLostCount !== 0" @click="goChargePointPage(5)">{{statisticsInfo.connectionLostCount}}</span>
-                <span class="text">{{$t('general.connectionLost')}}</span>
+                <span class="text">{{$t('general.unavailable')}}</span>
             </div>
         </div>
         <div v-show="chargeBoxDrawer.visible"
@@ -305,15 +305,15 @@ export default {
                         } else {
                             item.stationStatus = 0;
                             if (item.chargeBoxStatusCount.Available) {
-                                item.stationStatus = '1'
+                                item.stationStatus = '0'
                             } else if (item.chargeBoxStatusCount.Unavailable) {
-                                item.stationStatus = '2';
+                                item.stationStatus = '1';
                             } else if (item.chargeBoxStatusCount.Alert) {
-                                item.stationStatus = '4';
+                                item.stationStatus = '3';
                             } else if (item.chargeBoxStatusCount.ConnectionLost) {
-                                item.stationStatus = '5';
+                                item.stationStatus = '4';
                             } else {
-                                item.stationStatus = '2';
+                                item.stationStatus = '4';
                             }
                             alertCount += item.chargeBoxStatusCount.Alert;
                             connectionLostCount += item.chargeBoxStatusCount.ConnectionLost;
@@ -399,7 +399,7 @@ export default {
         },
         drawMarker(item, isRefresh = false) {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.stationStatus-1 || 1], //這裡要判斷顯是哪個
+            var markerImage = new google.maps.MarkerImage(this.markerImgList[ item.stationStatus || 4], //這裡要判斷顯是哪個
                                 new google.maps.Size(36, 55)); //size  預設位子圖案中間底
             var className = '';
             // item.chargeBoxCount = 9;

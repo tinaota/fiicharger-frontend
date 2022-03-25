@@ -94,7 +94,7 @@
         "sucDelMsg": "Delete completed!",
         "status": "Status",
         "all": "All",
-        "statusList": ["Available", "In use", "Maintenance", "Alert", "Connection Lost"],
+        "statusList": ["Available", "In use", "Maintenance", "Alert", "Unavailable"],
         "currency": "Currency",
         "address": "Address",
         "telephone": "Telephone",

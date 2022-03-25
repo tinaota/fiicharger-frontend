@@ -94,7 +94,7 @@
         "sucDelMsg": "刪除完成!",
         "status": "狀態",
         "all": "全部",
-        "statusList": ["可用", "使用中", "維護", "異常", "連線異常"],
+        "statusList": ["可用", "使用中", "維護", "異常", "不可用"],
         "currency": "幣別",
         "address": "地址",
         "telephone": "電話",

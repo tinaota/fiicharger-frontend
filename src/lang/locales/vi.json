@@ -94,7 +94,7 @@
         "sucDelMsg": "Xóa thành công!",
         "status": "Trạng thái",
         "all": "Tất cả",
-        "statusList": ["Có sẵn", "Đang sử dụng", "Bảo trì", "Cảnh báo", "Mất kết nối"],
+        "statusList": ["Có sẵn", "Đang sử dụng", "Bảo trì", "Cảnh báo", "Không có"],
         "currency": "Tiền tệ",
         "address": "Địa chỉ",
         "telephone": "Điện thoại",

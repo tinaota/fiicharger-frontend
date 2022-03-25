@@ -97,7 +97,7 @@
                 <div class="item">
                     <img :src="icon.connectionLost">
                     <span class="num" v-if="statisticsInfo.connectionLostCount !== 0">{{statisticsInfo.connectionLostCount}}</span>
-                    <span class="text">{{$t('general.connectionLost')}}</span>
+                    <span class="text">{{$t('general.unavailable')}}</span>
                 </div>
             </div>
         </div>
