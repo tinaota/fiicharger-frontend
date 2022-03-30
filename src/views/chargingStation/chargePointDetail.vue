@@ -92,6 +92,24 @@
                         <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
                             <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
                         </el-tab-pane> -->
+                        <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue" v-if="curRouteParam.chargeBoxId!==undefined">
+                            <div class="filter">
+                            <el-date-picker
+                                v-model="filter.dateRange"
+                                type="daterange"
+                                value-format="yyyy-MM-dd"
+                                format="yyyy-MM-dd"
+                                range-separator="-"
+                                :start-placeholder="$t('general.startDate')"
+                                :end-placeholder="$t('general.endDate')"
+                                :picker-options="pickerOptions"
+                                :clearable="true"
+                                @change="updateApi()"
+                            >
+                            </el-date-picker>
+                            </div>
+                                <FMCSTemplate  :url="costRevenueUrl+`&var-chargePointId=chargePointId|=|`+curRouteParam.chargeBoxId"></FMCSTemplate>
+                        </el-tab-pane>
                     </el-tabs>
                 </div>
             </div>
@@ -108,18 +126,29 @@ import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Review from "@/components/chargingStation/review";
 import { $HTTP_getChargeBoxDetail } from "@/api/api";
-import { $GLOBAL_CURRENCY } from '@/utils/global';
+import moment from "moment";
+import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from '@/utils/global';
+import FMCSTemplate from "@/components/info/fmcsTemplate";
+const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
+var costRevenueUrl =
+  `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
+
 export default {
     components: {
         Connector,
         ShowPostion,
         ChargingSession,
         ChargePointAlert,
-        Review
+        Review,
+        FMCSTemplate
     },
     data() {
         return {
             lang: '',
+            costRevenueUrl: costRevenueUrl,
+            filter: {
+                dateRange: [],
+                },
             permissionShowAlertAble: true,
             curRouteParam: {
                 chargeBoxId: '',
@@ -188,6 +217,17 @@ export default {
         this.timer = setInterval(() => {
           this.fetchData(true);
         }, 5000);
+
+        const todaySplit = moment().format("YYYY-MM-DD").split("-");
+        const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
+
+        if (todaySplit[2] === "01") {
+        this.filter.dateRange = [thisMonth1st, thisMonth1st];
+        } else {
+        const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
+        this.filter.dateRange = [thisMonth1st, yesterday];
+        }
+        this.updateGrafanaUrl();
     },
     mounted() {
         setScrollBar('.scroll', this);
@@ -227,7 +267,20 @@ export default {
         closeShowPosDialog() {
             this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        }
+        },   
+        updateApi() {
+      this.updateGrafanaUrl();
+    },
+    updateGrafanaUrl() {
+      let startDate = this.filter.dateRange[0];
+      let endDate = this.filter.dateRange[1];
+      startDate = moment(startDate).format("x");
+      endDate = moment(endDate).format("x");
+      if (this.active === "costRevenue") {
+        this.costRevenueUrl =
+          costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
+      }
+    },
     }
 }
 </script>
