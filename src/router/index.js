@@ -163,7 +163,8 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             store.commit(types.LOGOUT);
-            next({ path: '/login' });
+            let url = 'https://test-charger.fiimart.com/Gatekeeper/auth/authorize?response_type=code&client_id=gatekeeper&redirect_uri=http://localhost:8081/login'
+            window.location.replace(url);
         }
     } else {
         next();
