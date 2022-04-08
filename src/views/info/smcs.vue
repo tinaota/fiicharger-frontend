@@ -69,7 +69,7 @@ import { $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from 
 const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : (process.env.NODE_ENV === 'test' ? $GLOBAL_GRAFANA_TEST : $GLOBAL_GRAFANA_DEV);
 
 var costRevenueUrl =
-  `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
+  `${baseGrafanaUrl}/LtfWzay7k/topview?orgId=1&kiosk&refresh=1m&theme=light`;
 var costRevenueDayURl =
   `${baseGrafanaUrl}/yp-R2617k/cost-and-revenue-day-scenario-demo?orgId=1&kiosk&refresh=1m&theme=light`;
 var costRevenueNightURL =

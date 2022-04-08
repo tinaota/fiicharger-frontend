@@ -84,33 +84,25 @@
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
                         <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
-                            <ChargingSession :chargeBoxId="curRouteParam.chargeBoxId"></ChargingSession>
                         </el-tab-pane>
-                        <el-tab-pane v-if="permissionShowAlertAble" :label="$t('chargingStation.chargePointAlert')" name="chargePointAlert">
-                            <ChargePointAlert :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
+                        <el-tab-pane :label="$t('chargingStation.chargePointAlert')" name="chargePointAlert">
                         </el-tab-pane>
-                        <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
-                            <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
-                        </el-tab-pane> -->
-                        <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue" v-if="curRouteParam.chargeBoxId!==undefined">
-                            <div class="filter">
-                            <el-date-picker
-                                v-model="filter.dateRange"
-                                type="daterange"
-                                value-format="yyyy-MM-dd"
-                                format="yyyy-MM-dd"
-                                range-separator="-"
-                                :start-placeholder="$t('general.startDate')"
-                                :end-placeholder="$t('general.endDate')"
-                                :picker-options="pickerOptions"
-                                :clearable="true"
-                                @change="updateApi()"
-                            >
-                            </el-date-picker>
-                            </div>
-                                <FMCSTemplate  :url="costRevenueUrl+`&var-chargePointId=chargePointId|=|`+curRouteParam.chargeBoxId"></FMCSTemplate>
+                        <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue">
                         </el-tab-pane>
                     </el-tabs>
+
+                    <ChargingSession v-if="active==='chargingSession'" :chargeBoxId="curRouteParam.chargeBoxId"></ChargingSession>
+                    <ChargePointAlert v-if="permissionShowAlertAble && active==='chargePointAlert'" :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
+                    <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
+                            <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
+                        </el-tab-pane> -->
+                    <div v-if="curRouteParam.chargeBoxId!==undefined && active=== 'costRevenue'">
+                        <div class="filter">
+                            <el-date-picker v-model="filter.dateRange" type="daterange" value-format="yyyy-MM-dd" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="true" @change="updateApi()">
+                            </el-date-picker>
+                        </div>
+                        <FMCSTemplate :url="costRevenueUrl+`&var-chargeBoxId=`+curRouteParam.chargeBoxId"></FMCSTemplate>
+                    </div>
                 </div>
             </div>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
@@ -127,11 +119,10 @@ import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Review from "@/components/chargingStation/review";
 import { $HTTP_getChargeBoxDetail } from "@/api/api";
 import moment from "moment";
-import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from '@/utils/global';
+import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
-const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
-var costRevenueUrl =
-  `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
+const baseGrafanaUrl = process.env.NODE_ENV === "production" ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
+var costRevenueUrl = `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
 
 export default {
     components: {
@@ -140,122 +131,132 @@ export default {
         ChargingSession,
         ChargePointAlert,
         Review,
-        FMCSTemplate
+        FMCSTemplate,
     },
     data() {
         return {
-            lang: '',
+            active: "chargingSession",
+            lang: "",
             costRevenueUrl: costRevenueUrl,
             filter: {
                 dateRange: [],
+            },
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
                 },
+            },
             permissionShowAlertAble: true,
             curRouteParam: {
-                chargeBoxId: '',
-                chargeBoxName: '',
+                chargeBoxId: "",
+                chargeBoxName: "",
                 loc: {
-                    lon: '',
-                    lat: ''
+                    lon: "",
+                    lat: "",
                 },
-                power: '',
-                chargeBoxStatus: '',
+                power: "",
+                chargeBoxStatus: "",
                 connectorList: [],
-                chargeType: '',
-                currency: '',
-                onPeakElectricityRate: '',
+                chargeType: "",
+                currency: "",
+                onPeakElectricityRate: "",
                 onPeakElectricityRateType: 1,
-                offPeakElectricityRate: '',
+                offPeakElectricityRate: "",
                 offPeakElectricityRateType: 1,
-                parkingRate: '',
+                parkingRate: "",
                 parkingRateType: 1,
-                installationDate: '',
-                operatorTypeName: ''
+                installationDate: "",
+                operatorTypeName: "",
             },
             isLoading: false,
-            active: 'chargingSession',
+            active: "chargingSession",
             mapDialog: {
                 visible: false,
-                itemId: '',
+                itemId: "",
                 position: {
-                    lat: '',
-                    lng: ''
-                }
+                    lat: "",
+                    lng: "",
+                },
             },
-            timer: null
-        }
+            timer: null,
+        };
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user')),
-              accPermissionType = userData.accountInfo.accPermissionType;
+        const userData = JSON.parse(window.sessionStorage.getItem("fiics-user")),
+            accPermissionType = userData.accountInfo.accPermissionType;
         if (accPermissionType === 6) {
             this.permissionShowAlertAble = false;
         }
         this.curRouteParam = this.$router.currentRoute.params;
         this.curRouteParam = {
             chargeBoxId: this.curRouteParam.chargeBoxId,
-            chargeBoxName: '',
+            chargeBoxName: "",
             loc: {
-                lon: '',
-                lat: ''
+                lon: "",
+                lat: "",
             },
             power: 0,
-            chargeBoxStatus: '',
+            chargeBoxStatus: "",
             connectorList: [],
-            chargeType: '',
-            currency: '',
+            chargeType: "",
+            currency: "",
             onPeakElectricityRate: 0,
             onPeakElectricityRateType: 1,
             offPeakElectricityRate: 0,
             offPeakElectricityRateType: 1,
             parkingRate: 0,
             parkingRateType: 1,
-            installationDate: '',
-            operatorTypeName: ''
+            installationDate: "",
+            operatorTypeName: "",
         };
         this.fetchData(); //api尚未完成
-        this.lang = window.sessionStorage.getItem('fiics-lang');
+        this.lang = window.sessionStorage.getItem("fiics-lang");
         this.timer = setInterval(() => {
-          this.fetchData(true);
+            this.fetchData(true);
         }, 5000);
 
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
 
         if (todaySplit[2] === "01") {
-        this.filter.dateRange = [thisMonth1st, thisMonth1st];
+            this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
-        const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
-        this.filter.dateRange = [thisMonth1st, yesterday];
+            const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
+            this.filter.dateRange = [thisMonth1st, yesterday];
         }
         this.updateGrafanaUrl();
     },
     mounted() {
-        setScrollBar('.scroll', this);
+        setScrollBar(".scroll", this);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
-        clearInterval(this.timer)
+        clearInterval(this.timer);
     },
     methods: {
         fetchData(notLoading) {
             const that = this,
-                  params = {
-                      chargeBoxId: this.curRouteParam.chargeBoxId
-                  }
-            if(!notLoading) this.isLoading = true;
-            $HTTP_getChargeBoxDetail(params).then((data) => {
-                this.isLoading = false;
-                if (!!data.success) {
-                    this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
-                    this.curRouteParam.installationDate = transformUtcToLocTime(this.curRouteParam.installationDate);
-                    this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType]
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('getChargeBoxDetail', err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
+                params = {
+                    chargeBoxId: this.curRouteParam.chargeBoxId,
+                };
+            if (!notLoading) this.isLoading = true;
+            $HTTP_getChargeBoxDetail(params)
+                .then((data) => {
+                    this.isLoading = false;
+                    if (!!data.success) {
+                        this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
+                        this.curRouteParam.installationDate = transformUtcToLocTime(
+                            this.curRouteParam.installationDate
+                        );
+                        this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType];
+                    } else {
+                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                    }
+                })
+                .catch((err) => {
+                    console.log("getChargeBoxDetail", err);
+                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                });
         },
         handleShowDialog() {
             this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
@@ -267,22 +268,20 @@ export default {
         closeShowPosDialog() {
             this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },   
+        },
         updateApi() {
-      this.updateGrafanaUrl();
+            this.updateGrafanaUrl();
+        },
+        updateGrafanaUrl() {
+            console.log("here");
+            let startDate = this.filter.dateRange[0];
+            let endDate = this.filter.dateRange[1];
+            startDate = moment(startDate).format("x");
+            endDate = moment(endDate).format("x");
+            this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
+        },
     },
-    updateGrafanaUrl() {
-      let startDate = this.filter.dateRange[0];
-      let endDate = this.filter.dateRange[1];
-      startDate = moment(startDate).format("x");
-      endDate = moment(endDate).format("x");
-      if (this.active === "costRevenue") {
-        this.costRevenueUrl =
-          costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
-      }
-    },
-    }
-}
+};
 </script>
 <style lang = "scss" scoped>
 .mainctrl .card-8 {
@@ -297,14 +296,14 @@ export default {
                 display: inline-block;
                 width: 180px;
                 font-size: 1rem;
-                color: #525E69;
+                color: #525e69;
                 letter-spacing: 0;
             }
             .content {
                 display: inline-block;
                 width: calc(100% - 206px);
                 font-size: 1rem;
-                color: #151E25;
+                color: #151e25;
                 letter-spacing: 0;
                 .circle-status {
                     vertical-align: top;
