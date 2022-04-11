@@ -1,6 +1,6 @@
 {
   "name": "FiiEVCharging",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha.1",
   "description": "Tha EV charging system",
   "author": "Jocelyn <jocelyn.ch.li@foxconn.com>",
   "private": true,
