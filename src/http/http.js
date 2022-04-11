@@ -28,7 +28,7 @@ axios.__axiosPromiseArr = [];
 let confirmApi = (url, isFinished) => {
     axios.__axiosPromiseArr.forEach((api, index) => {
         if (api.url === url) {
-            if(!isFinished) api.cancel(); //duplicate
+            if (!isFinished) api.cancel(); //duplicate
             axios.__axiosPromiseArr.splice(index, 1);
         }
     });
@@ -41,8 +41,14 @@ let confirmApi = (url, isFinished) => {
 axios.interceptors.request.use(
     config => {
         let url = config.url.split('/');
-        url.splice(0,url.length-2);
+        url.splice(0, url.length - 2);
         url = url.join('/');
+        const token = JSON.parse(
+            sessionStorage?.getItem("fiics-auth")
+        )?.access_token;
+        if (token) {
+            config.headers["Authorization"] = "Bearer " + token;
+        }
         confirmApi(url, false);
         return config;
     },
@@ -56,15 +62,15 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response => {
         let url = response.config.url.split('/');
-        url.splice(0, url.length-2);
+        url.splice(0, url.length - 2);
         url = url.join('/');
         confirmApi(url, true);
         // 根據返回請求判斷是否重新路由
         if (!response.data.success) {
             if (response.data.code === 10010) { // 登錄超時 自動登出
                 store.commit(types.LOGOUT);
-                router.replace({ path: '/login'});
-                Message({ type: 'warning', message: i18n.t('login.timeout')});
+                router.replace({ path: '/login' });
+                Message({ type: 'warning', message: i18n.t('login.timeout') });
                 return Promise.reject(error.response.data)
             }
             //  else if (response.data.code === 402) {
@@ -98,8 +104,8 @@ export function fetch(url, params = {}) {
     axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.get(url, {
-                params: params
-            })
+            params: params
+        })
             .then(response => {
                 if (response) {
                     resolve(response.data)
@@ -108,7 +114,7 @@ export function fetch(url, params = {}) {
                 }
             })
             .catch(err => {
-                err.status && err != 204 &&  reject(err)
+                err.status && err != 204 && reject(err)
             })
     })
 }
@@ -118,7 +124,7 @@ export function fetchImg(url) {
     return new Promise((resolve, reject) => {
         axios.get(url, {
             responseType: "arraybuffer",
-            })
+        })
             .then(response => {
                 if (response) {
                     let img = 'data:image/png;base64,' + btoa(
@@ -130,7 +136,7 @@ export function fetchImg(url) {
                 }
             })
             .catch(err => {
-                err.status && err != 204 &&  reject(err)
+                err.status && err != 204 && reject(err)
             })
     })
 }
@@ -146,7 +152,7 @@ export function post(url, params = {}) {
                     reject(response)
                 }
             }, err => {
-                err.status && err.status != 204 &&  reject(err)
+                err.status && err.status != 204 && reject(err)
             })
     })
 }
@@ -163,7 +169,7 @@ export function put(url, params = {}) {
                     reject(response)
                 }
             }, err => {
-                err.status && err.status != 204 &&  reject(err)
+                err.status && err.status != 204 && reject(err)
             })
     })
 }
@@ -180,7 +186,7 @@ export function del(url, params = {}) {
                     reject(response)
                 }
             }, err => {
-                err.status && err.status != 204 &&  reject(err)
+                err.status && err.status != 204 && reject(err)
             })
     })
 }

@@ -14,9 +14,10 @@ export const $HTTP_login = params => { return post(`${base}/Home/Login/login`, q
 /**
  * @description Login with authorization code
  */
-export const $HTTP_login_auth = params => { 
-    console.log(params)
-    return post(`${base_auth}/auth/token`,params) }
+export const $HTTP_login_auth = params => {
+  // console.log(params)
+  return post(`${base_auth}/auth/token`, params);
+}
 
 
 
