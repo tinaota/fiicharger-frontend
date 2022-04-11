@@ -119,9 +119,9 @@ import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Review from "@/components/chargingStation/review";
 import { $HTTP_getChargeBoxDetail } from "@/api/api";
 import moment from "moment";
-import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from "@/utils/global";
+import { $GLOBAL_CURRENCY } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
-const baseGrafanaUrl = process.env.NODE_ENV === "production" ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
+const baseGrafanaUrl = process.env.VUE_APP_GRAFANA_BASE_URL;
 var costRevenueUrl = `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
 
 export default {
