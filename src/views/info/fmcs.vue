@@ -66,7 +66,7 @@ import { setScrollBar } from "@/utils/function";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 import moment from "moment";
 import { $GLOBAL_GRAFANA_DEV, $GLOBAL_GRAFANA_TEST, $GLOBAL_GRAFANA_PROD } from '@/utils/global'
-const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : $GLOBAL_GRAFANA_DEV;
+const baseGrafanaUrl = process.env.NODE_ENV === 'production' ? $GLOBAL_GRAFANA_PROD : (process.env.NODE_ENV === 'test' ? $GLOBAL_GRAFANA_TEST : $GLOBAL_GRAFANA_DEV);
 
 var costRevenueUrl =
   `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
