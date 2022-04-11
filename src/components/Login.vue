@@ -57,9 +57,14 @@ export default {
             });
 
         // redirect if it a user is not logged in 5 seconds
-        setTimeout(() => {
+        this.redirectTimeout = setTimeout(() => {
             redirect();
         }, 5000);
+    },
+    beforeDestroy() {
+        if (this.redirectTimeout) {
+            clearTimeout(this.redirectTimeout);
+        }
     },
 };
 </script>
