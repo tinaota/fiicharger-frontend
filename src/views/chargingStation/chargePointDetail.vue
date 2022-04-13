@@ -122,7 +122,7 @@ import moment from "moment";
 import { $GLOBAL_CURRENCY } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 const baseGrafanaUrl = process.env.VUE_APP_GRAFANA_BASE_URL;
-var costRevenueUrl = `${baseGrafanaUrl}/GLZAitanz/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
+var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
 
 export default {
     components: {
@@ -273,9 +273,8 @@ export default {
             this.updateGrafanaUrl();
         },
         updateGrafanaUrl() {
-            console.log("here");
             let startDate = this.filter.dateRange[0];
-            let endDate = this.filter.dateRange[1];
+            let endDate = moment(this.filter.dateRange[1]).endOf('day');
             startDate = moment(startDate).format("x");
             endDate = moment(endDate).format("x");
             this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
