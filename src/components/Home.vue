@@ -1,15 +1,22 @@
+
 <template>
     <div>
         <el-row class="header">
             <el-col :sm="24" :lg="8" class="sys">
                 <div>
                     <!-- <img :src="appLogo"> -->
-                    <img :src="systemLogo" />
+                    <img :src="systemLogo">
                 </div>
             </el-col>
             <el-col :sm="24" :lg="16" class="header-info">
+                <!-- <el-dropdown trigger="hover">
+                    <span class="el-dropdown-link userinfo-inner" style="vertical-align: top;">{{ langList[lang] }}</span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown> -->
                 <div class="img-container">
-                    <img :src="appLogo" width="36px" height="36px" />
+                    <img :src="appLogo" width="36px" height="36px">
                 </div>
                 <el-divider direction="vertical"></el-divider>
                 <div class="img-container">
@@ -17,26 +24,21 @@
                 </div>
                 <el-dropdown trigger="hover">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{ userData.name !== "" ? userData.name : "Default" }}
+                        {{userData.name}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item divided @click.native="logout">{{
-                            $t("login.logout")
-                        }}</el-dropdown-item>
+                        <el-dropdown-item divided @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
         </el-row>
-
         <section class="container">
-
             <aside class="left-container">
                 <el-menu unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect" id="list-wraper" ref="menuCollapsed">
                     <template v-for="item in $router.options.routes">
                         <template v-if="!item.hidden && item.ename ==='Home'">
                             <template v-for="child in item.children">
-                                <!-- <template v-if="menuShowCtrl(child)"> -->
-                                <template>
+                                <template v-if="menuShowCtrl(child)">
                                     <el-menu-item v-if="!child.hasChild" :index="child.path" :key="child.path">
                                         <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
                                     </el-menu-item>
@@ -46,9 +48,7 @@
                                             <span>{{$t(child.name)}}</span>
                                         </template>
                                         <template v-for="subChild in child.children">
-                                            <!-- <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{$t(subChild.name) }}</el-menu-item> -->
-                                            <el-menu-item :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{$t(subChild.name) }}</el-menu-item>
-
+                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :index="subChild.path" style="padding-left:44px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{$t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>
@@ -56,7 +56,7 @@
                         </template>
                     </template>
                 </el-menu>
-                <div class="version">{{ `${$t('version')}${version}(${roleNameObj[this.userData.accPermissionType]})` }}</div>
+                <div class="version">{{ `${$t('version')}${version}(${roleNameObj})` }}</div>
             </aside>
             <section class="right-container">
                 <transition name="fade" mode="out-in">
@@ -80,7 +80,6 @@ import { setScrollBar } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
 export default {
-    name: "Home",
     data() {
         return {
             version: $GLOBAL_VERSION,
@@ -90,26 +89,40 @@ export default {
             userData: {
                 account: "",
                 name: "",
-                accPermissionType: "",
+                accPermissionType: [],
             },
             lang: "",
             langList: $GLOBAL_LANG,
             systemLogo: fiics_logo,
             sysUserAvatar: "",
             appLogo: app_icon,
-            roleNameObj: {
-                1: this.$t("userAccount.superuser"), //Demo、FiiAdmin，
-                2: "", //(空 維持原先狀態不改)，
-                3: this.$t("general.operator"), //運營商，
-                4:
-                    this.$t("general.operator") +
-                    this.$t("userAccount.maintainer"), //運營商操作維修員，
-                5: this.$t("userAccount.maintainer"), //維修人員，
-                6: this.$t("userAccount.customerServices"), //客服人員
-            },
+            roleNameObj: "",
         };
     },
     created() {
+        if (window.sessionStorage.getItem("fiics-user")) {
+            const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
+            this.userData = {
+                account: userData?.id,
+                name: userData?.firstName + " "+ userData?.lastName,
+                accPermissionType: userData?.roles,
+            };
+
+            // set role(highest one)
+            if (userData?.roles?.indexOf("Super") != -1) {
+                this.roleNameObj = "Super";
+            } else if (userData?.roles?.indexOf("Admin") != -1) {
+                this.roleNameObj = "Admin";
+            } else if (userData?.roles?.indexOf("Owner") != -1) {
+                this.roleNameObj = "Owner";
+            } else {
+                this.roleNameObj = "Guest";
+            }
+            this.sysUserAvatar = userData?.picture;
+        } else {
+            this.$store.commit(types.LOGOUT, JSON.stringify({}));
+            this.$router.push("/login");
+        }
         this.$router.options.routes
             .filter((item) => item.ename == "Home")[0]
             .children.forEach((item) => {
@@ -134,10 +147,7 @@ export default {
             }
             this.routerParent = "";
             for (var key in this.menuList) {
-                if (
-                    this.menuList[key].hasChild &&
-                    this.menuList[key].children2[this.routerName]
-                ) {
+                if (this.menuList[key].hasChild && this.menuList[key].children2[this.routerName]) {
                     this.routerParent = key;
                 }
             }
@@ -147,18 +157,14 @@ export default {
                 this.menuList[this.routerParent].iconCls &&
                 !this.menuList[this.routerParent].iconCls.includes("_p")
             ) {
-                this.menuList[this.routerParent].iconCls = this.menuList[
-                    this.routerParent
-                ].iconCls.replace("_o", "_p");
+                this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace("_o", "_p");
             } else if (
                 this.routerName !== "/" &&
                 this.menuList[this.routerName] &&
                 this.menuList[this.routerName].iconCls &&
                 !this.menuList[this.routerName].iconCls.includes("_p")
             ) {
-                this.menuList[this.routerName].iconCls = this.menuList[
-                    this.routerName
-                ].iconCls.replace("_o", "_p");
+                this.menuList[this.routerName].iconCls = this.menuList[this.routerName].iconCls.replace("_o", "_p");
                 this.routerParent = this.routerName;
             }
         }
@@ -168,6 +174,7 @@ export default {
         this.lang = window.sessionStorage.getItem("fiics-lang");
         this.$store.dispatch("setLang", this.lang);
     },
+    activated() {},
     mounted() {
         setScrollBar(".home-menu", this);
     },
@@ -178,40 +185,69 @@ export default {
                 this.routerName === "/location" &&
                 this.$route.path === "/chargePoint"
             ) {
-                this.handleMenuSelect("/chargePoint", [
-                    "/chargingStation",
-                    "/chargePoint",
-                ]);
+                this.handleMenuSelect("/chargePoint", ["/chargingStation", "/chargePoint"]);
             }
         },
     },
     methods: {
+        menuShowCtrl: function (child) {
+            if ((this.roleNameObj==='Admin' || this.roleNameObj==='Super' || this.roleNameObj==='Owner')  && child.path === "/contact") {
+                return false;
+            } else if (this.roleNameObj==='Guest' && child.path !== "/contact") {
+                return false;
+            } else return !child.hidden;
+        },
+
+        subMenuShowCtrl: function (childPath, subChild) {
+            return !subChild.hidden;
+        },
+        handleChangeLang(lang) {
+            if (this.lang !== lang) {
+                this.lang = lang;
+                window.sessionStorage.setItem("fiics-lang", lang);
+                this.$router.go(0);
+            }
+        },
         handleMenuSelect(index, indexPath) {
+            // this.$jQuery(".home-menu").length > 0 && this.$jQuery(".home-menu").mCustomScrollbar('destroy');
             if (this.routerParent !== indexPath[0]) {
-                if (
-                    this.menuList[this.routerParent] &&
-                    this.menuList[this.routerParent].iconCls
-                ) {
-                    this.menuList[this.routerParent].iconCls = this.menuList[
-                        this.routerParent
-                    ].iconCls.replace("_p", "_o");
+                if (this.menuList[this.routerParent] && this.menuList[this.routerParent].iconCls) {
+                    this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace(
+                        "_p",
+                        "_o"
+                    );
                 }
-                this.menuList[indexPath[0]].iconCls = this.menuList[
-                    indexPath[0]
-                ].iconCls.replace("_o", "_p");
+                this.menuList[indexPath[0]].iconCls = this.menuList[indexPath[0]].iconCls.replace("_o", "_p");
                 this.routerParent = indexPath[0];
             }
             // setScrollBar('.home-menu', this);
             this.routerName = index;
         },
-
         getImgUrl(iconName) {
             return require("imgs/" + iconName + ".png");
+        },
+        logout: function () {
+            this.$confirm(i18n.t("login.hint_logout"), i18n.t("general.hint"), {
+                showClose: false,
+                customClass: "custom",
+            })
+                .then(() => {
+                    $HTTP_logout().then((data) => {
+                        if (!!data.success) {
+                            this.$store.commit(types.LOGOUT, JSON.stringify({}));
+                            this.$router.push("/login");
+                            this.$destroy();
+                            window.location.reload();
+                        } else {
+                            this.$message.error(i18n.t("login.err_logout"));
+                        }
+                    });
+                })
+                .catch(() => {});
         },
     },
 };
 </script>
-
 <style scoped lang="scss">
 .el-dropdown-menu {
     margin-top: -8px;

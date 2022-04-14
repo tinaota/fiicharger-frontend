@@ -86,9 +86,20 @@ let routes = [
                 children: [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
-                    { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: false },
+                    { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: true },
                     { path: '/member/memberDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
                     { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
+                ]
+            },
+            {
+                path: '/contact',
+                iconCls: 'ic_support_o',
+                name: 'menu.contact',
+                hasChild: true,
+                component: () => import('@/components/data.vue'),
+                children: [
+                    { path: '/contactadmin', component: () => import('@/views/info/contact.vue'), name: 'menu.contact', hidden: false }
+
                 ]
             },
             // {
@@ -116,8 +127,7 @@ let routes = [
         name: 'NotFound',
         redirect: { path: '/404' },
         hidden: true
-    }
-]
+    }]
 
 const router = new Router({
     base: `/${$GLOBAL_PROJECT}/`,
@@ -136,13 +146,8 @@ if (window.sessionStorage.getItem('fiics-token')) {
  * @description 处理页面跳转前后的路由逻辑操作
  */
 router.beforeEach((to, from, next) => {
-    // console.log(to,from)
-    // console.log(to.fullPath)
-    // console.log(store)
-    // console.log(decodeURIComponent(to.fullPath.substring(12)))
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
-            console.log('inside routing')
             // var userData = window.sessionStorage.getItem('fiics-user') || null;
             // if (userData && userData.accountInfo && userData.accountInfo.accPermissionType) {
             //     var accPermissionType = userData.accountInfo.accPermissionType;
@@ -170,7 +175,6 @@ router.beforeEach((to, from, next) => {
             redirect();
         }
     } else {
-        // console.log('return where')
         next();
     }
     // axios.__axiosPromiseArr.forEach((ele, index) => {
