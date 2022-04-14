@@ -65,37 +65,74 @@ axios.interceptors.response.use(
         url.splice(0, url.length - 2);
         url = url.join('/');
         confirmApi(url, true);
-        // 根據返回請求判斷是否重新路由
-        if (!response.data.success) {
-            if (response.data.code === 10010) { // 登錄超時 自動登出
-                store.commit(types.LOGOUT);
-                router.replace({ path: '/login' });
-                Message({ type: 'warning', message: i18n.t('login.timeout') });
-                return Promise.reject(error.response.data)
-            }
-            //  else if (response.data.code === 402) {
-            //     //無新增 修改 刪除 權限不用重新登入
-            //     Message({ type: 'warning', message: i18n.t('login.noPermission') });
-            // }
-        }
+        console.log(response)
         return response;
     },
     error => {
+        console.log(error)
         //處理因為api cancel而引發的reject狀態
         if (axios.isCancel(error)) {
             error.response = {};
             error.response.status = 204;
         }
+        const originalRequest = error.config;
+        console.log('http')
+        if (error.response.status === 204 || error.response.status === 404) {
+            return Promise.reject(error.response)
 
-        if (error.response) {
-            switch (error.response.status) {
-                case 204:
-                    //取消api狀態碼
-                    return Promise.reject(error.response)
-                case 404:
-                    return Promise.reject(error.response)
+        } else if (error.response.status === 401 && !originalRequest._retry) {
+            console.log(error.response.status)
+            let fiicsAuthData = JSON.parse(sessionStorage.getItem('fiics-auth'))
+            console.log(fiicsAuthData)
+            const _data = {
+                grant_type: "refresh_token",
+                client_id: "gatekeeper",
+                refresh_token: fiicsAuthData?.refresh_token,
+                redirect_uri: process.env.VUE_APP_REDIRECT_URL,
+            };
+
+            var formBody = [];
+            for (var property in _data) {
+                var encodedKey = encodeURIComponent(property);
+                var encodedValue = encodeURIComponent(_data[property]);
+                formBody.push(encodedKey + "=" + encodedValue);
             }
+
+            formBody = formBody.join("&");
+            let config = {
+                header: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+                },
+            };
+            originalRequest._retry = true;
+            return axios.post(`/Gatekeeper/auth/token`, formBody, config).then(res => {
+
+                console.log(res)
+                if (res.status === 200) {
+                    let _data = res?.data;
+                    sessionStorage.setItem("fiics-auth", JSON.stringify(_data));
+                    // 2) Change Authorization header
+                    const token = JSON.parse(
+                        sessionStorage?.getItem("fiics-auth")
+                    )?.access_token;
+                    console.log(token)
+                    if (token) {
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                    }
+                    // 3) return originalRequest object with Axios.
+                    return axios(originalRequest);
+                }
+                return Promise.reject(error);
+
+            })
+
+        }
+        else {
+            store.commit(types.LOGOUT);
+            router.replace({ path: '/login' });
+            Message({ type: 'warning', message: i18n.t('login.timeout') });
             return Promise.reject(error.response.data)
+
         }
     }
 );
@@ -103,6 +140,7 @@ axios.interceptors.response.use(
 export function fetch(url, params = {}) {
     axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
+        console.log(url, params)
         axios.get(url, {
             params: params
         })
