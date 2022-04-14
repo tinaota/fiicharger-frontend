@@ -36,7 +36,8 @@
         "costRevenue":"Chi phí và doanh thu",
         "costRevenueDay":"Chi phí và doanh thu (ngày)",
         "costRevenueNight":"Chi phí và doanh thu (đêm)",
-        "energyPhm":"năng lượng"
+        "energyPhm": "năng lượng",
+        "contact": "tiếp xúc"
     },
     "login": {
         "login": "Đăng nhập",
@@ -113,7 +114,8 @@
         "day": "Ngày",
         "closedTime": "Thời gian kết thúc",
         "enable": "Cho phép",
-        "disable": "Vô hiệu hóa"
+        "disable": "Vô hiệu hóa",
+        "addRoles": "thêm vai trò"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -229,9 +231,11 @@
         "carType": "Loại thẻ",
         "creditCard": "Thẻ tín dụng",
         "operatorName": "Tên nhà vận hành ",
-        "logo": "Logo",
+        "logo": "Bức ảnh",
         "contactPerson": "Người liên lạc",
         "mobile": "Didejn thoại",
+        "mobileVerification": "xác minh di động",
+        "emailVerification": "Email xác thực",
         "createdDate": "Ngày thiết lập",
         "idTag": "Nhãn ID",
         "company": "Công ty",
@@ -246,7 +250,9 @@
         "maintainer": "Nhân viên bảo trì",
         "superuser": "Ban quản lý",
         "customerServices": "Dịch vụ khách hàng",
-        "telephone": "Số điện thoại"
+        "telephone": "Số điện thoại",
+        "firstName": "Tên",
+        "lastName": "Họ"
     },
     "cars": {
         "marker": "Dấu",

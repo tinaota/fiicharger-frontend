@@ -36,8 +36,8 @@
         "costRevenue":"成本和收入",
         "costRevenueDay":"成本和收入（天）",
         "costRevenueNight":"成本和收入（夜間）",
-        "energyPhm":"活力"
-
+        "energyPhm": "活力",
+        "contact": "接觸"
     },
     "login": {
         "login": "登入",
@@ -114,7 +114,8 @@
         "day": "日",
         "closedTime": "結束時間",
         "enable": "啟用",
-        "disable": "關閉"
+        "disable": "關閉",
+        "addRoles": "添加角色"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -230,9 +231,11 @@
         "carType": "車型",
         "creditCard": "信用卡",
         "operatorName": "運營商名稱",
-        "logo": "標誌",
+        "logo": "圖片",
         "contactPerson": "聯繫人",
         "mobile": "手機",
+        "mobileVerification": "手机验证",
+        "emailVerification": "电子邮件验证",
         "createdDate": "創建日期",
         "idTag": "ID標籤",
         "company": "公司",
@@ -247,7 +250,9 @@
         "maintainer": "維護人員",
         "superuser": "系統管理員",
         "customerServices": "客服人員",
-        "telephone": "電話"
+        "telephone": "電話",
+        "firstName": "名字",
+        "lastName": "姓氏"
     },
     "cars": {
         "marker": "標記",

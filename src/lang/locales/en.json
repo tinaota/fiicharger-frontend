@@ -36,8 +36,8 @@
         "costRevenue":"Cost & Revenue",
         "costRevenueDay":"Cost & Revenue (Day)",
         "costRevenueNight":"Cost & Revenue (Night)",
-        "energyPhm":"Energy & PHM"
-
+        "energyPhm": "Energy & PHM",
+        "contact": "Contact"
     },
     "login": {
         "login": "Login",
@@ -52,7 +52,7 @@
         "timeout": "Login timeout! Please login again!",
         "oriPwd": "Original Password",
         "newPwd": "New Password",
-        "cfmNewPwd": "Confirm the New Password Again"
+        "cfmNewPwd": "Confirm New Password"
     },
     "general": {
         "billing": "Billing",
@@ -114,7 +114,8 @@
         "day": "Day",
         "closedTime": "Closed Time",
         "enable": "Enable",
-        "disable": "Disable"
+        "disable": "Disable",
+        "addRoles": "Add Roles"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -230,9 +231,11 @@
         "carType": "Car Type",
         "creditCard": "Credit Card",
         "operatorName": "Operator Name",
-        "logo": "Logo",
+        "logo": "Picture",
         "contactPerson": "Contact Person",
         "mobile": "Mobile",
+        "mobileVerification": "Mobile Verification",
+        "emailVerification": "Email Verification",
         "createdDate": "Created Date",
         "idTag": "ID Tag",
         "company": "Company",
@@ -247,7 +250,9 @@
         "maintainer": "Maintainer",
         "superuser": "Administrator",
         "customerServices": "Customer Services",
-        "telephone": "Telephone"
+        "telephone": "Telephone",
+        "firstName": "First Name",
+        "lastName": "Last Name"
     },
     "cars": {
         "marker": "Marker",
