@@ -138,8 +138,8 @@ if (window.sessionStorage.getItem('fiics-token')) {
 router.beforeEach((to, from, next) => {
     // console.log(to,from)
     // console.log(to.fullPath)
-    console.log(store)
-    console.log(decodeURIComponent(to.fullPath.substring(12)))
+    // console.log(store)
+    // console.log(decodeURIComponent(to.fullPath.substring(12)))
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
             console.log('inside routing')
@@ -170,7 +170,7 @@ router.beforeEach((to, from, next) => {
             redirect();
         }
     } else {
-        console.log('return where')
+        // console.log('return where')
         next();
     }
     // axios.__axiosPromiseArr.forEach((ele, index) => {

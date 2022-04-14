@@ -29,25 +29,41 @@
                 :data="tableData.slice((page - 1) * 10, page * 10)"
                 class="moreCol"
                 v-loading="isLoading">
-                <el-table-column prop="operatorName" :label="$t('userAccount.operatorName')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('userAccount.logo')" :min-width="3">
+                <el-table-column :label="$t('userAccount.operatorName')" :min-width="3">
                     <template slot-scope="scope">
-                        <img :src="scope.row.operatorPicPath" class="logo">
+                         {{clientName(scope.row)}}
                     </template>
                 </el-table-column>
-                <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column>
-                <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column>
-                <el-table-column :label="$t('userAccount.telephone')" :min-width="3">
+                <el-table-column :label="$t('userAccount.logo')" :min-width="3">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.picture" class="logo" v-bind:style="{maxHeight: '50px',maxWidth:'50px'}">
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column prop="address" :label="$t('general.address')" :min-width="4"></el-table-column> -->
+                <!-- <el-table-column prop="contactPerson" :label="$t('userAccount.contactPerson')" :min-width="3"></el-table-column> -->
+                <!-- <el-table-column :label="$t('userAccount.telephone')" :min-width="3">
                     <template slot-scope="scope">
                         {{ scope.row.telephone ? scope.row.countryCode + " " + scope.row.telephone : '' }}
                     </template>
-                </el-table-column>
+                </el-table-column> -->
                 <el-table-column :label="$t('userAccount.mobile')" :min-width="3">
                     <template slot-scope="scope">
-                        {{ scope.row.phone ? scope.row.countryCode + " " + scope.row.phone : '' }}
+                        {{ scope.row.phoneNumber ? scope.row.countryCode + " " + scope.row.phoneNumber : '' }}
                     </template>
                 </el-table-column>
+                <el-table-column :label="$t('userAccount.mobileVerification')" :min-width="2">
+                    <template slot-scope="scope">
+                        {{convertBooleanToString(scope.row.phoneNumberConfirmed)}}
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
+                <el-table-column prop="emailConfirmed" :label="$t('userAccount.emailVerification')" :min-width="2">
+                    <template slot-scope="scope">
+                        {{convertBooleanToString(scope.row.emailConfirmed)}}
+                    </template>
+                </el-table-column>
+
                 <!-- <el-table-column prop="fDate" :label="$t('userAccount.createdDate')" :min-width="3"></el-table-column> -->
                 <el-table-column :label="$t('general.action')" :width="96">
                     <template slot-scope="scope">
@@ -226,26 +242,35 @@ export default {
     mounted() {
         setScrollBar('.scroll', this);
         this.fetchData();
-        this.fetchCountryCodeList();
+        // this.fetchCountryCodeList();
+    },computed:{
+        clientName(){
+            return (customer) => customer.firstName + ' ' + customer.lastName
+        },convertBooleanToString(){
+                        return (value) => value.toString()
+
+        }
     },
     methods: {
         fetchData(type) {
             const that = this;
             let param = {};
-            if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
-                param.operatorTypeId = this.filter.operatorTypeId;
-            }
+            // if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
+            //     param.operatorTypeId = this.filter.operatorTypeId;
+            // }
             if (type === 'e') {
                 this.filter.emailSearch = this.filter.tmpEmail;
             } else if (type === 'c') {
                 this.filter.personSearch = this.filter.tmpContactPersion;
             }
-            param.emailSearch = this.filter.emailSearch;
-            param.personSearch = this.filter.personSearch;
+            param.email = this.filter.emailSearch;
+            param.name = this.filter.personSearch;
             $HTTP_getOperatorList(param).then((data) => {
                 this.isLoading = false;
-                if (!!data.success) {
-                    this.tableData = data.operatorList.slice();
+                console.log(data)
+                console.log(!!data.success)
+                if (data?.length>0) {
+                    this.tableData = data
                     this.total = this.tableData.length;
                 } else {
                     this.tableData = [];
@@ -259,21 +284,21 @@ export default {
                 this.$message({ type: "warning", message: i18n.t("error_network") });
             });
         },
-        fetchCountryCodeList() {
-            const that = this;
-            this.countryCode.isLoading = true;
-            $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
-                this.countryCode.isLoading = false;
-                if (!!data.success) {
-                    this.countryCode.data = data.countryCodeList.slice();
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                console.log('countryCode', err);
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
+        // fetchCountryCodeList() {
+        //     const that = this;
+        //     this.countryCode.isLoading = true;
+        //     $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
+        //         this.countryCode.isLoading = false;
+        //         if (!!data.success) {
+        //             this.countryCode.data = data.countryCodeList.slice();
+        //         } else {
+        //             this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+        //         }
+        //     }).catch((err) => {
+        //         console.log('countryCode', err);
+        //         this.$message({ type: "warning", message: i18n.t("error_network") });
+        //     });
+        // },
         changePage(page) {
             this.page = page;
         },

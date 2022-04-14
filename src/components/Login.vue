@@ -52,9 +52,22 @@ export default {
                 axios
                     .get("/Gatekeeper/api/Users/user-info")
                     .then((res) => {
+                        // console.log(res);
                         let _data = res?.data;
                         sessionStorage.setItem("fiics-user", JSON.stringify(_data));
-                        this.$router.push({ path: "/location" });
+                        if (_data.roles.indexOf("Super") != -1) {
+                            this.$router.push({ path: "/location" });
+                            this.$store.commit(types.ROLE, "Super");
+                        } else if (_data.roles.indexOf("Admin") != -1) {
+                            this.$router.push({ path: "/location" });
+                            this.$store.commit(types.ROLE, "Admin");
+                        } else if (_data.roles.indexOf("Owner") != -1) {
+                            this.$router.push({ path: "/location" });
+                            this.$store.commit(types.ROLE, "Owner");
+                        } else {
+                            this.$router.push({ path: "/contactadmin" });
+                            this.$store.commit(types.ROLE, "Guest");
+                        }
                     })
                     .catch((e) => console.log(e));
             })

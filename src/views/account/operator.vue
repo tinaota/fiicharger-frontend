@@ -18,6 +18,9 @@
 <script>
 import SuperUser from "@/components/userAccount/superUser";
 import OperatorSelf from "@/components/userAccount/operatorSelf";
+import store from '../../store/store'
+import types from '../../store/types'
+// console.log(store)
 export default {
     components: {
         SuperUser,
@@ -29,8 +32,7 @@ export default {
         }
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        this.accPermissionType = userData.accountInfo.accPermissionType;
+        this.accPermissionType = store?.role
     },
     mounted() {
     },

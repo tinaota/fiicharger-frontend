@@ -120,7 +120,12 @@ export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCar
 /**
  * @description 取得運營商列表
  */
-export const $HTTP_getOperatorList = params => { return post(`${base}/Home/Operator/getOperatorList`, qs.stringify(params)) }
+// export const $HTTP_getOperatorList = params => { return post(`${base}/Home/Operator/getOperatorList`, qs.stringify(params)) }
+export const $HTTP_getOperatorList = params => {
+  console.log(params)
+  console.log(qs.stringify(params))
+  return fetch(`/Gatekeeper/api/Users`, (params))
+}
 
 /**
  * @description 新增運營商

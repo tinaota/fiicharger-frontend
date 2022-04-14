@@ -3,12 +3,12 @@
         <div class="tabs-contain">
             <el-tabs v-model="active" @tab-click="handleTabClick">
                 <el-tab-pane :label="$t('general.operator')" name="operators"></el-tab-pane>
-                <el-tab-pane :label="$t('userAccount.maintainer')" name="maintainer"></el-tab-pane>
-                <el-tab-pane :label="$t('userAccount.customerServices')" name="customerServices"></el-tab-pane>
+                <!-- <el-tab-pane :label="$t('userAccount.maintainer')" name="maintainer"></el-tab-pane>
+                <el-tab-pane :label="$t('userAccount.customerServices')" name="customerServices"></el-tab-pane> -->
             </el-tabs>
             <Operators v-if="active === 'operators'"></Operators>
-            <Maintainer v-else-if="active === 'maintainer'"></Maintainer>
-            <CustomerServices v-else-if="active === 'customerServices'"></CustomerServices>
+            <!-- <Maintainer v-else-if="active === 'maintainer'"></Maintainer>
+            <CustomerServices v-else-if="active === 'customerServices'"></CustomerServices> -->
         </div>
     </div>
 </template>
