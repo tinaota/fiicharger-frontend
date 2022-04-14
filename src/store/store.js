@@ -8,11 +8,12 @@ export default new Vuex.Store({
         token: null,
         lang:'',
         nowSelectTab: location.pathname.includes('kiosk') ? 'kiosk' : 'station',
-        tabsArr: ['station', 'kiosk']
+        tabsArr: ['station', 'kiosk'],
+        role: ''
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
-            console.log(state,data)
+            // console.log(state,data)
             window.sessionStorage.setItem('fiics-token', data)
             state.token = data
         },
@@ -21,6 +22,7 @@ export default new Vuex.Store({
             state = {
                 token: null,
                 lang: 'en',
+                role: ''
             };
         },
         [types.LANG]: (state, data) => {
@@ -28,6 +30,10 @@ export default new Vuex.Store({
             if (app && app.$i18n) {
                 app.$i18n.locale = data;
             }
+        },
+        [types.ROLE]: (state, data) => {
+            // console.log(state, data)
+            state.role = data;
         },
         [types.SELECT_NOW_TAB]: (state, { path, router, changePath }) => {
           state.nowSelectTab = path
