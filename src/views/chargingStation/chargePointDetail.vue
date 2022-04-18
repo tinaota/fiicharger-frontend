@@ -217,12 +217,19 @@ export default {
 
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
+       let dayWeekBefore = parseInt(todaySplit[2])-7;
+        if((dayWeekBefore)<10){
+            dayWeekBefore = '0' + dayWeekBefore
+        }else{
+            dayWeekBefore = `${dayWeekBefore}`
+        }
+        const thisWeekBefore =  todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore
 
         if (todaySplit[2] === "01") {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
-            const yesterday = moment().subtract(1, "days").format("YYYY-MM-DD");
-            this.filter.dateRange = [thisMonth1st, yesterday];
+            const today = moment().format("YYYY-MM-DD");
+            this.filter.dateRange = [thisWeekBefore, today];
         }
         this.updateGrafanaUrl();
     },
