@@ -12,9 +12,13 @@
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.pluggedNotCharging')" name="pluggedNotCharging">
                         </el-tab-pane>
+                          <el-tab-pane :label="$t('menu.usagePatterns')" name="usagePatternsOld">
+                        </el-tab-pane>
+                        <el-tab-pane :label="$t('menu.pluggedNotCharging')" name="pluggedNotChargingOld">
+                        </el-tab-pane>
                     </el-tabs>
-                    <!-- <UsagePatterns v-if="active === 'usagePatterns'"></UsagePatterns>
-                    <PluggedNotCharging v-else></PluggedNotCharging> -->
+                    <UsagePatterns v-if="active === 'usagePatternsOld'"></UsagePatterns>
+                    <PluggedNotCharging v-if="active === 'pluggedNotChargingOld'"></PluggedNotCharging>
 
                     <div class="filter">
                         <el-date-picker v-model="filter.dateRange" type="daterange" value-format="yyyy-MM-dd" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="true" @change="updateApi()">
@@ -23,7 +27,7 @@
                     <div v-if="active === 'usagePatterns'">
                         <FMCSTemplate :url="usagePatternsUrl"></FMCSTemplate>
                     </div>
-                    <div v-else>
+                    <div v-if="active === 'pluggedNotCharging'">
                         <FMCSTemplate :url="pluggedAndNotChargingUrl"></FMCSTemplate>
                     </div>
 
@@ -38,16 +42,16 @@ import { setScrollBar } from "@/utils/function";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 import moment from "moment";
 import { parse } from 'qs';
-// import UsagePatterns from "@/components/info/usagePatterns";
-// import PluggedNotCharging from "@/components/info/pluggedNotCharging";
+import UsagePatterns from "@/components/info/usagePatterns";
+import PluggedNotCharging from "@/components/info/pluggedNotCharging";
 const baseGrafanaUrl = process.env.VUE_APP_GRAFANA_BASE_URL;
 var usagePatternsUrl = `${baseGrafanaUrl}/LtfWzay7k/usage-patterns?orgId=1&kiosk&refresh=1m&theme=light`;
 var pluggedAndNotChargingUrl = `${baseGrafanaUrl}/hDOm5fUnk/plugged-and-not-charging?orgId=1&kiosk&refresh=1m&theme=light`;
 
 export default {
     components: {
-        // UsagePatterns,
-        // PluggedNotCharging
+        UsagePatterns,
+        PluggedNotCharging,
         FMCSTemplate,
     },
     data() {

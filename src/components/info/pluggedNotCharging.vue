@@ -100,19 +100,27 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        const today = moment().format(DATE_FORMATE);
-        // const thisMonth1st = todaySplit[0] + '-' + todaySplit[1] + '-01';
-        const thisMonth1st = moment().startOf('month').format(DATE_FORMATE);
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
+   
+          const todaySplit = moment().format("YYYY-MM-DD").split("-");
+        const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
+       let dayWeekBefore = parseInt(todaySplit[2])-7;
+        if((dayWeekBefore)<10){
+            dayWeekBefore = '0' + dayWeekBefore
+        }else{
+            dayWeekBefore = `${dayWeekBefore}`
+        }
+        const thisWeekBefore =  todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore
 
-        if (today === thisMonth1st) {
+        if (todaySplit[2] === "01") {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
-            const yesterday = moment().subtract(1, 'days').format(DATE_FORMATE);
-            this.filter.dateRange = [thisMonth1st, yesterday];
+            const today = moment().format("YYYY-MM-DD");
+            this.filter.dateRange = [thisWeekBefore, today];
         }
+
     },
     mounted() {
         this.fetchData();

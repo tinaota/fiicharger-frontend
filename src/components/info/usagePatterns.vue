@@ -97,6 +97,7 @@ import { $HTTP_getChargingPowerUsageAnalysisInfo } from "@/api/api";
 import LineChart from "@/components/charts/twoLineChart";
 import moment from "moment";
 import { transformLocTimeToUtc, transformUtcToLocTime } from "@/utils/function";
+
 export default {
     components: {
         LineChart
@@ -140,18 +141,26 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        const today = moment().format("YYYY-MM-DD");
-        const thisMonth1st = moment().startOf('month').format("YYYY-MM-DD");
 
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
 
-        if (today === thisMonth1st) {
+       const todaySplit = moment().format("YYYY-MM-DD").split("-");
+        const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
+       let dayWeekBefore = parseInt(todaySplit[2])-7;
+        if((dayWeekBefore)<10){
+            dayWeekBefore = '0' + dayWeekBefore
+        }else{
+            dayWeekBefore = `${dayWeekBefore}`
+        }
+        const thisWeekBefore =  todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore
+
+        if (todaySplit[2] === "01") {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
         } else {
-            const yesterday = moment().subtract(1, 'days').format("YYYY-MM-DD");
-            this.filter.dateRange = [thisMonth1st, yesterday];
+            const today = moment().format("YYYY-MM-DD");
+            this.filter.dateRange = [thisWeekBefore, today];
         }
     },
     mounted() {
@@ -164,9 +173,8 @@ export default {
                 operatorTypeId: this.filter.operatorTypeId
             };
             if (this.filter.dateRange && this.filter.dateRange.length == 2) {
-                var eDate = moment(this.filter.dateRange[1]).endOf('day').format();
-                param.sDate = transformLocTimeToUtc(this.filter.dateRange[0]);
-                param.eDate = transformLocTimeToUtc(eDate);
+                param.sDate = this.filter.dateRange[0];
+                param.eDate = this.filter.dateRange[1];
             }
             this.page = 1;
             this.isLoading = true;
@@ -196,7 +204,9 @@ export default {
         transformTimePeriod(period) {
             const time = period.split('~'),
                   today = moment().format("YYYY-MM-DD");
-            return transformUtcToLocTime(today+' '+time[0], "HH:mm")+'~'+ transformUtcToLocTime(today+' '+time[1], "HH:mm");
+            // return transformUtcToLocTime(today+' '+time[0], "HH:mm")+'~'+ transformUtcToLocTime(today+' '+time[1], "HH:mm");
+            return transformUtcToLocTime(today)+'~'+ transformUtcToLocTime(today);
+
         },
         changePage(page) {
             this.page = page;
