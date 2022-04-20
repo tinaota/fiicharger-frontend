@@ -47,7 +47,16 @@ export default {
                 window.sessionStorage.setItem("fiics-auth", JSON.stringify(res));
                 // pass in the access token
                 this.$store.commit(types.LOGIN, JSON.parse(window.sessionStorage.getItem("fiics-auth")).access_token);
-                this.$router.push({ path: "/location" });
+            })
+            .then(() => {
+                axios
+                    .get("/Gatekeeper/api/Users/user-info")
+                    .then((res) => {
+                        let _data = res?.data;
+                        sessionStorage.setItem("fiics-user", JSON.stringify(_data));
+                        this.$router.push({ path: "/location" });
+                    })
+                    .catch((e) => console.log(e));
             })
             .catch((error) => {
                 this.isLoading = false;
