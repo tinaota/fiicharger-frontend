@@ -12,6 +12,7 @@ export default new Vuex.Store({
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
+            console.log(state,data)
             window.sessionStorage.setItem('fiics-token', data)
             state.token = data
         },

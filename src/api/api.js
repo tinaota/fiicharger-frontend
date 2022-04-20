@@ -1,14 +1,24 @@
 import axios from 'axios'
 import qs from 'qs'
-import { $GLOBAL_HTTP, $GLOBAL_CTRL } from '@/utils/global'
+import { $GLOBAL_HTTP, $GLOBAL_CTRL, $GLOBAL_AUTH } from '@/utils/global'
 import { fetch, post, fetchImg } from '@/http/http'
 import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
-
+const base_auth = $GLOBAL_AUTH
 /**
  * @description 登入
  */
 export const $HTTP_login = params => { return post(`${base}/Home/Login/login`, qs.stringify(params)) }
+
+
+/**
+ * @description Login with authorization code
+ */
+export const $HTTP_login_auth = params => { 
+    console.log(params)
+    return post(`${base_auth}/auth/token`,params) }
+
+
 
 /**
  * @description 登出

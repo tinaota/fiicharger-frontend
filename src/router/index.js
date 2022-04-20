@@ -136,8 +136,13 @@ if (window.sessionStorage.getItem('fiics-token')) {
  * @description 处理页面跳转前后的路由逻辑操作
  */
 router.beforeEach((to, from, next) => {
+    // console.log(to,from)
+    // console.log(to.fullPath)
+    console.log(store)
+    console.log(decodeURIComponent(to.fullPath.substring(12)))
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
+            console.log('inside routing')
             // var userData = window.sessionStorage.getItem('fiics-user') || null;
             // if (userData && userData.accountInfo && userData.accountInfo.accPermissionType) {
             //     var accPermissionType = userData.accountInfo.accPermissionType;
@@ -163,10 +168,11 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             store.commit(types.LOGOUT);
-            let url = 'https://test-charger.fiimart.com/Gatekeeper/auth/authorize?response_type=code&client_id=gatekeeper&redirect_uri=http://localhost:8081/login'
+            let url = 'https://test-charger.fiimart.com/Gatekeeper/auth/authorize?response_type=code&client_id=gatekeeper&redirect_uri=http://localhost:8080/FiiCharger/login'
             window.location.replace(url);
         }
     } else {
+        console.log('return where')
         next();
     }
     // axios.__axiosPromiseArr.forEach((ele, index) => {
