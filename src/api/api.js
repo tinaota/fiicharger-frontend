@@ -279,7 +279,10 @@ export const $HTTP_updateStation = params => { return post(`${base}/ChargeStatio
 /**
  * @description 取得充電站明細列表
  */
-export const $HTTP_getStationDetailList = params => { return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params)) }
+export const $HTTP_getStationDetailList = params => {
+  console.log(params)
+  return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params))
+}
 
 /**
  * @description 更新Kiosk資訊
@@ -301,7 +304,10 @@ export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/
 /**
  * @description 取得充電站列表
  */
-export const $HTTP_getStationList = params => { return post(`${base}/ChargeStation/Station/getStationList`, qs.stringify(params)) }
+export const $HTTP_getStationList = params => {
+  console.log(params)
+  return post(`${base}/ChargeStation/Station/getStationList`, qs.stringify(params))
+}
 
 /**
  * @description 取得充電站列表(選單用)

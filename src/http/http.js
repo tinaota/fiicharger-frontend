@@ -144,6 +144,9 @@ export function fetch(url, params = {}) {
                 }
             })
             .catch(err => {
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
                 err.status && err != 204 && reject(err)
             })
     })
@@ -166,6 +169,9 @@ export function fetchImg(url) {
                 }
             })
             .catch(err => {
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
                 err.status && err != 204 && reject(err)
             })
     })
@@ -182,6 +188,9 @@ export function post(url, params = {}) {
                     reject(response)
                 }
             }, err => {
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
                 err.status && err.status != 204 && reject(err)
             })
     })
@@ -193,13 +202,20 @@ export function put(url, params = {}) {
     return new Promise((resolve, reject) => {
         axios.put(url, params)
             .then(response => {
+                console.log(response)
                 if (response) {
                     resolve(response.data)
                 } else {
                     reject(response)
                 }
             }, err => {
+                console.log(err)
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
                 err.status && err.status != 204 && reject(err)
+
+
             })
     })
 }
@@ -216,6 +232,9 @@ export function del(url, params = {}) {
                     reject(response)
                 }
             }, err => {
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
                 err.status && err.status != 204 && reject(err)
             })
     })

@@ -431,6 +431,8 @@ export default {
                                                 ? Object.values(err?.data?.errors)
                                                 : err?.data;
                                             that.$message({ type: "warning", message: _errors.toString() });
+                                            that.fetchData();
+                                            that.dialog.visible = false;
                                         });
                                 } else {
                                     that.fetchData();
@@ -442,6 +444,7 @@ export default {
                                 that.$message({ type: "warning", message: _errors.toString() });
                                 that.fetchData();
                                 that.dialog.visible = false;
+                                that.dialog.isLoading = false;
                             });
                     } else {
                         //沒有傳圖片情況 只有更新才會發生

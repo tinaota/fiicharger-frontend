@@ -270,12 +270,16 @@ export default {
         fetchData(isRefresh) {
             const that = this;
             let param = {};
-            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
-                param.operatorTypeId = this.filter.operatorTypeId;
-            }
-            if (this.filter.stationId) {
-                param.stationId = this.filter.stationId;
-            }
+            // if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+            //     param.operatorTypeId = this.filter.operatorTypeId;
+            // }
+            // if (this.filter.stationId) {
+            //     param.stationId = this.filter.stationId;
+            // }
+            param.operatorTypeId = 0;
+            param.stationId = "C093335";
+
+
             this.removeAllMarkers(!isRefresh);
             this.stationData.data = {};
             this.stationData.isLoading = true;

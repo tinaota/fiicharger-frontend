@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="$t('general.modify')" width="400px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog :title="$t('general.delete')" width="400px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
 
