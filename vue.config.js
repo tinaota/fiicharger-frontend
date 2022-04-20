@@ -22,7 +22,7 @@ module.exports = {
         port: 3000,
         proxy: {
             '/api': {
-                target: 'https://test-charger.fiimart.com',//'10.64.32.208',//'http://61.129.93.20',
+                target: process.env.VUE_APP_BASE_LOGIN_URL,//'10.64.32.208',//'http://61.129.93.20',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/api': '/'
