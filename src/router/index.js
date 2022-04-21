@@ -5,6 +5,8 @@ import store from '../store/store'
 import * as types from '../store/types'
 import { $GLOBAL_PROJECT } from '@/utils/global'
 import redirect from '../router/redirect'
+import { v4 as uuidv4 } from "uuid";
+
 //先不跑登入
 Vue.use(Router)
 
@@ -141,7 +143,12 @@ const router = new Router({
 if (window.sessionStorage.getItem('fiics-token')) {
     store.commit(types.LOGIN, window.sessionStorage.getItem('fiics-token'));
 }
-
+// create a uuid on route
+let uuidValue = window.localStorage.getItem("uuid");
+if (uuidValue === null || uuidValue === undefined) {
+    let uuid = uuidv4();
+    window.localStorage.setItem("uuid", uuid)
+} 
 /**
  * @description 处理页面跳转前后的路由逻辑操作
  */

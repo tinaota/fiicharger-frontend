@@ -80,11 +80,14 @@ axios.interceptors.response.use(
 
         } else if (error.response.status === 401 && !originalRequest._retry) {
             let fiicsAuthData = JSON.parse(sessionStorage.getItem('fiics-auth'))
+            let uuidValue = localStorage.getItem("uuid");
+
             const _data = {
                 grant_type: "refresh_token",
                 client_id: "gatekeeper",
                 refresh_token: fiicsAuthData.refresh_token,
                 redirect_uri: process.env.VUE_APP_REDIRECT_URL,
+                device_id: uuidValue
             };
 
             var formBody = [];

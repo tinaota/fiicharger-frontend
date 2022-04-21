@@ -6,12 +6,14 @@ import { $HTTP_login_auth } from "@/api/api";
 import axios from "axios";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
+
 export default {
     name: "Login",
     data() {
         return {
             code: "",
             isLoading: true,
+            uuid: "",
         };
     },
     beforeMount() {
@@ -20,6 +22,8 @@ export default {
         let authorizationCode = redirectUrl.slice(redirectUrl.indexOf("code=") + 5);
         let tempURL = decodeURIComponent(authorizationCode).replace(/ /g, "+");
         this.code = tempURL;
+        let uuidValue = localStorage.getItem("uuid");
+        this.uuid = uuidValue;
     },
     mounted() {
         const _data = {
@@ -27,8 +31,9 @@ export default {
             client_id: "gatekeeper",
             code: this.code.trim(),
             redirect_uri: process.env.VUE_APP_REDIRECT_URL,
+            device_id: this.uuid,
         };
-
+        
         var formBody = [];
         for (var property in _data) {
             var encodedKey = encodeURIComponent(property);

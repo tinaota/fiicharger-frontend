@@ -99,6 +99,7 @@ export default {
             sysUserAvatar: "",
             appLogo: app_icon,
             roleNameObj: "",
+            uuid: "",
         };
     },
     created() {
@@ -106,7 +107,7 @@ export default {
             const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
             this.userData = {
                 account: userData?.id,
-                name: userData?.firstName + " "+ userData?.lastName,
+                name: userData?.firstName + " " + userData?.lastName,
                 accPermissionType: userData?.roles,
             };
 
@@ -182,6 +183,10 @@ export default {
         this.lang = window.sessionStorage.getItem("fiics-lang");
         this.$store.dispatch("setLang", this.lang);
     },
+    beforeMount() {
+        let uuidValue = localStorage.getItem("uuid");
+        this.uuid = uuidValue;
+    },
     activated() {},
     mounted() {
         setScrollBar(".home-menu", this);
@@ -247,17 +252,17 @@ export default {
                     let params = {
                         client_id: "gatekeeper",
                         token: _token,
+                        device_id: this.uuid,
                     };
-                    $HTTP_logout(params)
-                        .then((data) => {
-                            this.$store.commit(types.LOGOUT, JSON.stringify({}));
-                            // this.$router.push("/login");
+                    $HTTP_logout(params).then((data) => {
+                        this.$store.commit(types.LOGOUT, JSON.stringify({}));
+                        // this.$router.push("/login");
 
-                            this.$destroy();
-                            window.location.reload();
-                            redirect();
-                        })
-                        // .catch(this.$message.error(i18n.t("login.err_logout")));
+                        this.$destroy();
+                        window.location.reload();
+                        redirect();
+                    });
+                    // .catch(this.$message.error(i18n.t("login.err_logout")));
                 })
                 .catch(() => {});
         },
