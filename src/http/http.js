@@ -43,9 +43,10 @@ axios.interceptors.request.use(
         let url = config.url.split('/');
         url.splice(0, url.length - 2);
         url = url.join('/');
-        const token = JSON.parse(
-            sessionStorage?.getItem("fiics-auth")
-        )?.access_token;
+        const fiics_user = JSON.parse(
+            sessionStorage.getItem("fiics-auth")
+        )
+        const token = fiics_user.access_token;
         if (token) {
             config.headers["Authorization"] = "Bearer " + token;
         }
@@ -82,7 +83,7 @@ axios.interceptors.response.use(
             const _data = {
                 grant_type: "refresh_token",
                 client_id: "gatekeeper",
-                refresh_token: fiicsAuthData?.refresh_token,
+                refresh_token: fiicsAuthData.refresh_token,
                 redirect_uri: process.env.VUE_APP_REDIRECT_URL,
             };
 
@@ -103,12 +104,13 @@ axios.interceptors.response.use(
             return axios.post(`/Gatekeeper/auth/token`, formBody, config).then(res => {
 
                 if (res.status === 200) {
-                    let _data = res?.data;
+                    let _data = res.data;
                     sessionStorage.setItem("fiics-auth", JSON.stringify(_data));
                     // Change Authorization header
-                    const token = JSON.parse(
-                        sessionStorage?.getItem("fiics-auth")
-                    )?.access_token;
+                    const fiics_auth = JSON.parse(
+                        sessionStorage.getItem("fiics-auth")
+                    )
+                    const token = fiics_auth.access_token;
                     if (token) {
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                     }
@@ -147,7 +149,7 @@ export function fetch(url, params = {}) {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
-                err.status && err != 204 && reject(err)
+                err.status && err !== 204 && reject(err)
             })
     })
 }
@@ -172,7 +174,7 @@ export function fetchImg(url) {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
-                err.status && err != 204 && reject(err)
+                err.status && err !== 204 && reject(err)
             })
     })
 }
@@ -191,7 +193,7 @@ export function post(url, params = {}) {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
-                err.status && err.status != 204 && reject(err)
+                err.status && err.status !== 204 && reject(err)
             })
     })
 }
@@ -213,7 +215,7 @@ export function put(url, params = {}) {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
-                err.status && err.status != 204 && reject(err)
+                err.status && err.status !== 204 && reject(err)
 
 
             })
@@ -235,7 +237,7 @@ export function del(url, params = {}) {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
-                err.status && err.status != 204 && reject(err)
+                err.status && err.status !== 204 && reject(err)
             })
     })
 }

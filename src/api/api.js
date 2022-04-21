@@ -19,11 +19,14 @@ export const $HTTP_login_auth = params => {
 }
 
 export const $HTTP_getRoles = params => {
-  return fetch(`Gatekeeper/api/Users/${params?.id}/roles`, params?.roles)
+  let id = params.id;
+  return fetch(`Gatekeeper/api/Users/${id}/roles`, params)
 }
 
 export const $HTTP_addRoles = params => {
-  return put(`Gatekeeper/api/Users/${params?.id}/roles`, params?.roles)
+  let id = params.id;
+  let roles = params.roles;
+  return put(`Gatekeeper/api/Users/${id}/roles`, roles)
 }
 
 
@@ -144,7 +147,7 @@ export const AddOperator = apiConfig.baseUrl + base + '/Home/Operator/addOperato
 // export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operator/updateOperator`, qs.stringify(params)) }
 export const $HTTP_registerOperator = params => { return post(`Gatekeeper/api/Users/register`, (params)) }
 
-export const $HTTP_updateOperator = params => { return put(`Gatekeeper/api/Users/${params?.id}`, (params)) }
+export const $HTTP_updateOperator = params => { return put(`Gatekeeper/api/Users/${params.id}`, (params)) }
 
 export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateOperator';
 
@@ -154,7 +157,7 @@ export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateO
 // export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
 
 export const $HTTP_updateOperatorPassword = params => {
-  return put(`Gatekeeper/api/Users/${params?.id}/password`, params)
+  return put(`Gatekeeper/api/Users/${params.id}/password`, params)
 }
 
 export const $HTTP_deleteOperatorPassword = params => {
