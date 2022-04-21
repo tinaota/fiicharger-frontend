@@ -55,7 +55,7 @@ export default {
     data() {
         var validatePassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("Password canno't be empty."));
+                callback(new Error("Password cannot be empty."));
             } else {
                 callback();
             }

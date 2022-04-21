@@ -147,7 +147,7 @@ export default {
     data() {
         var validateEmail = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("Email canno't be empty."));
+                callback(new Error("Email cannot be empty."));
             } else {
                 callback();
             }
@@ -155,7 +155,7 @@ export default {
 
         var validatePassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("Password canno't be empty."));
+                callback(new Error("Password cannot be empty."));
             } else {
                 callback();
             }
