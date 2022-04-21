@@ -4,7 +4,7 @@ import i18n from '../lang/lang'
 import store from '../store/store'
 import * as types from '../store/types'
 import { $GLOBAL_PROJECT } from '@/utils/global'
-
+import redirect from '../router/redirect'
 //先不跑登入
 Vue.use(Router)
 
@@ -167,9 +167,7 @@ router.beforeEach((to, from, next) => {
             // }
             next();
         } else {
-            store.commit(types.LOGOUT);
-            let url = 'https://test-charger.fiimart.com/Gatekeeper/auth/authorize?response_type=code&client_id=gatekeeper&redirect_uri=http://localhost:8080/FiiCharger/login'
-            window.location.replace(url);
+            redirect();
         }
     } else {
         console.log('return where')

@@ -13,21 +13,21 @@ module.exports = {
             }),
         ],
         resolve: {
-          alias: {
-            "imgs": path.resolve(__dirname, 'public/imgs')
-          }
+            alias: {
+                "imgs": path.resolve(__dirname, 'public/imgs')
+            }
         }
     },
     devServer: {
-        port: 8080,
+        port: 3000,
         proxy: {
-          '/api': {
-              target: 'https://test-charger.fiimart.com',//'10.64.32.208',//'http://61.129.93.20',
-              changeOrigin: true,
-              pathRewrite: {
-                  '^/api': '/'
-              }
-          },
+            '/api': {
+                target: 'https://test-charger.fiimart.com',//'10.64.32.208',//'http://61.129.93.20',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/api': '/'
+                }
+            },
         }
     }
 }
