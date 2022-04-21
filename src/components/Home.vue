@@ -24,7 +24,7 @@
                 </div>
                 <el-dropdown trigger="hover">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{userData.name}}
+                        {{userData.name ? userData.name : roleNameObj}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item divided @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
@@ -79,6 +79,8 @@ import { apiConfig } from "@/assets/js/appConfig";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
+import redirect from "../router/redirect";
+
 export default {
     data() {
         return {
@@ -118,7 +120,13 @@ export default {
             } else {
                 this.roleNameObj = "Guest";
             }
-            this.sysUserAvatar = userData?.picture;
+            let final_url;
+            if (!userData?.picture.includes("google") && userData?.picture !== "") {
+                final_url = `${process.env.VUE_APP_BASE_IMAGE_URL}` + userData?.picture;
+            } else {
+                final_url = userData?.picture;
+            }
+            this.sysUserAvatar = final_url;
         } else {
             this.$store.commit(types.LOGOUT, JSON.stringify({}));
             this.$router.push("/login");
@@ -191,9 +199,12 @@ export default {
     },
     methods: {
         menuShowCtrl: function (child) {
-            if ((this.roleNameObj==='Admin' || this.roleNameObj==='Super' || this.roleNameObj==='Owner')  && child.path === "/contact") {
+            if (
+                (this.roleNameObj === "Admin" || this.roleNameObj === "Super" || this.roleNameObj === "Owner") &&
+                child.path === "/contact"
+            ) {
                 return false;
-            } else if (this.roleNameObj==='Guest' && child.path !== "/contact") {
+            } else if (this.roleNameObj === "Guest" && child.path !== "/contact") {
                 return false;
             } else return !child.hidden;
         },
@@ -232,16 +243,21 @@ export default {
                 customClass: "custom",
             })
                 .then(() => {
-                    $HTTP_logout().then((data) => {
-                        if (!!data.success) {
+                    let _token = JSON.parse(sessionStorage.getItem("fiics-auth"))?.access_token;
+                    let params = {
+                        client_id: "gatekeeper",
+                        token: _token,
+                    };
+                    $HTTP_logout(params)
+                        .then((data) => {
                             this.$store.commit(types.LOGOUT, JSON.stringify({}));
-                            this.$router.push("/login");
+                            // this.$router.push("/login");
+
                             this.$destroy();
                             window.location.reload();
-                        } else {
-                            this.$message.error(i18n.t("login.err_logout"));
-                        }
-                    });
+                            redirect();
+                        })
+                        // .catch(this.$message.error(i18n.t("login.err_logout")));
                 })
                 .catch(() => {});
         },
