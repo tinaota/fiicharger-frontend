@@ -1,33 +1,41 @@
 <template>
-    <el-dialog
-        :title="$t('general.modify')"
-        width="400px"
-        :visible.sync="visible"
-        custom-class="pwd"
-        :show-close="false"
-        v-loading="isLoading"
-        @close="closeDialog()">
+    <el-dialog :title="$t('general.modify')" width="400px" :visible.sync="visible" custom-class="pwd" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+
         <div class="formVertical">
-            <div class="form-item">
-                <div class="label">{{ $t('login.oriPwd') }}</div>
-                <el-input v-model="param.oldPassword" type="text" class="inputPassword" autocomplete="new-password"></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('login.newPwd') }}</div>
-                <el-input v-model="param.password" type="text" class="inputPassword" autocomplete="new-password"></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('login.cfmNewPwd') }}</div>
-                <el-input v-model="param.confirmPassword" type="text" class="inputPassword" autocomplete="new-password"></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">
-                    <img id="auth-img" :src="captchaImg"/>
-                    <el-button class="no-bg refresh" @click="refreshCaptchaImg"></el-button>
+            <el-form ref="passwordForm" :rules="rules" :model="param">
+                <div class="form-item">
+                    <el-form-item prop="oldPassword">
+                        <div class="label">{{ $t('login.oriPwd') }} <span style="color:red"><strong>* </strong></span></div>
+                        <el-input :type="showPassword.showOldPassword? 'text':'password'" class="" v-model="param.oldPassword" autocomplete="off">
+                            <i slot="suffix" v-if="showPassword.showOldPassword" class="fa fa-eye" aria-hidden="true" @click="showPasswordMethod('showOldPassword')"></i>
+                            <i slot="suffix" v-else class="fa fa-eye-slash" aria-hidden="true" @click="showPasswordMethod('showOldPassword')"></i>
+                        </el-input>
+                    </el-form-item>
                 </div>
-                <el-input v-model="param.captcha"></el-input>
-            </div>
+
+                <div class="form-item">
+                    <el-form-item prop="password">
+                        <div class="label">{{ $t('login.newPwd') }} <span style="color:red"><strong>* </strong></span></div>
+                        <el-input v-model="param.password" :type="showPassword.showNewPassword? 'text':'password'" class="" autocomplete="new-password">
+                            <i slot="suffix" v-if="showPassword.showNewPassword" class="fa fa-eye" aria-hidden="true" @click="showPasswordMethod('showNewPassword')"></i>
+                            <i slot="suffix" v-else class="fa fa-eye-slash" aria-hidden="true" @click="showPasswordMethod('showNewPassword')"></i>
+                        </el-input>
+                    </el-form-item>
+                </div>
+
+                <div class="form-item">
+                    <el-form-item prop="confirmPassword">
+                        <div class="label">{{ $t('login.cfmNewPwd') }} <span style="color:red"><strong>* </strong></span></div>
+                        <el-input v-model="param.confirmPassword" :type="showPassword.showConfirmNewPassword?'text':'password'" class="" autocomplete="new-password">
+                            <i slot="suffix" v-if="showPassword.showConfirmNewPassword" class="fa fa-eye" aria-hidden="true" @click="showPasswordMethod('showConfirmNewPassword')"></i>
+                            <i slot="suffix" v-else class="fa fa-eye-slash" aria-hidden="true" @click="showPasswordMethod('showConfirmNewPassword')"></i>
+                        </el-input>
+                    </el-form-item>
+                </div>
+            </el-form>
+
         </div>
+
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
             <el-button size="small" type="primary" @click="updatePwd">{{ $t('general.ok') }}</el-button>
@@ -36,30 +44,55 @@
 </template>
 
 <script>
-import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword, $HTTP_updateMaintainerPassword, $HTTP_updateCustomerServicePassword, $HTTP_updateOperatorMaintainerPassword } from "@/api/api";
+import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 export default {
     props: {
         name: String,
         id: String,
-        show: Boolean
+        show: Boolean,
     },
     data() {
+        var validatePassword = (rule, value, callback) => {
+            if (value === "") {
+                callback(new Error("Password canno't be empty."));
+            } else {
+                callback();
+            }
+        };
+
+        var validateConfirmedNewPassword = (rule, value, callback) => {
+            if (value === "") {
+                callback(new Error("You must verify the user's password."));
+            } else if (value !== this.param.password) {
+                callback(new Error("Passwords don't match."));
+            } else {
+                callback();
+            }
+        };
+
         return {
-            lang: '',
+            lang: "",
             visible: false,
             isLoading: false,
             isUpdate: false,
             $API: null,
             param: {
-                oldPassword: '',
-                password: '',
-                confirmPassword: '',
-                captcha: ''
+                oldPassword: "",
+                password: "",
+                confirmPassword: "",
             },
-            captchaImg: '',
-            captchaTimer: null
-        }
+            rules: {
+                oldPassword: [{ validator: validatePassword }],
+                password: [{ validator: validatePassword }],
+                confirmPassword: [{ validator: validateConfirmedNewPassword }],
+            },
+            showPassword: {
+                showOldPassword: false,
+                showNewPassword: false,
+                showConfirmNewPassword: false,
+            },
+        };
     },
     watch: {
         show: {
@@ -69,96 +102,81 @@ export default {
                 that.visible = that.show;
                 that.isUpdate = false;
                 if (that.visible) {
-                    switch(that.name) {
-                        case 'operatorId':
-                            this.$Api = $HTTP_updateOperatorPassword;
-                            break;
-                        case 'maintainerId':
-                            this.$Api = $HTTP_updateMaintainerPassword;
-                            break;
-                        case 'customerServiceId':
-                            this.$Api = $HTTP_updateCustomerServicePassword;
-                            break;
-                        case 'operatorMaintainerId':
-                            this.$Api = $HTTP_updateOperatorMaintainerPassword;
-                            break;
-                    }
-                    that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar('destroy');
-                    that.$nextTick(() => {
-                        setScrollBar('.formVertical', that);
-                    });
-                    this.fetchCaptcha();
-                    this.setTimer();
+                    this.$Api = $HTTP_updateOperatorPassword;
                 }
-            }
-        }
+                that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+                that.$nextTick(() => {
+                    setScrollBar(".formVertical", that);
+                });
+            },
+        },
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        this.lang = window.sessionStorage.getItem('fiics-lang');
+        const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
+        this.lang = window.sessionStorage.getItem("fiics-lang");
     },
-    beforeDestroy() {
-        if (this.captchaTimer) {
-            clearInterval(this.captchaTimer);
-        }
-    },
+    beforeDestroy() {},
     methods: {
-        fetchCaptcha() {
-            const that = this;
-            $HTTP_getCaptcha().then((data) => {
-                that.captchaImg = data;
-            }).catch((err) => {
-                console.log('getCaptcha', err);
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },
-        setTimer() {
-            const that = this;
-            this.captchaTimer = setInterval(() => {
-                that.fetchCaptcha();
-            }, 1000 * 55);
-        },
-        refreshCaptchaImg() {
-            this.fetchCaptcha();
-            clearInterval(this.captchaTimer);
-            this.setTimer();
+        showPasswordMethod(value) {
+            this.showPassword[`${value}`] = !this.showPassword[`${value}`];
         },
         updatePwd() {
-            const that = this;
-            let   params = {
-                    [this.name]: that.id,
-                    oldPassword: that.param.oldPassword,
-                    password: that.param.password,
-                    confirmPassword: that.param.confirmPassword,
-                    captcha: that.param.captcha
-                  };
+            this.$refs.passwordForm.validate((valid) => {
+                if (valid) {
+                    const that = this;
+                    let params = {
+                        id: that.id,
+                        password: that.param.oldPassword,
+                        newPassword: that.param.password,
+                        confirmNewPassword: that.param.confirmPassword,
+                    };
 
-            that.isLoading = true;
-            this.$Api(params).then(data => {
-                that.isLoading = false;
-                if (!!data.success) {
-                    that.$message({ type: "success", message: i18n.t('general.sucUpdateMsg') });
-                    that.isUpdate = true;
-                    that.visible = false;
+                    that.isLoading = true;
+                    this.$Api(params)
+                        .then((data) => {
+                            that.isLoading = false;
+                            if (data.succeeded) {
+                                that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                                that.isUpdate = true;
+                                that.visible = false;
+                            }
+                        })
+                        .catch((err) => {
+                            let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
+                            that.$message({ type: "warning", message: _errors.toString() });
+                        });
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    console.log("error submit!!");
+                    return false;
                 }
             });
         },
         closeDialog() {
             this.param = {
-                            oldPassword: '',
-                            password: '',
-                            confirmPassword: '',
-                            captcha: ''
-                        };
-            this.$emit('close', this.isUpdate);
-        }
-    }
-}
+                oldPassword: "",
+                password: "",
+                confirmPassword: "",
+            };
+            this.$nextTick(() => {
+                this.$refs?.passwordForm?.clearValidate("oldPassword");
+                this.$refs?.passwordForm?.clearValidate("password");
+                this.$refs?.passwordForm?.clearValidate("confirmPassword");
+            });
+            this.$emit("close", this.isUpdate);
+        },
+    },
+};
 </script>
 <style lang = "scss" scoped>
 .el-dialog.pwd .el-dialog__body {
     height: 50vh;
+}
+.fa {
+    font-size: 1.3rem;
+    margin-top: 14px;
+}
+
+.fa:hover {
+    cursor: pointer;
 }
 </style>

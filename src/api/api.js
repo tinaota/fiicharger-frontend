@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_CTRL, $GLOBAL_AUTH } from '@/utils/global'
-import { fetch, post, fetchImg } from '@/http/http'
+import { fetch, post, fetchImg, put, del } from '@/http/http'
 import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
@@ -15,16 +15,23 @@ export const $HTTP_login = params => { return post(`${base}/Home/Login/login`, q
  * @description Login with authorization code
  */
 export const $HTTP_login_auth = params => {
-  // console.log(params)
   return post(`${base_auth}/auth/token`, params);
 }
 
+export const $HTTP_getRoles = params => {
+  return fetch(`Gatekeeper/api/Users/${params?.id}/roles`, params?.roles)
+}
+
+export const $HTTP_addRoles = params => {
+  return put(`Gatekeeper/api/Users/${params?.id}/roles`, params?.roles)
+}
 
 
 /**
  * @description 登出
  */
-export const $HTTP_logout = () => { return fetch(`${base}/Home/Login/logout`) }
+// export const $HTTP_logout = () => { return fetch(`${base}/Home/Login/logout`) }
+export const $HTTP_logout = (params) => { return post(`Gatekeeper/auth/revoke`, qs.stringify(params)) }
 
 /**
  * @description 取得圖形驗證碼
@@ -105,7 +112,7 @@ export const $HTTP_getCarBrandListForSelect = params => { return post(`${base}/H
 /**
  * @description 取得汽車資訊
  */
- export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
+export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
 
 /**
  * @description 取得工單列表
@@ -122,8 +129,6 @@ export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCar
  */
 // export const $HTTP_getOperatorList = params => { return post(`${base}/Home/Operator/getOperatorList`, qs.stringify(params)) }
 export const $HTTP_getOperatorList = params => {
-  console.log(params)
-  console.log(qs.stringify(params))
   return fetch(`/Gatekeeper/api/Users`, (params))
 }
 
@@ -131,18 +136,30 @@ export const $HTTP_getOperatorList = params => {
  * @description 新增運營商
  */
 // export const $HTTP_addOperator = params => { return post(`${base}/Home/Operator/addOperator`, qs.stringify(params)) }
-export const AddOperator = apiConfig.baseUrl + base +'/Home/Operator/addOperator';
+export const AddOperator = apiConfig.baseUrl + base + '/Home/Operator/addOperator';
 
 /**
  * @description 更新運營商資訊
  */
-export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operator/updateOperator`, qs.stringify(params)) }
-export const UpdateOperator = apiConfig.baseUrl + base +'/Home/Operator/updateOperator';
+// export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operator/updateOperator`, qs.stringify(params)) }
+export const $HTTP_registerOperator = params => { return post(`Gatekeeper/api/Users/register`, (params)) }
+
+export const $HTTP_updateOperator = params => { return put(`Gatekeeper/api/Users/${params?.id}`, (params)) }
+
+export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateOperator';
 
 /**
  * @description 更新運營商密碼資訊
  */
-export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
+// export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
+
+export const $HTTP_updateOperatorPassword = params => {
+  return put(`Gatekeeper/api/Users/${params?.id}/password`, params)
+}
+
+export const $HTTP_deleteOperatorPassword = params => {
+  return del(`Gatekeeper/api/Users/${params?.id}`)
+}
 
 /**
  * @description 取得運營商操作維修員列表
@@ -247,12 +264,12 @@ export const $HTTP_deleteCustomerService = params => { return post(`${base}/Home
 /**
  * @description 新增充電站
  */
-export const $HTTP_addStation= params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }
+export const $HTTP_addStation = params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }
 
 /**
  * @description 新增Kiosk
  */
- export const $HTTP_addKiosk= params => { return post(`${base}/ChargeStation/Kiosk/addKiosk`, qs.stringify(params)) }
+export const $HTTP_addKiosk = params => { return post(`${base}/ChargeStation/Kiosk/addKiosk`, qs.stringify(params)) }
 
 /**
  * @description 更新充電站資訊
@@ -262,12 +279,12 @@ export const $HTTP_updateStation = params => { return post(`${base}/ChargeStatio
 /**
  * @description 取得充電站明細列表
  */
- export const $HTTP_getStationDetailList = params => { return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params)) }
+export const $HTTP_getStationDetailList = params => { return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params)) }
 
 /**
  * @description 更新Kiosk資訊
  */
- export const $HTTP_updateKiosk = params => { return post(`${base}/ChargeStation/Kiosk/updateKiosk`, qs.stringify(params)) }
+export const $HTTP_updateKiosk = params => { return post(`${base}/ChargeStation/Kiosk/updateKiosk`, qs.stringify(params)) }
 
 
 /**
@@ -278,7 +295,7 @@ export const $HTTP_deleteStation = params => { return post(`${base}/ChargeStatio
 /**
  * @description 刪除Kiosk資訊
  */
- export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/Kiosk/deleteKiosk`, qs.stringify(params)) }
+export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/Kiosk/deleteKiosk`, qs.stringify(params)) }
 
 
 /**
@@ -299,13 +316,13 @@ export const $HTTP_getStationDetail = params => { return post(`${base}/ChargeSta
 /**
  * @description 取得Kiosk明細
  */
- export const $HTTP_getKioskDetail = params => { return post(`${base}/ChargeStation/Kiosk/getKioskDetail`, qs.stringify(params)) }
+export const $HTTP_getKioskDetail = params => { return post(`${base}/ChargeStation/Kiosk/getKioskDetail`, qs.stringify(params)) }
 
 
 /**
  * @description 取得Kiosk列表
  */
- export const $HTTP_getKioskList = params => { return post(`${base}/ChargeStation/Kiosk/getKioskList`, qs.stringify(params)) }
+export const $HTTP_getKioskList = params => { return post(`${base}/ChargeStation/Kiosk/getKioskList`, qs.stringify(params)) }
 
 
 /**
@@ -321,12 +338,12 @@ export const $HTTP_getPowerUsageAnalysisInfo = params => { return post(`${base}/
 /**
  * @description 新增充電站充電樁綁定
  */
- export const $HTTP_addStationChargeBoxMatch = params => { return post(`${base}/ChargeStation/Station/addStationChargeBoxMatch`, params) }
+export const $HTTP_addStationChargeBoxMatch = params => { return post(`${base}/ChargeStation/Station/addStationChargeBoxMatch`, params) }
 
 /**
  * @description 新增Kiosk充電樁綁定
  */
- export const $HTTP_addKioskChargeBoxMatch = params => { return post(`${base}/ChargeStation/Kiosk/addKioskChargeBoxMatch`, params) }
+export const $HTTP_addKioskChargeBoxMatch = params => { return post(`${base}/ChargeStation/Kiosk/addKioskChargeBoxMatch`, params) }
 
 
 /**
@@ -368,12 +385,12 @@ export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/Cha
 /**
  * @description 取得充電樁列表（綁定用）
  */
- export const $HTTP_getChargeBoxListForBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
+export const $HTTP_getChargeBoxListForBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
 
 /**
  * @description 取得充電樁列表（Kiosk綁定用）
  */
- export const $HTTP_getChargeBoxListForKioskBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForKioskBinding`, qs.stringify(params)) }
+export const $HTTP_getChargeBoxListForKioskBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForKioskBinding`, qs.stringify(params)) }
 
 /**
  * @description 取得充電樁地圖打點資訊
@@ -383,7 +400,7 @@ export const $HTTP_getChargeBoxInfoForMap = params => { return post(`${base}/Cha
 /**
  * @description 取得充電樁明細
  */
- export const $HTTP_getChargeBoxDetail = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxDetail`, qs.stringify(params)) }
+export const $HTTP_getChargeBoxDetail = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxDetail`, qs.stringify(params)) }
 
 /**
  * @description 取得充電紀錄列表

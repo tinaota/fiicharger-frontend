@@ -65,25 +65,20 @@ axios.interceptors.response.use(
         url.splice(0, url.length - 2);
         url = url.join('/');
         confirmApi(url, true);
-        console.log(response)
         return response;
     },
     error => {
-        console.log(error)
         //處理因為api cancel而引發的reject狀態
         if (axios.isCancel(error)) {
             error.response = {};
             error.response.status = 204;
         }
         const originalRequest = error.config;
-        console.log('http')
         if (error.response.status === 204 || error.response.status === 404) {
             return Promise.reject(error.response)
 
         } else if (error.response.status === 401 && !originalRequest._retry) {
-            console.log(error.response.status)
             let fiicsAuthData = JSON.parse(sessionStorage.getItem('fiics-auth'))
-            console.log(fiicsAuthData)
             const _data = {
                 grant_type: "refresh_token",
                 client_id: "gatekeeper",
@@ -107,19 +102,17 @@ axios.interceptors.response.use(
             originalRequest._retry = true;
             return axios.post(`/Gatekeeper/auth/token`, formBody, config).then(res => {
 
-                console.log(res)
                 if (res.status === 200) {
                     let _data = res?.data;
                     sessionStorage.setItem("fiics-auth", JSON.stringify(_data));
-                    // 2) Change Authorization header
+                    // Change Authorization header
                     const token = JSON.parse(
                         sessionStorage?.getItem("fiics-auth")
                     )?.access_token;
-                    console.log(token)
                     if (token) {
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                     }
-                    // 3) return originalRequest object with Axios.
+                    // return originalRequest object with Axios.
                     return axios(originalRequest);
                 }
                 return Promise.reject(error);
@@ -128,10 +121,10 @@ axios.interceptors.response.use(
 
         }
         else {
-            store.commit(types.LOGOUT);
-            router.replace({ path: '/login' });
-            Message({ type: 'warning', message: i18n.t('login.timeout') });
-            return Promise.reject(error.response.data)
+            // store.commit(types.LOGOUT);
+            // router.replace({ path: '/login' });
+            // Message({ type: 'warning', message: i18n.t('login.timeout') });
+            return Promise.reject(error.response)
 
         }
     }
@@ -140,7 +133,6 @@ axios.interceptors.response.use(
 export function fetch(url, params = {}) {
     axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
-        console.log(url, params)
         axios.get(url, {
             params: params
         })
