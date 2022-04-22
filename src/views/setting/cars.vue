@@ -8,14 +8,14 @@
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-select class="select-small" :placeholder="$t('cars.maker')" v-loading="carBandList.isLoading" v-model="filter.carBrand" @change="handleCarBandChange()" filterable clearable>
-                        <el-option v-for="(item, key) in carBandList.data" :label="key" :key="key" :value="key"></el-option>
+                        <el-option v-for="(item, key) in carBandList.data" :label="item" :key="key" :value="item"></el-option>
                     </el-select>
-                    <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carBandList.isLoading" @change="fetchData()" filterable clearable>
-                        <el-option v-for="(item, idx) in carBandList.modelList" :label="item.carModel" :key="idx" :value="item.carModel"></el-option>
+                    <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carModelList.isLoading" @change="fetchData()" filterable clearable>
+                        <el-option v-for="(item, idx) in carModelList.data" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
-                    <el-input placeholder="ID" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
+                    <!-- <el-input placeholder="ID" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
+                    </el-input> -->
                     <!-- <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus"></el-button> -->
                 </div>
                 <el-table :data="tableData.slice((page - 1) * 10, page * 10)" class="moreCol" v-loading="isLoading">
@@ -173,7 +173,12 @@
 </template>
 
 <script>
-import { $HTTP_getCarBrandListForSelect, $HTTP_getCarList, $HTTP_getCarInfo } from "@/api/api";
+import {
+    $HTTP_getCarBrandListForSelect,
+    $HTTP_getCarList,
+    $HTTP_getCarInfo,
+    $HTTP_getCarModelListForSelect,
+} from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 export default {
     data() {
@@ -184,12 +189,17 @@ export default {
                 carBrand: "",
                 carModel: "",
                 tmpSearch: "",
-                search: "",
+                // search: "",
             },
             carBandList: {
                 isLoading: false,
                 data: {},
-                modelList: [],
+                // modelList: [],
+            },
+            carModelList: {
+                isLoading: false,
+                data: {},
+                // modelList: [],
             },
             isLoading: false,
             tableData: [],
@@ -249,19 +259,35 @@ export default {
             $HTTP_getCarBrandListForSelect()
                 .then((data) => {
                     that.carBandList.isLoading = false;
-                    // if (!!data.success) {
-                    //     that.carBandList.data = {};
-                    //     that.carBandList.modelList = [];
-                    //     data.carBrandList.forEach((item) => {
-                    //         that.carBandList.data[item.carBrand] = item.carModelList.slice();
-                    //         that.carBandList.modelList = that.carBandList.modelList.concat(item.carModelList);
-                    //     });
-                    // } else {
-                    //     that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
-                    // }
+                    if (data) {
+                        that.carBandList.data = data;
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                    }
                 })
                 .catch((err) => {
                     console.log("carBandList", err);
+                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                });
+        },
+        fetchCarModelList() {
+            const that = this;
+            // empty the model selected on make change
+            that.filter.carModel = "";
+
+            this.carModelList.isLoading = true;
+            let params = { make: this.filter.carBrand };
+            $HTTP_getCarModelListForSelect(params)
+                .then((data) => {
+                    that.carModelList.isLoading = false;
+                    if (data) {
+                        that.carModelList.data = data;
+                    } else {
+                        that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                    }
+                })
+                .catch((err) => {
+                    console.log("carModelList", err);
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
@@ -271,15 +297,15 @@ export default {
             this.isLoading = true;
             let param = {};
             if (this.filter.carBrand) {
-                param.carBrand = this.filter.carBrand;
+                param.make = this.filter.carBrand;
             }
             if (this.filter.carModel) {
-                param.carModel = this.filter.carModel;
+                param.model = this.filter.carModel;
             }
-            if (type) {
-                this.filter.search = this.filter.tmpSearch;
-            }
-            param.search = this.filter.search;
+            // if (type) {
+            //     this.filter.search = this.filter.tmpSearch;
+            // }
+            // param.search = this.filter.search;
             $HTTP_getCarList(param)
                 .then((data) => {
                     this.isLoading = false;
@@ -338,14 +364,8 @@ export default {
         },
         changePage(page) {},
         handleCarBandChange() {
-            this.filter.carModel = "";
-            this.carBandList.modelList = [];
             if (this.filter.carBrand !== "") {
-                this.carBandList.modelList = this.carBandList.data[this.filter.carBrand].slice();
-            } else {
-                for (var key in this.carBandList.data) {
-                    this.carBandList.modelList = this.carBandList.modelList.concat(this.carBandList.data[key].slice());
-                }
+                this.fetchCarModelList();
             }
             this.fetchData();
         },
