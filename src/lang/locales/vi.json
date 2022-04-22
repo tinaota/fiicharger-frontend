@@ -115,7 +115,8 @@
         "closedTime": "Thời gian kết thúc",
         "enable": "Cho phép",
         "disable": "Vô hiệu hóa",
-        "addRoles": "thêm vai trò"
+        "addRoles": "thêm vai trò",
+        "imageUrl": "URL hình ảnh"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -278,7 +279,11 @@
         "isofix": "Isofix",
         "isofixSeats": "Isofix Seats",
         "segment": "Bộ phận",
-        "picture": "Picture"
+        "picture": "Picture",
+        "trim": "Cắt",
+        "year": "năm năm",
+        "chargeSpeed": "Tốc độ nạp",
+        "chargeTime": "thời gian sạc"
     },
     "support": {
         "workerOrderId": "Worker Order ID",

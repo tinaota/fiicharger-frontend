@@ -115,7 +115,8 @@
         "closedTime": "Closed Time",
         "enable": "Enable",
         "disable": "Disable",
-        "addRoles": "Add Roles"
+        "addRoles": "Add Roles",
+        "imageUrl": "Image URL"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -255,7 +256,7 @@
         "lastName": "Last Name"
     },
     "cars": {
-        "marker": "Marker",
+        "maker": "Maker",
         "model": "Model",
         "batteryCapacity": "Battery Capacity",
         "realRange": "Real Range",
@@ -278,7 +279,11 @@
         "isofix": "Isofix",
         "isofixSeats": "Isofix Seats",
         "segment": "Segment",
-        "picture": "Picture"
+        "picture": "Picture",
+        "trim": "Trim",
+        "year": "Year",
+        "chargeSpeed": "Charge Speed",
+        "chargeTime": "Charge Time"
     },
     "support": {
         "workerOrderId": "Worker Order ID",

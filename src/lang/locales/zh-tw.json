@@ -115,7 +115,8 @@
         "closedTime": "結束時間",
         "enable": "啟用",
         "disable": "關閉",
-        "addRoles": "添加角色"
+        "addRoles": "添加角色",
+        "imageUrl": "图片网址"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -278,7 +279,11 @@
         "isofix": "Isofix",
         "isofixSeats": "Isofix座位",
         "segment": "段",
-        "picture": "圖片"
+        "picture": "圖片",
+        "trim": "修剪",
+        "year": "年",
+        "chargeSpeed": "充电速度",
+        "chargeTime": "充电时间"
     },
     "support": {
         "workerOrderId": "工單ID",

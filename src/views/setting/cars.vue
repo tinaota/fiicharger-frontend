@@ -7,7 +7,7 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
-                    <el-select class="select-small" :placeholder="$t('cars.marker')" v-loading="carBandList.isLoading" v-model="filter.carBrand" @change="handleCarBandChange()" filterable clearable>
+                    <el-select class="select-small" :placeholder="$t('cars.maker')" v-loading="carBandList.isLoading" v-model="filter.carBrand" @change="handleCarBandChange()" filterable clearable>
                         <el-option v-for="(item, key) in carBandList.data" :label="key" :key="key" :value="key"></el-option>
                     </el-select>
                     <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carBandList.isLoading" @change="fetchData()" filterable clearable>
@@ -20,7 +20,7 @@
                 </div>
                 <el-table :data="tableData.slice((page - 1) * 10, page * 10)" class="moreCol" v-loading="isLoading">
                     <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                    <el-table-column prop="make" :label="$t('cars.marker')" :min-width="3"></el-table-column>
+                    <el-table-column prop="make" :label="$t('cars.maker')" :min-width="3"></el-table-column>
                     <el-table-column prop="model" :label="$t('cars.model')" :min-width="4"></el-table-column>
                     <el-table-column prop="trim" :label="$t('cars.trim')" :min-width="4"></el-table-column>
                     <el-table-column prop="year" :label="$t('cars.year')" :min-width="4"></el-table-column>
@@ -79,7 +79,7 @@
                             <el-tab-pane :label="$t('cars.carType')" name="carType">
                                 <div class="carType">
                                     <div class="item">
-                                        <div class="label">{{ $t('cars.marker') }}</div>
+                                        <div class="label">{{ $t('cars.maker') }}</div>
                                         <div class="info">{{ dialog.info.carTypeInfo.carBrand || '-' }}</div>
                                     </div>
                                     <div class="item">
