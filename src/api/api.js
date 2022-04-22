@@ -161,7 +161,7 @@ export const $HTTP_updateOperatorPassword = params => {
 }
 
 export const $HTTP_deleteOperatorPassword = params => {
-  return del(`Gatekeeper/api/Users/${params?.id}`)
+  return del(`Gatekeeper/api/Users/${params.id}`)
 }
 
 /**

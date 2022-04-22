@@ -46,7 +46,7 @@ axios.interceptors.request.use(
         const fiics_user = JSON.parse(
             sessionStorage.getItem("fiics-auth")
         )
-        const token = fiics_user.access_token;
+        const token = fiics_user?.access_token;
         if (token) {
             config.headers["Authorization"] = "Bearer " + token;
         }
@@ -110,7 +110,7 @@ axios.interceptors.response.use(
                     const fiics_auth = JSON.parse(
                         sessionStorage.getItem("fiics-auth")
                     )
-                    const token = fiics_auth.access_token;
+                    const token = fiics_auth?.access_token;
                     if (token) {
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                     }
