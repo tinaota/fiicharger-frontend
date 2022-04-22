@@ -110,12 +110,17 @@ export const $HTTP_getBillingList = params => { return post(`${base}/Home/Billin
 /**
  * @description 取得汽車品牌列表給選單
  */
-export const $HTTP_getCarBrandListForSelect = params => { return post(`${base}/Home/Car/getCarBrandListForSelect`, qs.stringify(params)) }
+// export const $HTTP_getCarBrandListForSelect = params => { return post(`${base}/Home/Car/getCarBrandListForSelect`, qs.stringify(params)) }
+export const $HTTP_getCarBrandListForSelect = params => { return fetch(`/Vehicle/api/vehicles/makes`, qs.stringify(params)) }
 
 /**
  * @description 取得汽車資訊
  */
-export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
+// export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
+export const $HTTP_getCarInfo = params => {
+  let carId = params.carId
+  return fetch(`/Vehicle/api/vehicles/${carId}`)
+}
 
 /**
  * @description 取得工單列表
@@ -125,7 +130,8 @@ export const $HTTP_getWorkOrderList = params => { return post(`${base}/Home/Work
 /**
  * @description 取得汽車列表
  */
-export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCarList`, qs.stringify(params)) }
+// export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCarList`, qs.stringify(params)) }
+export const $HTTP_getCarList = params => { return fetch(`/Vehicle/api/vehicles/detailed`, qs.stringify(params)) }
 
 /**
  * @description 取得運營商列表
@@ -283,7 +289,6 @@ export const $HTTP_updateStation = params => { return post(`${base}/ChargeStatio
  * @description 取得充電站明細列表
  */
 export const $HTTP_getStationDetailList = params => {
-  console.log(params)
   return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params))
 }
 
@@ -308,7 +313,6 @@ export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/
  * @description 取得充電站列表
  */
 export const $HTTP_getStationList = params => {
-  console.log(params)
   return post(`${base}/ChargeStation/Station/getStationList`, qs.stringify(params))
 }
 
