@@ -366,6 +366,9 @@ export default {
         handleCarBandChange() {
             if (this.filter.carBrand !== "") {
                 this.fetchCarModelList();
+            }else{
+                this.filter.carModel="";
+                this.carModelList.data={}
             }
             this.fetchData();
         },
