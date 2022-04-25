@@ -59,7 +59,7 @@
         </div>
         <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="600px" :visible.sync="dialog.visible" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeDialog(true)" v-loading="dialog.isLoading">
             <div class="vertial formVertical">
-                <el-form ref="operatorForm" :rules="rules" :model="dialog.info">
+                <el-form ref="operatorForm" :rules="rules" :model="dialog.info" style="width:98%">
 
                     <div class="form-item">
                         <div class="label">{{ $t('userAccount.firstName') }}</div>
