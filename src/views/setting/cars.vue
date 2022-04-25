@@ -362,7 +362,9 @@ export default {
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
-        changePage(page) {},
+        changePage(page) {
+            this.page = page
+        },
         handleCarBandChange() {
             if (this.filter.carBrand !== "") {
                 this.fetchCarModelList();
