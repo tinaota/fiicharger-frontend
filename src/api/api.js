@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_CTRL, $GLOBAL_AUTH } from '@/utils/global'
-import { fetch, post, fetchImg, put, del } from '@/http/http'
+import { fetch, post, patch, fetchImg, put, del } from '@/http/http'
 import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
@@ -124,6 +124,20 @@ export const $HTTP_getCarInfo = params => {
   return fetch(`/Vehicle/api/vehicles/${carId}`)
 }
 
+// add vehicles
+export const $HTTP_addCars = params => {
+  return post(`/Vehicle/api/vehicles`, params)
+}
+
+// update vehicles
+export const $HTTP_updateCars = params => {
+  return patch(`/Vehicle/api/vehicles/${params.id}`, params)
+}
+
+// delete vehicle by id
+export const $HTTP_deleteVehicle = params => {
+  return del(`/Vehicle/api/vehicles/${params.id}`, params)
+}
 /**
  * @description 取得工單列表
  */
