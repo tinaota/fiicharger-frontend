@@ -13,10 +13,7 @@
                     <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carModelList.isLoading" @change="fetchData()" filterable clearable>
                         <el-option v-for="(item, idx) in carModelList.data" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
-                    <!-- <el-input placeholder="ID" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input> -->
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus"></el-button>
+                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openCreateDialog()"></el-button>
                 </div>
                 <el-table :data="tableData.slice((page - 1) * 10, page * 10)" class="moreCol" v-loading="isLoading">
                     <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
@@ -24,22 +21,6 @@
                     <el-table-column prop="model" :label="$t('cars.model')" :min-width="4"></el-table-column>
                     <el-table-column prop="trim" :label="$t('cars.trim')" :min-width="4"></el-table-column>
                     <el-table-column prop="year" :label="$t('cars.year')" :min-width="4"></el-table-column>
-
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{scope.row.chargePower + "hp"}}
-                        </template>
-                    </el-table-column>
-                    <!-- <el-table-column :label="$t('cars.batteryCapacity')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{scope.row.batteryCapacity + "kWh"}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('cars.realRange')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{scope.row.realRange + "km"}}
-                        </template>
-                    </el-table-column> -->
                     <el-table-column :label="$t('cars.acPower')" :min-width="3">
                         <template slot-scope="scope">
                             {{scope.row.chargePower ? scope.row.chargePower + "kW" : ''}}
@@ -54,26 +35,21 @@
                     <el-table-column prop="fastChargePlugType" :label="$t('cars.dcPlug')" :min-width="3"></el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="140">
                         <template slot-scope="scope">
-                            <el-button class="no-bg detail" @click="openDialog(scope.row.id)"></el-button>
-                            <el-button class="no-bg edit"></el-button>
-                            <el-button class="no-bg delete"></el-button>
+                            <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
+                            <el-button class="no-bg edit" @click="openEditDialog(scope.row)"></el-button>
+                            <el-button class="no-bg delete" @click="openDeleteDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
                     <el-table-column v-else :label="$t('general.action')" :width="65">
                         <template slot-scope="scope">
-                            <el-button class="no-bg detail" @click="openDialog(scope.row.id)"></el-button>
+                            <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="$t('general.action')" :width="65">
-                        <template slot-scope="scope">
-                            <el-button class="no-bg detail" @click="openDialog(scope.row.id)"></el-button>
-                        </template>
-                    </el-table-column> -->
                 </el-table>
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="10" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
-                <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog()">
+                <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog('detail')">
                     <div class="tabs-contain carDetail">
                         <el-tabs v-model="dialog.active" @tab-click="handleTabClick">
                             <el-tab-pane :label="$t('cars.carType')" name="carType">
@@ -96,40 +72,12 @@
                                     </div>
                                     <div class="item">
                                         <div class="label">{{ $t('cars.picture') }}</div>
-                                        <div class="info"><img :src="dialog.info.carTypeInfo.carPicPath" width="360" height="200"></div>
+                                        <div class="info"><img :src="dialog.info.carTypeInfo.imageUrl" width="360" height="200"></div>
                                     </div>
-                                    <!-- <div class="item">
-                                        <div class="label">{{ $t('cars.version') }}</div>
-                                        <div class="info">{{ dialog.info.carTypeInfo.carModelVersion || '-' }}</div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="label">{{ '0-100 km/h '}}</div>
-                                        <div class="info">{{ dialog.info.carTypeInfo.performanceAcceleration || '-' + ' sec(s)' }}</div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="label">{{ $t('cars.topSpeed') }}</div>
-                                        <div class="info">{{ dialog.info.carTypeInfo.performanceTopSpeed || '-' + ' km/h' }}</div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="label">{{ $t('cars.propulsion') }}</div>
-                                        <div class="info">{{ dialog.info.carTypeInfo.performanceTopSpeed || '-' }}</div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="label">{{ $t('cars.turningCircle') }}</div>
-                                        <div class="info">{{ dialog.info.carTypeInfo.turningCircle || '-' + ' m' }}</div>
-                                    </div> -->
                                 </div>
                             </el-tab-pane>
                             <el-tab-pane :label="$t('cars.battery')" name="battery">
                                 <div class="battery">
-                                    <!-- <div class="item">
-                                        <div class="label">{{ $t('cars.batteryCapacity') }}</div>
-                                        <div class="info">{{ dialog.info.carBatteryInfo.batteryCapacity || '-' + ' kWh' }}</div>
-                                    </div> -->
-                                    <!-- <div class="item">
-                                        <div class="label">{{ $t('cars.capacityUseable') }}</div>
-                                        <div class="info">{{ dialog.info.carBatteryInfo.batteryCapacityUseable || '-' + ' kWh' }}</div>
-                                    </div> -->
                                     <div class="item">
                                         <div class="label">{{ $t('cars.acPlug') }}</div>
                                         <div class="info">{{ dialog.info.carBatteryInfo.acPlug || '-' }}</div>
@@ -167,6 +115,10 @@
                         </el-tabs>
                     </div>
                 </el-dialog>
+                <UpdateCars :show="createCarsDialog.show" :dialogType="'create'" @close="closeDialog('create')"></UpdateCars>
+                <DeleteCars :show="deleteCarsDialog.show" :id="deleteCarsDialog.id" :make="deleteCarsDialog.make" :carModel="deleteCarsDialog.model" :trim="deleteCarsDialog.trim" @close="closeDialog('delete')"></DeleteCars>
+                <UpdateCars :show="editCarsDialog.show" :data="editCarsDialog.data" :dialogType="'edit'" @close="closeDialog('edit')"></UpdateCars>
+
             </div>
         </div>
     </div>
@@ -180,7 +132,14 @@ import {
     $HTTP_getCarModelListForSelect,
 } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import UpdateCars from "@/views/setting/updateCars";
+import DeleteCars from "@/views/setting/deleteCars";
+
 export default {
+    components: {
+        UpdateCars,
+        DeleteCars,
+    },
     data() {
         return {
             lang: "",
@@ -189,17 +148,14 @@ export default {
                 carBrand: "",
                 carModel: "",
                 tmpSearch: "",
-                // search: "",
             },
             carBandList: {
                 isLoading: false,
                 data: {},
-                // modelList: [],
             },
             carModelList: {
                 isLoading: false,
                 data: {},
-                // modelList: [],
             },
             isLoading: false,
             tableData: [],
@@ -216,16 +172,9 @@ export default {
                         carModel: "",
                         trim: "",
                         year: "",
-                        carPicPath: "",
-                        // carModelVersion: "",
-                        // performanceAcceleration: "",
-                        // performanceTopSpeed: "",
-                        // performanceTopSpeed: "",
-                        // turningCircle: "",
+                        imageUrl: "",
                     },
                     carBatteryInfo: {
-                        // batteryCapacity: "",
-                        // batteryCapacityUseable: "",
                         acPlug: "",
                         acPower: "",
                         acPhase: "",
@@ -236,6 +185,23 @@ export default {
                         chargeTime: "",
                     },
                 },
+            },
+            createCarsDialog: {
+                show: false,
+                isLoading: false,
+            },
+            deleteCarsDialog: {
+                id: null,
+                make: "",
+                model: "",
+                trim: "",
+                isLoading: false,
+                show: false,
+            },
+            editCarsDialog: {
+                show: false,
+                isLoading: false,
+                data: {},
             },
         };
     },
@@ -302,10 +268,6 @@ export default {
             if (this.filter.carModel) {
                 param.model = this.filter.carModel;
             }
-            // if (type) {
-            //     this.filter.search = this.filter.tmpSearch;
-            // }
-            // param.search = this.filter.search;
             $HTTP_getCarList(param)
                 .then((data) => {
                     this.isLoading = false;
@@ -340,7 +302,7 @@ export default {
                         _carTypeInfo["carModel"] = data.model;
                         _carTypeInfo["trim"] = data.trim;
                         _carTypeInfo["year"] = data.year;
-                        _carTypeInfo["carPicPath"] = data.image;
+                        _carTypeInfo["imageUrl"] = data.imageUrl;
                         let _carBatteryInfo = {};
                         _carBatteryInfo["acPlug"] = data.plugType;
                         _carBatteryInfo["acPower"] = data.chargePower;
@@ -363,18 +325,18 @@ export default {
                 });
         },
         changePage(page) {
-            this.page = page
+            this.page = page;
         },
         handleCarBandChange() {
             if (this.filter.carBrand !== "") {
                 this.fetchCarModelList();
-            }else{
-                this.filter.carModel="";
-                this.carModelList.data={}
+            } else {
+                this.filter.carModel = "";
+                this.carModelList.data = {};
             }
             this.fetchData();
         },
-        openDialog(carId) {
+        openDetailDialog(carId) {
             const that = this;
             this.dialog.carId = carId;
             this.dialog.info = {
@@ -383,17 +345,9 @@ export default {
                     carModel: "",
                     trim: "",
                     year: "",
-                    carPicPath: "",
-
-                    // carModelVersion: "",
-                    // performanceAcceleration: "",
-                    // performanceTopSpeed: "",
-                    // performanceTopSpeed: "",
-                    // turningCircle: "",
+                    imageUrl: "",
                 },
                 carBatteryInfo: {
-                    // batteryCapacity: "",
-                    // batteryCapacityUseable: "",
                     acPlug: "",
                     acPower: "",
                     acPhase: "",
@@ -409,8 +363,35 @@ export default {
             this.dialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
+        openCreateDialog() {
+            this.createCarsDialog.show = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        openDeleteDialog(data) {
+            this.deleteCarsDialog.id = data.id;
+            this.deleteCarsDialog.make = data.make;
+            this.deleteCarsDialog.model = data.model;
+            this.deleteCarsDialog.trim = data.trim;
+            this.deleteCarsDialog.show = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        openEditDialog(data) {
+            this.editCarsDialog.show = true;
+            this.editCarsDialog.data = data;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
         handleTabClick(tab, event) {},
-        closeDialog() {
+        closeDialog(dialog) {
+            if (dialog === "create") {
+                this.createCarsDialog.show = false;
+                this.fetchData();
+            } else if (dialog === "delete") {
+                this.deleteCarsDialog.show = false;
+                this.fetchData();
+            } else if (dialog === "edit") {
+                this.editCarsDialog.show = false;
+                this.fetchData();
+            }
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
     },
