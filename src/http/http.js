@@ -223,6 +223,27 @@ export function put(url, params = {}) {
     })
 }
 
+export function putImage(url, formData, config) {
+    axios.defaults.baseURL = apiConfig.baseUrl;
+    return new Promise((resolve, reject) => {
+        axios.put(url, formData, config)
+            .then(response => {
+                if (response) {
+                    resolve(response.data)
+                } else {
+                    reject(response)
+                }
+            }, err => {
+                if (err.status === 403) {
+                    err['data'] = 'Permission denied.'
+                }
+                err.status && err.status !== 204 && reject(err)
+
+
+            })
+    })
+}
+
 export function patch(url, params = {}) {
     axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {

@@ -132,12 +132,12 @@ import {
     $HTTP_updateOperator,
     UpdateOperator,
     $HTTP_registerOperator,
+    $HTTP_updateImage,
 } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
 import AddRoles from "@/components/userAccount/addRoles";
-import axios from "axios";
 export default {
     components: {
         ChangePwd,
@@ -410,14 +410,20 @@ export default {
                                     const formData = new FormData();
                                     let id = this.dialog.info.id;
                                     formData.append("picture", this.imagesArray, this.imagesArray?.name);
-                                    axios
-                                        .put(`/Gatekeeper/api/Users/${id}/picture`, formData, {
-                                            headers: {
-                                                "Content-Type": "multipart/form-data",
-                                            },
-                                        })
+                                    let config = {
+                                        headers: {
+                                            "Content-Type": "multipart/form-data",
+                                        },
+                                    };
+
+                                    let params = {
+                                        id: id,
+                                        formData: formData,
+                                        config: config,
+                                    };
+                                    $HTTP_updateImage(params)
                                         .then((res) => {
-                                            if (res.data.succeeded) {
+                                            if (res.succeeded) {
                                                 that.$message({
                                                     type: "success",
                                                     message: i18n.t("general.sucUpdateMsg"),

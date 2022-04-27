@@ -2,8 +2,7 @@
     <div><i class="fa fa-spinner fa-spin"></i> Redirecting</div>
 </template>
 <script type="text/javascript">
-import { $HTTP_login_auth } from "@/api/api";
-import axios from "axios";
+import { $HTTP_login_auth, $HTTP_getUserInfo } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
 
@@ -54,11 +53,9 @@ export default {
                 this.$store.commit(types.LOGIN, JSON.parse(window.sessionStorage.getItem("fiics-auth")).access_token);
             })
             .then(() => {
-                axios
-                    .get("/Gatekeeper/api/Users/user-info")
+                $HTTP_getUserInfo()
                     .then((res) => {
-                        // console.log(res);
-                        let _data = res?.data;
+                        let _data = res;
                         sessionStorage.setItem("fiics-user", JSON.stringify(_data));
                         if (_data.roles.indexOf("Super") != -1) {
                             this.$router.push({ path: "/location" });

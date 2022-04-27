@@ -1,10 +1,10 @@
-import axios from 'axios'
 import qs from 'qs'
-import { $GLOBAL_HTTP, $GLOBAL_CTRL, $GLOBAL_AUTH } from '@/utils/global'
-import { fetch, post, patch, fetchImg, put, del } from '@/http/http'
+import { $GLOBAL_HTTP, $GLOBAL_VEHICLE, $GLOBAL_AUTH } from '@/utils/global'
+import { fetch, post, patch, fetchImg, put, putImage, del } from '@/http/http'
 import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
+const base_vehicle = $GLOBAL_VEHICLE
 /**
  * @description 登入
  */
@@ -18,15 +18,23 @@ export const $HTTP_login_auth = params => {
   return post(`${base_auth}/auth/token`, params);
 }
 
+export const $HTTP_getUserInfo = () => {
+  return fetch(`${base_auth}/api/Users/user-info`)
+}
+
 export const $HTTP_getRoles = params => {
   let id = params.id;
-  return fetch(`Gatekeeper/api/Users/${id}/roles`, params)
+  return fetch(`${base_auth}/api/Users/${id}/roles`, params)
+}
+
+export const $HTTP_updateImage = params => {
+  return putImage(`${base_auth}/api/Users/${params.id}/picture`, params.formData, params.config)
 }
 
 export const $HTTP_addRoles = params => {
   let id = params.id;
   let roles = params.roles;
-  return put(`Gatekeeper/api/Users/${id}/roles`, roles)
+  return put(`${base_auth}/api/Users/${id}/roles`, roles)
 }
 
 
@@ -34,7 +42,7 @@ export const $HTTP_addRoles = params => {
  * @description 登出
  */
 // export const $HTTP_logout = () => { return fetch(`${base}/Home/Login/logout`) }
-export const $HTTP_logout = (params) => { return post(`Gatekeeper/auth/revoke`, qs.stringify(params)) }
+export const $HTTP_logout = (params) => { return post(`${base_auth}/auth/revoke`, qs.stringify(params)) }
 
 /**
  * @description 取得圖形驗證碼
@@ -111,9 +119,9 @@ export const $HTTP_getBillingList = params => { return post(`${base}/Home/Billin
  * @description 取得汽車品牌列表給選單
  */
 // export const $HTTP_getCarBrandListForSelect = params => { return post(`${base}/Home/Car/getCarBrandListForSelect`, qs.stringify(params)) }
-export const $HTTP_getCarBrandListForSelect = params => { return fetch(`/Vehicle/api/vehicles/makes`, (params)) }
+export const $HTTP_getCarBrandListForSelect = params => { return fetch(`${base_vehicle}/api/vehicles/makes`, (params)) }
 
-export const $HTTP_getCarModelListForSelect = params => { return fetch(`/Vehicle/api/vehicles/makes/${params.make}/models`, (params)) }
+export const $HTTP_getCarModelListForSelect = params => { return fetch(`${base_vehicle}/api/vehicles/makes/${params.make}/models`, (params)) }
 
 /**
  * @description 取得汽車資訊
@@ -121,22 +129,22 @@ export const $HTTP_getCarModelListForSelect = params => { return fetch(`/Vehicle
 // export const $HTTP_getCarInfo = params => { return post(`${base}/Home/Car/getCarInfo`, qs.stringify(params)) }
 export const $HTTP_getCarInfo = params => {
   let carId = params.carId
-  return fetch(`/Vehicle/api/vehicles/${carId}`)
+  return fetch(`${base_vehicle}/api/vehicles/${carId}`)
 }
 
 // add vehicles
 export const $HTTP_addCars = params => {
-  return post(`/Vehicle/api/vehicles`, params)
+  return post(`${base_vehicle}/api/vehicles`, params)
 }
 
 // update vehicles
 export const $HTTP_updateCars = params => {
-  return patch(`/Vehicle/api/vehicles/${params.id}`, params)
+  return patch(`${base_vehicle}/api/vehicles/${params.id}`, params)
 }
 
 // delete vehicle by id
 export const $HTTP_deleteVehicle = params => {
-  return del(`/Vehicle/api/vehicles/${params.id}`, params)
+  return del(`${base_vehicle}/api/vehicles/${params.id}`, params)
 }
 /**
  * @description 取得工單列表
@@ -147,14 +155,14 @@ export const $HTTP_getWorkOrderList = params => { return post(`${base}/Home/Work
  * @description 取得汽車列表
  */
 // export const $HTTP_getCarList = params => { return post(`${base}/Home/Car/getCarList`, qs.stringify(params)) }
-export const $HTTP_getCarList = params => { return fetch(`/Vehicle/api/vehicles/detailed`, (params)) }
+export const $HTTP_getCarList = params => { return fetch(`${base_vehicle}/api/vehicles/detailed`, (params)) }
 
 /**
  * @description 取得運營商列表
  */
 // export const $HTTP_getOperatorList = params => { return post(`${base}/Home/Operator/getOperatorList`, qs.stringify(params)) }
 export const $HTTP_getOperatorList = params => {
-  return fetch(`/Gatekeeper/api/Users`, (params))
+  return fetch(`${base_auth}/api/Users`, (params))
 }
 
 /**
@@ -167,9 +175,9 @@ export const AddOperator = apiConfig.baseUrl + base + '/Home/Operator/addOperato
  * @description 更新運營商資訊
  */
 // export const $HTTP_updateOperator = params => { return post(`${base}/Home/Operator/updateOperator`, qs.stringify(params)) }
-export const $HTTP_registerOperator = params => { return post(`Gatekeeper/api/Users/register`, (params)) }
+export const $HTTP_registerOperator = params => { return post(`${base_auth}/api/Users/register`, (params)) }
 
-export const $HTTP_updateOperator = params => { return put(`Gatekeeper/api/Users/${params.id}`, (params)) }
+export const $HTTP_updateOperator = params => { return put(`${base_auth}/api/Users/${params.id}`, (params)) }
 
 export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateOperator';
 
@@ -179,11 +187,11 @@ export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateO
 // export const $HTTP_updateOperatorPassword = params => { return post(`${base}/Home/Operator/updateOperatorPassword`, qs.stringify(params)) }
 
 export const $HTTP_updateOperatorPassword = params => {
-  return put(`Gatekeeper/api/Users/${params.id}/password`, params)
+  return put(`${base_auth}/api/Users/${params.id}/password`, params)
 }
 
 export const $HTTP_deleteOperatorPassword = params => {
-  return del(`Gatekeeper/api/Users/${params.id}`)
+  return del(`${base_auth}/api/Users/${params.id}`)
 }
 
 /**
