@@ -39,7 +39,7 @@ export default {
         };
     },
     created() {
-        this.lang = window.sessionStorage.getItem("fiics-lang");
+        this.lang = window.localStorage.getItem("fiics-lang");
     },
     watch: {
         show: {

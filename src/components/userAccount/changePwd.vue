@@ -113,7 +113,7 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
-        this.lang = window.sessionStorage.getItem("fiics-lang");
+        this.lang = window.localStorage.getItem("fiics-lang");
     },
     beforeDestroy() {},
     methods: {
