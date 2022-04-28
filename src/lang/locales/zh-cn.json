@@ -116,7 +116,8 @@
         "enable": "启用",
         "disable": "关闭",
         "addRoles": "添加角色",
-        "imageUrl": "图片网址"
+        "imageUrl": "图片网址",
+        "language": "语言"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",

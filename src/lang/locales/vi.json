@@ -116,7 +116,8 @@
         "enable": "Cho phép",
         "disable": "Vô hiệu hóa",
         "addRoles": "thêm vai trò",
-        "imageUrl": "URL hình ảnh"
+        "imageUrl": "URL hình ảnh",
+        "language": "ngôn ngữ"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

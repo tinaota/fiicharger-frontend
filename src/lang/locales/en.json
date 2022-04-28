@@ -116,7 +116,8 @@
         "enable": "Enable",
         "disable": "Disable",
         "addRoles": "Add Roles",
-        "imageUrl": "Image URL"
+        "imageUrl": "Image URL",
+        "language": "Language"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
