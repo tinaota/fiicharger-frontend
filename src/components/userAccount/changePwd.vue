@@ -144,6 +144,7 @@ export default {
                         .catch((err) => {
                             let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
                             that.$message({ type: "warning", message: _errors.toString() });
+                            that.isLoading = false;
                         });
                 } else {
                     console.log("error submit!!");

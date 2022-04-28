@@ -146,10 +146,10 @@ export default {
     },
     data() {
         var validateEmail = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error("Email cannot be empty."));
-            } else {
+            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 callback();
+            } else {
+                callback(new Error("Please enter a valid email address."));
             }
         };
 
@@ -474,7 +474,7 @@ export default {
                             .catch((err) => {
                                 let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
                                 that.$message({ type: "warning", message: _errors.toString() });
-                                that.dialog.visible = false;
+                                // that.dialog.visible = false;
                                 that.dialog.isLoading = false;
                             });
                     }
