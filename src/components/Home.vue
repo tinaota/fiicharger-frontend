@@ -22,12 +22,21 @@
                 <div class="img-container">
                     <img :src="sysUserAvatar" />
                 </div>
-                <el-dropdown trigger="hover">
+                <el-dropdown trigger="click">
                     <div class="el-dropdown-link userinfo-inner">
                         {{userData.name ? userData.name : roleNameObj}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item divided @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
+                        <el-menu :default-active="activeIndex" class="" mode="horizontal">
+                            <el-submenu index="2">
+                                <template slot="title">
+                                    {{$t('general.language')}}
+                                </template>
+                                <el-menu-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-menu-item>
+
+                            </el-submenu>
+                        </el-menu>
+                        <el-dropdown-item @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
@@ -100,6 +109,7 @@ export default {
             appLogo: app_icon,
             roleNameObj: "",
             uuid: "",
+            activeIndex: "1",
         };
     },
     created() {
@@ -177,10 +187,10 @@ export default {
                 this.routerParent = this.routerName;
             }
         }
-        if (!window.sessionStorage.getItem("fiics-lang")) {
-            window.sessionStorage.setItem("fiics-lang", "en");
+        if (!window.localStorage.getItem("fiics-lang")) {
+            window.localStorage.setItem("fiics-lang", "en");
         }
-        this.lang = window.sessionStorage.getItem("fiics-lang");
+        this.lang = window.localStorage.getItem("fiics-lang");
         this.$store.dispatch("setLang", this.lang);
     },
     beforeMount() {
@@ -220,7 +230,7 @@ export default {
         handleChangeLang(lang) {
             if (this.lang !== lang) {
                 this.lang = lang;
-                window.sessionStorage.setItem("fiics-lang", lang);
+                window.localStorage.setItem("fiics-lang", lang);
                 this.$router.go(0);
             }
         },
@@ -243,7 +253,7 @@ export default {
             return require("imgs/" + iconName + ".png");
         },
         logout: function () {
-            this.$confirm(i18n.t("login.hint_logout"), i18n.t("general.hint"), {
+            this.$confirm(i18n.t("login.hint_logout"), i18n.t("login.logout"), {
                 showClose: false,
                 customClass: "custom",
             })
@@ -271,7 +281,17 @@ export default {
 </script>
 <style scoped lang="scss">
 .el-dropdown-menu {
-    margin-top: -8px;
+    .el-dropdown-menu__item {
+        height: 60px;
+        line-height: 60px;
+        font-size: 14px;
+        color: #909399;
+        display: flex;
+        justify-content: center;
+    }
+    .el-dropdown-menu__item:hover {
+        color: #303133;
+    }
 }
 .header {
     height: 68px;

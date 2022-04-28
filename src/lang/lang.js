@@ -21,8 +21,14 @@ const messages = {
 }
 
 const i18n = new VueI18n({
-    locale: 'en',
+    locale: window.navigator.userLanguage || window.navigator.language || 'en',
     messages
 })
+var language = window.navigator.userLanguage || window.navigator.language;
+var langLowerCase = language.toLowerCase()
+if (window.localStorage.getItem('fiics-lang') === null) {
+    window.localStorage.setItem("fiics-lang", langLowerCase)
+}
+
 locale.i18n((key, value) => i18n.t(key, value))
 export default i18n
