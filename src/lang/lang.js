@@ -14,7 +14,7 @@ import viLocale from 'element-ui/lib/locale/lang/vi'
 
 Vue.use(VueI18n)
 const messages = {
-    "en":  Object.assign(en, enLocale),
+    "en": Object.assign(en, enLocale),
     "zh-tw": Object.assign(tw, twLocale),
     "zh-cn": Object.assign(cn, cnLocale),
     "vi": Object.assign(vi, viLocale),
@@ -22,12 +22,17 @@ const messages = {
 
 const i18n = new VueI18n({
     locale: window.navigator.userLanguage || window.navigator.language || 'en',
+    fallbackLocale: 'en',
     messages
 })
 var language = window.navigator.userLanguage || window.navigator.language;
 var langLowerCase = language.toLowerCase()
 if (window.localStorage.getItem('fiics-lang') === null) {
-    window.localStorage.setItem("fiics-lang", langLowerCase)
+    if (Object.keys(messages).indexOf(langLowerCase) !== -1) {
+        window.localStorage.setItem("fiics-lang", langLowerCase)
+    } else {
+        window.localStorage.setItem("fiics-lang", 'en')
+    }
 }
 
 locale.i18n((key, value) => i18n.t(key, value))
