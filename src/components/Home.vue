@@ -24,7 +24,7 @@
                 </div>
                 <el-dropdown trigger="click">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{userData.name ? userData.name : roleNameObj}}
+                        {{userData.name!==" " ? userData.name : roleNameObj}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-menu :default-active="activeIndex" class="" mode="horizontal">
@@ -120,7 +120,6 @@ export default {
                 name: userData?.firstName + " " + userData?.lastName,
                 accPermissionType: userData?.roles,
             };
-
             // set role(highest one)
             if (userData?.roles?.indexOf("Super") != -1) {
                 this.roleNameObj = "Super";
