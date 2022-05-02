@@ -100,7 +100,7 @@ let routes = [
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/contactadmin', component: () => import('@/views/info/contact.vue'), name: 'menu.contact', hidden: false }
+                    { path: '/contactadmin', component: () => import('@/views/info/contact.vue'), name: 'Contact', hidden: false }
 
                 ]
             },
@@ -140,8 +140,8 @@ const router = new Router({
 /**
  * @description 页面刷新时重新对token 进行赋值操作
  */
-if (window.sessionStorage.getItem('fiics-token')) {
-    store.commit(types.LOGIN, window.sessionStorage.getItem('fiics-token'));
+if (window.localStorage.getItem('fiics-token')) {
+    store.commit(types.LOGIN, window.localStorage.getItem('fiics-token'));
 }
 // create a uuid on route
 let uuidValue = window.localStorage.getItem("uuid");
@@ -155,7 +155,7 @@ if (uuidValue === null || uuidValue === undefined) {
 router.beforeEach((to, from, next) => {
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
-            // var userData = window.sessionStorage.getItem('fiics-user') || null;
+            // var userData = window.localStorage.getItem('fiics-user') || null;
             // if (userData && userData.accountInfo && userData.accountInfo.accPermissionType) {
             //     var accPermissionType = userData.accountInfo.accPermissionType;
             //     if (accPermissionType !== 2 && accPermissionType !== 4 ) {

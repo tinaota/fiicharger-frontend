@@ -113,8 +113,8 @@ export default {
         };
     },
     created() {
-        if (window.sessionStorage.getItem("fiics-user")) {
-            const userData = JSON.parse(window.sessionStorage.getItem("fiics-user"));
+        if (window.localStorage.getItem("fiics-user")) {
+            const userData = JSON.parse(window.localStorage.getItem("fiics-user"));
             this.userData = {
                 account: userData?.id,
                 name: userData?.firstName + " " + userData?.lastName,
@@ -257,7 +257,7 @@ export default {
                 customClass: "custom",
             })
                 .then(() => {
-                    let _token = JSON.parse(sessionStorage.getItem("fiics-auth"))?.access_token;
+                    let _token = JSON.parse(localStorage.getItem("fiics-auth"))?.access_token;
                     let params = {
                         client_id: "gatekeeper",
                         token: _token,

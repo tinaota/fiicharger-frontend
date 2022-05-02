@@ -206,12 +206,12 @@ export default {
         };
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem("fiics-user")),
+        const userData = JSON.parse(window.localStorage.getItem("fiics-user")),
             role = userData.roles;
         if (role.indexOf("Admin") || role.indexOf("Owner") || role.indexOf("Super")) {
             this.permissionEditAble = true;
         }
-        this.lang = window.sessionStorage.getItem("fiics-lang");
+        this.lang = window.localStorage.getItem("fiics-lang");
     },
     mounted() {
         setScrollBar(".scroll", this);

@@ -44,7 +44,7 @@ axios.interceptors.request.use(
         url.splice(0, url.length - 2);
         url = url.join('/');
         const fiics_user = JSON.parse(
-            sessionStorage.getItem("fiics-auth")
+            localStorage.getItem("fiics-auth")
         )
         const token = fiics_user?.access_token;
         if (token) {
@@ -79,7 +79,7 @@ axios.interceptors.response.use(
             return Promise.reject(error.response)
 
         } else if (error.response.status === 401 && !originalRequest._retry) {
-            let fiicsAuthData = JSON.parse(sessionStorage.getItem('fiics-auth'))
+            let fiicsAuthData = JSON.parse(localStorage.getItem('fiics-auth'))
             let uuidValue = localStorage.getItem("uuid");
 
             const _data = {
@@ -108,10 +108,10 @@ axios.interceptors.response.use(
 
                 if (res.status === 200) {
                     let _data = res.data;
-                    sessionStorage.setItem("fiics-auth", JSON.stringify(_data));
+                    localStorage.setItem("fiics-auth", JSON.stringify(_data));
                     // Change Authorization header
                     const fiics_auth = JSON.parse(
-                        sessionStorage.getItem("fiics-auth")
+                        localStorage.getItem("fiics-auth")
                     )
                     const token = fiics_auth?.access_token;
                     if (token) {

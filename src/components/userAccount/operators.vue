@@ -228,8 +228,8 @@ export default {
         };
     },
     created() {
-        this.lang = window.sessionStorage.getItem("fiics-lang");
-        let fiics_user = JSON.parse(sessionStorage.getItem("fiics-user"));
+        this.lang = window.localStorage.getItem("fiics-lang");
+        let fiics_user = JSON.parse(localStorage.getItem("fiics-user"));
         let roles = fiics_user.roles;
         if (roles.indexOf("Super") !== -1) {
             this.operatorList = { All: "*", Admin: "admin", Owner: "owner", Member: "" };

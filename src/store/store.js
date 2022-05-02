@@ -14,11 +14,15 @@ export default new Vuex.Store({
     mutations: {
         [types.LOGIN]: (state, data) => {
             // console.log(state,data)
-            window.sessionStorage.setItem('fiics-token', data)
+            window.localStorage.setItem('fiics-token', data)
             state.token = data
         },
         [types.LOGOUT]: (state) => {
-            window.sessionStorage.clear();
+            let uuid = localStorage.getItem('uuid');
+            let fiicsLang = localStorage.getItem('fiics-lang')
+            window.localStorage.clear();
+            window.localStorage.setItem('uuid', uuid);
+            window.localStorage.setItem('fiics-lang', fiicsLang)
             state = {
                 token: null,
                 lang: 'en',

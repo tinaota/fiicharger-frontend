@@ -48,24 +48,18 @@ export default {
         };
         $HTTP_login_auth(formBody, config)
             .then((res) => {
-                window.sessionStorage.setItem("fiics-auth", JSON.stringify(res));
+                window.localStorage.setItem("fiics-auth", JSON.stringify(res));
                 // pass in the access token
-                this.$store.commit(types.LOGIN, JSON.parse(window.sessionStorage.getItem("fiics-auth")).access_token);
+                this.$store.commit(types.LOGIN, JSON.parse(window.localStorage.getItem("fiics-auth")).access_token);
             })
             .then(() => {
                 $HTTP_getUserInfo()
                     .then((res) => {
                         let _data = res;
-                        sessionStorage.setItem("fiics-user", JSON.stringify(_data));
-                        if (_data.roles.indexOf("Super") != -1) {
+                        localStorage.setItem("fiics-user", JSON.stringify(_data));
+                        if (_data.roles.indexOf("Super") !== -1 || _data.roles.indexOf("Owner") !== -1 || _data.roles.indexOf("Admin") !== -1) {
                             this.$router.push({ path: "/location" });
                             this.$store.commit(types.ROLE, "Super");
-                        } else if (_data.roles.indexOf("Admin") != -1) {
-                            this.$router.push({ path: "/location" });
-                            this.$store.commit(types.ROLE, "Admin");
-                        } else if (_data.roles.indexOf("Owner") != -1) {
-                            this.$router.push({ path: "/location" });
-                            this.$store.commit(types.ROLE, "Owner");
                         } else {
                             this.$router.push({ path: "/contactadmin" });
                             this.$store.commit(types.ROLE, "Guest");
