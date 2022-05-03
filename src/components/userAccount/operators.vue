@@ -19,6 +19,7 @@
                         {{clientName(scope.row)}}
                     </template>
                 </el-table-column>
+
                 <el-table-column :label="$t('userAccount.logo')" :min-width="3">
                     <template slot-scope="scope">
                         <img :src="getImageUrl(scope.row.picture)" class="logo" v-bind:style="{maxHeight: '50px',maxWidth:'50px'}">
@@ -70,14 +71,20 @@
                         <el-input v-model="dialog.info.lastName"></el-input>
                     </div>
                     <div v-bind:class="{'hide': (dialog.type===0),'form-item':true}">
-                        <div class="label">{{ $t('userAccount.logo') }}</div>
-                        <el-upload ref="updateImg" class="upload-demo" list-type="picture-card" :action="dialog.$Api" :data="dialog.uploadParams" accept="image/gif,image/jpeg,image/png,image/jpg" :limit="1" :auto-upload="false" :on-exceed="handleExceed" :before-upload="onBeforeUploadPic" :on-success="handleSuccess" :on-error="handleError" :on-change="handleFileChange" :on-remove="handleFileChange" :file-list="dialog.file">
-                            <i class="el-icon-plus"></i>
-                        </el-upload>
-                        <!-- <label for="file-input">
-                        <i class="el-icon-plus"></i>
-                    </label>
-                    <input id="file-input" type="file" name="imagesArray" accept="image/gif,image/jpeg,image/png,image/jpg" @change="handleImageChange" style="display:none" /> -->
+                        <el-tabs v-model="activeImageTab">
+                            <el-tab-pane :label="$t('userAccount.uploadPicture')" name="upload">
+                                <el-upload ref="updateImg" class="upload-demo" list-type="picture-card" :action="dialog.$Api" :data="dialog.uploadParams" accept="image/gif,image/jpeg,image/png,image/jpg" :limit="1" :auto-upload="false" :on-exceed="handleExceed" :before-upload="onBeforeUploadPic" :on-success="handleSuccess" :on-error="handleError" :on-change="handleFileChange" :on-remove="handleFileChange" :file-list="dialog.file">
+                                    <i class="el-icon-plus"></i>
+                                </el-upload>
+                            </el-tab-pane>
+                            <el-tab-pane :label="$t('userAccount.addPictureUrl')" name="addUrl">
+                                <div class="form-item" v-if="activeImageTab!=='upload'">
+                                    <el-form-item prop="originalImg">
+                                        <el-input v-model="dialog.info.originalImg"></el-input>
+                                    </el-form-item>
+                                </div>
+                            </el-tab-pane>
+                        </el-tabs>
                     </div>
 
                     <div v-bind:class="{'hide': (dialog.type===0),'form-item':true}">
@@ -171,9 +178,21 @@ export default {
                 callback();
             }
         };
+
+        var validateImageUrl = (rule, value, callback) => {
+            if (typeof value !== "string") {
+                callback(new Error("Please enter a valid url."));
+            } else if (/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)) {
+                callback();
+            } else {
+                callback(new Error("Please enter a valid url."));
+            }
+        };
+
         return {
             lang: "",
             operatorList: {},
+            activeImageTab: "upload",
             filter: {
                 roles: [],
                 tmpEmail: "",
@@ -198,8 +217,8 @@ export default {
                     email: "",
                     password: "",
                     confirmPassword: "",
+                    originalImg: "",
                 },
-                originalImg: "",
                 uploadParams: {},
                 $Api: "",
             },
@@ -221,13 +240,14 @@ export default {
                 email: [{ validator: validateEmail }],
                 password: [{ validator: validatePassword }],
                 confirmPassword: [{ validator: validateConfirmedNewPassword }],
+                originalImg: [{ validator: validateImageUrl }],
             },
             showPasswordStatus: {
                 showPassword: false,
                 showConfirmPassword: false,
             },
             globalAuth: $GLOBAL_AUTH,
-            globalBaseUrl: $GLOBAL_BASE_URL
+            globalBaseUrl: $GLOBAL_BASE_URL,
         };
     },
     created() {
@@ -243,7 +263,6 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchData();
-        // this.fetchCountryCodeList();
     },
     computed: {
         clientName() {
@@ -262,8 +281,8 @@ export default {
         },
         getImageUrl(url) {
             let final_url;
-            if (!url.includes("google") && url !== "") {
-                final_url = this.globalBaseUrl  + this.globalAuth + "/" + url;
+            if (!url.includes("https") && !url.includes("http") && url !== "") {
+                final_url = this.globalBaseUrl + this.globalAuth + "/" + url;
             } else {
                 final_url = url;
             }
@@ -315,9 +334,8 @@ export default {
                     email: "",
                     password: "",
                     confirmPassword: "",
+                    originalImg: "",
                 };
-                this.dialog.originalImg = "";
-                // this.dialog.$Api = AddOperator;
             } else {
                 const imgFileName = data.picture.split("images/operator/")[1];
                 this.dialog.info = {
@@ -332,9 +350,8 @@ export default {
                     ],
                     phoneNumber: data.phoneNumber,
                     email: data.email,
+                    originalImg: data.picture.includes("http") ? data.picture : "",
                 };
-                this.dialog.originalImg = data.picture;
-                // this.dialog.$Api = UpdateOperator;
             }
             this.dialog.uploadParams = {};
             this.dialog.visible = true;
@@ -404,15 +421,18 @@ export default {
                                 that.dialog.isLoading = false;
                                 if (data.succeeded) {
                                     that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
-                                    // that.fetchData();
-                                    // that.dialog.visible = false;
                                 }
                             })
                             .then(() => {
-                                if (this.imagesArray) {
+                                if (this.activeImageTab) {
                                     const formData = new FormData();
                                     let id = this.dialog.info.id;
-                                    formData.append("picture", this.imagesArray, this.imagesArray?.name);
+                                    if (this.activeImageTab === "upload") {
+                                        formData.append("picture", this.imagesArray, this.imagesArray?.name);
+                                        this.$refs?.operatorForm?.clearValidate("originalImg");
+                                    } else if (this.activeImageTab === "addUrl") {
+                                        formData.append("pictureUrl", this.dialog.info.originalImg);
+                                    }
                                     let config = {
                                         headers: {
                                             "Content-Type": "multipart/form-data",
@@ -441,7 +461,6 @@ export default {
                                                 : err?.data;
                                             that.$message({ type: "warning", message: _errors.toString() });
                                             that.fetchData();
-                                            that.dialog.visible = false;
                                         });
                                 } else {
                                     that.fetchData();
@@ -477,7 +496,6 @@ export default {
                             .catch((err) => {
                                 let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
                                 that.$message({ type: "warning", message: _errors.toString() });
-                                // that.dialog.visible = false;
                                 that.dialog.isLoading = false;
                             });
                     }
@@ -500,6 +518,7 @@ export default {
                 this.$refs?.operatorForm?.clearValidate("email");
                 this.$refs?.operatorForm?.clearValidate("password");
                 this.$refs?.operatorForm?.clearValidate("confirmPassword");
+                this.$refs?.operatorForm?.clearValidate("originalImg");
             });
 
             this.$jQuery(".scroll").mCustomScrollbar("update");
