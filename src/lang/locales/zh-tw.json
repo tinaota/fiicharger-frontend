@@ -254,10 +254,12 @@
         "customerServices": "客服人員",
         "telephone": "電話",
         "firstName": "名字",
-        "lastName": "姓氏"
+        "lastName": "姓氏",
+        "uploadPicture": "上傳圖片",
+        "addPictureUrl": "添加圖片網址"
     },
     "cars": {
-        "marker": "標記",
+        "maker": "標記",
         "model": "模型",
         "batteryCapacity": "電池容量",
         "realRange": "實際範圍",

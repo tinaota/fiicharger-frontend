@@ -254,7 +254,9 @@
         "customerServices": "Customer Services",
         "telephone": "Telephone",
         "firstName": "First Name",
-        "lastName": "Last Name"
+        "lastName": "Last Name",
+        "uploadPicture": "Upload Picture",
+        "addPictureUrl": "Add Picture Url"
     },
     "cars": {
         "maker": "Maker",

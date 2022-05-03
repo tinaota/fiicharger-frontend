@@ -254,10 +254,12 @@
         "customerServices": "Dịch vụ khách hàng",
         "telephone": "Số điện thoại",
         "firstName": "Tên",
-        "lastName": "Họ"
+        "lastName": "Họ",
+        "uploadPicture": "Tải lên hình ảnh",
+        "addPictureUrl": "Thêm url hình ảnh"
     },
     "cars": {
-        "marker": "Dấu",
+        "maker": "Dấu",
         "model": "Mô hình",
         "batteryCapacity": "Dung lượng pin",
         "realRange": "Phạm vi thực tế",
