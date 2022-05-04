@@ -99,8 +99,7 @@ axios.interceptors.response.use(
                 },
             };
             originalRequest._retry = true;
-            return axios.post(`/gatekeeper/auth/token`, formBody, config).then(res => {
-
+            return axios.post(`/${$GLOBAL_AUTH}/auth/token`, formBody, config).then(res => {
                 if (res.status === 200) {
                     let _data = res.data;
                     localStorage.setItem("fiics-auth", JSON.stringify(_data));
