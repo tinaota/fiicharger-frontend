@@ -36,6 +36,7 @@ export default {
 <style lang="scss">
 @import "~@/styles/table";
 @import "~@/styles/style";
+@import "~@/styles/style-dark";
 
 body {
     height : 100%;

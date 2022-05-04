@@ -1,6 +1,6 @@
 
 <template>
-    <div>
+    <div :class="isDark? 'dark-theme':'light-theme'">
         <el-row class="header">
             <el-col :sm="24" :lg="8" class="sys">
                 <div>
@@ -26,19 +26,23 @@
                     <div class="el-dropdown-link userinfo-inner">
                         {{userName!==" " ? userName : roleNameObj}}
                     </div>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-menu :default-active="activeIndex" class="" mode="horizontal">
+                    <el-dropdown-menu slot="dropdown" :class="isDark? 'dark-theme':'light-theme'">
+                        <el-menu :default-active="activeIndex" mode="horizontal" :class="isDark? 'dark-theme':'light-theme'">
                             <el-submenu index="2">
                                 <template slot="title">
                                     {{$t('general.language')}}
                                 </template>
-                                <el-menu-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-menu-item>
+                                <el-menu-item :class="isDark? 'dark-theme':'light-theme'" v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-menu-item>
 
                             </el-submenu>
                         </el-menu>
                         <el-dropdown-item @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
+                <el-divider direction="vertical"></el-divider>
+                <div class="img-container">
+                    <el-button class="no-bg i change-theme-icon" :icon="isDark? 'el-icon-sunny':'el-icon-moon'" :style="{color:isDark? '#ffa500':'#000000'}" @click="changeTheme"></el-button>
+                </div>
             </el-col>
         </el-row>
         <section class="container">
@@ -86,6 +90,7 @@ import Vue from "vue";
 import { getLang } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
+import fiics_logo_dark from "imgs/darkVersion/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
 import redirect from "../router/redirect";
 
@@ -102,13 +107,13 @@ export default {
             },
             lang: "",
             langList: $GLOBAL_LANG,
-            systemLogo: fiics_logo,
             appLogo: app_icon,
             roleNameObj: "",
             uuid: "",
             activeIndex: "1",
             globalAuth: $GLOBAL_AUTH,
             globalBaseUrl: $GLOBAL_BASE_URL,
+            isDark: false,
         };
     },
     computed: {
@@ -130,7 +135,11 @@ export default {
             }
             return final_url;
         },
+        systemLogo() {
+            return this.isDark ? fiics_logo_dark : fiics_logo;
+        },
     },
+    beforeCreate() {},
     created() {
         if (this.$store.state.userInfo) {
             const userData = this.$store.state.userInfo;
@@ -202,6 +211,12 @@ export default {
     beforeMount() {
         let uuidValue = localStorage.getItem("uuid");
         this.uuid = uuidValue;
+
+        if (localStorage.getItem("fiics-dark-theme")) {
+            this.isDark = localStorage.getItem("fiics-dark-theme") === "true";
+        } else {
+            localStorage.setItem("fiics-dark-theme", false);
+        }
     },
     activated() {},
     mounted() {
@@ -256,12 +271,14 @@ export default {
             this.routerName = index;
         },
         getImgUrl(iconName) {
-            return require("imgs/" + iconName + ".png");
+            return this.isDark
+                ? require("imgs/darkVersion/" + iconName + ".png")
+                : require("imgs/" + iconName + ".png");
         },
         logout: function () {
             this.$confirm(i18n.t("login.hint_logout"), i18n.t("login.logout"), {
                 showClose: false,
-                customClass: "custom",
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
             })
                 .then(() => {
                     let _token = JSON.parse(localStorage.getItem("fiics-auth"))?.access_token;
@@ -281,6 +298,11 @@ export default {
                     // .catch(this.$message.error(i18n.t("login.err_logout")));
                 })
                 .catch(() => {});
+        },
+        changeTheme() {
+            let isDark = !this.isDark;
+            this.isDark = isDark;
+            localStorage.setItem("fiics-dark-theme", isDark);
         },
     },
 };
@@ -340,6 +362,14 @@ export default {
                 width: auto;
                 max-height: 36px;
                 vertical-align: middle;
+            }
+            .change-theme-icon {
+                margin-top: 2px;
+                font-size: 2rem;
+                background: none;
+                &:hover {
+                    background: none;
+                }
             }
         }
     }
