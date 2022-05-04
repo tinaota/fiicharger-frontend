@@ -12,6 +12,7 @@ const redirect = () => {
         window.location.replace(url);
     } else {
         let fiics_user = JSON.parse(window.localStorage.getItem('fiics-user'));
+        store.dispatch("setUser", fiics_user);
         let userRole = fiics_user.roles;
         if (userRole.indexOf("Super") !== -1 || userRole.indexOf("Admin") !== -1 || userRole.indexOf("Owner") !== -1) {
             router.push('/location');

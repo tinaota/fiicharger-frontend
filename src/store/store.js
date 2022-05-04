@@ -1,19 +1,19 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import * as types from './types'
-import {app} from '../main'
+import { app } from '../main'
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: null,
-        lang:'',
+        lang: '',
         nowSelectTab: location.pathname.includes('kiosk') ? 'kiosk' : 'station',
         tabsArr: ['station', 'kiosk'],
-        role: ''
+        role: '',
+        userInfo: localStorage.getItem('fiics-user') ? JSON.parse(localStorage.getItem('fiics-user')) : {}
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
-            // console.log(state,data)
             window.localStorage.setItem('fiics-token', data)
             state.token = data
         },
@@ -36,17 +36,24 @@ export default new Vuex.Store({
             }
         },
         [types.ROLE]: (state, data) => {
-            // console.log(state, data)
             state.role = data;
         },
+        [types.USERINFO]: (state, data) => {
+            state.userInfo = data;
+            localStorage.setItem("fiics-user", JSON.stringify(data));
+        },
         [types.SELECT_NOW_TAB]: (state, { path, router, changePath }) => {
-          state.nowSelectTab = path
-          if(changePath) router.push(`/${path}`)
+            state.nowSelectTab = path
+            if (changePath) router.push(`/${path}`)
         }
     },
     actions: {
-        setLang({commit}, payload) {
+        setLang({ commit }, payload) {
             commit(types.LANG, payload);
+        },
+        setUser({ commit }, payload) {
+            commit(types.USERINFO, payload);
+
         }
     }
 })

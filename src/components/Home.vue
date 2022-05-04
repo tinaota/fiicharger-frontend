@@ -20,11 +20,11 @@
                 </div>
                 <el-divider direction="vertical"></el-divider>
                 <div class="img-container">
-                    <img :src="sysUserAvatar" />
+                    <img :src="userAvatar" />
                 </div>
                 <el-dropdown trigger="click">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{userData.name!==" " ? userData.name : roleNameObj}}
+                        {{userName!==" " ? userName : roleNameObj}}
                     </div>
                     <el-dropdown-menu slot="dropdown">
                         <el-menu :default-active="activeIndex" class="" mode="horizontal">
@@ -99,28 +99,41 @@ export default {
             userData: {
                 account: "",
                 name: "",
-                accPermissionType: [],
             },
             lang: "",
             langList: $GLOBAL_LANG,
             systemLogo: fiics_logo,
-            sysUserAvatar: "",
             appLogo: app_icon,
             roleNameObj: "",
             uuid: "",
             activeIndex: "1",
             globalAuth: $GLOBAL_AUTH,
-            globalBaseUrl: $GLOBAL_BASE_URL
+            globalBaseUrl: $GLOBAL_BASE_URL,
         };
     },
+    computed: {
+        userName() {
+            let userData = this.$store.state.userInfo;
+            return userData.firstName + " " + userData.lastName;
+        },
+        userAvatar() {
+            let userData = this.$store.state.userInfo;
+            let final_url;
+            if (
+                !userData?.picture.includes("https") &&
+                !userData?.picture.includes("http") &&
+                userData?.picture !== ""
+            ) {
+                final_url = this.globalBaseUrl + this.globalAuth + "/" + userData?.picture;
+            } else {
+                final_url = userData?.picture;
+            }
+            return final_url;
+        },
+    },
     created() {
-        if (window.localStorage.getItem("fiics-user")) {
-            const userData = JSON.parse(window.localStorage.getItem("fiics-user"));
-            this.userData = {
-                account: userData?.id,
-                name: userData?.firstName + " " + userData?.lastName,
-                accPermissionType: userData?.roles,
-            };
+        if (this.$store.state.userInfo) {
+            const userData = this.$store.state.userInfo;
             // set role(highest one)
             if (userData?.roles?.indexOf("Super") != -1) {
                 this.roleNameObj = "Super";
@@ -129,15 +142,8 @@ export default {
             } else if (userData?.roles?.indexOf("Owner") != -1) {
                 this.roleNameObj = "Owner";
             } else {
-                this.roleNameObj = "Guest";
+                this.roleNameObj = "Member";
             }
-            let final_url;
-            if (!userData?.picture.includes("google") && userData?.picture !== "") {
-                final_url = this.globalBaseUrl + this.globalAuth + "/" + userData?.picture;
-            } else {
-                final_url = userData?.picture;
-            }
-            this.sysUserAvatar = final_url;
         } else {
             this.$store.commit(types.LOGOUT, JSON.stringify({}));
             this.$router.push("/login");
@@ -219,7 +225,7 @@ export default {
                 child.path === "/contact"
             ) {
                 return false;
-            } else if (this.roleNameObj === "Guest" && child.path !== "/contact") {
+            } else if (this.roleNameObj === "Member" && child.path !== "/contact") {
                 return false;
             } else return !child.hidden;
         },

@@ -140,6 +140,7 @@ import {
     UpdateOperator,
     $HTTP_registerOperator,
     $HTTP_updateImage,
+    $HTTP_getUserInfo,
 } from "@/api/api";
 import { $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
@@ -252,7 +253,7 @@ export default {
     },
     created() {
         this.lang = window.localStorage.getItem("fiics-lang");
-        let fiics_user = JSON.parse(localStorage.getItem("fiics-user"));
+        let fiics_user = this.$store.state.userInfo;
         let roles = fiics_user.roles;
         if (roles.indexOf("Super") !== -1) {
             this.operatorList = { All: "*", Admin: "admin", Owner: "owner", Member: "" };
@@ -424,13 +425,16 @@ export default {
                                 }
                             })
                             .then(() => {
-                                if (this.activeImageTab) {
+                                if (
+                                    this.activeImageTab &&
+                                    (this.imagesArray !== null || this.dialog.info.originalImg !== "")
+                                ) {
                                     const formData = new FormData();
                                     let id = this.dialog.info.id;
-                                    if (this.activeImageTab === "upload") {
+                                    if (this.activeImageTab === "upload" && this.imagesArray) {
                                         formData.append("picture", this.imagesArray, this.imagesArray?.name);
                                         this.$refs?.operatorForm?.clearValidate("originalImg");
-                                    } else if (this.activeImageTab === "addUrl") {
+                                    } else {
                                         formData.append("pictureUrl", this.dialog.info.originalImg);
                                     }
                                     let config = {
@@ -444,13 +448,15 @@ export default {
                                         formData: formData,
                                         config: config,
                                     };
-                                    $HTTP_updateImage(params)
+                                    return $HTTP_updateImage(params)
                                         .then((res) => {
                                             if (res.succeeded) {
                                                 that.$message({
                                                     type: "success",
                                                     message: i18n.t("general.sucUpdateMsg"),
                                                 });
+                                                that.imagesArray = null;
+
                                                 that.fetchData();
                                                 that.dialog.visible = false;
                                             }
@@ -459,7 +465,7 @@ export default {
                                             let _errors = err?.data?.errors
                                                 ? Object.values(err?.data?.errors)
                                                 : err?.data;
-                                            that.$message({ type: "warning", message: _errors.toString() });
+                                            that.$message({ type: "warning", message: _errors?.toString() });
                                             that.fetchData();
                                         });
                                 } else {
@@ -467,9 +473,23 @@ export default {
                                     that.dialog.visible = false;
                                 }
                             })
+                            .then(() => {
+                                // get user info if it is updated(shown in the main tab)
+                                let fiicsUser = this.$store.state.userInfo;
+                                let userId = fiicsUser.id;
+
+                                if (this.dialog.info.id === userId) {
+                                    $HTTP_getUserInfo()
+                                        .then((res) => {
+                                            let data = res;
+                                            this.$store.dispatch("setUser", data);
+                                        })
+                                        .catch((e) => console.log(e));
+                                }
+                            })
                             .catch((err) => {
                                 let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                                that.$message({ type: "warning", message: _errors.toString() });
+                                that.$message({ type: "warning", message: _errors?.toString() });
                                 that.fetchData();
                                 that.dialog.visible = false;
                                 that.dialog.isLoading = false;

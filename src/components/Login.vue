@@ -34,7 +34,7 @@ export default {
             redirect_uri: this.globalRedirectUrl,
             device_id: this.uuid,
         };
-        
+
         var formBody = [];
         for (var property in _data) {
             var encodedKey = encodeURIComponent(property);
@@ -58,13 +58,18 @@ export default {
                 $HTTP_getUserInfo()
                     .then((res) => {
                         let _data = res;
-                        localStorage.setItem("fiics-user", JSON.stringify(_data));
-                        if (_data.roles.indexOf("Super") !== -1 || _data.roles.indexOf("Owner") !== -1 || _data.roles.indexOf("Admin") !== -1) {
+                        this.$store.dispatch("setUser", res);
+                        // localStorage.setItem("fiics-user", JSON.stringify(_data));
+                        if (
+                            _data.roles.indexOf("Super") !== -1 ||
+                            _data.roles.indexOf("Owner") !== -1 ||
+                            _data.roles.indexOf("Admin") !== -1
+                        ) {
                             this.$router.push({ path: "/location" });
                             this.$store.commit(types.ROLE, "Super");
                         } else {
                             this.$router.push({ path: "/contactadmin" });
-                            this.$store.commit(types.ROLE, "Guest");
+                            this.$store.commit(types.ROLE, "Member");
                         }
                     })
                     .catch((e) => console.log(e));
