@@ -98,7 +98,7 @@
             color: #22002D;
             font-size: 1rem;
             white-space: break-spaces;
-            letter-spacing: -0.3px;
+            // letter-spacing: -0.3px;
             margin: 0 0 0 -8px;
             padding-right: 0;
             span {
@@ -124,7 +124,7 @@
                 color: #22002D;
                 font-size: 1rem;
                 white-space: break-spaces;
-                letter-spacing: -0.3px;
+                // letter-spacing: -0.3px;
                 &:focus, &:hover {
                     background-color: transparent;
                 }
@@ -1180,4 +1180,7 @@ div.connector-obj {
 .fa-eye-slash {
     color: #525E69;
     font-size: 1rem;
+}
+input {
+    font-family: inherit;
 }

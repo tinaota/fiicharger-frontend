@@ -1,5 +1,5 @@
 <template>
-        <div id="app" @mouseover="timeout()">
+    <div id="app" @mouseover="timeout()">
         <keep-alive>
             <router-view v-if="$route.meta.keepAlive"></router-view>
         </keep-alive>
@@ -11,10 +11,10 @@
 
 <script>
 export default {
-    name: 'App',
+    name: "App",
     data() {
         return {
-            sTime: new Date().getTime()
+            sTime: new Date().getTime(),
         };
     },
     methods: {
@@ -30,7 +30,7 @@ export default {
             }
         }
     }
-}
+};
 </script>
 
 <style lang="scss">
@@ -39,15 +39,15 @@ export default {
 @import "~@/styles/style-dark";
 
 body {
-    height : 100%;
-    width : 100%;
+    height: 100%;
+    width: 100%;
     margin: 0px;
     padding: 0px;
-    font-family: Roboto Condensed, sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
-    background: #D5E0EF;
-    letter-spacing: 0.6px;
+    background: #d5e0ef;
+    letter-spacing: 0.7px;
     overflow: hidden;
 }
 #app {
@@ -55,15 +55,15 @@ body {
     top: 0px;
     bottom: 0px;
     width: 100%;
-    height : 100%;
+    height: 100%;
 }
 
-.el-submenu [class^=fa] {
+.el-submenu [class^="fa"] {
     vertical-align: baseline;
     margin-right: 10px;
 }
 
-.el-menu-item [class^=fa] {
+.el-menu-item [class^="fa"] {
     vertical-align: baseline;
     margin-right: 10px;
 }
@@ -78,7 +78,7 @@ body {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: all .2s ease;
+    transition: all 0.2s ease;
 }
 
 .fade-enter,
