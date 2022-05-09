@@ -75,7 +75,7 @@ axios.interceptors.response.use(
 
         } else if (error.response.status === 401 && !originalRequest._retry) {
             let fiicsAuthData = JSON.parse(localStorage.getItem('fiics-auth'))
-            let uuidValue = localStorage.getItem("uuid");
+            let uuidValue = localStorage.getItem("fiics-uuid");
 
             const _data = {
                 grant_type: "refresh_token",

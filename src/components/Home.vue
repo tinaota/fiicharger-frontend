@@ -208,7 +208,7 @@ export default {
         this.$store.dispatch("setLang", this.lang);
     },
     beforeMount() {
-        let uuidValue = localStorage.getItem("uuid");
+        let uuidValue = localStorage.getItem("fiics-uuid");
         this.uuid = uuidValue;
         if (this.$store.state.darkTheme) {
             this.isDark = this.$store.state.darkTheme;

@@ -23,7 +23,7 @@ export default {
         let authorizationCode = redirectUrl.slice(redirectUrl.indexOf("code=") + 5);
         let tempURL = decodeURIComponent(authorizationCode).replace(/ /g, "+");
         this.code = tempURL;
-        let uuidValue = localStorage.getItem("uuid");
+        let uuidValue = localStorage.getItem("fiics-uuid");
         this.uuid = uuidValue;
     },
     mounted() {

@@ -19,11 +19,11 @@ export default new Vuex.Store({
             state.token = data
         },
         [types.LOGOUT]: (state) => {
-            let uuid = localStorage.getItem('uuid');
+            let uuid = localStorage.getItem('fiics-uuid');
             let fiicsLang = localStorage.getItem('fiics-lang')
             let fiicsDarkTheme = localStorage.getItem('fiics-dark-theme') !== null ? localStorage.getItem('fiics-dark-theme') : false
             window.localStorage.clear();
-            window.localStorage.setItem('uuid', uuid);
+            window.localStorage.setItem('fiics-uuid', uuid);
             window.localStorage.setItem('fiics-lang', fiicsLang)
             window.localStorage.setItem('fiics-dark-theme', fiicsDarkTheme)
             state = {

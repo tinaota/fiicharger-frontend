@@ -144,10 +144,10 @@ if (window.localStorage.getItem('fiics-token')) {
     store.commit(types.LOGIN, window.localStorage.getItem('fiics-token'));
 }
 // create a uuid on route
-let uuidValue = window.localStorage.getItem("uuid");
+let uuidValue = window.localStorage.getItem("fiics-uuid");
 if (uuidValue === null || uuidValue === undefined) {
     let uuid = uuidv4();
-    window.localStorage.setItem("uuid", uuid)
+    window.localStorage.setItem("fiics-uuid", uuid)
 } 
 /**
  * @description 处理页面跳转前后的路由逻辑操作
