@@ -102,9 +102,9 @@ export default {
     data() {
         var validateIsEmpty = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("The field cannot be empty."));
+                callback(new Error(i18n.t('userAccount.emptyValidation')));
             } else if (value === null) {
-                callback(new Error("Please enter a valid number."));
+                callback(new Error(i18n.t('userAccount.numberValidation')));
             } else {
                 callback();
             }

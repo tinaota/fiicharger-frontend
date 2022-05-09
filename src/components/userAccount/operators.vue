@@ -158,13 +158,14 @@ export default {
             if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
                 callback();
             } else {
-                callback(new Error("Please enter a valid email address."));
+                // callback(new Error(i18n.t('userAccount.emailValidation')));
+                callback(new Error(i18n.t('userAccount.emailValidation')))
             }
         };
 
         var validatePassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("Password cannot be empty."));
+                callback(new Error(i18n.t('userAccount.emptyPasswordValidation')));
             } else {
                 callback();
             }
@@ -172,9 +173,9 @@ export default {
 
         var validateConfirmedNewPassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("You must verify the user's password."));
+                callback(new Error(i18n.t('userAccount.confirmEmptyPasswordValidation')));
             } else if (value !== this.dialog.info.password) {
-                callback(new Error("Passwords don't match."));
+                callback(new Error(i18n.t('userAccount.validatePasswordMatch')));
             } else {
                 callback();
             }
@@ -182,11 +183,11 @@ export default {
 
         var validateImageUrl = (rule, value, callback) => {
             if (typeof value !== "string") {
-                callback(new Error("Please enter a valid url."));
+                callback(new Error(i18n.t('userAccount.urlValidation')));
             } else if (/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)) {
                 callback();
             } else {
-                callback(new Error("Please enter a valid url."));
+                callback(new Error(i18n.t('userAccount.urlValidation')));
             }
         };
 

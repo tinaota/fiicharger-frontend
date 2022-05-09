@@ -256,7 +256,14 @@
         "firstName": "First Name",
         "lastName": "Last Name",
         "uploadPicture": "Upload Picture",
-        "addPictureUrl": "Add Picture Url"
+        "addPictureUrl": "Add Picture Url",
+        "emptyPasswordValidation": "Password cannot be empty",
+        "confirmEmptyPasswordValidation": "You must verify the user's password",
+        "validatePasswordMatch": "Passwords don't match",
+        "emailValidation": "Please enter a valid email address",
+        "emptyValidation": "The field cannot be empty",
+        "numberValidation": "Please enter a valid number",
+        "urlValidation": "Please enter a valid url"
     },
     "cars": {
         "maker": "Maker",

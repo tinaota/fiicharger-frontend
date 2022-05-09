@@ -256,7 +256,14 @@
         "firstName": "名字",
         "lastName": "姓氏",
         "uploadPicture": "上传图片",
-        "addPictureUrl": "添加图片网址"
+        "addPictureUrl": "添加图片网址",
+        "emptyPasswordValidation": "密码不能为空",
+        "confirmEmptyPasswordValidation": "您必须验证用户的密码。",
+        "validatePasswordMatch": "密码不匹配。",
+        "emailValidation": "请输入有效的电子邮件地址。",
+        "emptyValidation": "该字段不能为空。",
+        "numberValidation": "请输入一个有效的数字。",
+        "urlValidation": "请输入有效的网址。"
     },
     "cars": {
         "maker": "标记",

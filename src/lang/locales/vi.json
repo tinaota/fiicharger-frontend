@@ -256,7 +256,14 @@
         "firstName": "Tên",
         "lastName": "Họ",
         "uploadPicture": "Tải lên hình ảnh",
-        "addPictureUrl": "Thêm url hình ảnh"
+        "addPictureUrl": "Thêm url hình ảnh",
+        "emptyPasswordValidation": "Mật khẩu không được để trống",
+        "confirmEmptyPasswordValidation": "Bạn phải xác minh mật khẩu của người dùng",
+        "validatePasswordMatch": "Mật khẩu không khớp",
+        "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ",
+        "emptyValidation": "Trường không được để trống",
+        "numberValidation": "Vui lòng nhập một số hợp lệ",
+        "urlValidation": "Vui lòng nhập một url hợp lệ"
     },
     "cars": {
         "maker": "Dấu",

@@ -55,7 +55,7 @@ export default {
     data() {
         var validatePassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("Password cannot be empty."));
+                callback(new Error(i18n.t('userAccount.emptyPasswordValidation')));
             } else {
                 callback();
             }
@@ -63,9 +63,9 @@ export default {
 
         var validateConfirmedNewPassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error("You must verify the user's password."));
+                callback(new Error(i18n.t('userAccount.confirmEmptyPasswordValidation')));
             } else if (value !== this.param.password) {
-                callback(new Error("Passwords don't match."));
+                callback(new Error(i18n.t('userAccount.validatePasswordMatch')));
             } else {
                 callback();
             }
