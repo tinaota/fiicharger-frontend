@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const path = require('path')
 const outputDir = 'FiiCharger'
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production' ? `/${outputDir}/` : '/',
+    publicPath: `/${outputDir}/`,
     outputDir: outputDir,
     assetsDir: "static",
     configureWebpack: {
