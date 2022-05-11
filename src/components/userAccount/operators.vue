@@ -426,12 +426,12 @@ export default {
                             })
                             .then(() => {
                                 if (
-                                    this.activeImageTab &&
-                                    (this.imagesArray !== null || this.dialog.info.originalImg !== "")
+                                    (this.activeImageTab==="upload" &&
+                                    this.imagesArray !== null) || (this.activeImageTab!=="upload" && this.dialog.info.originalImg !== "")
                                 ) {
                                     const formData = new FormData();
                                     let id = this.dialog.info.id;
-                                    if (this.activeImageTab === "upload" && this.imagesArray) {
+                                    if (this.activeImageTab === "upload" && this.imagesArray !==null) {
                                         formData.append("picture", this.imagesArray, this.imagesArray?.name);
                                         this.$refs?.operatorForm?.clearValidate("originalImg");
                                     } else {
