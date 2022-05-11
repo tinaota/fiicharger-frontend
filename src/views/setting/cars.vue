@@ -206,7 +206,7 @@ export default {
         };
     },
     created() {
-        const userData = JSON.parse(window.localStorage.getItem("fiics-user")),
+        const userData = this.$store.state.userInfo,
             role = userData.roles;
         if (role.indexOf("Admin") || role.indexOf("Owner") || role.indexOf("Super")) {
             this.permissionEditAble = true;

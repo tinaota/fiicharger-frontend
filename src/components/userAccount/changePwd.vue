@@ -112,7 +112,6 @@ export default {
         },
     },
     created() {
-        const userData = JSON.parse(window.localStorage.getItem("fiics-user"));
         this.lang = window.localStorage.getItem("fiics-lang");
     },
     beforeDestroy() {},
