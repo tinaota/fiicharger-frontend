@@ -134,6 +134,7 @@ import {
     $HTTP_registerOperator,
     $HTTP_updateImage,
 } from "@/api/api";
+import { $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
@@ -225,6 +226,8 @@ export default {
                 showPassword: false,
                 showConfirmPassword: false,
             },
+            globalAuth: $GLOBAL_AUTH,
+            globalBaseUrl: $GLOBAL_BASE_URL
         };
     },
     created() {
@@ -260,7 +263,7 @@ export default {
         getImageUrl(url) {
             let final_url;
             if (!url.includes("google") && url !== "") {
-                final_url = `${process.env.VUE_APP_BASE_IMAGE_URL}` + url;
+                final_url = this.globalBaseUrl  + this.globalAuth + "/" + url;
             } else {
                 final_url = url;
             }

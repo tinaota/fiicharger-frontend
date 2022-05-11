@@ -1,13 +1,7 @@
 import turf from 'turf'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import _ from 'lodash'
-const isPro = Object.is(process.env.NODE_ENV, 'production')
-import { $GLOBAL_PROJECT } from '@/utils/global';
-export const apiConfig = {
-    isProduction: isPro,
-    baseUrl: isPro ? '' : '/api',
-    staticUrl: isPro ? '' : `/${$GLOBAL_PROJECT}`,
-}
+
 export const buildingsIn3D = {
     id: '3d-buildings',
     source: 'composite',
@@ -94,36 +88,36 @@ export const clusterCount = {
 export const generatePoleModel = (coordinate, MapBoxObject, gltfUrl, id) => {
     // configuration of the custom layer for a 3D model per the CustomLayerInterface
     var customLayer = {
-      id: id,
-      type: 'custom',
-      renderingMode: '3d',
-      onAdd: function (map, gl) {
-        let options = {
-            type: 'gltf', //'gltf'/'mtl'
-            obj: gltfUrl, //model url
-            // bin: '', //replace by mtl attribute
-            // units: 'meters', //units in the default values are always in meters
-            scale: 0.0001,
-            rotation: { x: 90, y: 0, z: 0 }, //default rotation
-            // rotation: { x: 90, y: 180, z: 0 }, //default rotation
-            anchor: 'center'
+        id: id,
+        type: 'custom',
+        renderingMode: '3d',
+        onAdd: function (map, gl) {
+            let options = {
+                type: 'gltf', //'gltf'/'mtl'
+                obj: gltfUrl, //model url
+                // bin: '', //replace by mtl attribute
+                // units: 'meters', //units in the default values are always in meters
+                scale: 0.0001,
+                rotation: { x: 90, y: 0, z: 0 }, //default rotation
+                // rotation: { x: 90, y: 180, z: 0 }, //default rotation
+                anchor: 'center'
+            }
+            window.tb.loadObj(options, model => {
+                const location = [coordinate[0], coordinate[1], 0]
+                model.setCoords(location);
+                window.tb.add(model, id)
+                // create two three.js lights to illuminate the model
+                var directionalLight = new THREE.DirectionalLight(0xffffff);
+                directionalLight.position.set(0, -70, 100).normalize();
+                window.tb.scene.add(directionalLight);
+                var directionalLight2 = new THREE.DirectionalLight(0xffffff);
+                directionalLight2.position.set(0, 70, 100).normalize();
+                window.tb.scene.add(directionalLight2);
+            })
+        },
+        render: function (gl, matrix) {
+            window.tb.update()
         }
-        window.tb.loadObj(options, model => {
-            const location = [coordinate[0], coordinate[1], 0]
-            model.setCoords(location);
-            window.tb.add(model, id)
-            // create two three.js lights to illuminate the model
-            var directionalLight = new THREE.DirectionalLight(0xffffff);
-            directionalLight.position.set(0, -70, 100).normalize();
-            window.tb.scene.add(directionalLight);
-            var directionalLight2 = new THREE.DirectionalLight(0xffffff);
-            directionalLight2.position.set(0, 70, 100).normalize();
-            window.tb.scene.add(directionalLight2);
-        })
-      },
-      render: function (gl, matrix) {
-        window.tb.update()
-      }
     };
     return customLayer
 }
@@ -132,10 +126,10 @@ export const getLastLayerId = (map) => {
     var layers = map.getStyle().layers;
     var labelLayerId;
     for (var i = 0; i < layers.length; i++) {
-      if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-        labelLayerId = layers[i].id;
-        break;
-      }
+        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+            labelLayerId = layers[i].id;
+            break;
+        }
     }
     return labelLayerId
 }
@@ -155,7 +149,7 @@ export const getPointsInMapBounds = (map, pointArr) => {
     pointArr.map(coordinate => {
         const point = turf.point(coordinate) // [lng, lat]
         const bool = booleanPointInPolygon(point, polygon)
-        if(bool) newArr.push(coordinate)
+        if (bool) newArr.push(coordinate)
     })
     return newArr
 }
@@ -166,7 +160,7 @@ export const removeDuplicateCoordinate = (arr) => {
     return uniqArr.map(string => string.split('|'))
 }
 
-export const getNowSize = (val, initWidth=1920) => {
-  const nowClientWidth = document.documentElement.clientWidth
-  return val * (nowClientWidth/initWidth)
+export const getNowSize = (val, initWidth = 1920) => {
+    const nowClientWidth = document.documentElement.clientWidth
+    return val * (nowClientWidth / initWidth)
 }

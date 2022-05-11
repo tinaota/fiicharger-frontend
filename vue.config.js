@@ -21,13 +21,16 @@ module.exports = {
     devServer: {
         port: 3000,
         proxy: {
-            '/api': {
-                target: process.env.VUE_APP_BASE_LOGIN_URL,//'10.64.32.208',//'http://61.129.93.20',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': '/'
-                }
+            "/gatekeeper": {
+                "target": "http://10.20.23.12"
             },
+            "/grafana": {
+                "target": "http://10.20.23.12"
+            },
+            "/vehicle": {
+                "target": "http://10.20.23.12"
+            },
+
         }
     }
 }

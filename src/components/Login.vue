@@ -5,6 +5,7 @@
 import { $HTTP_login_auth, $HTTP_getUserInfo } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
+import {$GLOBAL_REDIRECT_URL} from "@/utils/global";
 
 export default {
     name: "Login",
@@ -13,6 +14,7 @@ export default {
             code: "",
             isLoading: true,
             uuid: "",
+            globalRedirectUrl: $GLOBAL_REDIRECT_URL
         };
     },
     beforeMount() {
@@ -29,7 +31,7 @@ export default {
             grant_type: "authorization_code",
             client_id: "gatekeeper",
             code: this.code.trim(),
-            redirect_uri: process.env.VUE_APP_REDIRECT_URL,
+            redirect_uri: this.globalRedirectUrl,
             device_id: this.uuid,
         };
         

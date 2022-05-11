@@ -12,7 +12,7 @@
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.pluggedNotCharging')" name="pluggedNotCharging">
                         </el-tab-pane>
-                          <!-- <el-tab-pane :label="$t('menu.usagePatterns')" name="usagePatternsOld">
+                        <!-- <el-tab-pane :label="$t('menu.usagePatterns')" name="usagePatternsOld">
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.pluggedNotCharging')" name="pluggedNotChargingOld">
                         </el-tab-pane> -->
@@ -41,10 +41,10 @@
 import { setScrollBar } from "@/utils/function";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 import moment from "moment";
-import { parse } from 'qs';
+import { $GLOBAL_GRAFANA } from "@/utils/global";
 // import UsagePatterns from "@/components/info/usagePatterns";
 // import PluggedNotCharging from "@/components/info/pluggedNotCharging";
-const baseGrafanaUrl = process.env.VUE_APP_GRAFANA_BASE_URL;
+const baseGrafanaUrl = $GLOBAL_GRAFANA;
 var usagePatternsUrl = `${baseGrafanaUrl}/LtfWzay7k/usage-patterns?orgId=1&kiosk&refresh=1m&theme=light`;
 var pluggedAndNotChargingUrl = `${baseGrafanaUrl}/hDOm5fUnk/plugged-and-not-charging?orgId=1&kiosk&refresh=1m&theme=light`;
 
@@ -72,13 +72,13 @@ export default {
     created() {
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
-        let dayWeekBefore = parseInt(todaySplit[2])-7;
-        if((dayWeekBefore)<10){
-            dayWeekBefore = '0' + dayWeekBefore
-        }else{
-            dayWeekBefore = `${dayWeekBefore}`
+        let dayWeekBefore = parseInt(todaySplit[2]) - 7;
+        if (dayWeekBefore < 10) {
+            dayWeekBefore = "0" + dayWeekBefore;
+        } else {
+            dayWeekBefore = `${dayWeekBefore}`;
         }
-        const thisWeekBefore =  todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore
+        const thisWeekBefore = todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore;
 
         if (todaySplit[2] === "01") {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
@@ -98,7 +98,7 @@ export default {
         },
         updateGrafanaUrl() {
             let startDate = this.filter.dateRange[0];
-            let endDate = moment(this.filter.dateRange[1]).endOf('day');
+            let endDate = moment(this.filter.dateRange[1]).endOf("day");
             startDate = moment(startDate).format("x");
             endDate = moment(endDate).format("x");
             this.usagePatternsUrl = usagePatternsUrl + `&from=` + startDate + `&to=` + endDate;

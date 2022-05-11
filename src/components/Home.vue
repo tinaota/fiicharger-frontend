@@ -80,11 +80,10 @@
 
 <script>
 import * as types from "../store/types";
-import { $GLOBAL_LANG, $GLOBAL_VERSION } from "@/utils/global";
+import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
 import { $HTTP_logout } from "@/api/api";
 import Vue from "vue";
-import { getLang } from "@/utils/function";
-import { apiConfig } from "@/assets/js/appConfig";
+import { getLang } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
@@ -110,6 +109,8 @@ export default {
             roleNameObj: "",
             uuid: "",
             activeIndex: "1",
+            globalAuth: $GLOBAL_AUTH,
+            globalBaseUrl: $GLOBAL_BASE_URL
         };
     },
     created() {
@@ -132,7 +133,7 @@ export default {
             }
             let final_url;
             if (!userData?.picture.includes("google") && userData?.picture !== "") {
-                final_url = `${process.env.VUE_APP_BASE_IMAGE_URL}` + userData?.picture;
+                final_url = this.globalBaseUrl + this.globalAuth + "/" + userData?.picture;
             } else {
                 final_url = userData?.picture;
             }

@@ -79,7 +79,6 @@ import { $GLOBAL_LANG, $GLOBAL_VERSION } from '@/utils/global';
 import { $HTTP_logout } from "@/api/api";
 import Vue from 'vue';
 import { getLang } from "@/utils/function";
-import { apiConfig } from "@/assets/js/appConfig";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from 'imgs/fiics_logo.png';
 import app_icon from 'imgs/app_icon.png';

@@ -1,13 +1,8 @@
 import axios from 'axios'
-import { apiConfig } from '@/assets/js/appConfig'
-import store from '../store/store'
-import * as types from '../store/types'
-import router from '../router/index'
-import { Message } from 'element-ui'
-import i18n from '../lang/lang'
+import { $GLOBAL_REDIRECT_URL } from "@/utils/global";
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = apiConfig.baseUrl
+axios.defaults.baseURL = ''
 axios.defaults.timeout = 120000
 axios.defaults.retry = 3
 axios.defaults.retryDelay = 3000
@@ -86,7 +81,7 @@ axios.interceptors.response.use(
                 grant_type: "refresh_token",
                 client_id: "gatekeeper",
                 refresh_token: fiicsAuthData.refresh_token,
-                redirect_uri: process.env.VUE_APP_REDIRECT_URL,
+                redirect_uri: $GLOBAL_REDIRECT_URL,
                 device_id: uuidValue
             };
 
@@ -104,7 +99,7 @@ axios.interceptors.response.use(
                 },
             };
             originalRequest._retry = true;
-            return axios.post(`/Gatekeeper/auth/token`, formBody, config).then(res => {
+            return axios.post(`/gatekeeper/auth/token`, formBody, config).then(res => {
 
                 if (res.status === 200) {
                     let _data = res.data;
@@ -136,7 +131,6 @@ axios.interceptors.response.use(
 );
 
 export function fetch(url, params = {}) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.get(url, {
             params: params
@@ -158,7 +152,6 @@ export function fetch(url, params = {}) {
 }
 
 export function fetchImg(url) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.get(url, {
             responseType: "arraybuffer",
@@ -183,7 +176,6 @@ export function fetchImg(url) {
 }
 
 export function post(url, params = {}) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.post(url, params)
             .then(response => {
@@ -203,7 +195,6 @@ export function post(url, params = {}) {
 
 
 export function put(url, params = {}) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.put(url, params)
             .then(response => {
@@ -217,14 +208,11 @@ export function put(url, params = {}) {
                     err['data'] = 'Permission denied.'
                 }
                 err.status && err.status !== 204 && reject(err)
-
-
             })
     })
 }
 
 export function putImage(url, formData, config) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.put(url, formData, config)
             .then(response => {
@@ -238,14 +226,11 @@ export function putImage(url, formData, config) {
                     err['data'] = 'Permission denied.'
                 }
                 err.status && err.status !== 204 && reject(err)
-
-
             })
     })
 }
 
 export function patch(url, params = {}) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.patch(url, params)
             .then(response => {
@@ -259,14 +244,11 @@ export function patch(url, params = {}) {
                     err['data'] = 'Permission denied.'
                 }
                 err.status && err.status !== 204 && reject(err)
-
-
             })
     })
 }
 
 export function del(url, params = {}) {
-    axios.defaults.baseURL = apiConfig.baseUrl;
     return new Promise((resolve, reject) => {
         axios.delete(url, params)
             .then(response => {

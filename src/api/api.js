@@ -1,7 +1,6 @@
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_VEHICLE, $GLOBAL_AUTH } from '@/utils/global'
 import { fetch, post, patch, fetchImg, put, putImage, del } from '@/http/http'
-import { apiConfig } from "@/assets/js/appConfig";
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
 const base_vehicle = $GLOBAL_VEHICLE
@@ -169,7 +168,7 @@ export const $HTTP_getOperatorList = params => {
  * @description 新增運營商
  */
 // export const $HTTP_addOperator = params => { return post(`${base}/Home/Operator/addOperator`, qs.stringify(params)) }
-export const AddOperator = apiConfig.baseUrl + base + '/Home/Operator/addOperator';
+export const AddOperator = base + '/Home/Operator/addOperator';
 
 /**
  * @description 更新運營商資訊
@@ -179,7 +178,7 @@ export const $HTTP_registerOperator = params => { return post(`${base_auth}/api/
 
 export const $HTTP_updateOperator = params => { return put(`${base_auth}/api/Users/${params.id}`, (params)) }
 
-export const UpdateOperator = apiConfig.baseUrl + base + '/Home/Operator/updateOperator';
+export const UpdateOperator = base + '/Home/Operator/updateOperator';
 
 /**
  * @description 更新運營商密碼資訊
