@@ -10,7 +10,8 @@ export default new Vuex.Store({
         nowSelectTab: location.pathname.includes('kiosk') ? 'kiosk' : 'station',
         tabsArr: ['station', 'kiosk'],
         role: '',
-        userInfo: localStorage.getItem('fiics-user') ? JSON.parse(localStorage.getItem('fiics-user')) : {}
+        userInfo: localStorage.getItem('fiics-user') ? JSON.parse(localStorage.getItem('fiics-user')) : {},
+        darkTheme: localStorage.getItem('fiics-dark-theme') !== null ? JSON.parse(localStorage.getItem('fiics-dark-theme')) : false
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
@@ -20,7 +21,7 @@ export default new Vuex.Store({
         [types.LOGOUT]: (state) => {
             let uuid = localStorage.getItem('uuid');
             let fiicsLang = localStorage.getItem('fiics-lang')
-            let fiicsDarkTheme = localStorage.getItem('fiics-dark-theme')
+            let fiicsDarkTheme = localStorage.getItem('fiics-dark-theme') !== null ? localStorage.getItem('fiics-dark-theme') : false
             window.localStorage.clear();
             window.localStorage.setItem('uuid', uuid);
             window.localStorage.setItem('fiics-lang', fiicsLang)
@@ -47,6 +48,10 @@ export default new Vuex.Store({
         [types.SELECT_NOW_TAB]: (state, { path, router, changePath }) => {
             state.nowSelectTab = path
             if (changePath) router.push(`/${path}`)
+        },
+        [types.DARKTHEME]: (state, data) => {
+            state.darkTheme = data;
+            window.localStorage.setItem('fiics-dark-theme', `${data}`)
         }
     },
     actions: {

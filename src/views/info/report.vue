@@ -45,8 +45,8 @@ import { $GLOBAL_GRAFANA } from "@/utils/global";
 // import UsagePatterns from "@/components/info/usagePatterns";
 // import PluggedNotCharging from "@/components/info/pluggedNotCharging";
 const baseGrafanaUrl = $GLOBAL_GRAFANA;
-var usagePatternsUrl = `${baseGrafanaUrl}/LtfWzay7k/usage-patterns?orgId=1&kiosk&refresh=1m&theme=light`;
-var pluggedAndNotChargingUrl = `${baseGrafanaUrl}/hDOm5fUnk/plugged-and-not-charging?orgId=1&kiosk&refresh=1m&theme=light`;
+var usagePatternsUrl = `${baseGrafanaUrl}/LtfWzay7k/usage-patterns?orgId=1&kiosk&refresh=1m`;
+var pluggedAndNotChargingUrl = `${baseGrafanaUrl}/hDOm5fUnk/plugged-and-not-charging?orgId=1&kiosk&refresh=1m`;
 
 export default {
     components: {
@@ -103,6 +103,14 @@ export default {
             endDate = moment(endDate).format("x");
             this.usagePatternsUrl = usagePatternsUrl + `&from=` + startDate + `&to=` + endDate;
             this.pluggedAndNotChargingUrl = pluggedAndNotChargingUrl + `&from=` + startDate + `&to=` + endDate;
+            this.updateTheme();
+        },
+        updateTheme() {
+            let isDark = this.$store.state.darkTheme;
+            this.usagePatternsUrl = isDark ? this.usagePatternsUrl + `&theme=dark` : this.usagePatternsUrl + `&theme=light`;
+            this.pluggedAndNotChargingUrl = isDark
+                ? this.pluggedAndNotChargingUrl + `&theme=dark`
+                : this.pluggedAndNotChargingUrl + `&theme=light`;
         },
     },
 };

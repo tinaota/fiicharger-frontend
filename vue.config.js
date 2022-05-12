@@ -24,7 +24,7 @@ module.exports = {
             "/gatekeeper": {
                 "target": "http://10.20.23.12"
             },
-            "/grafana": {
+            "/grafii": {
                 "target": "http://10.20.23.12"
             },
             "/vehicle": {

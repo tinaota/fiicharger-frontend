@@ -139,7 +139,6 @@ export default {
             return this.isDark ? fiics_logo_dark : fiics_logo;
         },
     },
-    beforeCreate() {},
     created() {
         if (this.$store.state.userInfo) {
             const userData = this.$store.state.userInfo;
@@ -211,11 +210,8 @@ export default {
     beforeMount() {
         let uuidValue = localStorage.getItem("uuid");
         this.uuid = uuidValue;
-
-        if (localStorage.getItem("fiics-dark-theme")) {
-            this.isDark = localStorage.getItem("fiics-dark-theme") === "true";
-        } else {
-            localStorage.setItem("fiics-dark-theme", false);
+        if (this.$store.state.darkTheme) {
+            this.isDark = this.$store.state.darkTheme;
         }
     },
     activated() {},
@@ -300,9 +296,9 @@ export default {
                 .catch(() => {});
         },
         changeTheme() {
-            let isDark = !this.isDark;
-            this.isDark = isDark;
-            localStorage.setItem("fiics-dark-theme", isDark);
+            let _isDark = !this.isDark;
+            this.isDark = _isDark;
+            this.$store.commit(types.DARKTHEME, _isDark);
         },
     },
 };

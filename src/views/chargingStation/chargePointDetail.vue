@@ -122,7 +122,7 @@ import moment from "moment";
 import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
 const baseGrafanaUrl = $GLOBAL_GRAFANA;
-var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m&theme=light`;
+var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m`;
 
 export default {
     components: {
@@ -217,13 +217,13 @@ export default {
 
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
-       let dayWeekBefore = parseInt(todaySplit[2])-7;
-        if((dayWeekBefore)<10){
-            dayWeekBefore = '0' + dayWeekBefore
-        }else{
-            dayWeekBefore = `${dayWeekBefore}`
+        let dayWeekBefore = parseInt(todaySplit[2]) - 7;
+        if (dayWeekBefore < 10) {
+            dayWeekBefore = "0" + dayWeekBefore;
+        } else {
+            dayWeekBefore = `${dayWeekBefore}`;
         }
-        const thisWeekBefore =  todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore
+        const thisWeekBefore = todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore;
 
         if (todaySplit[2] === "01") {
             this.filter.dateRange = [thisMonth1st, thisMonth1st];
@@ -281,10 +281,15 @@ export default {
         },
         updateGrafanaUrl() {
             let startDate = this.filter.dateRange[0];
-            let endDate = moment(this.filter.dateRange[1]).endOf('day');
+            let endDate = moment(this.filter.dateRange[1]).endOf("day");
             startDate = moment(startDate).format("x");
             endDate = moment(endDate).format("x");
             this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
+            this.updateTheme();
+        },
+        updateTheme() {
+            let isDark = this.$store.state.darkTheme;
+            this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
         },
     },
 };
