@@ -15,11 +15,7 @@
                         <el-dropdown-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown> -->
-                <div class="img-container">
-                    <img :src="appLogo" width="36px" height="36px">
-                </div>
-                <el-divider direction="vertical"></el-divider>
-                <div class="img-container">
+                 <div class="img-container">
                     <img :src="userAvatar" />
                 </div>
                 <el-dropdown trigger="click">
