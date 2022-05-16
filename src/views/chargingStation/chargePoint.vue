@@ -230,7 +230,7 @@ export default {
         this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
-        this.accPermissionType = userData.accountInfo.accPermissionType;
+        this.accPermissionType = userData?.accountInfo?.accPermissionType;
         if (this.accPermissionType === 3) {
             this.permissionEditAble = true;
         }

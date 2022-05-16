@@ -183,7 +183,7 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem("fiics-user")),
-            accPermissionType = userData.accountInfo.accPermissionType;
+         accPermissionType = userData?.accountInfo?.accPermissionType;
         if (accPermissionType === 6) {
             this.permissionShowAlertAble = false;
         }
