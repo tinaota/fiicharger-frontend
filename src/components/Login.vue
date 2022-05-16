@@ -2,10 +2,10 @@
     <div><i class="fa fa-spinner fa-spin"></i> Redirecting</div>
 </template>
 <script type="text/javascript">
-import { $HTTP_login_auth, $HTTP_getUserInfo } from "@/api/api";
+import { $HTTP_login_auth, $HTTP_getUserInfo, $HTTP_getOperatorTypeList } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
-import {$GLOBAL_REDIRECT_URL} from "@/utils/global";
+import { $GLOBAL_REDIRECT_URL } from "@/utils/global";
 
 export default {
     name: "Login",
@@ -14,7 +14,7 @@ export default {
             code: "",
             isLoading: true,
             uuid: "",
-            globalRedirectUrl: $GLOBAL_REDIRECT_URL
+            globalRedirectUrl: $GLOBAL_REDIRECT_URL,
         };
     },
     beforeMount() {
@@ -65,8 +65,15 @@ export default {
                             _data.roles.indexOf("Owner") !== -1 ||
                             _data.roles.indexOf("Admin") !== -1
                         ) {
-                            this.$router.push({ path: "/location" });
-                            this.$store.commit(types.ROLE, "Super");
+                            $HTTP_getOperatorTypeList()
+                                .then((res) => {
+                                    let opertorTypeInfo = { operatorList: res.operatorTypeInfo };
+                                    window.sessionStorage.setItem("fiics-user", JSON.stringify(opertorTypeInfo));
+                                })
+                                .then(() => {
+                                    this.$router.push({ path: "/location" });
+                                    this.$store.commit(types.ROLE, "Super");
+                                });
                         } else {
                             this.$router.push({ path: "/contactadmin" });
                             this.$store.commit(types.ROLE, "Member");

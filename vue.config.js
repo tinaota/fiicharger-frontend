@@ -30,6 +30,9 @@ module.exports = {
             "/vehicle": {
                 "target": "http://10.20.23.12"
             },
+            "/EV_Charging_Web": {
+                "target": "http://10.20.23.12"
+            },
 
         }
     }

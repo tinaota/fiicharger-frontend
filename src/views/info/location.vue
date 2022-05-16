@@ -1,5 +1,5 @@
 <template>
-    <div class="mainctrl">
+    <div class="mainctrl location">
         <div id="map-container" class="google-map"  v-loading="stationData.isLoading"></div>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
@@ -270,15 +270,12 @@ export default {
         fetchData(isRefresh) {
             const that = this;
             let param = {};
-            // if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
-            //     param.operatorTypeId = this.filter.operatorTypeId;
-            // }
-            // if (this.filter.stationId) {
-            //     param.stationId = this.filter.stationId;
-            // }
-            param.operatorTypeId = 0;
-            param.stationId = "C093335";
-
+            if (this.filter.operatorTypeId && this.filter.operatorTypeId !== 1) {
+                param.operatorTypeId = this.filter.operatorTypeId;
+            }
+            if (this.filter.stationId) {
+                param.stationId = this.filter.stationId;
+            }
 
             this.removeAllMarkers(!isRefresh);
             this.stationData.data = {};

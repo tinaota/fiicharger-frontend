@@ -36,6 +36,9 @@ export const $HTTP_addRoles = params => {
   return put(`${base_auth}/api/Users/${id}/roles`, roles)
 }
 
+export const $HTTP_getOperatorTypeList = () => {
+  return fetch(`${base}/Home/Operator/getOperatorTypeList`)
+}
 
 /**
  * @description 登出

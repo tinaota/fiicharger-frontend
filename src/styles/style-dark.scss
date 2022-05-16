@@ -43,6 +43,15 @@ $dark-background-color: #2d3855;
                 color: $dark-font-color !important;
             }
         }
+
+        .location {
+            .el-breadcrumb__item {
+                .el-breadcrumb__inner,
+                .el-breadcrumb__separator {
+                    color: inherit !important;
+                }
+            }
+        }
         .el-dialog {
             background: #323d5d !important;
             color: $dark-font-color !important;
@@ -83,10 +92,10 @@ $dark-background-color: #2d3855;
                 .alertPageComment {
                     color: $dark-font-color !important;
                 }
-                .carDetail {
+                .carDetail, .charge-point-info {
                     .item {
                         .label,
-                        .info {
+                        .info, .content {
                             color: $dark-font-color !important;
                         }
                     }
@@ -98,6 +107,7 @@ $dark-background-color: #2d3855;
             .el-tabs:not(.el-tabs--card) .el-tabs__nav-wrap .el-tabs__item.is-active {
                 color: #1e5eff;
             }
+            
         }
     }
 }
