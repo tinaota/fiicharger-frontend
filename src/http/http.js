@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { $GLOBAL_REDIRECT_URL } from "@/utils/global";
+import { $GLOBAL_REDIRECT_URL, $GLOBAL_AUTH } from "@/utils/global";
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = ''
@@ -63,7 +63,7 @@ axios.interceptors.response.use(
         confirmApi(url, true);
         return response;
     },
-    error => {
+    async error => {
         //處理因為api cancel而引發的reject狀態
         if (axios.isCancel(error)) {
             error.response = {};
@@ -99,24 +99,22 @@ axios.interceptors.response.use(
                 },
             };
             originalRequest._retry = true;
-            return axios.post(`/${$GLOBAL_AUTH}/auth/token`, formBody, config).then(res => {
-                if (res.status === 200) {
+            const res = await axios.post(`${$GLOBAL_AUTH}/auth/token`, formBody, config);
+            if (res.status === 200) {
                     let _data = res.data;
                     localStorage.setItem("fiics-auth", JSON.stringify(_data));
-                    // Change Authorization header
-                    const fiics_auth = JSON.parse(
-                        localStorage.getItem("fiics-auth")
+                // Change Authorization header
+                const fiics_auth = JSON.parse(
+                    localStorage.getItem("fiics-auth")
                     )
-                    const token = fiics_auth?.access_token;
-                    if (token) {
+                const token = fiics_auth?.access_token;
+                if (token) {
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
-                    }
-                    // return originalRequest object with Axios.
-                    return axios(originalRequest);
                 }
-                return Promise.reject(error);
-
-            })
+                // return originalRequest object with Axios.
+                return axios(originalRequest);
+            }
+            return await Promise.reject(error);
 
         }
         else {
