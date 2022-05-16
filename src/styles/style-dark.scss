@@ -112,9 +112,9 @@ $dark-background-color: #2d3855;
                 color: #1e5eff;
             }
             .table-result .el-table tbody tr {
-                background: none ;
+                background: none;
                 td.el-table__expanded-cell {
-                    background: none  !important;;
+                    background: none !important;
                 }
             }
         }
@@ -142,24 +142,27 @@ $dark-background-color: #2d3855;
                 background-color: inherit;
             }
         }
+
+        .el-menu-item {
+            color: $dark-font-color;
+            &:hover {
+                color: inherit;
+            }
+        }
+           .el-menu-item.is-active {
+            color: #409EFF;
+            &:hover {
+                color: #409EFF;
+            }
+        }
     }
 
     .el-dropdown-menu__item {
         color: $dark-font-color !important;
+        width: 60px;
         &:hover {
             color: inherit;
             background-color: inherit;
-        }
-    }
-}
-
-.el-menu--horizontal {
-    .el-menu {
-        background-color: inherit;
-        .el-menu-item.dark-theme {
-            background: $dark-background-color;
-            background-color: $dark-background-color;
-            color: $dark-font-color;
         }
     }
 }

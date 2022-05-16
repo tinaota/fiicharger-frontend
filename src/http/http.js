@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { $GLOBAL_REDIRECT_URL, $GLOBAL_AUTH } from "@/utils/global";
+import store from '../store/store'
+import * as types from '../store/types'
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = ''
@@ -118,8 +120,8 @@ axios.interceptors.response.use(
 
         }
         else {
-            // store.commit(types.LOGOUT);
-            // router.replace({ path: '/login' });
+            store.commit(types.LOGOUT, JSON.stringify({}));
+            router.replace({ path: '/login' });
             // Message({ type: 'warning', message: i18n.t('login.timeout') });
             return Promise.reject(error.response)
 

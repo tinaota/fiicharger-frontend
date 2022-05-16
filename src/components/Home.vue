@@ -4,41 +4,44 @@
         <el-row class="header">
             <el-col :sm="24" :lg="8" class="sys">
                 <div>
-                    <!-- <img :src="appLogo"> -->
                     <img :src="systemLogo">
                 </div>
             </el-col>
             <el-col :sm="24" :lg="16" class="header-info">
-                <!-- <el-dropdown trigger="hover">
-                    <span class="el-dropdown-link userinfo-inner" style="vertical-align: top;">{{ langList[lang] }}</span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown> -->
-                 <div class="img-container">
+                <div class="img-container">
                     <img :src="userAvatar" />
                 </div>
                 <el-dropdown trigger="click">
                     <div class="el-dropdown-link userinfo-inner">
                         {{userName!==" " ? userName : roleNameObj}}
                     </div>
-                    <el-dropdown-menu slot="dropdown" :class="isDark? 'dark-theme':'light-theme'">
-                        <el-menu :default-active="activeIndex" mode="horizontal" :class="isDark? 'dark-theme':'light-theme'">
-                            <el-submenu index="2">
-                                <template slot="title">
-                                    {{$t('general.language')}}
-                                </template>
-                                <el-menu-item :class="isDark? 'dark-theme':'light-theme'" v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key)">{{ item }}</el-menu-item>
-
-                            </el-submenu>
-                        </el-menu>
+                    <el-dropdown-menu slot="dropdown" :class="isDark? 'logout dark-theme':'logout light-theme'">
                         <el-dropdown-item @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-divider direction="vertical"></el-divider>
-                <div class="img-container">
-                    <el-button class="no-bg i change-theme-icon" :icon="isDark? 'el-icon-sunny':'el-icon-moon'" :style="{color:isDark? '#ffa500':'#000000'}" @click="changeTheme"></el-button>
-                </div>
+                <el-dropdown trigger="click">
+                    <div class="el-dropdown-link userinfo-inner img-container">
+                        <el-button class="no-bg i change-theme-icon el-icon-setting" :style="{color:isDark? '#ffa500':'#000000'}"></el-button>
+                    </div>
+
+                    <el-dropdown-menu slot="dropdown" :class="isDark? 'dropdown-menu dark-theme':'dropdown-menu light-theme'">
+                        <el-menu :default-active="activeIndex" mode="vertical" collapse :class="isDark? 'dark-theme':'light-theme'">
+                            <el-submenu index="1">
+                                <template slot="title">
+                                    {{$t('general.language')}}
+                                </template>
+                                <el-menu-item :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveLang===key?'is-active':'')]" v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key,item)">{{ item }}</el-menu-item>
+                            </el-submenu>
+                            <el-submenu index="2">
+                                <template slot="title">
+                                    {{$t('general.theme')}}
+                                </template>
+                                <el-menu-item :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveTheme===item?'is-active':'')]" v-for="(item, key) in themeList" :key="key" @click.native="changeTheme(item,key)">{{ item }}</el-menu-item>
+                            </el-submenu>
+                        </el-menu>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </el-col>
         </el-row>
         <section class="container">
@@ -106,10 +109,11 @@ export default {
             appLogo: app_icon,
             roleNameObj: "",
             uuid: "",
-            activeIndex: "1",
+            activeIndex: "0",
             globalAuth: $GLOBAL_AUTH,
             globalBaseUrl: $GLOBAL_BASE_URL,
             isDark: false,
+            isActiveLang: "",
         };
     },
     computed: {
@@ -133,6 +137,12 @@ export default {
         },
         systemLogo() {
             return this.isDark ? fiics_logo_dark : fiics_logo;
+        },
+        themeList() {
+            return { 1: `${i18n.t("general.light")}`, 2: `${i18n.t("general.dark")}` };
+        },
+        isActiveTheme() {
+            return this.$store.state.darkTheme ? `${i18n.t("general.dark")}` : `${i18n.t("general.light")}`;
         },
     },
     created() {
@@ -201,6 +211,7 @@ export default {
             window.localStorage.setItem("fiics-lang", "en");
         }
         this.lang = window.localStorage.getItem("fiics-lang");
+        this.isActiveLang = this.lang;
         this.$store.dispatch("setLang", this.lang);
     },
     beforeMount() {
@@ -243,8 +254,8 @@ export default {
         handleChangeLang(lang) {
             if (this.lang !== lang) {
                 this.lang = lang;
-                window.localStorage.setItem("fiics-lang", lang);
-                this.$router.go(0);
+                this.isActiveLang = lang;
+                this.$store.dispatch("setLang", lang); // this.$router.go(0);
             }
         },
         handleMenuSelect(index, indexPath) {
@@ -291,8 +302,8 @@ export default {
                 })
                 .catch(() => {});
         },
-        changeTheme() {
-            let _isDark = !this.isDark;
+        changeTheme(item, key) {
+            let _isDark = item === i18n.t("general.dark");
             this.isDark = _isDark;
             this.$store.commit(types.DARKTHEME, _isDark);
         },
@@ -396,5 +407,17 @@ export default {
         background-color: #dce6f3;
         border-top-left-radius: 20px;
     }
+}
+
+.logout {
+    padding: 0 5px;
+}
+
+.dropdown-menu {
+    width: 200px;
+}
+
+.el-menu--collapse {
+    width: inherit;
 }
 </style>

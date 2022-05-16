@@ -117,7 +117,10 @@
         "disable": "關閉",
         "addRoles": "添加角色",
         "imageUrl": "图片网址",
-        "language": "语言"
+        "language": "语言",
+        "theme": "主題",
+        "light": "光",
+        "dark": "黑暗的"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",

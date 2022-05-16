@@ -117,7 +117,10 @@
         "disable": "Vô hiệu hóa",
         "addRoles": "thêm vai trò",
         "imageUrl": "URL hình ảnh",
-        "language": "ngôn ngữ"
+        "language": "ngôn ngữ",
+        "theme": "chủ đề",
+        "light": "nhẹ",
+        "dark": "tối"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

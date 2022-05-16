@@ -117,7 +117,10 @@
         "disable": "Disable",
         "addRoles": "Add Roles",
         "imageUrl": "Image URL",
-        "language": "Language"
+        "language": "Language",
+        "theme": "Theme",
+        "light": "Light",
+        "dark": "Dark"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

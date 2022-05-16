@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: null,
-        lang: '',
+        lang: localStorage.getItem('fiics-lang') ? localStorage.getItem('fiics-lang') : 'en', 
         nowSelectTab: location.pathname.includes('kiosk') ? 'kiosk' : 'station',
         tabsArr: ['station', 'kiosk'],
         role: '',
@@ -35,6 +35,7 @@ export default new Vuex.Store({
         [types.LANG]: (state, data) => {
             state.lang = data;
             if (app && app.$i18n) {
+                localStorage.setItem("fiics-lang", data);
                 app.$i18n.locale = data;
             }
         },
