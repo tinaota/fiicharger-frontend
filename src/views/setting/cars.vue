@@ -224,7 +224,10 @@ export default {
         fetchCarBandList() {
             const that = this;
             this.carBandList.isLoading = true;
-            $HTTP_getCarBrandListForSelect()
+            let param = {
+                limit: 200
+            }
+            $HTTP_getCarBrandListForSelect(param)
                 .then((res) => {
                     that.carBandList.isLoading = false;
                     if (res?.data?.length > 0) {
