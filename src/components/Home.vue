@@ -25,7 +25,7 @@
                         <el-button class="no-bg i change-theme-icon el-icon-setting" :style="{color:isDark? '#ffa500':'#000000'}"></el-button>
                     </div>
 
-                    <el-dropdown-menu slot="dropdown" :class="isDark? 'dropdown-menu dark-theme':'dropdown-menu light-theme'">
+                    <el-dropdown-menu slot="dropdown" :class="isDark? 'home-settings dropdown-menu dark-theme':'home-settings dropdown-menu light-theme'">
                         <el-menu :default-active="activeIndex" mode="vertical" collapse :class="isDark? 'dark-theme':'light-theme'">
                             <el-submenu index="1">
                                 <template slot="title">
@@ -419,5 +419,14 @@ export default {
 
 .el-menu--collapse {
     width: inherit;
+}
+
+.el-menu-item.dark-theme{
+    background: #2d3855;
+    color: #ffffff;
+}
+
+.el-menu-item.dark-theme.is-active{
+    color: #1e5eff;
 }
 </style>

@@ -1184,3 +1184,15 @@ div.connector-obj {
 input {
     font-family: inherit;
 }
+
+.home-settings .el-menu--collapse>.el-submenu>.el-submenu__title .el-submenu__icon-arrow{
+    display:  block !important;
+}
+
+.home-settings .el-menu--collapse>.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
+    transform: rotateZ(180deg);
+}
+
+.el-menu--popup{
+    padding: 0 !important;
+}
