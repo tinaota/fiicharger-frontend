@@ -2,6 +2,7 @@
     "app_name": "Fii Charger System",
     "app_name_short": "Fiicharger System",
     "error_network": "Network request error!",
+    "emptyMessage": "No Data exists with specified search criteria, try again with new filter criteria!",
     "version": "Ver ",
     "menu": {
         "home": "Home",

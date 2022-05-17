@@ -2,6 +2,7 @@
     "app_name": "Hệ thống quản lý trạm sạc điwwjn Fii",
     "app_name_short": "Hệ thống Fiicharger",
     "error_network": "Lỗi mạng",
+    "emptyMessage": "Không có Dữ liệu nào tồn tại với tiêu chí tìm kiếm được chỉ định, hãy thử lại với tiêu chí lọc mới!",
     "version": "Bản quyền ",
     "menu": {
         "home": "Trang đầu",

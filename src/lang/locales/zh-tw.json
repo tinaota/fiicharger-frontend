@@ -2,6 +2,7 @@
     "app_name": "Fii充電站管理系統",
     "app_name_short": "Fiicharger系統",
     "error_network": "網路異常!",
+    "emptyMessage": "不存在指定搜索條件的數據，請使用新的過濾條件重試！",
     "version": "版本 ",
     "menu": {
         "home": "首頁",

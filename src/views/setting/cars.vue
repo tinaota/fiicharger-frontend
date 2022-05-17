@@ -10,12 +10,12 @@
                     <el-select class="select-small" :placeholder="$t('cars.maker')" v-loading="carBandList.isLoading" v-model="filter.carBrand" @change="handleCarBandChange()" filterable clearable>
                         <el-option v-for="(item, key) in carBandList.data" :label="item" :key="key" :value="item"></el-option>
                     </el-select>
-                    <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carModelList.isLoading" @change="fetchData()" filterable clearable>
+                    <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carModelList.isLoading" @change="fetchData('models')" filterable clearable>
                         <el-option v-for="(item, idx) in carModelList.data" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openCreateDialog()"></el-button>
                 </div>
-                <el-table :data="tableData.slice((page - 1) * 10, page * 10)" class="moreCol" v-loading="isLoading">
+                <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
                     <el-table-column prop="make" :label="$t('cars.maker')" :min-width="3"></el-table-column>
                     <el-table-column prop="model" :label="$t('cars.model')" :min-width="4"></el-table-column>
@@ -40,14 +40,14 @@
                             <el-button class="no-bg delete" @click="openDeleteDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column v-else :label="$t('general.action')" :width="65">
+                    <el-table-column v-else :label="$t('general.action')" :width="70">
                         <template slot-scope="scope">
                             <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
-                <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="10" :current-page.sync="page" @current-change="changePage">
+                <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
                 <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog('detail')">
                     <div class="tabs-contain carDetail">
@@ -132,6 +132,7 @@ import {
     $HTTP_getCarModelListForSelect,
 } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import UpdateCars from "@/views/setting/updateCars";
 import DeleteCars from "@/views/setting/deleteCars";
 
@@ -160,6 +161,7 @@ export default {
             isLoading: false,
             tableData: [],
             page: 1,
+            limit: $GLOBAL_PAGE_LIMIT,
             total: 0,
             dialog: {
                 visible: false,
@@ -223,16 +225,18 @@ export default {
             const that = this;
             this.carBandList.isLoading = true;
             $HTTP_getCarBrandListForSelect()
-                .then((data) => {
+                .then((res) => {
                     that.carBandList.isLoading = false;
-                    if (data) {
-                        that.carBandList.data = data;
+                    if (res?.data?.length > 0) {
+                        that.carBandList.data = res.data;
                     } else {
-                        that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        that.carBandList.data = {};
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
                     console.log("carBandList", err);
+                    that.carBandList.data = {};
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
@@ -244,40 +248,50 @@ export default {
             this.carModelList.isLoading = true;
             let params = { make: this.filter.carBrand };
             $HTTP_getCarModelListForSelect(params)
-                .then((data) => {
+                .then((res) => {
                     that.carModelList.isLoading = false;
-                    if (data) {
-                        that.carModelList.data = data;
+                    if (res?.data?.length > 0) {
+                        that.carModelList.data = res.data;
                     } else {
-                        that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        that.carModelList.data = {};
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
                     console.log("carModelList", err);
+                    that.carModelList.data = {};
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
         fetchData(type) {
             const that = this;
-            this.page = 1;
             this.isLoading = true;
-            let param = {};
+            let param = {
+                page: this.page,
+                limit: this.limit,
+            };
             if (this.filter.carBrand) {
                 param.make = this.filter.carBrand;
             }
             if (this.filter.carModel) {
                 param.model = this.filter.carModel;
             }
+
+            if (type === "models") {
+                this.page = 1;
+                param["page"] = 1;
+            }
+            
             $HTTP_getCarList(param)
-                .then((data) => {
+                .then((res) => {
                     this.isLoading = false;
-                    if (data) {
-                        this.tableData = data;
-                        this.total = this.tableData.length;
+                    if (res?.data?.length > 0) {
+                        this.tableData = res.data;
+                        this.total = res.metadata.totalRows;
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
@@ -326,6 +340,7 @@ export default {
         },
         changePage(page) {
             this.page = page;
+            this.fetchData();
         },
         handleCarBandChange() {
             if (this.filter.carBrand !== "") {
@@ -334,6 +349,7 @@ export default {
                 this.filter.carModel = "";
                 this.carModelList.data = {};
             }
+            this.page = 1;
             this.fetchData();
         },
         openDetailDialog(carId) {

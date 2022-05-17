@@ -2,7 +2,7 @@
     <div class="operator">
         <div class="container">
             <div class="filter">
-                <el-select class="select-small" :placeholder="$t('general.operator')" v-model="filter.roles" @change="fetchData()">
+                <el-select class="select-small" :placeholder="$t('general.operator')" v-model="filter.roles" @change="fetchData('o')">
                     <el-option v-for="(item, key) in operatorList" :label="key" :key="key" :value="item"></el-option>
                 </el-select>
                 <el-input :placeholder="$t('userAccount.email')" v-model="filter.tmpEmail" @change="fetchData('e')" clearable>
@@ -13,7 +13,7 @@
                 </el-input>
                 <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
             </div>
-            <el-table :data="tableData.slice((page - 1) * 10, page * 10)" class="moreCol" v-loading="isLoading">
+            <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                 <el-table-column :label="$t('userAccount.operatorName')" :min-width="3">
                     <template slot-scope="scope">
                         {{clientName(scope.row)}}
@@ -55,7 +55,7 @@
                 </el-table-column>
             </el-table>
             <div class="total">{{ $t("general.result", {item:total}) }}</div>
-            <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="10" :current-page.sync="page" @current-change="changePage">
+            <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
             </el-pagination>
         </div>
         <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="600px" :visible.sync="dialog.visible" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeDialog(true)" v-loading="dialog.isLoading">
@@ -133,16 +133,13 @@
 
 <script>
 import {
-    $HTTP_getCountryCodeSelectList,
     $HTTP_getOperatorList,
-    AddOperator,
     $HTTP_updateOperator,
-    UpdateOperator,
     $HTTP_registerOperator,
     $HTTP_updateImage,
     $HTTP_getUserInfo,
 } from "@/api/api";
-import { $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
+import { $GLOBAL_AUTH, $GLOBAL_BASE_URL, $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
@@ -159,13 +156,13 @@ export default {
                 callback();
             } else {
                 // callback(new Error(i18n.t('userAccount.emailValidation')));
-                callback(new Error(i18n.t('userAccount.emailValidation')))
+                callback(new Error(i18n.t("userAccount.emailValidation")));
             }
         };
 
         var validatePassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error(i18n.t('userAccount.emptyPasswordValidation')));
+                callback(new Error(i18n.t("userAccount.emptyPasswordValidation")));
             } else {
                 callback();
             }
@@ -173,9 +170,9 @@ export default {
 
         var validateConfirmedNewPassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error(i18n.t('userAccount.confirmEmptyPasswordValidation')));
+                callback(new Error(i18n.t("userAccount.confirmEmptyPasswordValidation")));
             } else if (value !== this.dialog.info.password) {
-                callback(new Error(i18n.t('userAccount.validatePasswordMatch')));
+                callback(new Error(i18n.t("userAccount.validatePasswordMatch")));
             } else {
                 callback();
             }
@@ -183,11 +180,11 @@ export default {
 
         var validateImageUrl = (rule, value, callback) => {
             if (typeof value !== "string") {
-                callback(new Error(i18n.t('userAccount.urlValidation')));
+                callback(new Error(i18n.t("userAccount.urlValidation")));
             } else if (/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)) {
                 callback();
             } else {
-                callback(new Error(i18n.t('userAccount.urlValidation')));
+                callback(new Error(i18n.t("userAccount.urlValidation")));
             }
         };
 
@@ -205,6 +202,7 @@ export default {
             isLoading: false,
             tableData: [],
             page: 1,
+            limit: $GLOBAL_PAGE_LIMIT,
             total: 0,
             imagesArray: null,
             dialog: {
@@ -292,26 +290,36 @@ export default {
         },
         fetchData(type) {
             const that = this;
-            let param = {};
-
+            let param = {
+                page: this.page,
+                limit: this.limit,
+            };
             if (type === "e") {
                 this.filter.emailSearch = this.filter.tmpEmail;
+                this.page = 1;
+                param["page"] = 1;
             } else if (type === "c") {
                 this.filter.personSearch = this.filter.tmpContactPersion;
+                this.page = 1;
+                param["page"] = 1;
+            } else if (type === "o") {
+                this.page = 1;
+                param["page"] = 1;
             }
+
             param.email = this.filter.emailSearch;
             param.name = this.filter.personSearch;
             param.role = this.filter.roles;
             $HTTP_getOperatorList(param)
-                .then((data) => {
+                .then((res) => {
                     this.isLoading = false;
-                    if (data?.length > 0) {
-                        this.tableData = data;
-                        this.total = this.tableData.length;
+                    if (res?.data?.length > 0) {
+                        this.tableData = res.data;
+                        this.total = res.metadata.totalRows;
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
@@ -322,6 +330,7 @@ export default {
         },
         changePage(page) {
             this.page = page;
+            this.fetchData();
         },
         openDialog(type, data) {
             const that = this;
@@ -427,12 +436,12 @@ export default {
                             })
                             .then(() => {
                                 if (
-                                    (this.activeImageTab==="upload" &&
-                                    this.imagesArray !== null) || (this.activeImageTab!=="upload" && this.dialog.info.originalImg !== "")
+                                    (this.activeImageTab === "upload" && this.imagesArray !== null) ||
+                                    (this.activeImageTab !== "upload" && this.dialog.info.originalImg !== "")
                                 ) {
                                     const formData = new FormData();
                                     let id = this.dialog.info.id;
-                                    if (this.activeImageTab === "upload" && this.imagesArray !==null) {
+                                    if (this.activeImageTab === "upload" && this.imagesArray !== null) {
                                         formData.append("picture", this.imagesArray, this.imagesArray?.name);
                                         this.$refs?.operatorForm?.clearValidate("originalImg");
                                     } else {
