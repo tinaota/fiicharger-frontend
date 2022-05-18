@@ -7,8 +7,8 @@ export default new Vuex.Store({
     state: {
         token: null,
         lang: localStorage.getItem('fiics-lang') ? localStorage.getItem('fiics-lang') : 'en', 
-        nowSelectTab: location.pathname.includes('kiosk') ? 'kiosk' : 'station',
-        tabsArr: ['station', 'kiosk'],
+        nowSelectTab: 'station',
+        tabsArr: ['station'],
         role: '',
         userInfo: localStorage.getItem('fiics-user') ? JSON.parse(localStorage.getItem('fiics-user')) : {},
         darkTheme: localStorage.getItem('fiics-dark-theme') !== null ? JSON.parse(localStorage.getItem('fiics-dark-theme')) : false
