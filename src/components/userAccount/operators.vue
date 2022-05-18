@@ -189,7 +189,7 @@ export default {
         };
 
         return {
-            lang: "",
+            lang: this.$store.state.lang,
             operatorList: {},
             activeImageTab: "upload",
             filter: {
@@ -251,7 +251,6 @@ export default {
         };
     },
     created() {
-        this.lang = window.localStorage.getItem("fiics-lang");
         let fiics_user = this.$store.state.userInfo;
         let roles = fiics_user.roles;
         if (roles.indexOf("Super") !== -1) {

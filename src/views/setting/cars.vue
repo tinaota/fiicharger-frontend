@@ -143,7 +143,7 @@ export default {
     },
     data() {
         return {
-            lang: "",
+            lang: this.$store.state.lang,
             permissionEditAble: false,
             filter: {
                 carBrand: "",
@@ -213,7 +213,6 @@ export default {
         if (role.indexOf("Admin") || role.indexOf("Owner") || role.indexOf("Super")) {
             this.permissionEditAble = true;
         }
-        this.lang = window.localStorage.getItem("fiics-lang");
     },
     mounted() {
         setScrollBar(".scroll", this);
@@ -225,8 +224,8 @@ export default {
             const that = this;
             this.carBandList.isLoading = true;
             let param = {
-                limit: 200
-            }
+                limit: 200,
+            };
             $HTTP_getCarBrandListForSelect(param)
                 .then((res) => {
                     that.carBandList.isLoading = false;
@@ -284,7 +283,7 @@ export default {
                 this.page = 1;
                 param["page"] = 1;
             }
-            
+
             $HTTP_getCarList(param)
                 .then((res) => {
                     this.isLoading = false;
@@ -313,7 +312,7 @@ export default {
             $HTTP_getCarInfo(param)
                 .then((data) => {
                     that.dialog.isLoading = false;
-                    if (data) {
+                    if (data?.length>0) {
                         let _carTypeInfo = {};
                         _carTypeInfo["carBrand"] = data.make;
                         _carTypeInfo["carModel"] = data.model;
@@ -333,7 +332,7 @@ export default {
                         that.dialog.info.carTypeInfo = Object.assign({}, _carTypeInfo);
                         that.dialog.info.carBatteryInfo = Object.assign({}, _carBatteryInfo);
                     } else {
-                        that.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
