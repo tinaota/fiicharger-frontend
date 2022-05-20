@@ -1,12 +1,13 @@
 import store from '../store/store'
 import * as types from '../store/types'
 import router from '../router/index'
-import { $GLOBAL_REDIRECT_URL, $GLOBAL_BASE_URL } from "@/utils/global"
+import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID } from "@/utils/global"
 const redirect = () => {
     let fiics_auth = JSON.parse(window.localStorage.getItem('fiics-auth'));
     let uuid = window.localStorage.getItem('fiics-uuid')
     let redirectURI = $GLOBAL_REDIRECT_URL;
-    let url = `/gatekeeper/auth/authorize?response_type=code&client_id=gatekeeper&redirect_uri=${redirectURI}&device_id=${uuid}`
+    let url = `/gatekeeper/auth/authorize?response_type=code&client_id=${$GLOBAL_CLIENT_ID
+        }&redirect_uri=${redirectURI}&device_id=${uuid}`
     if (fiics_auth === null) {
         store.commit(types.LOGOUT);
         window.location.replace(url);

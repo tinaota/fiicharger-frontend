@@ -86,7 +86,7 @@ import * as types from "../store/types";
 import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
 import { $HTTP_logout } from "@/api/api";
 import Vue from "vue";
-import { getLang } from "@/utils/global";
+import { $GLOBAL_CLIENT_ID } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import fiics_logo_dark from "imgs/darkVersion/fiics_logo.png";
@@ -286,7 +286,7 @@ export default {
                 .then(() => {
                     let _token = JSON.parse(localStorage.getItem("fiics-auth"))?.access_token;
                     let params = {
-                        client_id: "gatekeeper",
+                        client_id: $GLOBAL_CLIENT_ID,
                         token: _token,
                         device_id: this.uuid,
                     };

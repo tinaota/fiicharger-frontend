@@ -5,7 +5,7 @@
 import { $HTTP_login_auth, $HTTP_getUserInfo, $HTTP_getOperatorTypeList } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
-import { $GLOBAL_REDIRECT_URL } from "@/utils/global";
+import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID } from "@/utils/global";
 
 export default {
     name: "Login",
@@ -29,7 +29,7 @@ export default {
     mounted() {
         const _data = {
             grant_type: "authorization_code",
-            client_id: "gatekeeper",
+            client_id: $GLOBAL_CLIENT_ID,
             code: this.code.trim(),
             redirect_uri: this.globalRedirectUrl,
             device_id: this.uuid,

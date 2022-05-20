@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { $GLOBAL_REDIRECT_URL, $GLOBAL_AUTH } from "@/utils/global";
+import { $GLOBAL_REDIRECT_URL, $GLOBAL_AUTH, $GLOBAL_CLIENT_ID } from "@/utils/global";
 import store from '../store/store'
 import * as types from '../store/types'
 
@@ -81,7 +81,7 @@ axios.interceptors.response.use(
 
             const _data = {
                 grant_type: "refresh_token",
-                client_id: "gatekeeper",
+                client_id: $GLOBAL_CLIENT_ID,
                 refresh_token: fiicsAuthData.refresh_token,
                 redirect_uri: $GLOBAL_REDIRECT_URL,
                 device_id: uuidValue
