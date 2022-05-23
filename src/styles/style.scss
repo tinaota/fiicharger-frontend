@@ -1196,3 +1196,16 @@ input {
 .el-menu--popup{
     padding: 0 !important;
 }
+
+// hide the up and down arrows of input type number
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
