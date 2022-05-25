@@ -121,7 +121,8 @@
         "language": "Language",
         "theme": "Theme",
         "light": "Light",
-        "dark": "Dark"
+        "dark": "Dark",
+        "unknown": "Unknown"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

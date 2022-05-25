@@ -33,12 +33,12 @@
         "cars": "車輛",
         "report": "報告",
         "usagePatterns": "使用模式",
-        "pluggedNotCharging": "插電&不充電",
-        "costRevenue":"成本和收入",
-        "costRevenueDay":"成本和收入（天）",
-        "costRevenueNight":"成本和收入（夜間）",
-        "energyPhm": "活力",
-        "contact": "接觸"
+        "pluggedNotCharging": "插槍但不充電",
+        "costRevenue": "成本和收入",
+        "costRevenueDay": "成本和收入（日間）",
+        "costRevenueNight": "成本和收入（夜間）",
+        "energyPhm": "能耗 & PHM",
+        "contact": "聯絡方式"
     },
     "login": {
         "login": "登入",
@@ -100,7 +100,13 @@
         "sucDelMsg": "刪除完成!",
         "status": "狀態",
         "all": "全部",
-        "statusList": ["可用", "使用中", "維護", "異常", "不可用"],
+        "statusList": [
+            "可用",
+            "使用中",
+            "維護中",
+            "異常",
+            "不可用"
+        ],
         "currency": "幣別",
         "address": "地址",
         "telephone": "電話",
@@ -117,11 +123,12 @@
         "enable": "啟用",
         "disable": "關閉",
         "addRoles": "添加角色",
-        "imageUrl": "图片网址",
-        "language": "语言",
+        "imageUrl": "圖片網址",
+        "language": "語言",
         "theme": "主題",
-        "light": "光",
-        "dark": "黑暗的"
+        "light": "淺色",
+        "dark": "深色",
+        "unknown": "未知"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -169,9 +176,17 @@
         "chargePointName": "充電樁名稱",
         "chargePoint#": "充電樁數量",
         "power": "電耗",
-        "connector":"充電槍",
+        "connector": "充電槍",
         "connectorStatus": "充電槍狀態",
-        "connectorList": ["", "可用", "準備中", "充電中", "結束", "連線異常", "異常"],
+        "connectorList": [
+            "",
+            "可用",
+            "準備中",
+            "充電中",
+            "結束",
+            "連線異常",
+            "異常"
+        ],
         "sessionID": "充電紀錄ID",
         "billing": "帳單",
         "billingID": "帳單ID",
@@ -240,8 +255,8 @@
         "logo": "圖片",
         "contactPerson": "聯繫人",
         "mobile": "手機",
-        "mobileVerification": "手机验证",
-        "emailVerification": "电子邮件验证",
+        "mobileVerification": "手機驗證",
+        "emailVerification": "電子郵件驗證",
         "createdDate": "創建日期",
         "idTag": "ID標籤",
         "company": "公司",
@@ -270,8 +285,8 @@
         "urlValidation": "請輸入有效的網址。"
     },
     "cars": {
-        "maker": "標記",
-        "model": "模型",
+        "maker": "製造商",
+        "model": "車款",
         "batteryCapacity": "電池容量",
         "realRange": "實際範圍",
         "acPower": "交流電源",
@@ -284,8 +299,8 @@
         "miscellaneous": "其他資訊",
         "version": "版本",
         "topSpeed": "最高速度",
-        "propulsion": "推進力",
-        "turningCircle": "迴轉圈",
+        "propulsion": "動力",
+        "turningCircle": "回轉空間",
         "capacityUseable": "可用容量",
         "chargePlugLocation": "充電插頭位置",
         "seats": "座位",
@@ -294,10 +309,10 @@
         "isofixSeats": "Isofix座位",
         "segment": "段",
         "picture": "圖片",
-        "trim": "修剪",
-        "year": "年",
-        "chargeSpeed": "充电速度",
-        "chargeTime": "充电时间"
+        "trim": "車型",
+        "year": "年份",
+        "chargeSpeed": "充電速度",
+        "chargeTime": "充電時間"
     },
     "support": {
         "workerOrderId": "工單ID",

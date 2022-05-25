@@ -30,15 +30,15 @@
         "operator": "运营商",
         "endUser": "终端用户",
         "member": "会员",
-        "cars": "車輛",
+        "cars": "车辆",
         "report": "报告",
         "usagePatterns": "使用模式",
-        "pluggedNotCharging": "插电&不充电",
-        "costRevenue":"成本和收入",
-        "costRevenueDay":"成本和收入（天）",
-        "costRevenueNight":"成本和收入（夜间）",
-        "energyPhm": "活力",
-        "contact": "接觸"
+        "pluggedNotCharging": "插枪 & 不充电",
+        "costRevenue": "成本和收入",
+        "costRevenueDay": "成本和收入（日间）",
+        "costRevenueNight": "成本和收入（夜间）",
+        "energyPhm": "能耗 & PHM",
+        "contact": "联系方式"
     },
     "login": {
         "login": "登入",
@@ -100,7 +100,13 @@
         "sucDelMsg": "删除完成!",
         "status": "状态",
         "all": "全部",
-        "statusList": ["可用", "使用中", "维护", "异常", "不可用"],
+        "statusList": [
+            "可用",
+            "使用中",
+            "维护中",
+            "异常",
+            "不可用"
+        ],
         "currency": "币别",
         "address": "地址",
         "telephone": "电话",
@@ -120,8 +126,9 @@
         "imageUrl": "图片网址",
         "language": "语言",
         "theme": "主题",
-        "light": "光",
-        "dark": "黑暗的"
+        "light": "浅色",
+        "dark": "深色",
+        "unknown": "未知"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -171,7 +178,15 @@
         "power": "电耗",
         "connector": "充电枪",
         "connectorStatus": "充电枪状态",
-        "connectorList": ["", "可用", "准备中", "充电中", "结束", "连线异常", "异常"],
+        "connectorList": [
+            "",
+            "可用",
+            "准备中",
+            "充电中",
+            "结束",
+            "连线异常",
+            "异常"
+        ],
         "sessionID": "充电纪录ID",
         "billing": "帐单",
         "billingID": "帐单ID",
@@ -270,8 +285,8 @@
         "urlValidation": "请输入有效的网址。"
     },
     "cars": {
-        "maker": "标记",
-        "model": "模型",
+        "maker": "制造商",
+        "model": "车款",
         "batteryCapacity": "电池容量",
         "realRange": "实际范围",
         "acPower": "交流电源",
@@ -294,8 +309,8 @@
         "isofixSeats": "Isofix座位",
         "segment": "段",
         "picture": "图片",
-        "trim": "修剪",
-        "year": "年",
+        "trim": "车型",
+        "year": "年份",
         "chargeSpeed": "充电速度",
         "chargeTime": "充电时间"
     },
