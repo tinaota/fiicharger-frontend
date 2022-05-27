@@ -144,6 +144,7 @@ import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
 import AddRoles from "@/components/userAccount/addRoles";
+import {validateImageUrl, validateEmail, validatePassword, validateConfirmedNewPassword} from "@/utils/validation"
 export default {
     components: {
         ChangePwd,
@@ -151,40 +152,13 @@ export default {
         AddRoles,
     },
     data() {
-        var validateEmail = (rule, value, callback) => {
-            if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                callback();
-            } else {
-                // callback(new Error(i18n.t('userAccount.emailValidation')));
-                callback(new Error(i18n.t("userAccount.emailValidation")));
-            }
-        };
-
-        var validatePassword = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error(i18n.t("userAccount.emptyPasswordValidation")));
-            } else {
-                callback();
-            }
-        };
-
         var validateConfirmedNewPassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error(i18n.t("userAccount.confirmEmptyPasswordValidation")));
+                callback(new Error(i18n.t("validation.confirmEmptyPasswordValidation")));
             } else if (value !== this.dialog.info.password) {
-                callback(new Error(i18n.t("userAccount.validatePasswordMatch")));
+                callback(new Error(i18n.t("validation.validatePasswordMatch")));
             } else {
                 callback();
-            }
-        };
-
-        var validateImageUrl = (rule, value, callback) => {
-            if (typeof value !== "string") {
-                callback(new Error(i18n.t("userAccount.urlValidation")));
-            } else if (/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)) {
-                callback();
-            } else {
-                callback(new Error(i18n.t("userAccount.urlValidation")));
             }
         };
 
@@ -542,6 +516,11 @@ export default {
                 this.deleteDialog.show = false;
                 this.addRolesDialog.show = false;
                 this.fetchData();
+            }
+            this.dialog.info = {
+                email: "",
+                password:"",
+                confirmPassword:""
             }
             this.$nextTick(() => {
                 this.$refs?.operatorForm?.clearValidate("email");

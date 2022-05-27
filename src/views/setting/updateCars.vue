@@ -97,18 +97,10 @@
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_addCars, $HTTP_updateCars } from "@/api/api";
 
+import {validateIsEmpty} from "@/utils/validation"
 export default {
     props: { show: Boolean, dialogType: String, data: Object },
     data() {
-        var validateIsEmpty = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error(i18n.t('userAccount.emptyValidation')));
-            } else if (value === null) {
-                callback(new Error(i18n.t('userAccount.numberValidation')));
-            } else {
-                callback();
-            }
-        };
         return {
             lang: "",
 

@@ -46,6 +46,7 @@
 <script>
 import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import {validatePassword} from "@/utils/validation"
 export default {
     props: {
         name: String,
@@ -53,19 +54,11 @@ export default {
         show: Boolean,
     },
     data() {
-        var validatePassword = (rule, value, callback) => {
-            if (value === "") {
-                callback(new Error(i18n.t('userAccount.emptyPasswordValidation')));
-            } else {
-                callback();
-            }
-        };
-
         var validateConfirmedNewPassword = (rule, value, callback) => {
             if (value === "") {
-                callback(new Error(i18n.t('userAccount.confirmEmptyPasswordValidation')));
+                callback(new Error(i18n.t('validation.confirmEmptyPasswordValidation')));
             } else if (value !== this.param.password) {
-                callback(new Error(i18n.t('userAccount.validatePasswordMatch')));
+                callback(new Error(i18n.t('validation.validatePasswordMatch')));
             } else {
                 callback();
             }

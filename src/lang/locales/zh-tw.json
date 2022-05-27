@@ -92,6 +92,10 @@
         "connectionLost": "連線異常",
         "serviceUnavailable": "暫停服務",
         "inUse": "使用中",
+        "street": "街道",
+        "city": "城市",
+        "state": "狀態",
+        "country": "國家",
         "zipCode": "郵遞區號",
         "hint": "提示",
         "deleteItem": "你確定删除 {item}?",
@@ -275,7 +279,9 @@
         "firstName": "名字",
         "lastName": "姓氏",
         "uploadPicture": "上傳圖片",
-        "addPictureUrl": "添加圖片網址",
+        "addPictureUrl": "添加圖片網址"
+    },
+    "validation": {
         "emptyPasswordValidation": "密碼不能為空",
         "confirmEmptyPasswordValidation": "您必須驗證用戶的密碼。",
         "validatePasswordMatch": "密碼不匹配。",

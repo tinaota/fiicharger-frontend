@@ -92,6 +92,10 @@
         "connectionLost": "连线异常",
         "serviceUnavailable": "暂停服务",
         "inUse": "使用中",
+        "street": "街道",
+        "city": "城市",
+        "state": "状态",
+        "country": "国家",
         "zipCode": "邮递区号",
         "hint": "提示",
         "deleteItem": "你确定删除 {item}?",
@@ -275,7 +279,9 @@
         "firstName": "名字",
         "lastName": "姓氏",
         "uploadPicture": "上传图片",
-        "addPictureUrl": "添加图片网址",
+        "addPictureUrl": "添加图片网址"
+    },
+    "validation": {
         "emptyPasswordValidation": "密码不能为空",
         "confirmEmptyPasswordValidation": "您必须验证用户的密码。",
         "validatePasswordMatch": "密码不匹配。",
