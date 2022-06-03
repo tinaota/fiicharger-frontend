@@ -49,7 +49,7 @@ export default {
                 that.visible = that.show;
                 that.isUpdate = false;
                 if (that.visible) {
-                    this.$Api = $HTTP_deleteVehicle;
+                    this.$API = $HTTP_deleteVehicle;
                 }
                 that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
                 that.$nextTick(() => {
@@ -66,8 +66,9 @@ export default {
             };
 
             that.isLoading = true;
-            this.$Api(params)
+            this.$API(params)
                 .then((data) => {
+                    console.log(data)
                     that.isLoading = false;
                     if (data.id === params.id) {
                         that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });

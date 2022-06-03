@@ -97,7 +97,7 @@
 import { setScrollBar } from "@/utils/function";
 import { $HTTP_addCars, $HTTP_updateCars } from "@/api/api";
 
-import {validateIsEmpty} from "@/utils/validation"
+import { validateIsEmpty } from "@/utils/validation";
 export default {
     props: { show: Boolean, dialogType: String, data: Object },
     data() {
@@ -169,7 +169,7 @@ export default {
     },
     methods: {
         closeCreateDialog() {
-            (this.param = {
+            this.param = {
                 make: "",
                 model: "",
                 trim: "",
@@ -183,7 +183,24 @@ export default {
                 fastChargePlugType: "",
                 fastChargePower: null,
                 imageUrl: "",
-            }),
+            };
+
+            this.$nextTick(() => {
+                this.$refs?.addCarsForm?.clearValidate("make");
+                this.$refs?.addCarsForm?.clearValidate("model");
+                this.$refs?.addCarsForm?.clearValidate("trim");
+                this.$refs?.addCarsForm?.clearValidate("year");
+                this.$refs?.addCarsForm?.clearValidate("plugType");
+                this.$refs?.addCarsForm?.clearValidate("plugLocation");
+                this.$refs?.addCarsForm?.clearValidate("chargePower");
+                this.$refs?.addCarsForm?.clearValidate("chargePhase");
+                this.$refs?.addCarsForm?.clearValidate("chargeTime");
+                this.$refs?.addCarsForm?.clearValidate("chargeSpeed");
+                this.$refs?.addCarsForm?.clearValidate("fastChargePlugType");
+                this.$refs?.addCarsForm?.clearValidate("fastChargePower");
+                this.$refs?.addCarsForm?.clearValidate("imageUrl");
+            });
+
             this.$emit("close", this.isUpdate);
         },
         updateCars() {
