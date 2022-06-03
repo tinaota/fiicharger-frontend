@@ -18,3 +18,5 @@ export const $GLOBAL_CURRENCY = {
     1: "$",
     2: "NT$"
 };
+
+export const $GLOBAL_CHARGER = "/charger"
