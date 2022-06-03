@@ -51,7 +51,10 @@ export const $HTTP_updateChargePrice = (params) => { return put(`${base_charger}
 
 export const $HTTP_getRateTypeList = () => { return fetch(`${base_charger}/api/charge-prices/charge-rate-type-list`) }
 
-export const $HTTP_getCurrencyList = () => { { return fetch(`${base_charger}/api/charge-prices/currency-type-list`) } }
+export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/api/charge-prices/currency-type-list`) }
+
+export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/api/charge-prices/${params.chargePriceId}`, params) }
+
 /**
  * @description 登出
  */

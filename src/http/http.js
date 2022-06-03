@@ -252,7 +252,11 @@ export function del(url, params = {}) {
         axios.delete(url, params)
             .then(response => {
                 if (response) {
-                    resolve(response.data)
+                    if (response.status === 204) {
+                        resolve(response)
+                    } else {
+                        resolve(response.data)
+                    }
                 } else {
                     reject(response)
                 }
