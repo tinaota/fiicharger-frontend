@@ -55,6 +55,7 @@ let routes = [
                     { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: false },
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     { path: '/chargePointDetail', component: () => import('@/views/chargingStation/chargePointDetail.vue'), name: 'chargePointDetail', hidden: true },
+                    { path: '/chargePrice', component: () => import('@/views/setting/chargePrice.vue'), name: 'menu.price', hidden: false },
                     { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
                 ]
             },

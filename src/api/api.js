@@ -1,14 +1,14 @@
 import qs from 'qs'
-import { $GLOBAL_HTTP, $GLOBAL_VEHICLE, $GLOBAL_AUTH } from '@/utils/global'
+import { $GLOBAL_HTTP, $GLOBAL_VEHICLE, $GLOBAL_AUTH, $GLOBAL_CHARGER } from '@/utils/global'
 import { fetch, post, patch, fetchImg, put, putImage, del } from '@/http/http'
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
 const base_vehicle = $GLOBAL_VEHICLE
+const base_charger = $GLOBAL_CHARGER
 /**
  * @description 登入
  */
 export const $HTTP_login = params => { return post(`${base}/Home/Login/login`, qs.stringify(params)) }
-
 
 /**
  * @description Login with authorization code
@@ -40,6 +40,18 @@ export const $HTTP_getOperatorTypeList = () => {
   return fetch(`${base}/Home/Operator/getOperatorTypeList`)
 }
 
+// charge price apis
+export const $HTTP_getPriceStatusList = (params) => { return fetch(`${base_charger}/api/reports/charge-prices`, params) }
+
+export const $HTTP_getChargePriceList = () => { return fetch(`${base_charger}/api/charge-prices/status-list`) }
+
+export const $HTTP_addChargePrice = (params) => { return post(`${base_charger}/api/charge-prices`, params) }
+
+export const $HTTP_updateChargePrice = (params) => { return put(`${base_charger}/api/charge-prices/${params.id}`, params) }
+
+export const $HTTP_getRateTypeList = () => { return fetch(`${base_charger}/api/charge-prices/charge-rate-type-list`) }
+
+export const $HTTP_getCurrencyList = () => { { return fetch(`${base_charger}/api/charge-prices/currency-type-list`) } }
 /**
  * @description 登出
  */
