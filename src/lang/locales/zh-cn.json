@@ -38,7 +38,8 @@
         "costRevenueDay": "成本和收入（日间）",
         "costRevenueNight": "成本和收入（夜间）",
         "energyPhm": "能耗 & PHM",
-        "contact": "联系方式"
+        "contact": "联系方式",
+        "price": "价格"
     },
     "login": {
         "login": "登入",

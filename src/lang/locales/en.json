@@ -38,7 +38,8 @@
         "costRevenueDay": "Cost & Revenue (Day)",
         "costRevenueNight": "Cost & Revenue (Night)",
         "energyPhm": "Energy & PHM",
-        "contact": "Contact"
+        "contact": "Contact",
+        "price": "Charge Price"
     },
     "login": {
         "login": "Login",
