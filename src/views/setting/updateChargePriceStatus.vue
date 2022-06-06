@@ -1,30 +1,22 @@
 <template>
-    <el-dialog :title="$t('general.delete')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog :title="$t('general.modify')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
-                Are you sure you want to delete this ChargePrice?
-                <h3>Info</h3>
-                <p>Name: {{data.name}}</p>
-                <p>ChargeRate(On-Peak):{{getSymbols(data.currencyType)}} {{getSymbols(data.onPeak.rate)}} / {{getSymbols(data.onPeak.type)}}</p>
-                <p>ChargeRate(Off-Peak):{{getSymbols(data.currencyType)}} {{getSymbols(data.offPeak.rate)}} / {{getSymbols(data.offPeak.type)}}</p>
-                <p>Occupancy Rate: {{getSymbols(data.currencyType) + getSymbols(data.occupancyRate) + '/' + data.occupancyPeriodMinutes + 'min'}}</p>
-
-                <p>Status: {{data.status}}</p>
-
+                Are you sure you want to update this ChargePrice status?
             </div>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
-            <el-button size="small" type="primary" @click="deleteChargePrice">{{ $t('general.ok') }}</el-button>
+            <el-button size="small" type="primary" @click="updateChargePriceStatus">{{ $t('general.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
 
 <script>
-import { $HTTP_deleteChargePrice } from "@/api/api";
-import { setScrollBar, transformToSymbols } from "@/utils/function";
+import { $HTTP_updateChargePriceStatus } from "@/api/api";
+import { setScrollBar } from "@/utils/function";
 export default {
-    props: { show: Boolean, data: Object },
+    props: { show: Boolean, data: Object, statusList: Array },
     data() {
         return {
             visible: false,
@@ -40,23 +32,28 @@ export default {
             setScrollBar(".formVertical", that);
         });
     },
-    computed: {
-        getSymbols() {
-            return (item) => transformToSymbols(item);
-        },
-    },
     methods: {
-        deleteChargePrice() {
+        updateChargePriceStatus() {
             const that = this;
+            that.isLoading = true;
+            let currentStatus = this.data.status;
+            let newStatus = this.statusList.filter((item) => item !== currentStatus);
+            let config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+
             let params = {
                 chargePriceId: that.data.id,
+                data: newStatus.toString(),
+                config: config,
             };
-            that.isLoading = true;
 
-            $HTTP_deleteChargePrice(params)
+            $HTTP_updateChargePriceStatus(params)
                 .then((res) => {
                     that.isLoading = false;
-                    if (res.status === 204) {
+                    if (res === newStatus.toString()) {
                         that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
                         that.isUpdate = true;
                         that.visible = false;
@@ -77,9 +74,9 @@ export default {
 
 <style lang = "scss" scoped>
 .formVertical {
-    min-height: 220px;
+    min-height: 50px;
     div {
-        min-height: 220px;
+        min-height: 50px;
     }
 }
 </style>

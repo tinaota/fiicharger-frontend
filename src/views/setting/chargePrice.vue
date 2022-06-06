@@ -40,10 +40,13 @@
                             {{getLocTime(scope.row.updated)}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="95">
+                    <el-table-column :label="$t('general.action')" :width="130">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg bind" v-if="scope.row.status==='Disabled'" @click="openDialog('status',scope.row)"></el-button>
+                            <el-button class="no-bg unbind" v-if="scope.row.status==='Enabled'" @click="openDialog('status',scope.row)"></el-button>
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -53,6 +56,8 @@
                 <UpdateChargePrice v-if="createDialog.show" :show="createDialog.show" :dialogType="'create'" @close="closeDialog('create')"></UpdateChargePrice>
                 <UpdateChargePrice v-if="editDialog.show" :show="editDialog.show" :dialogType="'edit'" :data="editDialog.data" @close="closeDialog('edit')"></UpdateChargePrice>
                 <DeleteChargePrice v-if="deleteDialog.show" :show="deleteDialog.show" :data="deleteDialog.data" :dialogType="'delete'" @close="closeDialog('delete')"></DeleteChargePrice>
+                <UpdateChargePriceStatus v-if="updateStatusDialog.show" :show="updateStatusDialog.show" :data="updateStatusDialog.data" :statusList="priceStatusList.data" :dialogType="'status'" @close="closeDialog('status')"></UpdateChargePriceStatus>
+
             </div>
         </div>
     </div>
@@ -64,11 +69,13 @@ import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { $HTTP_getPriceStatusList, $HTTP_getChargePriceList } from "@/api/api";
 import UpdateChargePrice from "@/views/setting/updateChargePrice";
 import DeleteChargePrice from "@/views/setting/deleteChargePrice";
+import UpdateChargePriceStatus from "@/views/setting/updateChargePriceStatus";
 
 export default {
     components: {
         UpdateChargePrice,
         DeleteChargePrice,
+        UpdateChargePriceStatus,
     },
     data() {
         return {
@@ -114,6 +121,11 @@ export default {
                 data: {},
             },
             deleteDialog: {
+                isLoading: false,
+                show: false,
+                data: {},
+            },
+            updateStatusDialog: {
                 isLoading: false,
                 show: false,
                 data: {},
@@ -203,6 +215,9 @@ export default {
             } else if (type === "delete") {
                 this.deleteDialog.show = true;
                 this.deleteDialog.data = data;
+            } else if (type === "status") {
+                this.updateStatusDialog.show = true;
+                this.updateStatusDialog.data = data;
             }
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
@@ -213,6 +228,8 @@ export default {
                 this.deleteDialog.show = false;
             } else if (dialog === "edit") {
                 this.editDialog.show = false;
+            } else if (dialog === "status") {
+                this.updateStatusDialog.show = false;
             }
             this.fetchData();
 

@@ -1,7 +1,7 @@
 <template>
     <el-dialog :title="dialogType==='create'?$t('general.create'):$t('general.modify')" width="30%" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="right-form formVertical">
-            <el-form ref="updateChargePriceForm" :rules="rules" :model="dialog" style="width:100%">
+            <el-form ref="updateChargePriceForm" :rules="rules" :model="dialog" style="width:96%">
                 <div class="form-item">
                     <el-form-item prop="name">
                         <div class="label">{{ $t('general.name') }}</div>

@@ -55,6 +55,9 @@ export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/api/c
 
 export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/api/charge-prices/${params.chargePriceId}`, params) }
 
+export const $HTTP_updateChargePriceStatus = (params) => { return putImage(`${base_charger}/api/charge-prices/${params.chargePriceId}/status`, params.data, params.config) }
+
+
 /**
  * @description 登出
  */
