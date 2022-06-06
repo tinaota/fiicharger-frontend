@@ -73,10 +73,12 @@ export default {
                                 .then(() => {
                                     this.$router.push({ path: "/location" });
                                     this.$store.commit(types.ROLE, "Super");
+                                    this.$store.commit(types.UPDATE_PERMISSION, true);
                                 });
                         } else {
                             this.$router.push({ path: "/contactadmin" });
                             this.$store.commit(types.ROLE, "Member");
+                            this.$store.commit(types.UPDATE_PERMISSION, false);
                         }
                     })
                     .catch((e) => console.log(e));

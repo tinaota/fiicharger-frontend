@@ -40,7 +40,7 @@
                             {{getLocTime(scope.row.updated)}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="130">
+                    <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
@@ -79,7 +79,7 @@ export default {
     },
     data() {
         return {
-            permissionEditAble: this.$store.state.permissionEditAble,
+            permissionEditAble: this.$store.state.permissionEditable,
             priceStatusList: {
                 isLoading: false,
                 data: {},
@@ -136,8 +136,6 @@ export default {
         setScrollBar(".scroll", this);
         this.getStatusList();
         this.fetchData();
-        // remove this after permission editible is added in store
-        this.permissionEditAble = true;
     },
     computed: {
         getSymbols() {

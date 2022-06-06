@@ -144,7 +144,7 @@ export default {
     data() {
         return {
             lang: this.$store.state.lang,
-            permissionEditAble: false,
+            permissionEditAble: this.$store.state.permissionEditable,
             filter: {
                 carBrand: "",
                 carModel: "",
@@ -206,13 +206,6 @@ export default {
                 data: {},
             },
         };
-    },
-    created() {
-        const userData = this.$store.state.userInfo,
-            role = userData.roles;
-        if (role.indexOf("Admin") || role.indexOf("Owner") || role.indexOf("Super")) {
-            this.permissionEditAble = true;
-        }
     },
     mounted() {
         setScrollBar(".scroll", this);

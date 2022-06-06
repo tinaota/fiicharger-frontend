@@ -11,7 +11,8 @@ export default new Vuex.Store({
         tabsArr: ['station'],
         role: '',
         userInfo: localStorage.getItem('fiics-user') ? JSON.parse(localStorage.getItem('fiics-user')) : {},
-        darkTheme: localStorage.getItem('fiics-dark-theme') !== null ? JSON.parse(localStorage.getItem('fiics-dark-theme')) : false
+        darkTheme: localStorage.getItem('fiics-dark-theme') !== null ? JSON.parse(localStorage.getItem('fiics-dark-theme')) : false,
+        permissionEditable: localStorage.getItem('fiics-permission-editable') !== null ? JSON.parse(localStorage.getItem('fiics-permission-editable')) : false,
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
@@ -53,6 +54,10 @@ export default new Vuex.Store({
         [types.DARKTHEME]: (state, data) => {
             state.darkTheme = data;
             window.localStorage.setItem('fiics-dark-theme', `${data}`)
+        },
+        [types.UPDATE_PERMISSION]: (state, data) => {
+            state.permissionEditable = data;
+            window.localStorage.setItem('fiics-permission-editable', `${data}`)
         }
     },
     actions: {
