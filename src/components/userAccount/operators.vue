@@ -58,7 +58,7 @@
             <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
             </el-pagination>
         </div>
-        <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="600px" :visible.sync="dialog.visible" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeDialog(true)" v-loading="dialog.isLoading">
+        <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="600px" :visible.sync="dialog.visible" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false" @close="closeDialog(null,'create')" v-loading="dialog.isLoading">
             <div class="vertial formVertical">
                 <el-form ref="operatorForm" :rules="rules" :model="dialog.info" style="width:98%">
 
@@ -124,9 +124,9 @@
                 <el-button size="small" type="primary" @click="updateOperatorData">{{ $t('general.ok') }}</el-button>
             </span>
         </el-dialog>
-        <ChangePwd :show="pwdDialog.show" :name="pwdDialog.name" :id="pwdDialog.id" @close="closeDialog(false)"></ChangePwd>
-        <DeleteUser :show="deleteDialog.show" :email="deleteDialog.email" :id="deleteDialog.id" @close="closeDialog(false)"></DeleteUser>
-        <AddRoles :show="addRolesDialog.show" :id="addRolesDialog.id" @close="closeDialog(false)"></AddRoles>
+        <ChangePwd :show="pwdDialog.show" :name="pwdDialog.name" :id="pwdDialog.id" @close="closeDialog(null,'edit')"></ChangePwd>
+        <DeleteUser :show="deleteDialog.show" :email="deleteDialog.email" :id="deleteDialog.id" @close="(e)=>closeDialog(e,'delete')"></DeleteUser>
+        <AddRoles :show="addRolesDialog.show" :id="addRolesDialog.id" @close="closeDialog(null,'addroles')"></AddRoles>
 
     </div>
 </template>
@@ -144,7 +144,7 @@ import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
 import AddRoles from "@/components/userAccount/addRoles";
-import {validateImageUrl, validateEmail, validatePassword, validateConfirmedNewPassword} from "@/utils/validation"
+import { validateImageUrl, validateEmail, validatePassword, validateConfirmedNewPassword } from "@/utils/validation";
 export default {
     components: {
         ChangePwd,
@@ -508,20 +508,31 @@ export default {
                 }
             });
         },
-        closeDialog(isEdit) {
-            if (isEdit) {
+        closeDialog(e, dialog) {
+            if (dialog === "create") {
                 this.$refs.updateImg && this.$refs.updateImg.clearFiles();
-            } else {
+            } else if (dialog === "edit") {
                 this.pwdDialog.show = false;
-                this.deleteDialog.show = false;
+            } else if (dialog === "addroles") {
                 this.addRolesDialog.show = false;
-                this.fetchData();
+            } else if (dialog === "delete") {
+                this.deleteDialog.show = false;
+                // if final item is deleted take to previous page if present
+                if (e && this.tableData.length === 1) {
+                    if (this.page >= 2) {
+                        this.page = this.page - 1;
+                    } else {
+                        this.page = 1;
+                    }
+                }
             }
+
+            this.fetchData();
             this.dialog.info = {
                 email: "",
-                password:"",
-                confirmPassword:""
-            }
+                password: "",
+                confirmPassword: "",
+            };
             this.$nextTick(() => {
                 this.$refs?.operatorForm?.clearValidate("email");
                 this.$refs?.operatorForm?.clearValidate("password");

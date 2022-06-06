@@ -49,7 +49,7 @@
                 <div class="total">{{ $t("general.result", {item:total})}}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
-                <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog('detail')">
+                <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog(null,'detail')">
                     <div class="tabs-contain carDetail">
                         <el-tabs v-model="dialog.active" @tab-click="handleTabClick">
                             <el-tab-pane :label="$t('cars.carType')" name="carType">
@@ -115,9 +115,9 @@
                         </el-tabs>
                     </div>
                 </el-dialog>
-                <UpdateCars :show="createCarsDialog.show" :dialogType="'create'" @close="closeDialog('create')"></UpdateCars>
-                <DeleteCars :show="deleteCarsDialog.show" :id="deleteCarsDialog.id" :make="deleteCarsDialog.make" :carModel="deleteCarsDialog.model" :trim="deleteCarsDialog.trim" @close="closeDialog('delete')"></DeleteCars>
-                <UpdateCars :show="editCarsDialog.show" :data="editCarsDialog.data" :dialogType="'edit'" @close="closeDialog('edit')"></UpdateCars>
+                <UpdateCars :show="createCarsDialog.show" :dialogType="'create'" @close="closeDialog(null,'create')"></UpdateCars>
+                <DeleteCars :show="deleteCarsDialog.show" :id="deleteCarsDialog.id" :make="deleteCarsDialog.make" :carModel="deleteCarsDialog.model" :trim="deleteCarsDialog.trim" @close="(e)=>closeDialog(e,'delete')"></DeleteCars>
+                <UpdateCars :show="editCarsDialog.show" :data="editCarsDialog.data" :dialogType="'edit'" @close="closeDialog(null,'edit')"></UpdateCars>
 
             </div>
         </div>
@@ -312,7 +312,7 @@ export default {
             $HTTP_getCarInfo(param)
                 .then((data) => {
                     that.dialog.isLoading = false;
-                    if (data?.length>0) {
+                    if (data) {
                         let _carTypeInfo = {};
                         _carTypeInfo["carBrand"] = data.make;
                         _carTypeInfo["carModel"] = data.model;
@@ -399,17 +399,24 @@ export default {
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleTabClick(tab, event) {},
-        closeDialog(dialog) {
+        closeDialog(e, dialog) {
             if (dialog === "create") {
                 this.createCarsDialog.show = false;
-                this.fetchData();
             } else if (dialog === "delete") {
                 this.deleteCarsDialog.show = false;
-                this.fetchData();
+                // if final item is deleted take to previous page if present
+                if (e && this.tableData.length === 1) {
+                    if (this.page >= 2) {
+                        this.page = this.page - 1;
+                    } else {
+                        this.page = 1;
+                    }
+                }
             } else if (dialog === "edit") {
                 this.editCarsDialog.show = false;
-                this.fetchData();
             }
+            this.fetchData();
+
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
     },

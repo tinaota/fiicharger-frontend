@@ -64,7 +64,6 @@ export default {
             this.$Api(params)
                 .then((data) => {
                     that.isLoading = false;
-                    console.log(data);
                     if (data.succeeded) {
                         that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
                         that.isUpdate = true;

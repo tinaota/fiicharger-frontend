@@ -53,10 +53,10 @@
                 <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
-                <UpdateChargePrice v-if="createDialog.show" :show="createDialog.show" :dialogType="'create'" @close="closeDialog('create')"></UpdateChargePrice>
-                <UpdateChargePrice v-if="editDialog.show" :show="editDialog.show" :dialogType="'edit'" :data="editDialog.data" @close="closeDialog('edit')"></UpdateChargePrice>
-                <DeleteChargePrice v-if="deleteDialog.show" :show="deleteDialog.show" :data="deleteDialog.data" :dialogType="'delete'" @close="closeDialog('delete')"></DeleteChargePrice>
-                <UpdateChargePriceStatus v-if="updateStatusDialog.show" :show="updateStatusDialog.show" :data="updateStatusDialog.data" :statusList="priceStatusList.data" :dialogType="'status'" @close="closeDialog('status')"></UpdateChargePriceStatus>
+                <UpdateChargePrice v-if="createDialog.show" :show="createDialog.show" :dialogType="'create'" @close="closeDialog(null,'create')"></UpdateChargePrice>
+                <UpdateChargePrice v-if="editDialog.show" :show="editDialog.show" :dialogType="'edit'" :data="editDialog.data" @close="closeDialog(null,'edit')"></UpdateChargePrice>
+                <DeleteChargePrice v-if="deleteDialog.show" :show="deleteDialog.show" :data="deleteDialog.data" :dialogType="'delete'" @close="(e)=>closeDialog(e,'delete')"></DeleteChargePrice>
+                <UpdateChargePriceStatus v-if="updateStatusDialog.show" :show="updateStatusDialog.show" :data="updateStatusDialog.data" :statusList="priceStatusList.data" :dialogType="'status'" @close="closeDialog(null,'status')"></UpdateChargePriceStatus>
 
             </div>
         </div>
@@ -221,11 +221,20 @@ export default {
             }
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        closeDialog(dialog) {
+        closeDialog(e, dialog) {
             if (dialog === "create") {
                 this.createDialog.show = false;
             } else if (dialog === "delete") {
                 this.deleteDialog.show = false;
+
+                // if final item is deleted take to previous page if present
+                if (e && this.tableData.length === 1) {
+                    if (this.page >= 2) {
+                        this.page = this.page - 1;
+                    } else {
+                        this.page = 1;
+                    }
+                }
             } else if (dialog === "edit") {
                 this.editDialog.show = false;
             } else if (dialog === "status") {
