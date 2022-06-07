@@ -1214,3 +1214,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.el-dialog__body{
+    word-break:  normal !important;
+}
