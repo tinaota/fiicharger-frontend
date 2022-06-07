@@ -53,8 +53,9 @@
                     <div class="elecRateItem">
                         <el-input-number v-model="dialog.occupancyRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
                         <span>/</span>
-                        <el-input-number v-model="dialog.occupancyPeriodMinutes" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
-
+                        <el-tooltip content="min" placement="top" effect="light" popper-class="custom">
+                            <el-input-number v-model="dialog.occupancyPeriodMinutes" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+                        </el-tooltip>
                     </div>
                 </div>
             </el-form>
