@@ -385,6 +385,12 @@
             &.color5 {
                 background: #8c8f97;
             }
+            &.color6{
+                background: #dde2ee;
+            }
+            &.color7{
+                background: #ddc31b;
+            }
         }
         &.report {
             margin-bottom: 0;
@@ -703,6 +709,11 @@ button,
         width: 24px;
         height: 24px;
         background-image: url('~imgs/ic_unbind.png')
+    }
+    &.currency{
+        width: 24px;
+        height: 24px;
+        background-image: url('~imgs/ic_revenue.png') 
     }
     + .el-button {
         margin-left: 8px;

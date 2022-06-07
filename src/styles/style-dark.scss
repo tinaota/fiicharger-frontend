@@ -63,6 +63,9 @@ $dark-background-color: #2d3855;
             .formVertical .form-item .label,
             .mainctrl .el-table tr td {
                 color: $dark-font-color !important;
+                .el-checkbox .el-checkbox__label {
+                    color: $dark-font-color !important;
+                }
             }
         }
         .dashboard-statistics {
