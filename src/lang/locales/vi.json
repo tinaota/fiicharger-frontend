@@ -133,7 +133,13 @@
         "theme": "chủ đề",
         "light": "nhẹ",
         "dark": "tối",
-        "unknown": "Không xác định"
+        "unknown": "Không xác định",
+        "modifyChargeBoxPrice": "Chọn từ danh sách giá để ràng buộc điểm tính phí",
+        "updateRolesUser": "Chọn vai trò để cập nhật cho người dùng này:",
+        "changeRoles": "Thay đổi vai trò thành:",
+        "deleteThis": "Bạn có chắc chắn muốn xóa cái này không",
+        "updateThis": "Bạn có chắc chắn muốn cập nhật cái này không",
+        "user": "Người dùng"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -246,7 +252,8 @@
         "onPeakDemandMaxLimit": "Nhu cầu tối đa trong thời gian cao điểm",
         "csMaxPower": "Công suất cực đại của cọc sạc",
         "intervalTime": "Khoảng thời gian",
-        "loadBalance": "Cân bằng tải"
+        "loadBalance": "Cân bằng tải",
+        "serial": "Sê-ri"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

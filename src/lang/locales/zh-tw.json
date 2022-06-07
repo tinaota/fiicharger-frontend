@@ -133,7 +133,13 @@
         "theme": "主題",
         "light": "淺色",
         "dark": "深色",
-        "unknown": "未知"
+        "unknown": "未知",
+        "modifyChargeBoxPrice": "從價格表中選擇綁定充電點",
+        "updateRolesUser": "選擇要更新給該用戶的角色：",
+        "changeRoles": "將角色更改為：",
+        "deleteThis": "你確定要刪除這個",
+        "updateThis": "你確定要更新這個嗎",
+        "user": "用戶"
     },
     "dashboard": {
         "energyUsedUnit": "電耗(kWh)",
@@ -246,7 +252,8 @@
         "onPeakDemandMaxLimit": "尖峰期間需求最大限制",
         "csMaxPower": "充電樁最大功率",
         "intervalTime": "間隔時間",
-        "loadBalance": "負載平衡"
+        "loadBalance": "負載平衡",
+        "serial": "系列"
     },
     "userAccount": {
         "memberName": "會員名稱",

@@ -16,8 +16,8 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column prop="name" label="Name" :min-width="2"></el-table-column>
-                    <el-table-column prop="status" label="Status" :min-width="2"></el-table-column>
+                    <el-table-column prop="name" :label="$t('general.name')" :min-width="2"></el-table-column>
+                    <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
@@ -30,12 +30,12 @@
                             </template>
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column label="Occupancy Rate" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.parkingRate')" :min-width="2">
                         <template slot-scope="scope">
                             {{getSymbols(scope.row.currencyType) + getSymbols(scope.row.occupancyRate) + '/' + scope.row.occupancyPeriodMinutes + 'min'}}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="updated" label="Modified" :min-width="2">
+                    <el-table-column prop="updated" :label="$t('general.latestModification')" :min-width="2">
                         <template slot-scope="scope">
                             {{getLocTime(scope.row.updated)}}
                         </template>

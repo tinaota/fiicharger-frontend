@@ -2,12 +2,13 @@
     <el-dialog :title="$t('general.addRoles')" width="400px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
-                Choose roles to update to this user:
+                {{$t('general.updateRolesUser')}}
             </div>
 
             <div class="roles-multi-select">
                 <multiselect v-model="value" :options="options" multiple :show-labels="false"></multiselect>
-                <p>Change roles to : {{value}}</p>
+                <p> {{$t('general.changeRoles')}}
+                    {{value}}</p>
             </div>
 
         </div>
@@ -55,7 +56,7 @@ export default {
                     };
                     $HTTP_getRoles(params)
                         .then((res) => {
-                            that.value=res
+                            that.value = res;
                         })
                         .catch((err) => {
                             let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;

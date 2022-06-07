@@ -2,14 +2,14 @@
     <el-dialog :title="$t('general.delete')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
-                Are you sure you want to delete this ChargePrice?
-                <h3>Info</h3>
-                <p>Name: {{data.name}}</p>
-                <p>ChargeRate(On-Peak):{{getSymbols(data.currencyType)}} {{getSymbols(data.onPeak.rate)}} / {{getSymbols(data.onPeak.type)}}</p>
-                <p>ChargeRate(Off-Peak):{{getSymbols(data.currencyType)}} {{getSymbols(data.offPeak.rate)}} / {{getSymbols(data.offPeak.type)}}</p>
-                <p>Occupancy Rate: {{getSymbols(data.currencyType) + getSymbols(data.occupancyRate) + '/' + data.occupancyPeriodMinutes + 'min'}}</p>
+                {{$t('general.deleteThis')}} {{$t('menu.price').toLowerCase()}}?
+                <h3>{{$t('menu.information')}}</h3>
+                <p>{{$t('general.name')}}: {{data.name}}</p>
+                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.onPeak')}}): {{getSymbols(data.currencyType)}} {{getSymbols(data.onPeak.rate)}} / {{getSymbols(data.onPeak.type)}}</p>
+                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.offPeak')}}): {{getSymbols(data.currencyType)}} {{getSymbols(data.offPeak.rate)}} / {{getSymbols(data.offPeak.type)}}</p>
+                <p>{{$t('chargingStation.parkingRate')}}: {{getSymbols(data.currencyType) + getSymbols(data.occupancyRate) + '/' + data.occupancyPeriodMinutes + 'min'}}</p>
 
-                <p>Status: {{data.status}}</p>
+                <p>{{$t('general.status')}}: {{data.status}}</p>
 
             </div>
         </div>

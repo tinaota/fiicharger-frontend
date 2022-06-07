@@ -2,12 +2,11 @@
     <el-dialog :title="$t('general.delete')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
-                Are you sure you want to delete this vehicle?
-                <h3>Info</h3>
-                <p> Id: {{id}}</p>
-                <p> Make: {{make}}</p>
-                <p> Model:{{carModel}}</p>
-                <p> Trim: {{trim}}</p>
+                {{$t('general.deleteThis')}} {{$t('menu.cars').toLowerCase()}}?
+                <h3>{{$t('menu.information')}}</h3>
+                <p> {{$t('cars.maker')}}: {{make}}</p>
+                <p> {{$t('cars.model')}}:{{carModel}}</p>
+                <p> {{$t('cars.trim')}}: {{trim}}</p>
             </div>
         </div>
         <span slot="footer" class="dialog-footer">

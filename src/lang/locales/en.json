@@ -133,7 +133,13 @@
         "theme": "Theme",
         "light": "Light",
         "dark": "Dark",
-        "unknown": "Unknown"
+        "unknown": "Unknown",
+        "modifyChargeBoxPrice": "Choose from the price list to bind charge point",
+        "updateRolesUser": "Choose roles to update to this user:",
+        "changeRoles": "Change roles to : ",
+        "deleteThis": "Are you sure you want to delete this ",
+        "updateThis": "Are you sure you want to update this",
+        "user": "User"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -161,7 +167,7 @@
         "stationName": "Station Name",
         "kioskName": "Kiosk Name",
         "connector#": "Connector #",
-        "parkingRate": "Occupancy Fee",
+        "parkingRate": "Occupancy Rate",
         "elecRate": "Charge Rate",
         "chargeType": "Type",
         "onPeak": "On-Peak",
@@ -246,7 +252,8 @@
         "onPeakDemandMaxLimit": "On-Peak Demand Max. Limit",
         "csMaxPower": "CS MAx. Power",
         "intervalTime": "Interval Time",
-        "loadBalance": "Load Balance"
+        "loadBalance": "Load Balance",
+        "serial": "Serial"
     },
     "userAccount": {
         "memberName": "Member Name",

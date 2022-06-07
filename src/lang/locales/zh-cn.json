@@ -133,7 +133,13 @@
         "theme": "主题",
         "light": "浅色",
         "dark": "深色",
-        "unknown": "未知"
+        "unknown": "未知",
+        "modifyChargeBoxPrice": "从价格表中选择绑定充电点",
+        "updateRolesUser": "选择要更新给该用户的角色：",
+        "changeRoles": "将角色更改为：",
+        "deleteThis": "你确定要删除这个吗",
+        "updateThis": "你确定要更新这个吗",
+        "user": "用户"
     },
     "dashboard": {
         "energyUsedUnit": "电耗(kWh)",
@@ -246,7 +252,8 @@
         "onPeakDemandMaxLimit": "尖峰期间需求最大限制",
         "csMaxPower": "充电桩最大功率",
         "intervalTime": "间隔时间",
-        "loadBalance": "负载平衡"
+        "loadBalance": "负载平衡",
+        "serial": "系列"
     },
     "userAccount": {
         "memberName": "会员名称",

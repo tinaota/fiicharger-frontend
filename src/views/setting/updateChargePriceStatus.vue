@@ -2,7 +2,7 @@
     <el-dialog :title="$t('general.modify')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <div class="form-item">
-                Are you sure you want to update this ChargePrice status?
+                {{$t('general.updateThis')}} {{$t('menu.price').toLowerCase()}} {{$t('general.status').toLowerCase()}}?
             </div>
         </div>
         <span slot="footer" class="dialog-footer">

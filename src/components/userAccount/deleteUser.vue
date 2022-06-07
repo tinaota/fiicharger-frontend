@@ -3,7 +3,7 @@
         <div class="formVertical">
             <div class="form-item">
 
-                Are you sure you want to delete this user <b>{{email}}</b>?
+                {{$t('general.deleteThis')}} {{$t('general.user').toLowerCase()}} <b>{{email}}</b>?
             </div>
 
         </div>
