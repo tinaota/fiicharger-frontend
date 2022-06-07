@@ -103,15 +103,15 @@ axios.interceptors.response.use(
             originalRequest._retry = true;
             const res = await axios.post(`${$GLOBAL_AUTH}/auth/token`, formBody, config);
             if (res.status === 200) {
-                    let _data = res.data;
-                    localStorage.setItem("fiics-auth", JSON.stringify(_data));
+                let _data = res.data;
+                localStorage.setItem("fiics-auth", JSON.stringify(_data));
                 // Change Authorization header
                 const fiics_auth = JSON.parse(
                     localStorage.getItem("fiics-auth")
-                    )
+                )
                 const token = fiics_auth?.access_token;
                 if (token) {
-                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
                 }
                 // return originalRequest object with Axios.
                 return axios(originalRequest);
@@ -120,9 +120,10 @@ axios.interceptors.response.use(
 
         }
         else {
-            store.commit(types.LOGOUT, JSON.stringify({}));
-            router.replace({ path: '/login' });
-            // Message({ type: 'warning', message: i18n.t('login.timeout') });
+            if (error?.response?.data?.error === 'invalid_grant' && error?.response?.status === 400) {
+                store.commit(types.LOGOUT, JSON.stringify({}));
+                router.replace({ path: '/login' });
+            }
             return Promise.reject(error.response)
 
         }
@@ -183,7 +184,7 @@ export function post(url, params = {}) {
                 } else {
                     reject(response)
                 }
-            }, err => {
+            }).catch(err => {
                 if (err.status === 403) {
                     err['data'] = 'Permission denied.'
                 }
@@ -211,7 +212,7 @@ export function put(url, params = {}) {
     })
 }
 
-export function putImage(url, formData, config) {
+export function putWithConfig(url, formData, config) {
     return new Promise((resolve, reject) => {
         axios.put(url, formData, config)
             .then(response => {

@@ -1,6 +1,6 @@
 import qs from 'qs'
 import { $GLOBAL_HTTP, $GLOBAL_VEHICLE, $GLOBAL_AUTH, $GLOBAL_CHARGER } from '@/utils/global'
-import { fetch, post, patch, fetchImg, put, putImage, del } from '@/http/http'
+import { fetch, post, patch, fetchImg, put, putWithConfig, del } from '@/http/http'
 const base = $GLOBAL_HTTP;
 const base_auth = $GLOBAL_AUTH
 const base_vehicle = $GLOBAL_VEHICLE
@@ -27,7 +27,7 @@ export const $HTTP_getRoles = params => {
 }
 
 export const $HTTP_updateImage = params => {
-  return putImage(`${base_auth}/api/Users/${params.id}/picture`, params.formData, params.config)
+  return putWithConfig(`${base_auth}/api/Users/${params.id}/picture`, params.formData, params.config)
 }
 
 export const $HTTP_addRoles = params => {
@@ -55,7 +55,7 @@ export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/api/c
 
 export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/api/charge-prices/${params.chargePriceId}`, params) }
 
-export const $HTTP_updateChargePriceStatus = (params) => { return putImage(`${base_charger}/api/charge-prices/${params.chargePriceId}/status`, params.data, params.config) }
+export const $HTTP_updateChargePriceStatus = (params) => { return putWithConfig(`${base_charger}/api/charge-prices/${params.chargePriceId}/status`, params.data, params.config) }
 
 
 /**
