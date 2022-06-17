@@ -11,6 +11,7 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 import twLocale from 'element-ui/lib/locale/lang/zh-TW'
 import cnLocale from 'element-ui/lib/locale/lang/zh-CN'
 import viLocale from 'element-ui/lib/locale/lang/vi'
+import { transformLangCookieToSymbol } from "@/utils/function";
 
 Vue.use(VueI18n)
 const messages = {
@@ -20,20 +21,16 @@ const messages = {
     "vi": Object.assign(vi, viLocale),
 }
 
+// set local language based on a cookie
+let localLanguage;
+const languageCookie = ('; ' + document.cookie).split(`; fii.culture=`).pop().split(';')[0];
+localLanguage = transformLangCookieToSymbol(languageCookie)
+
 const i18n = new VueI18n({
-    locale: window.navigator.userLanguage || window.navigator.language || 'en',
+    locale: localLanguage,
     fallbackLocale: 'en',
     messages
 })
-var language = window.navigator.userLanguage || window.navigator.language;
-var langLowerCase = language.toLowerCase()
-if (window.localStorage.getItem('fiics-lang') === null) {
-    if (Object.keys(messages).indexOf(langLowerCase) !== -1) {
-        window.localStorage.setItem("fiics-lang", langLowerCase)
-    } else {
-        window.localStorage.setItem("fiics-lang", 'en')
-    }
-}
 
 locale.i18n((key, value) => i18n.t(key, value))
 export default i18n

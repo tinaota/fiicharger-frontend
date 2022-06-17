@@ -79,7 +79,6 @@ export default {
     },
     data() {
         return {
-            lang: '',
             operatorList: {},
             filter: {
                 tmpSearch: '',
@@ -103,7 +102,6 @@ export default {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
-        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         this.fetchData();
@@ -114,9 +112,6 @@ export default {
             this.page = 1;
             this.isLoading = true;
             this.$jQuery(".scroll").length > 0 && this.$jQuery(".scroll").mCustomScrollbar('destroy');
-            let param = {
-                lang: this.lang
-            };
             if (this.filter.operatorTypeId && this.filter.operatorTypeId != '1') {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
@@ -140,7 +135,7 @@ export default {
                 } else {
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data.message });
                 }
                 setScrollBar('.scroll', this);
             }).catch((err) => {

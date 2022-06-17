@@ -30,15 +30,11 @@ export default {
     },
     data() {
         return {
-            lang: "",
             visible: false,
             isLoading: false,
             isUpdate: false,
             $API: null,
         };
-    },
-    created() {
-        this.lang = window.localStorage.getItem("fiics-lang");
     },
     watch: {
         show: {

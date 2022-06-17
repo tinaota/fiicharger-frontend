@@ -6,7 +6,6 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: null,
-        lang: localStorage.getItem('fiics-lang') ? localStorage.getItem('fiics-lang') : 'en', 
         nowSelectTab: 'station',
         tabsArr: ['station'],
         role: '',
@@ -21,24 +20,15 @@ export default new Vuex.Store({
         },
         [types.LOGOUT]: (state) => {
             let uuid = localStorage.getItem('fiics-uuid');
-            let fiicsLang = localStorage.getItem('fiics-lang')
             let fiicsDarkTheme = localStorage.getItem('fiics-dark-theme') !== null ? localStorage.getItem('fiics-dark-theme') : false
             window.localStorage.clear();
             window.localStorage.setItem('fiics-uuid', uuid);
-            window.localStorage.setItem('fiics-lang', fiicsLang)
             window.localStorage.setItem('fiics-dark-theme', fiicsDarkTheme)
             state = {
                 token: null,
                 lang: 'en',
                 role: ''
             };
-        },
-        [types.LANG]: (state, data) => {
-            state.lang = data;
-            if (app && app.$i18n) {
-                localStorage.setItem("fiics-lang", data);
-                app.$i18n.locale = data;
-            }
         },
         [types.ROLE]: (state, data) => {
             state.role = data;
@@ -61,12 +51,8 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        setLang({ commit }, payload) {
-            commit(types.LANG, payload);
-        },
         setUser({ commit }, payload) {
             commit(types.USERINFO, payload);
-
         }
     }
 })

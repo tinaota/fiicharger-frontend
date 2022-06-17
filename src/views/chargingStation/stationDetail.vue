@@ -164,7 +164,6 @@ export default {
                 stationId: '',
                 stationName: ''
             },
-            lang: '',
             isLoading: false,
             stationInfo: {
                 zipCode: '',
@@ -228,7 +227,6 @@ export default {
                 this.curRouteParam = Object.assign({}, temp);
             }
         }
-        this.lang = window.sessionStorage.getItem('fiics-lang');
     },
     mounted() {
         setScrollBar('.scroll', this);
@@ -278,7 +276,7 @@ export default {
                     this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
                     this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log(err)

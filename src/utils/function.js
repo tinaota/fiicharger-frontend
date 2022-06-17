@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment, { lang } from "moment";
 
 /**
  * @description 在視窗發生改變時，重新渲染圖表
@@ -48,4 +48,58 @@ export const transformToSymbols = function (name) {
             symbol = name;
     }
     return symbol
+}
+
+export const transformLangCookieToSymbol = function (languageCookie) {
+    let localLanguage;
+    if (languageCookie.includes('zh-Hans') || languageCookie.includes('zh-hans')) {
+        localLanguage = "zh-cn"
+    } else if (languageCookie.includes('zh-Hant') || languageCookie.includes('zh-hant')) {
+        localLanguage = "zh-tw"
+    } else if (languageCookie.includes('vi-VN') || languageCookie.includes('vi-vn')) {
+        localLanguage = "vi"
+    } else if (languageCookie.includes('en-US') || languageCookie.includes('en-us')) {
+        localLanguage = "en"
+    } else {
+        localLanguage = "en"
+    }
+    return localLanguage
+}
+
+export const updateLangCookie = function (oldLang, newLang) {
+    const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
+    console.log(oldLang, newLang)
+    let cookieSymbol;
+    switch (newLang) {
+        case "en":
+            cookieSymbol = "en-US"
+            break;
+        case "vi":
+            cookieSymbol = "vi-VN"
+            break;
+        case "zh-cn":
+            cookieSymbol = "zh-Hans"
+            break;
+        case "zh-tw":
+            cookieSymbol = "zh-Hant"
+            break;
+        default:
+            cookieSymbol = "en-US"
+            break;
+    }
+
+    let newCookie;
+    if (oldLang === "vi") {
+        newCookie = languageCookie.replaceAll("vi-VN", cookieSymbol)
+    } else if (oldLang === "en") {
+        newCookie = languageCookie.replaceAll("en-US", cookieSymbol)
+    } else if (oldLang === "zh-cn") {
+        newCookie = languageCookie.replaceAll("zh-Hans", cookieSymbol)
+    } else if (oldLang === "zh-tw") {
+        newCookie = languageCookie.replaceAll("zh-Hant", cookieSymbol)
+    }
+
+    let expiryDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+
+    document.cookie = `fii.culture=${newCookie};expires=${expiryDate};path=/;`
 }

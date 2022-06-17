@@ -102,8 +102,6 @@ export default {
     props: { show: Boolean, dialogType: String, data: Object },
     data() {
         return {
-            lang: "",
-
             visible: false,
             isLoading: false,
             isUpdate: false,
@@ -139,9 +137,6 @@ export default {
                 imageUrl: [{ validator: validateIsEmpty }],
             },
         };
-    },
-    created() {
-        this.lang = window.localStorage.getItem("fiics-lang");
     },
     watch: {
         show: {

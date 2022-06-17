@@ -87,11 +87,12 @@ import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@
 import { $HTTP_logout } from "@/api/api";
 import Vue from "vue";
 import { $GLOBAL_CLIENT_ID } from "@/utils/global";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, updateLangCookie, transformLangCookieToSymbol } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import fiics_logo_dark from "imgs/darkVersion/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
 import redirect from "../router/redirect";
+import { app } from "../main";
 
 export default {
     data() {
@@ -162,6 +163,12 @@ export default {
             this.$store.commit(types.LOGOUT, JSON.stringify({}));
             this.$router.push("/login");
         }
+
+        const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
+        let language = transformLangCookieToSymbol(languageCookie);
+        this.lang = language;
+        this.isActiveLang = language;
+
         this.$router.options.routes
             .filter((item) => item.ename == "Home")[0]
             .children.forEach((item) => {
@@ -207,12 +214,6 @@ export default {
                 this.routerParent = this.routerName;
             }
         }
-        if (!window.localStorage.getItem("fiics-lang")) {
-            window.localStorage.setItem("fiics-lang", "en");
-        }
-        this.lang = window.localStorage.getItem("fiics-lang");
-        this.isActiveLang = this.lang;
-        this.$store.dispatch("setLang", this.lang);
     },
     beforeMount() {
         let uuidValue = localStorage.getItem("fiics-uuid");
@@ -252,10 +253,11 @@ export default {
             return !subChild.hidden;
         },
         handleChangeLang(lang) {
-            if (this.lang !== lang) {
-                this.lang = lang;
-                this.isActiveLang = lang;
-                this.$store.dispatch("setLang", lang); // this.$router.go(0);
+            updateLangCookie(this.lang, lang);
+            this.isActiveLang = lang;
+            this.lang=lang
+            if (app && app.$i18n) {
+                app.$i18n.locale = lang;
             }
         },
         handleMenuSelect(index, indexPath) {
@@ -421,12 +423,12 @@ export default {
     width: inherit;
 }
 
-.el-menu-item.dark-theme{
+.el-menu-item.dark-theme {
     background: #2d3855;
     color: #ffffff;
 }
 
-.el-menu-item.dark-theme.is-active{
+.el-menu-item.dark-theme.is-active {
     color: #1e5eff;
 }
 </style>

@@ -25,7 +25,6 @@ export default {
     },
     data() {
         return {
-            lang: "",
             visible: false,
             isLoading: false,
             isUpdate: false,
@@ -48,9 +47,6 @@ export default {
                 });
             },
         },
-    },
-    created() {
-        this.lang = window.localStorage.getItem("fiics-lang");
     },
     beforeDestroy() {},
     methods: {

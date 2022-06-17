@@ -126,7 +126,6 @@ export default {
     },
     data() {
         return {
-            lang: '',
             operatorList: {},
             center: {
                 lat: 0,
@@ -186,7 +185,6 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        this.lang = window.localStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
     },
@@ -260,7 +258,7 @@ export default {
                         that.currentInfoWindow && that.currentInfoWindow.open();
                     }
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log(err)
@@ -349,7 +347,7 @@ export default {
                         alertCount: alertCount
                     };
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log(err)
@@ -372,7 +370,7 @@ export default {
                         this.stationSearchList.data[item.stationId] = item.stationName;
                     });
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
                 callBack && callBack();
             }).catch((err) => {

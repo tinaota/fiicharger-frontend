@@ -136,7 +136,6 @@ export default {
     data() {
         return {
             active: "chargingSession",
-            lang: "",
             costRevenueUrl: costRevenueUrl,
             filter: {
                 dateRange: [],
@@ -210,7 +209,6 @@ export default {
             operatorTypeName: "",
         };
         this.fetchData(); //api尚未完成
-        this.lang = window.sessionStorage.getItem("fiics-lang");
         this.timer = setInterval(() => {
             this.fetchData(true);
         }, 5000);
@@ -257,7 +255,7 @@ export default {
                         );
                         this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType];
                     } else {
-                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                     }
                 })
                 .catch((err) => {

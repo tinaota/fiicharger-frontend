@@ -156,7 +156,6 @@ export default {
     },
     data() {
         return {
-            lang: '',
             accPermissionType: '',
             permissionEditAble: false,
             operatorList: {},
@@ -227,7 +226,6 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
         this.accPermissionType = userData?.accountInfo?.accPermissionType;
@@ -264,7 +262,7 @@ export default {
                         that.stationList.data[item.stationId] = item.stationName;
                     });
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
                 callBack && callBack();
             }).catch((err) => {
@@ -282,7 +280,7 @@ export default {
                 if (!!data.success) {
                     this.loctionList.data = data.zipCodeList.slice();
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log('loctionList', err)
@@ -326,7 +324,7 @@ export default {
                 } else {
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 this.tableData = [];
@@ -369,7 +367,7 @@ export default {
                         that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
                         that.fetchData();
                     } else {
-                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                     }
                 });
             });

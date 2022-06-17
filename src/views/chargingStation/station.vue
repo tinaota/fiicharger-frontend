@@ -230,7 +230,6 @@ export default {
         return {
             SELECT_NOW_TAB,
             operatorList: {},
-            lang: '',
             accPermissionType: '',
             permissionEditAble: false,
             loctionList: {
@@ -310,7 +309,6 @@ export default {
     },
     created() {
         const userData = JSON.parse(window.sessionStorage.getItem('fiics-user'));
-        this.lang = window.sessionStorage.getItem('fiics-lang');
         this.operatorList = userData.operatorList;
         this.filter.operatorTypeId = userData.operatorId;
         this.accPermissionType = userData.accountInfo.accPermissionType;
@@ -336,7 +334,7 @@ export default {
                 if (!!data.success) {
                     this.loctionList.data = data.zipCodeList.slice();
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log('loctionList', err)
@@ -373,7 +371,7 @@ export default {
                 } else {
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 this.tableData = [];
@@ -388,12 +386,12 @@ export default {
         fetchCountryCodeList() {
             const that = this;
             this.countryCode.isLoading = true;
-            $HTTP_getCountryCodeSelectList({lang: that.lang}).then((data) => {
+            $HTTP_getCountryCodeSelectList({lang: "en"}).then((data) => {
                 this.countryCode.isLoading = false;
                 if (!!data.success) {
                     this.countryCode.data = data.countryCodeList.slice();
                 } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch((err) => {
                 console.log('countryCode', err);
@@ -421,7 +419,7 @@ export default {
                         }
                     });
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             }).catch(err => {
                 that.bindDialog.isLoading = false;
@@ -545,7 +543,7 @@ export default {
                     that.bindDialog.visible = false;
                     that.fetchData()
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             });
         },
@@ -560,7 +558,7 @@ export default {
                         that.$message({ type: "success", message: i18n.t('general.sucDelMsg')});
                         that.fetchData();
                     } else {
-                        that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                     }
                 });
             });
@@ -599,7 +597,7 @@ export default {
                     that.dialog.visible = false;
                     that.fetchData();
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    this.$message({ type: "warning", message: data?.message });
                 }
             });
         },
