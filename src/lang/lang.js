@@ -6,11 +6,14 @@ import en from './locales/en.json'
 import tw from './locales/zh-tw.json'
 import cn from './locales/zh-cn.json'
 import vi from './locales/vi.json'
+import es from './locales/es.json'
 
 import enLocale from 'element-ui/lib/locale/lang/en'
 import twLocale from 'element-ui/lib/locale/lang/zh-TW'
 import cnLocale from 'element-ui/lib/locale/lang/zh-CN'
 import viLocale from 'element-ui/lib/locale/lang/vi'
+import esLocale from 'element-ui/lib/locale/lang/es'
+
 import { transformLangCookieToSymbol } from "@/utils/function";
 
 Vue.use(VueI18n)
@@ -19,6 +22,7 @@ const messages = {
     "zh-tw": Object.assign(tw, twLocale),
     "zh-cn": Object.assign(cn, cnLocale),
     "vi": Object.assign(vi, viLocale),
+    "es": Object.assign(es, esLocale)
 }
 
 // set local language based on a cookie

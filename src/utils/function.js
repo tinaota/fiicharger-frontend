@@ -60,7 +60,10 @@ export const transformLangCookieToSymbol = function (languageCookie) {
         localLanguage = "vi"
     } else if (languageCookie.includes('en-US') || languageCookie.includes('en-us')) {
         localLanguage = "en"
-    } else {
+    } else if (languageCookie.includes('es') || languageCookie.includes('eS')) {
+        localLanguage = "es"
+    }
+    else {
         localLanguage = "en"
     }
     return localLanguage
@@ -83,6 +86,9 @@ export const updateLangCookie = function (oldLang, newLang) {
         case "zh-tw":
             cookieSymbol = "zh-Hant"
             break;
+        case "es":
+            cookieSymbol = "es"
+            break;
         default:
             cookieSymbol = "en-US"
             break;
@@ -97,6 +103,8 @@ export const updateLangCookie = function (oldLang, newLang) {
         newCookie = languageCookie.replaceAll("zh-Hans", cookieSymbol)
     } else if (oldLang === "zh-tw") {
         newCookie = languageCookie.replaceAll("zh-Hant", cookieSymbol)
+    } else if (oldLang === "es") {
+        newCookie = languageCookie.replaceAll("es", cookieSymbol)
     }
 
     let expiryDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
