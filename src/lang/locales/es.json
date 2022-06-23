@@ -16,7 +16,7 @@
         "chargePoint": "Punto de recarga",
         "management": "Administración",
         "chargingSession": "Sesión de carga",
-        "chargePointAlert": "Alerta punto recarga",
+        "chargePointAlert": "Alertas de conector",
         "setting": "Configuración",
         "memberAccount": "Cuenta de miembro",
         "account": "Cuenta",
@@ -39,7 +39,7 @@
         "costRevenueNight": "Costo e Ingresos (Noche)",
         "energyPhm": "Energía y PHM",
         "contact": "Contacto",
-        "price": "Precio de Cobro"
+        "price": "El Precio"
     },
     "login": {
         "login": "Acceso",
@@ -143,13 +143,13 @@
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
-        "nAccount": "Número de cuenta nueva",
+        "nAccount": "Nuevas cuentas creadas",
         "nStation": "Número de estación",
-        "nSession": "Número de sesión",
-        "nConnector": "Número de nuevo conector",
+        "nSession": "Conteo de sesiones",
+        "nConnector": "Se agregaron nuevos conectores",
         "powerUsedTop10": "Energía consumida Top 10 (kWh)",
         "revenueTop10": "Los 10 principales ingresos (USD)",
-        "sessionTop10": "Sesión Top 10 (Tiempos)",
+        "sessionTop10": "Sesión Top 10 (Conteo)",
         "faultsTypeTop5": "Tipo de fallas Top 5 (Veces)",
         "daySelectList": {
             "1": "Últimos 7 días",
@@ -168,9 +168,9 @@
         "kioskName": "Nombre del quiosco",
         "connector#": "Conector #",
         "parkingRate": "Tasa de ocupación",
-        "elecRate": "tasa de carga",
+        "elecRate": "Tasa de carga",
         "chargeType": "Escribe",
-        "onPeak": "en pico",
+        "onPeak": "En pico",
         "offPeak": "Fuera de pico",
         "onPeakHint": "Entre las 9 a. m. y las 9 p. m.Lunes Viernes",
         "offPeakHint": "Entre las 9 p. m. y 9 a. m. de lunes a viernes, fines de semana y feriados designados",
@@ -212,7 +212,7 @@
         "alertTime": "Hora de alerta",
         "workeOrder": "Orden de trabajo",
         "workeOrderStatus": "Estado de la orden de trabajo",
-        "nChargePoint": "Número de cargador nuevo",
+        "nChargePoint": "Nuevos cargadores creados",
         "accumCharging": "Carga acumulativa",
         "avgPrice": "Precio medio",
         "daySelectList": {
