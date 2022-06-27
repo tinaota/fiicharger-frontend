@@ -10,7 +10,7 @@ stages:
   - document
 
 verify_commit_format:
-  image: 10.20.199.207:5000/fii-commitlint:v0.0.1
+  image: $DOCKER_REGISTRY_URL/fii-commitlint:v0.0.1
   stage: verify
   tags: [ docker_runner ]
   rules:
@@ -104,7 +104,7 @@ prod_build_image:
     - docker image tag fiicharger/frontend $DOCKER_REGISTRY_URL/fiicharger/frontend:latest
     - docker push $DOCKER_REGISTRY_URL/fiicharger/frontend:$CI_COMMIT_TAG
     - docker push $DOCKER_REGISTRY_URL/fiicharger/frontend:latest
-    
+
 dev_launch_image:
   stage: launch
   tags: [shell_runner]
