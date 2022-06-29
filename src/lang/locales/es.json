@@ -3,6 +3,7 @@
     "app_name_short": "Sistema de cargador",
     "error_network": "¡Error de solicitud de red!",
     "emptyMessage": "No existen datos con los criterios de búsqueda especificados, ¡inténtalo de nuevo con nuevos criterios de filtro!",
+    "cannotDelete": "No se puede eliminar el elemento vinculado",
     "version": "Ver ",
     "menu": {
         "home": "Hogar",
@@ -86,6 +87,8 @@
         "endTime": "Hora de finalización",
         "time": "Tiempo",
         "searchChargePoint": "Buscar punto de recarga",
+        "connected":"Conectado",
+        "disconnected":"Desconectado",
         "available": "Disponible",
         "unavailable": "Indisponible",
         "maintenance": "Mantenimiento",

@@ -3,6 +3,7 @@
     "app_name_short": "Hệ thống Fiicharger",
     "error_network": "Lỗi mạng",
     "emptyMessage": "Không có Dữ liệu nào tồn tại với tiêu chí tìm kiếm được chỉ định, hãy thử lại với tiêu chí lọc mới!",
+    "cannotDelete": "Không thể xóa mục liên kết",
     "version": "Bản quyền ",
     "menu": {
         "home": "Trang đầu",
@@ -86,6 +87,8 @@
         "endTime": "Thời gian kết thúc",
         "time": "Thời gian",
         "searchChargePoint": "Tìm kiếm điểm sạc",
+        "connected":"Đã kết nối",
+        "disconnected":"Đã ngắt kết nối",
         "available": "Có sẵn",
         "unavailable": "Không có",
         "maintenance": "Bảo trì",
