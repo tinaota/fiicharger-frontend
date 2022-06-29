@@ -8,10 +8,7 @@
             </el-breadcrumb>
             <div class="card-8">
                 <div class="header">{{ $t('chargingStation.stationInfo')}}</div>
-                <el-table
-                    :data="[stationInfo]"
-                    v-loading="isLoading"
-                    class="center">
+                <el-table :data="[stationInfo]" v-loading="isLoading" class="center">
                     <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
                     <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
                     <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
@@ -30,17 +27,14 @@
                     </el-table-column>
                     <el-table-column :label="$t('general.telephone')" :min-width="5">
                         <template slot-scope="scope">
-                            {{ scope.row.countryCode + ' ' + scope.row.phone }}
+                            {{ scope.row.phone }}
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
             <div class="card-8">
                 <div class="header">{{ $t('menu.summary')}}</div>
-                <el-table
-                    :data="[summary]"
-                    v-loading="isLoading"
-                    class="center thNoBorder statistic">
+                <el-table :data="[summary]" v-loading="isLoading" class="center thNoBorder statistic">
                     <el-table-column prop="chargeBoxCount" :label="$t('support.total')" :min-width="2"></el-table-column>
                     <el-table-column prop="acChargeBoxInfo.count" :label="$t('chargingStation.nAC')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('chargingStation.acConnectors')" :min-width="3">
@@ -72,10 +66,7 @@
             </div>
             <div class="card-8">
                 <div class="header">{{ $t('chargingStation.smartChargingSetting')}}</div>
-                <el-table
-                    :data="[smartChargingSettingInfo]"
-                    v-loading="isLoading"
-                    class="center">
+                <el-table :data="[smartChargingSettingInfo]" v-loading="isLoading" class="center">
                     <el-table-column :label="$t('chargingStation.smartCharging')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.onOffStatus ? $t('general.enable'):$t('general.disable') }}
@@ -143,50 +134,50 @@
                     <el-button size="small" type="primary">{{ $t('general.ok') }}</el-button>
                 </span>
             </el-dialog> -->
-            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog" ></ShowPostion>
+            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
         </div>
     </div>
 </template>
 
 <script>
-import { $HTTP_getStationDetail } from "@/api/api";
+import { $HTTP_getStationInfo } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ConnectorDetail from "@/components/chargingStation/connectorDetail";
 export default {
     components: {
         ShowPostion,
-        ConnectorDetail
+        ConnectorDetail,
     },
     data() {
         return {
             curRouteParam: {
-                stationId: '',
-                stationName: ''
+                stationId: "",
+                stationName: "",
             },
             isLoading: false,
             stationInfo: {
-                zipCode: '',
-                address: '',
+                zipCode: "",
+                address: "",
                 loc: {
-                    lng: '',
-                    lon: '',
-                    lat: ''
+                    lng: "",
+                    lon: "",
+                    lat: "",
                 },
-                serviceStartTime: '',
-                serviceEndTime: '',
-                countryCode: '',
-                phone: ''
+                serviceStartTime: "",
+                serviceEndTime: "",
+                countryCode: "",
+                phone: "",
             },
             summary: {
                 chargeBoxCount: 0,
                 acChargeBoxInfo: {
                     count: 0,
-                    chargeConnectorTypeList: []
+                    chargeConnectorTypeList: [],
                 },
                 dcChargeBoxInfo: {
                     count: 0,
-                    chargeConnectorTypeList: []
+                    chargeConnectorTypeList: [],
                 },
                 chargeBoxTotalPower: 0,
             },
@@ -194,16 +185,16 @@ export default {
                 onOffStatus: 0,
                 maxDemandPowerLimit: 0,
                 intervalMaxPower: 0,
-                intervalTime: 5
+                intervalTime: 5,
             },
             smartChargingConnectorAnalysisInfo: [],
             mapDialog: {
                 visible: false,
-                itemId: '',
+                itemId: "",
                 position: {
-                    lat: '',
-                    lng: ''
-                }
+                    lat: "",
+                    lng: "",
+                },
             },
             smartSettingDialog: {
                 visible: false,
@@ -211,16 +202,18 @@ export default {
                     onOffStatus: false,
                     maxDemandPowerLimit: 0,
                     intervalMaxPower: 0,
-                    intervalTime: 5
+                    intervalTime: 5,
                 },
-                intervalTimeList: [5, 10, 15, 20, 30, 60]
-            }
-        }
+                intervalTimeList: [5, 10, 15, 20, 30, 60],
+            },
+        };
     },
     created() {
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.stationId) {
-            let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
+            let temp = window.sessionStorage.getItem("fiics-stationInfo")
+                ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo"))
+                : null;
             if (!(temp && temp.stationId && temp.stationName)) {
                 this.$router.go(-1);
             } else {
@@ -229,59 +222,60 @@ export default {
         }
     },
     mounted() {
-        setScrollBar('.scroll', this);
+        setScrollBar(".scroll", this);
         this.fetchStationDetail();
-
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
-    methods : {
+    methods: {
         fetchStationDetail() {
             const that = this;
             let param = {
-                stationId: that.curRouteParam.stationId
+                stationId: that.curRouteParam.stationId,
             };
             this.isLoading = true;
-            $HTTP_getStationDetail(param).then((data) => {
-                this.isLoading = false;
-                if (!!data.success) {
-                    this.stationInfo = {
-                                            stationId: data.stationInfo.stationId,
-                                            stationName: data.stationInfo.stationName,
-                                            zipCode: data.stationInfo.zipCode,
-                                            address: data.stationInfo.address,
-                                            loc: {
-                                                lng: data.stationInfo.loc.lon,
-                                                lon: data.stationInfo.loc.lon,
-                                                lat: data.stationInfo.loc.lat
-                                            },
-                                            serviceStartTime: data.stationInfo.serviceStartTime,
-                                            serviceEndTime: data.stationInfo.serviceEndTime,
-                                            countryCode: data.stationInfo.countryCode,
-                                            phone: data.stationInfo.phone
-                                        };
-                    this.summary = {
-                                        chargeBoxCount: data.stationInfo.chargeBoxCount,
-                                        acChargeBoxInfo: {
-                                            count: data.stationInfo.acChargeBoxInfo.count,
-                                            chargeConnectorTypeList: data.stationInfo.acChargeBoxInfo.chargeConnectorTypeList.slice()
-                                        },
-                                        dcChargeBoxInfo: {
-                                            count: data.stationInfo.dcChargeBoxInfo.count,
-                                            chargeConnectorTypeList: data.stationInfo.dcChargeBoxInfo.chargeConnectorTypeList.slice()
-                                        },
-                                        chargeBoxTotalPower: data.stationInfo.chargeBoxTotalPower
-                                    };
-                    this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
-                    this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
-                } else {
-                    this.$message({ type: "warning", message: data?.message });
-                }
-            }).catch((err) => {
-                console.log(err)
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
+            $HTTP_getStationInfo(param)
+                .then((data) => {
+                    this.isLoading = false;
+                    if (data?.id >= 0) {
+                        this.stationInfo = {
+                            stationId: data.id,
+                            stationName: data.name,
+                            zipCode: data.address.zipCode,
+                            address: data.address.street,
+                            loc: {
+                                lng: data.coordinates.longitude,
+                                lon: data.coordinates.longitude,
+                                lat: data.coordinates.latitude,
+                            },
+                            serviceStartTime: "no data",
+                            serviceEndTime: "no data",
+                            phone: "no data",
+                        };
+
+                        this.summary = {
+                            chargeBoxCount: data.acCount + data.dcCount,
+                            acChargeBoxInfo: {
+                                count: data.acCount,
+                                chargeConnectorTypeList: "",
+                            },
+                            dcChargeBoxInfo: {
+                                count: data.dcCount,
+                                chargeConnectorTypeList: "",
+                            },
+                            chargeBoxTotalPower: "no-data",
+                        };
+                        this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
+                        this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
+                    } else {
+                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                });
         },
         handleShowDialog() {
             this.mapDialog.itemId = this.stationId;
@@ -304,24 +298,24 @@ export default {
         // }
         goChargePointDetail(chargeBoxId) {
             const params = {
-                chargeBoxId: chargeBoxId
-            }
-            this.$router.push({ name: 'chargePointDetail', params: params});
-        }
-    }
-}
+                chargeBoxId: chargeBoxId,
+            };
+            this.$router.push({ name: "chargePointDetail", params: params });
+        },
+    },
+};
 </script>
 <style lang = "scss" scoped>
 .card-8 {
     .header {
-        color: #151E25;
+        color: #151e25;
         font-size: 1.25rem;
     }
     .chargePoint {
         margin-top: 16px;
         .title {
             font-size: 1.125rem;
-            color: #151E25;
+            color: #151e25;
             cursor: pointer;
         }
         .connector-obj.detail {

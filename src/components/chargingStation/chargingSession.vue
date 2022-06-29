@@ -111,7 +111,7 @@ import Connector from "@/components/chargingStation/connector";
 import LineChart from "@/components/charts/threeLineChart";
 export default {
     props: {
-        chargeBoxId: String
+        chargeBoxId: Number
     },
     components: {
         Connector,

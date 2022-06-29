@@ -1,70 +1,89 @@
 <template>
-    <div class="connector-obj"
-        v-bind:class="{ 'nextLine': isBreak }">
-        <el-tooltip :content="$t('chargingStation.connectorList')[dataObj.status]" placement="bottom" effect="light" popper-class="custom">
-            <span v-if="dataObj.status===1" class="circle-number color1">{{ dataObj.connectorId }}</span>
-            <span v-else-if="dataObj.status===2" class="circle-number color2">{{ dataObj.connectorId }}</span>
-            <!-- <span v-else-if="dataObj.status===3" class="circle-number color6">{{ dataObj.connectorId }}</span> -->
-            <span v-else-if="dataObj.status===4" class="circle-number color2">{{ dataObj.connectorId }}</span>
-            <span v-else-if="dataObj.status===5" class="circle-number color5">{{ dataObj.connectorId }}</span>
-            <span v-else-if="dataObj.status===6" class="circle-number color4">{{ dataObj.connectorId }}</span>
-            <span v-else-if="dataObj.status===3" class="circular">
+    <div class="connector-obj" v-bind:class="{ 'nextLine': isBreak }">
+        <el-tooltip :content="dataObj.status" placement="bottom" effect="light" popper-class="custom">
+            <span v-if="dataObj.status===`Available`" class="circle-number color1">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`Preparing`" class="circle-number color2">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`SuspendedEVSE`" class="circle-number color6">{{ dataObj.id }}</span>
+             <span v-else-if="dataObj.status===`SuspendedEV`" class="circle-number color6">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`Finishing`" class="circle-number color2">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`Reserved`" class="circle-number color5">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`Unavailable`" class="circle-number color4">{{ dataObj.id }}</span>
+            <span v-if="dataObj.status===`Faulted`" class="circle-number color0">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`Charging`" class="circular">
                 <div class="color6"></div>
-                <div class="number">{{ dataObj.connectorId }}</div>
+                <div class="number">{{ dataObj.id }}</div>
             </span>
         </el-tooltip>
-        <span v-if="dataObj.status===0" class="circle-number color0">{{ dataObj.connectorId }}</span>
-        <el-tooltip v-if="dataObj.connectorTypeId !== '1' && dataObj.connectorTypeId !== '5' && dataObj.connectorTypeId !== '4' && dataObj.connectorTypeId !== '10'" :content="dataObj.connectorType" placement="bottom" effect="light" popper-class="custom">
-            <div class="imgItem"><img :src="imgIcon[dataObj.connectorTypeId]"></div>
+        <!-- <span v-if="dataObj.status===`ConnectionLost`" class="circle-number color0">{{ dataObj.id }}</span> -->
+        <el-tooltip v-if="connectorType" :content="dataObj.type" placement="bottom" effect="light" popper-class="custom">
+            <div class="imgItem" v-if="dataObj.type!==`Unknown`"><img :src="connectorType ==='AC'? imgIcon[`${dataObj.type}_AC`] : imgIcon[`${dataObj.type}_DC`]"></div>
+            <div v-if="dataObj.type===`Unknown`" class="imgItemUnknown imgItem">
+                <img :src="imgIcon.Unknown">
+            </div>
         </el-tooltip>
         <span v-else style="vertical-align: text-top; margin-left: 4px;">{{ dataObj.connectorType }}</span>
     </div>
 </template>
 
 <script>
-import ic_ac_iec from 'imgs/ic_ac_iec.png';
-import ic_ac_tesla from 'imgs/ic_ac_tesla.png';
-import ic_ac_sae from 'imgs/ic_ac_sae.png';
-import ic_ac_gbt from 'imgs/ic_ac_gbt.png';
-import ic_dc_iec from 'imgs/ic_dc_iec.png';
-import ic_dc_tesla from 'imgs/ic_dc_tesla.png';
-import ic_dc_chademo from 'imgs/ic_dc_chademo.png';
-import ic_dc_ccs2 from 'imgs/ic_dc_ccs2.png';
-import ic_dc_ccs1 from 'imgs/ic_dc_ccs1.png';
-import ic_dc_gbt from 'imgs/ic_dc_gbt.png';
+import ic_ac_iec from "imgs/ic_ac_iec.png";
+import ic_ac_tesla from "imgs/ic_ac_tesla.png";
+import ic_ac_sae from "imgs/ic_ac_sae.png";
+import ic_ac_gbt from "imgs/ic_ac_gbt.png";
+import ic_dc_iec from "imgs/ic_dc_iec.png";
+import ic_dc_tesla from "imgs/ic_dc_tesla.png";
+import ic_dc_chademo from "imgs/ic_dc_chademo.png";
+import ic_dc_ccs2 from "imgs/ic_dc_ccs2.png";
+import ic_dc_ccs1 from "imgs/ic_dc_ccs1.png";
+import ic_dc_gbt from "imgs/ic_dc_gbt.png";
+import unknown from "imgs/help_icon.svg"
 export default {
     props: {
         isBreak: {
             type: Boolean,
-            default: false
+            default: false,
         },
         dataObj: {
             type: Object,
-            default: function() {
+            default: function () {
                 return {
-                    connectorId: '',
+                    connectorId: "",
                     status: 0,
-                    connectorTypeId: 3,
-                    connectorType: ''
                 };
-            }
-        }
+            },
+        },
+        connectorType: "",
     },
     data() {
         return {
             imgIcon: {
-                1: ic_ac_iec,
-                2: ic_ac_tesla,
-                3: ic_ac_sae,
-                4: ic_ac_gbt,
-                5: ic_dc_iec,
-                6: ic_dc_tesla,
-                7: ic_dc_chademo,
-                8: ic_dc_ccs2,
-                9: ic_dc_ccs1,
-                10: ic_dc_gbt
-            }
-        }
+                Type2_AC: ic_ac_iec,
+                Tesla_AC: ic_ac_tesla,
+                Type1_AC: ic_ac_sae,
+                J1772_AC: ic_ac_sae,
+                GBT_AC: ic_ac_gbt,
+                Type2_DC: ic_dc_iec,
+                Tesla_DC: ic_dc_tesla,
+                CHADeMO_DC: ic_dc_chademo,
+                CCS2_DC: ic_dc_ccs2,
+                CCS1_DC: ic_dc_ccs1,
+                GBT_DC: ic_dc_gbt,
+                Unknown: unknown,
+            },
+        };
     },
-}
+};
 </script>
+
+<style scoped>
+.imgItem{
+    margin-top: 2px;
+}
+.imgItemUnknown{
+    width: 28px;
+}
+.imgItemUnknown img{
+    height: 28px;
+    width: 28px;
+}
+</style>

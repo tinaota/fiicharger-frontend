@@ -4,7 +4,7 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/chargePoint' }">{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ "#" + curRouteParam.serial }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
                 <div class="charge-point-info" v-loading="isLoading">
@@ -28,21 +28,32 @@
                     <div class="item">
                         <div class="label">{{ $t('general.status') }}</div>
                         <div class="content">
-                            <div v-if="curRouteParam.chargeBoxStatus===1">
+                            <div v-if="curRouteParam.chargeBoxStatus===`Available`">
                                 <span class="circle-status color1"></span>
                                 <span> {{ $t('general.available') }}</span>
                             </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===2">
+                            <!-- <div v-else-if="curRouteParam.chargeBoxStatus===2">
                                 <span class="circle-status color2"></span>
                                 <span> {{ $t('general.inUse') }}</span>
-                            </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===3">
+                            </div> -->
+                            <div v-else-if="curRouteParam.chargeBoxStatus===`Maintenance`">
                                 <span class="circle-status color3"></span>
                                 <span> {{ $t('general.maintenance') }}</span>
                             </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===4">
+                            <div v-else-if="curRouteParam.chargeBoxStatus===`Alert`">
                                 <span class="circle-status color4"></span>
                                 <span> {{ $t('general.alert') }}</span>
+                            </div>
+                            <div v-else-if="curRouteParam.chargeBoxStatus===`ConnectionLost`">
+                                <span class="circle-status color7"></span>
+                                <span> {{ $t('general.connectionLost') }}</span>
+                            </div>
+                            <div v-else-if="curRouteParam.chargeBoxStatus===`Unknown`">
+                                <span class="circle-status unknown">
+                                    <img :src="unknown">
+                                </span>
+                                <span> {{ $t('general.unknown') }}</span>
+
                             </div>
                             <div v-else>
                                 <span class="circle-status color5"></span>
@@ -75,10 +86,6 @@
                     <div class="item">
                         <div class="label">{{ $t('general.installationDate') }}</div>
                         <div class="content">{{ curRouteParam.installationDate }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('menu.operator') }}</div>
-                        <div class="content">{{ curRouteParam.operatorTypeName }}</div>
                     </div>
                 </div>
                 <div class="tabs-contain">
@@ -121,6 +128,8 @@ import { $HTTP_getChargeBoxDetail } from "@/api/api";
 import moment from "moment";
 import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
+import unknown from "imgs/help_icon.svg";
+
 const baseGrafanaUrl = $GLOBAL_GRAFANA;
 var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m`;
 
@@ -136,6 +145,7 @@ export default {
     data() {
         return {
             active: "chargingSession",
+            unknown: unknown,
             costRevenueUrl: costRevenueUrl,
             filter: {
                 dateRange: [],
@@ -145,9 +155,10 @@ export default {
                     return time.getTime() > Date.now();
                 },
             },
-            permissionShowAlertAble: true,
+            permissionShowAlertAble: this.$store.state.permissionEditable,
             curRouteParam: {
-                chargeBoxId: "",
+                chargeBoxId: null,
+                serial: "",
                 chargeBoxName: "",
                 loc: {
                     lon: "",
@@ -165,7 +176,6 @@ export default {
                 parkingRate: "",
                 parkingRateType: 1,
                 installationDate: "",
-                operatorTypeName: "",
             },
             isLoading: false,
             active: "chargingSession",
@@ -181,23 +191,20 @@ export default {
         };
     },
     created() {
-        const userData = JSON.parse(window.sessionStorage.getItem("fiics-user")),
-         accPermissionType = userData?.accountInfo?.accPermissionType;
-        if (accPermissionType === 6) {
-            this.permissionShowAlertAble = false;
-        }
-        this.curRouteParam = this.$router.currentRoute.params;
+        let chargePointInfo = JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo"));
+
         this.curRouteParam = {
-            chargeBoxId: this.curRouteParam.chargeBoxId,
-            chargeBoxName: "",
+            chargeBoxId: chargePointInfo.id,
+            serial: chargePointInfo.serial,
+            chargeBoxName: chargePointInfo.name,
             loc: {
-                lon: "",
-                lat: "",
+                lon: chargePointInfo.coordinates.longitude,
+                lat: chargePointInfo.coordinates.latitude,
             },
-            power: 0,
-            chargeBoxStatus: "",
-            connectorList: [],
-            chargeType: "",
+            power: chargePointInfo.powerKilowatts,
+            chargeBoxStatus: chargePointInfo.status,
+            connectorList: chargePointInfo.connectors,
+            chargeType: chargePointInfo.currentType,
             currency: "",
             onPeakElectricityRate: 0,
             onPeakElectricityRateType: 1,
@@ -205,13 +212,13 @@ export default {
             offPeakElectricityRateType: 1,
             parkingRate: 0,
             parkingRateType: 1,
-            installationDate: "",
-            operatorTypeName: "",
+            installationDate: chargePointInfo.installed,
         };
-        this.fetchData(); //api尚未完成
-        this.timer = setInterval(() => {
-            this.fetchData(true);
-        }, 5000);
+        // this.fetchData(); //api尚未完成
+        // this.lang = window.sessionStorage.getItem("fiics-lang");
+        // this.timer = setInterval(() => {
+        //     this.fetchData(true);
+        // }, 5000);
 
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
@@ -255,7 +262,7 @@ export default {
                         );
                         this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType];
                     } else {
-                    this.$message({ type: "warning", message: data?.message });
+                        this.$message({ type: "warning", message: data?.message });
                     }
                 })
                 .catch((err) => {

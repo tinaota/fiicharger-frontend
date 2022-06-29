@@ -1,128 +1,54 @@
 <template>
-    <el-dialog
-        :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')"
-        width="80%"
-        :visible.sync="visible"
-        custom-class="map"
-        :show-close="false"
-        v-loading="isLoading"
-        @close="closeDialog()">
+    <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="80%" :visible.sync="visible" custom-class="map" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div id="map-container" class="google-map"></div>
         <div class="right-form formVertical">
-            <div class="form-item" v-if="dialog.type">
-                <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
-                <el-input v-model="dialog.info.chargeBoxName" disabled></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
-                <el-input v-model="dialog.info.chargeBoxId"></el-input>
-            </div>
-            <div class="form-item" v-if="dialog.accPermissionType<3">
-                <div class="label">{{ $t('menu.operator') }}</div>
-                <el-select
-                    class="select-small"
-                    v-model="dialog.info.operatorTypeId">
-                    <el-option v-for="(item, key) in operatorListFilter" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                </el-select>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('general.lng') }}</div>
-                <el-input v-model="dialog.info.loc.lon" disabled></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('general.lat') }}</div>
-                <el-input v-model="dialog.info.loc.lat" disabled></el-input>
-            </div>
-            <div class="hint" v-if="mapInfo.marker === null">{{$t('general.clickAddMarker')}}</div>
-            <div class="hint" v-else>{{$t('general.dragMarker')}}</div>
-            <!-- <div class="form-item">
-                <div class="label">{{ $t('chargingStation.station') }}</div>
-                <el-select
-                    class="select-small"
-                    v-model="dialog.info.stationId"
-                    v-loading="stationList.isLoading">
-                    <el-option v-for="(item, key) in stationList.data" :label="key+' '+item" :key="key" :value="key"></el-option>
-                </el-select>
-            </div> -->
-            <div class="form-item">
-                <div class="label">{{ $t('general.zipCode') }}</div>
-                <el-input v-model="dialog.info.zipCode"></el-input>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('chargingStation.chargeType') }}</div>
-                <el-select
-                    class="select-small"
-                    v-model="dialog.info.chargeType">
-                    <el-option label="AC" :value="1"></el-option>
-                    <el-option label="DC" :value="2"></el-option>
-                </el-select>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('general.currency') }}</div>
-                <el-select
-                    class="select-small"
-                    v-model="dialog.info.unitType">
-                    <el-option v-for="(item, key) in currencyList" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                </el-select>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-            </div>
-            <div class="form-item">
-                <div class="label">
-                    {{ "● " + $t('chargingStation.onPeak') }}
-                    <br/>
-                    <span class="hint">{{ "  " + $t('chargingStation.onPeakHint') }}</span>
+            <el-form ref="chargeBoxForm" :rules="rules" :model="dialog.info" style="width:98%">
+                <div class="form-item">
+                    <el-form-item prop="id">
+                        <div class="label">Id</div>
+                        <el-input v-model="dialog.info.id" :disabled="dialog.type===1"></el-input>
+                    </el-form-item>
                 </div>
-                <div class="elecRateItem">
-                    <el-input-number v-model="dialog.info.onPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
-                    /
-                    <el-select
-                        class="select-small"
-                        v-model="dialog.info.onPeakElectricityRateType">
-                        <el-option v-for="(item, key) in $t('chargingStation.elecRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
+                <div class="form-item">
+                    <el-form-item prop="chargeBoxName">
+                        <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
+                        <el-input v-model="dialog.info.chargeBoxName"></el-input>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item prop="loc.lng">
+                        <div class="label">{{ $t('general.lng') }}</div>
+                        <el-input v-model="dialog.info.loc.lon" disabled></el-input>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item prop="loc.lat">
+                        <div class="label">{{ $t('general.lat') }}</div>
+                        <el-input v-model="dialog.info.loc.lat" disabled></el-input>
+                    </el-form-item>
+                </div>
+                <div class="hint" v-if="mapInfo.marker === null">{{$t('general.clickAddMarker')}}</div>
+                <div class="hint" v-else>{{$t('general.dragMarker')}}</div>
+                <div class="form-item">
+                    <div class="label">{{ $t('chargingStation.chargeType') }}</div>
+                    <el-select class="select-small" v-model="dialog.info.chargeType">
+                        <el-option label="AC" value="AC"></el-option>
+                        <el-option label="DC" value="DC"></el-option>
                     </el-select>
                 </div>
-            </div>
-            <div class="form-item">
-                <div class="label">
-                    {{ "● " + $t('chargingStation.offPeak') }}
-                    <br/>
-                    <span class="hint">{{ "  " + $t('chargingStation.offPeakHint') }}</span>
+                <div class="form-item">
+                    <div class="label">{{ $t('chargingStation.power') }}</div>
+                    <el-input-number v-model="dialog.info.power" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
                 </div>
-                <div class="elecRateItem">
-                    <el-input-number v-model="dialog.info.offPeakElectricityRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
-                    /
-                    <el-select
-                        class="select-small"
-                        v-model="dialog.info.offPeakElectricityRateType">
-                        <el-option v-for="(item, key) in $t('chargingStation.elecRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                    </el-select>
+
+                <div class="form-item">
+                    <el-form-item prop="installationDate">
+                        <div class="label">{{ $t('general.installationDate') }}</div>
+                        <el-date-picker v-model="dialog.info.installationDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions" :clearable="false">
+                        </el-date-picker>
+                    </el-form-item>
                 </div>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                <div class="elecRateItem">
-                    <el-input-number v-model="dialog.info.parkingRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
-                    /
-                    <el-select
-                        class="select-small"
-                        v-model="dialog.info.parkingRateType">
-                        <el-option v-for="(item, key) in $t('chargingStation.parkingRateUnit')" :label="item" :key="key" :value="parseInt(key)"></el-option>
-                    </el-select>
-                </div>
-            </div>
-            <div class="form-item">
-                <div class="label">{{ $t('general.installationDate') }}</div>
-                <el-date-picker
-                    v-model="dialog.info.installationDate"
-                    type="datetime"
-                    value-format="yyyy-MM-dd HH:mm"
-                    format="yyyy-MM-dd HH:mm"
-                    :picker-options="pickerOptions"
-                    :clearable="false">
-                </el-date-picker>
-            </div>
+            </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -132,55 +58,37 @@
 </template>
 
 <script>
-import { setScrollBar, transformLocTimeToUtc } from "@/utils/function";
-import { $GLOBAL_CURRENCY } from '@/utils/global';
+import { setScrollBar } from "@/utils/function";
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
-import ic_green_dot from 'imgs/ic_green_dot.png';
-import googleMapStyle from '@/assets/js/googleMapStyle_normal';
+import ic_green_dot from "imgs/ic_green_dot.png";
+import googleMapStyle from "@/assets/js/googleMapStyle_normal";
+import { validateIsEmpty } from "@/utils/validation";
+
 export default {
     props: {
         name: String,
         show: Boolean,
         dialog: {
             type: Object,
-            default: function() {
+            default: function () {
                 return {
                     type: 0,
                     info: {
-                        chargeBoxId: '',
-                        // chargeBoxName: '',
+                        id: "",
+                        chargeBoxName: "",
                         loc: {
-                            lng: '',
-                            lon: '',
-                            lat: ''
+                            lng: "",
+                            lon: "",
+                            lat: "",
                         },
-                        // stationId: '',
-                        zipCode: '',
-                        chargeType: 1,
-                        unitType: '',
-                        onPeakElectricityRate: 0,
-                        onPeakElectricityRateType: 1,
-                        offPeakElectricityRate: 0,
-                        offPeakElectricityRateType: 1,
-                        parkingRate: 0,
-                        parkingRateType: 1,
-                        installationDate: '',
-                        operatorTypeId: ''
+                        power: 0,
+                        zipCode: "",
+                        chargeType: "",
+                        installationDate: "",
                     },
-                    operatorList: {},
-                    accPermissionType: ''
                 };
-            }
+            },
         },
-        // stationList: {
-        //     type: Object,
-        //     default: function() {
-        //         return {
-        //             isLoading: false,
-        //             data: {}
-        //         };
-        //     }
-        // }
     },
     data() {
         return {
@@ -196,22 +104,27 @@ export default {
                 marker: null,
                 initCenter: {
                     lat: 42.677811124442854,
-                    lng: -87.91695010215827
+                    lng: -87.91695010215827,
                 },
-                icon: ic_green_dot
+                icon: ic_green_dot,
             },
-            currencyList: $GLOBAL_CURRENCY,
-            serviceStatusList: [i18n.t('general.unactive'), i18n.t('general.active'), i18n.t('general.repair')],
+            serviceStatusList: [i18n.t("general.unactive"), i18n.t("general.active"), i18n.t("general.repair")],
             pickerOptions: {
                 disabledDate(time) {
-                return time.getTime() > Date.now();
-                }
+                    return time.getTime() > Date.now();
+                },
             },
-            operatorListFilter: {}
-        }
+            rules: {
+                chargeBoxName: [{ validator: validateIsEmpty }],
+                id: [{ validator: validateIsEmpty }],
+                "loc.lng": [{ validator: validateIsEmpty }],
+                "loc.lat": [{ validator: validateIsEmpty }],
+                installationDate: [{ validator: validateIsEmpty }],
+            },
+        };
     },
     beforeDestroy() {
-        this.map && google.maps.event.clearListeners(this.map, 'click');
+        this.map && google.maps.event.clearListeners(this.map, "click");
     },
     watch: {
         show: {
@@ -221,17 +134,9 @@ export default {
                 that.visible = that.show;
                 that.isUpdate = false;
                 if (that.visible) {
-                    that.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar('destroy');
-                    // if (that.name === 'stationDetail') {
-                    //     this.fetchStationList();
-                    // }
-                    for(var key in this.dialog.operatorList) {
-                        if (key !== '0') {
-                            this.operatorListFilter[key] = this.dialog.operatorList[key];
-                        }
-                    }
+                    that.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar("destroy");
                     that.$nextTick(() => {
-                        setScrollBar('.right-form', this);
+                        setScrollBar(".right-form", this);
                         if (that.mapInfo.initMap) {
                             that.mapInfo.initMap = false;
                             that.initMap();
@@ -248,41 +153,23 @@ export default {
                         }
                     });
                 }
-            }
-        }
+            },
+        },
     },
     methods: {
-        /*fetchStationList() {
-            const that = this;
-            this.stationList.isLoading = true;
-            $HTTP_getStationListForSelect().then((data) => {
-                this.stationList.isLoading = false;
-                if (!!data.success) {
-                    data.stationList.forEach(item => {
-                        that.stationList.data[item.stationId] = item.stationName;
-                    });
-                } else {
-                    this.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
-                }
-            }).catch((err) => {
-                this.stationList.isLoading = false;
-                console.log('StationList', err);
-                this.$message({ type: "warning", message: i18n.t("error_network") });
-            });
-        },*/
         initMap() {
             const that = this;
-            this.map = new google.maps.Map(document.getElementById('map-container'), {
-                                center: this.mapInfo.initCenter,
-                                zoom: this.mapInfo.zoom,
-                                maxZoom: this.maxZoom,
-                                streetViewControl: false, //設定是否呈現右下角街景小人
-                                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                                fullscreenControl: false,
-                                zoomControl: false,
-                                styles: googleMapStyle
-                            });
-            google.maps.event.addListener(this.map, 'click', function(event) {
+            this.map = new google.maps.Map(document.getElementById("map-container"), {
+                center: this.mapInfo.initCenter,
+                zoom: this.mapInfo.zoom,
+                maxZoom: this.maxZoom,
+                streetViewControl: false, //設定是否呈現右下角街景小人
+                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                fullscreenControl: false,
+                zoomControl: false,
+                styles: googleMapStyle,
+            });
+            google.maps.event.addListener(this.map, "click", function (event) {
                 if (!that.dialog.type) {
                     that.removeMarker();
                     that.dialog.info.loc = event.latLng.toJSON();
@@ -293,77 +180,101 @@ export default {
         },
         drawMarker() {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(this.mapInfo.icon,
-                                new google.maps.Size(36, 55)); //size  預設位子圖案中間底
-                                // new google.maps.Point(0, 0), //origin point
-                                // new google.maps.Point(18, 55)); // offset point
+            var markerImage = new google.maps.MarkerImage(this.mapInfo.icon, new google.maps.Size(36, 55)); //size  預設位子圖案中間底
+            // new google.maps.Point(0, 0), //origin point
+            // new google.maps.Point(18, 55)); // offset point
             let marker = new google.maps.Marker({
-                            map: this.map,
-                            position: this.dialog.info.loc,
-                            icon: markerImage,
-                            draggable:true,
-                        });
+                map: this.map,
+                position: this.dialog.info.loc,
+                icon: markerImage,
+                draggable: true,
+            });
             this.mapInfo.marker = marker;
-            google.maps.event.addListener(this.mapInfo.marker, 'dragend', function(event) {
+            google.maps.event.addListener(this.mapInfo.marker, "dragend", function (event) {
                 that.dialog.info.loc = event.latLng.toJSON();
                 that.dialog.info.loc.lon = that.dialog.info.loc.lng;
             });
         },
         removeMarker() {
             if (this.mapInfo.marker) {
-                google.maps.event.clearListeners(this.mapInfo.marker, 'dragend');
+                google.maps.event.clearListeners(this.mapInfo.marker, "dragend");
                 this.mapInfo.marker.setMap();
                 this.mapInfo.marker = null;
             }
         },
         updateCheckBox() {
-            const that = this;
-            var installationDate = transformLocTimeToUtc(that.dialog.info.installationDate, "YYYY-MM-DD HH:mm");
-            let   $API,
-                  params = {
-                    chargeBoxId: that.dialog.info.chargeBoxId,
-                    // chargeBoxName: that.dialog.info.chargeBoxName, //不能改名子
-                    lon: that.dialog.info.loc.lon,
-                    lat: that.dialog.info.loc.lat,
-                    // stationId: that.dialog.info.stationId,
-                    zipCode: that.dialog.info.zipCode,
-                    chargeType: that.dialog.info.chargeType,
-                    unitType: that.dialog.info.unitType,
-                    onPeakElectricityRate: that.dialog.info.onPeakElectricityRate,
-                    onPeakElectricityRateType: that.dialog.info.onPeakElectricityRateType,
-                    offPeakElectricityRate: that.dialog.info.offPeakElectricityRate,
-                    offPeakElectricityRateType: that.dialog.info.offPeakElectricityRateType,
-                    parkingRate: that.dialog.info.parkingRate,
-                    parkingRateType: that.dialog.info.parkingRateType,
-                    installationDate: installationDate,
-                    operatorTypeId: that.dialog.info.operatorTypeId
-                  },
-                  sucMsg = "";
-            if (!that.dialog.type) {
-                $API = $HTTP_addChargeBox;
-                sucMsg = i18n.t('general.sucAddMsg');
-            } else {
-                $API = $HTTP_updateChargeBox;
-                sucMsg = i18n.t('general.sucUpdateMsg');
-            }
+            this.$refs.chargeBoxForm.validate((valid) => {
+                if (valid) {
+                    const that = this;
+                    var installationDate = new Date(that.dialog.info.installationDate);
+                    console.log(that.dialog);
+                    let $API,
+                        params = {
+                            currentType: that.dialog.info.chargeType,
+                            coordinates: {
+                                latitude: that.dialog.info.loc.lat,
+                                longitude: that.dialog.info.loc.lon,
+                            },
+                            powerKw: that.dialog.info.power,
+                            name: that.dialog.info.chargeBoxName,
+                            installed: installationDate.toISOString(),
+                            id: that.dialog.info.id,
+                        },
+                        sucMsg = "";
+                    if (!that.dialog.type) {
+                        $API = $HTTP_addChargeBox;
+                        sucMsg = i18n.t("general.sucAddMsg");
+                    } else {
+                        $API = $HTTP_updateChargeBox;
+                        sucMsg = i18n.t("general.sucUpdateMsg");
+                    }
 
-            that.isLoading = true;
-            $API(params).then(data => {
-                that.isLoading = false;
-                if (!!data.success) {
-                    that.$message({ type: "success", message: sucMsg });
-                    that.isUpdate = true;
-                    that.visible = false;
+                    that.isLoading = true;
+                    $API(params)
+                        .then((data) => {
+                            that.isLoading = false;
+                            if (data) {
+                                that.$message({ type: "success", message: sucMsg });
+                                that.isUpdate = true;
+                                that.visible = false;
+                            } else {
+                                this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                            }
+                        })
+                        .catch((err) => {
+                            this.$message({ type: "warning", message: i18n.t("error_network") });
+                        });
                 } else {
-                    that.$message({ type: "warning", message: that.lang === 'en' ? data.message : data.reason });
+                    console.log("error submit!!");
+                    return false;
                 }
             });
         },
         closeDialog() {
-            this.$emit('close', this.isUpdate);
-        }
-    }
-}
+            this.dialog.info = {
+                id: "",
+                chargeBoxName: "",
+                loc: {
+                    lng: "",
+                    lon: "",
+                    lat: "",
+                },
+                power: 0,
+                zipCode: "",
+                chargeType: "",
+                installationDate: "",
+            };
+            this.$nextTick(() => {
+                this.$refs?.chargeBoxForm?.clearValidate("chargeBoxName");
+                this.$refs?.chargeBoxForm?.clearValidate("id");
+                this.$refs?.chargeBoxForm?.clearValidate("loc.lng");
+                this.$refs?.chargeBoxForm?.clearValidate("loc.lat");
+                this.$refs?.chargeBoxForm?.clearValidate("installationDate");
+            });
+            this.$emit("close", this.isUpdate);
+        },
+    },
+};
 </script>
 <style lang = "scss" scoped>
 .el-dialog.map .el-dialog__body {
@@ -383,10 +294,13 @@ export default {
             .el-input-number,
             .el-select {
                 width: calc(50% - 8px);
-            display: inline-block
+                display: inline-block;
             }
         }
     }
+}
 
+.formVertical .form-item .el-input input:disabled {
+    background: #d3d3d3 !important;
 }
 </style>
