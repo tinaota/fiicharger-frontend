@@ -10,14 +10,10 @@
                     <el-input :placeholder="$t('general.name')" v-model="filter.name" @change="fetchData('filter')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
-                    <el-select class="select-small" v-model="filter.priceStatus" :placeholder="$t('general.status')" v-loading="priceStatusList.isLoading" @change="fetchData('filter')" filterable clearable>
-                        <el-option v-for="(item, idx) in priceStatusList.data" :label="item" :key="idx" :value="item"></el-option>
-                    </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="2"></el-table-column>
-                    <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
@@ -32,21 +28,18 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.parkingRate')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getSymbols(scope.row.currencyType) + getSymbols(scope.row.occupancyRate) + '/' + scope.row.occupancyPeriodMinutes + 'min'}}
+                            {{getSymbols(scope.row.currencyType) + getSymbols(scope.row.occupancy.rate) + '/' + getSymbols(scope.row.occupancy.type)}}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="updated" :label="$t('general.latestModification')" :min-width="2">
+                    <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getLocTime(scope.row.updated)}}
+                            {{getLocTime(scope.row.modified)}}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
-                            <el-button class="no-bg bind" v-if="scope.row.status==='Disabled'" @click="openDialog('status',scope.row)"></el-button>
-                            <el-button class="no-bg unbind" v-if="scope.row.status==='Enabled'" @click="openDialog('status',scope.row)"></el-button>
-
                         </template>
                     </el-table-column>
                 </el-table>
@@ -56,7 +49,6 @@
                 <UpdateChargePrice v-if="createDialog.show" :show="createDialog.show" :dialogType="'create'" @close="closeDialog(null,'create')"></UpdateChargePrice>
                 <UpdateChargePrice v-if="editDialog.show" :show="editDialog.show" :dialogType="'edit'" :data="editDialog.data" @close="closeDialog(null,'edit')"></UpdateChargePrice>
                 <DeleteChargePrice v-if="deleteDialog.show" :show="deleteDialog.show" :data="deleteDialog.data" :dialogType="'delete'" @close="(e)=>closeDialog(e,'delete')"></DeleteChargePrice>
-                <UpdateChargePriceStatus v-if="updateStatusDialog.show" :show="updateStatusDialog.show" :data="updateStatusDialog.data" :statusList="priceStatusList.data" :dialogType="'status'" @close="closeDialog(null,'status')"></UpdateChargePriceStatus>
 
             </div>
         </div>
@@ -66,16 +58,14 @@
 <script>
 import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-import { $HTTP_getPriceStatusList, $HTTP_getChargePriceList } from "@/api/api";
+import { $HTTP_getPriceStatusList} from "@/api/api";
 import UpdateChargePrice from "@/views/setting/updateChargePrice";
 import DeleteChargePrice from "@/views/setting/deleteChargePrice";
-import UpdateChargePriceStatus from "@/views/setting/updateChargePriceStatus";
 
 export default {
     components: {
         UpdateChargePrice,
         DeleteChargePrice,
-        UpdateChargePriceStatus,
     },
     data() {
         return {
@@ -125,16 +115,10 @@ export default {
                 show: false,
                 data: {},
             },
-            updateStatusDialog: {
-                isLoading: false,
-                show: false,
-                data: {},
-            },
         };
     },
     mounted() {
         setScrollBar(".scroll", this);
-        this.getStatusList();
         this.fetchData();
     },
     computed: {
@@ -157,10 +141,6 @@ export default {
                 page: this.page,
                 limit: this.limit,
             };
-
-            if (this.filter.priceStatus) {
-                params.Status = this.filter.priceStatus;
-            }
             if (this.filter.name) {
                 params.Name = this.filter.name;
             }
@@ -188,22 +168,6 @@ export default {
                     this.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
-        getStatusList() {
-            this.priceStatusList.isLoading = true;
-            $HTTP_getChargePriceList()
-                .then((res) => {
-                    this.priceStatusList.isLoading = false;
-                    if (res.length > 0) {
-                        this.priceStatusList.data = res;
-                    } else {
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
-                    }
-                })
-                .catch((err) => {
-                    console.log("priceStautusList", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                });
-        },
         openDialog(type, data) {
             if (type === "create") {
                 this.createDialog.show = true;
@@ -213,9 +177,6 @@ export default {
             } else if (type === "delete") {
                 this.deleteDialog.show = true;
                 this.deleteDialog.data = data;
-            } else if (type === "status") {
-                this.updateStatusDialog.show = true;
-                this.updateStatusDialog.data = data;
             }
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
@@ -235,8 +196,6 @@ export default {
                 }
             } else if (dialog === "edit") {
                 this.editDialog.show = false;
-            } else if (dialog === "status") {
-                this.updateStatusDialog.show = false;
             }
             this.fetchData();
 

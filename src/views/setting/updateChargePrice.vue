@@ -51,11 +51,11 @@
                 <div class="form-item">
                     <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
                     <div class="elecRateItem">
-                        <el-input-number v-model="dialog.occupancyRate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
+                        <el-input-number v-model="dialog.occupancy.rate" :precision="2" :step="0.01" :min="0" controls-position="right"></el-input-number>
                         <span>/</span>
-                        <el-tooltip content="min" placement="top" effect="light" popper-class="custom">
-                            <el-input-number v-model="dialog.occupancyPeriodMinutes" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
-                        </el-tooltip>
+                        <el-select class="select-small" v-model="dialog.occupancy.type">
+                            <el-option v-for="(item, key) in rateList" :label="getSymbols(item)" :key="key" :value="item"></el-option>
+                        </el-select>
                     </div>
                 </div>
             </el-form>
@@ -90,8 +90,10 @@ export default {
                     rate: 0,
                     type: "",
                 },
-                occupancyRate: 0,
-                occupancyPeriodMinutes: 0,
+                occupancy: {
+                    rate: 0,
+                    type: "",
+                },
                 currencyType: "",
             },
             rateList: [],
@@ -102,8 +104,8 @@ export default {
                 "onPeak.type": [{ validator: validateIsEmpty }],
                 "offPeak.rate": [{ validator: validateIsEmpty }],
                 "offPeak.type": [{ validator: validateIsEmpty }],
-                occupancyRate: [{ validator: validateIsEmpty }],
-                occupancyPeriodMinutes: [{ validator: validateIsEmpty }],
+                "occupancy.rate": [{ validator: validateIsEmpty }],
+                "occupancy.type": [{ validator: validateIsEmpty }],
                 currencyType: [{ validator: validateIsEmpty }],
             },
         };
@@ -178,7 +180,6 @@ export default {
                         params = { ...that.dialog };
                         delete params["updated"];
                         delete params["created"];
-                        delete params["status"];
                     }
                     this.$API(params)
                         .then((res) => {
@@ -212,8 +213,10 @@ export default {
                     rate: 0,
                     type: "",
                 },
-                occupancyRate: 0,
-                occupancyPeriodMinutes: 0,
+                occupancy: {
+                    rate: 0,
+                    type: "",
+                },
                 currencyType: "",
             };
 
@@ -223,8 +226,8 @@ export default {
                 this.$refs?.updateChargePriceForm?.clearValidate("onPeak.type");
                 this.$refs?.updateChargePriceForm?.clearValidate("offPeak.rate");
                 this.$refs?.updateChargePriceForm?.clearValidate("offPeak.type");
-                this.$refs?.updateChargePriceForm?.clearValidate("occupancyRate");
-                this.$refs?.updateChargePriceForm?.clearValidate("occupancyPeriodMinutes");
+                this.$refs?.updateChargePriceForm?.clearValidate("occupancy.rate");
+                this.$refs?.updateChargePriceForm?.clearValidate("occupancy.type");
                 this.$refs?.updateChargePriceForm?.clearValidate("currencyType");
             });
             this.$emit("close", this.isUpdate);

@@ -5,12 +5,9 @@
                 {{$t('general.deleteThis')}} {{$t('menu.price').toLowerCase()}}?
                 <h3>{{$t('menu.information')}}</h3>
                 <p>{{$t('general.name')}}: {{data.name}}</p>
-                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.onPeak')}}): {{getSymbols(data.currencyType)}} {{getSymbols(data.onPeak.rate)}} / {{getSymbols(data.onPeak.type)}}</p>
-                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.offPeak')}}): {{getSymbols(data.currencyType)}} {{getSymbols(data.offPeak.rate)}} / {{getSymbols(data.offPeak.type)}}</p>
-                <p>{{$t('chargingStation.parkingRate')}}: {{getSymbols(data.currencyType) + getSymbols(data.occupancyRate) + '/' + data.occupancyPeriodMinutes + 'min'}}</p>
-
-                <p>{{$t('general.status')}}: {{data.status}}</p>
-
+                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.onPeak')}}): {{getSymbols(data.currencyType) + getSymbols(data.onPeak.rate) +'/'+ getSymbols(data.onPeak.type)}}</p>
+                <p>{{$t('chargingStation.elecRate')}}({{$t('chargingStation.offPeak')}}): {{getSymbols(data.currencyType) + getSymbols(data.offPeak.rate) +  '/' + getSymbols(data.offPeak.type)}}</p>
+                <p>{{$t('chargingStation.parkingRate')}}: {{getSymbols(data.currencyType) + getSymbols(data.occupancy.rate) + '/' + getSymbols(data.occupancy.type)}}</p>
             </div>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -63,9 +60,11 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({ type: "warning", message: _errors.toString() });
+                    if (err.status === 500) {
+                        that.$message({ type: "warning", message: i18n.t("cannotDelete") });
+                        that.visible = false;
+                        that.isLoading=false
+                    }
                 });
         },
         closeDialog() {
