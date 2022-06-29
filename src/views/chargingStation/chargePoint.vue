@@ -66,7 +66,7 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')" :width="100">
                         <template slot-scope="scope">
-                            <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :isBreak="true"></Connector>
+                            <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">

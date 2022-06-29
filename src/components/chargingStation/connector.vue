@@ -1,10 +1,13 @@
 <template>
     <div class="connector-obj" v-bind:class="{ 'nextLine': isBreak }">
-        <el-tooltip :content="dataObj.status" placement="bottom" effect="light" popper-class="custom">
-            <span v-if="dataObj.status===`Available`" class="circle-number color1">{{ dataObj.id }}</span>
+        <el-tooltip :content="chargePointStatus===`Disconnected` ? 'Unknown' :dataObj.status" placement="bottom" effect="light" popper-class="custom">
+            <span v-if="chargePointStatus===`Disconnected`" class="imgItemUnknown imgItem">
+                <img :src="imgIcon.Unknown">
+            </span>
+            <span v-else-if="dataObj.status===`Available`" class="circle-number color1">{{ dataObj.id }}</span>
             <span v-else-if="dataObj.status===`Preparing`" class="circle-number color2">{{ dataObj.id }}</span>
             <span v-else-if="dataObj.status===`SuspendedEVSE`" class="circle-number color6">{{ dataObj.id }}</span>
-             <span v-else-if="dataObj.status===`SuspendedEV`" class="circle-number color6">{{ dataObj.id }}</span>
+            <span v-else-if="dataObj.status===`SuspendedEV`" class="circle-number color6">{{ dataObj.id }}</span>
             <span v-else-if="dataObj.status===`Finishing`" class="circle-number color2">{{ dataObj.id }}</span>
             <span v-else-if="dataObj.status===`Reserved`" class="circle-number color5">{{ dataObj.id }}</span>
             <span v-else-if="dataObj.status===`Unavailable`" class="circle-number color4">{{ dataObj.id }}</span>
@@ -21,7 +24,6 @@
                 <img :src="imgIcon.Unknown">
             </div>
         </el-tooltip>
-        <span v-else style="vertical-align: text-top; margin-left: 4px;">{{ dataObj.connectorType }}</span>
     </div>
 </template>
 
@@ -36,7 +38,7 @@ import ic_dc_chademo from "imgs/ic_dc_chademo.png";
 import ic_dc_ccs2 from "imgs/ic_dc_ccs2.png";
 import ic_dc_ccs1 from "imgs/ic_dc_ccs1.png";
 import ic_dc_gbt from "imgs/ic_dc_gbt.png";
-import unknown from "imgs/help_icon.svg"
+import unknown from "imgs/help_icon.svg";
 export default {
     props: {
         isBreak: {
@@ -53,6 +55,7 @@ export default {
             },
         },
         connectorType: "",
+        chargePointStatus: "",
     },
     data() {
         return {
@@ -76,13 +79,13 @@ export default {
 </script>
 
 <style scoped>
-.imgItem{
+.imgItem {
     margin-top: 2px;
 }
-.imgItemUnknown{
+.imgItemUnknown {
     width: 28px;
 }
-.imgItemUnknown img{
+.imgItemUnknown img {
     height: 28px;
     width: 28px;
 }
