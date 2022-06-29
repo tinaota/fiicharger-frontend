@@ -36,28 +36,38 @@ export const $HTTP_addRoles = params => {
   return put(`${base_auth}/api/Users/${id}/roles`, roles)
 }
 
+export const $HTTP_addBoundingToStation = (params) => {
+  return putWithConfig(`${base_charger}/charge-points/${params.chargePointId}/charge-station`, params.stationId, params.config)
+}
+
+export const $HTTP_updateStatusStation = (params) => {
+  return putWithConfig(`${base_charger}/charge-stations/${params.stationId}/status`, params.status, params.config)
+}
+
+export const $HTTP_removeBoundingToStation = (params) => {
+  return del(`${base_charger}/charge-points/${params.chargePointId}/charge-station`)
+}
+
 export const $HTTP_getOperatorTypeList = () => {
   return fetch(`${base}/Home/Operator/getOperatorTypeList`)
 }
 
 // charge price apis
-export const $HTTP_getPriceStatusList = (params) => { return fetch(`${base_charger}/api/reports/charge-prices`, params) }
+export const $HTTP_getPriceStatusList = (params) => { return fetch(`${base_charger}/reports/charge-prices`, params) }
 
-export const $HTTP_getChargePriceList = () => { return fetch(`${base_charger}/api/charge-prices/status-list`) }
+export const $HTTP_addChargePrice = (params) => { return post(`${base_charger}/charge-prices`, params) }
 
-export const $HTTP_addChargePrice = (params) => { return post(`${base_charger}/api/charge-prices`, params) }
+export const $HTTP_updateChargePrice = (params) => { return put(`${base_charger}/charge-prices/${params.id}`, params) }
 
-export const $HTTP_updateChargePrice = (params) => { return put(`${base_charger}/api/charge-prices/${params.id}`, params) }
+export const $HTTP_getRateTypeList = () => { return fetch(`${base_charger}/charge-prices/charge-rate-type-list`) }
 
-export const $HTTP_getRateTypeList = () => { return fetch(`${base_charger}/api/charge-prices/charge-rate-type-list`) }
+export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/charge-prices/currency-type-list`) }
 
-export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/api/charge-prices/currency-type-list`) }
+export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/charge-prices/${params.chargePriceId}`, params) }
 
-export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/api/charge-prices/${params.chargePriceId}`, params) }
+export const $HTTP_updateChargeBoxPrice = (params) => { return putWithConfig(`${base_charger}/charge-points/${params.chargePointId}/charge-price`, params.data, params.config) }
 
-export const $HTTP_updateChargePriceStatus = (params) => { return putWithConfig(`${base_charger}/api/charge-prices/${params.chargePriceId}/status`, params.data, params.config) }
-
-
+export const $HTTP_deleteChargeBoxPrice = (params) => { return del(`${base_charger}/charge-points/${params.chargePointId}/charge-price`) }
 /**
  * @description 登出
  */
@@ -92,9 +102,20 @@ export const $HTTP_getCountryCodeSelectList = params => { return post(`${base}/H
 /**
  * @description 取得區域編碼列表（選單用）
  */
-export const $HTTP_getZipCodeListForSelect = params => { return post(`${base}/Home/Location/getZipCodeListForSelect`, qs.stringify(params)) }
+// export const $HTTP_getZipCodeListForSelect = params => { return post(`${base}/Home/Location/getZipCodeListForSelect`, qs.stringify(params)) }
+export const $HTTP_getZipCodeListForSelect = () => {
+  return fetch(`${base_charger}/reports/charge-stations/zip-codes`)
+}
 
+// get status of the machines for filtering
+export const $HTTP_getStatusListChargeStations = () => {
+  return fetch(`${base_charger}/charge-stations/status-list`)
+}
 
+// get status of the chargeboxes for filtering
+export const $HTTP_getStatusListChargeBoxes = () => {
+  return fetch(`${base_charger}/reports/charge-points/status-list`)
+}
 /**
  * @description 取得充電統計資訊
  */
@@ -317,7 +338,9 @@ export const $HTTP_deleteCustomerService = params => { return post(`${base}/Home
 /**
  * @description 新增充電站
  */
-export const $HTTP_addStation = params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }
+// export const $HTTP_addStation = params => { return post(`${base}/ChargeStation/Station/addStation`, qs.stringify(params)) }
+export const $HTTP_addStation = params => { return post(`${base_charger}/charge-stations`, params) }
+
 
 /**
  * @description 新增Kiosk
@@ -327,14 +350,19 @@ export const $HTTP_addKiosk = params => { return post(`${base}/ChargeStation/Kio
 /**
  * @description 更新充電站資訊
  */
-export const $HTTP_updateStation = params => { return post(`${base}/ChargeStation/Station/updateStation`, qs.stringify(params)) }
+// export const $HTTP_updateStation = params => { return post(`${base}/ChargeStation/Station/updateStation`, qs.stringify(params)) }
+export const $HTTP_updateStation = params => {
+  return put(`${base_charger}/charge-stations/${params.stationId}`, params)
+}
+
+export const $HTTP_getIndividualStationData = params => { return fetch(`${base_charger}/charge-stations/${params}`) }
 
 /**
  * @description 取得充電站明細列表
  */
-export const $HTTP_getStationDetailList = params => {
-  return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params))
-}
+// export const $HTTP_getAllChargeBoxList = params => {
+//   return post(`${base}/ChargeStation/Station/getStationAndChargeboxList`, qs.stringify(params))
+// }
 
 /**
  * @description 更新Kiosk資訊
@@ -345,7 +373,10 @@ export const $HTTP_updateKiosk = params => { return post(`${base}/ChargeStation/
 /**
  * @description 刪除充電站資訊
  */
-export const $HTTP_deleteStation = params => { return post(`${base}/ChargeStation/Station/deleteStation`, qs.stringify(params)) }
+// export const $HTTP_deleteStation = params => { return post(`${base}/ChargeStation/Station/deleteStation`, qs.stringify(params)) }
+export const $HTTP_deleteStation = params => {
+  return del(`${base_charger}/charge-stations/${params.stationId}`)
+}
 
 /**
  * @description 刪除Kiosk資訊
@@ -356,10 +387,17 @@ export const $HTTP_deleteKiosk = params => { return post(`${base}/ChargeStation/
 /**
  * @description 取得充電站列表
  */
+// export const $HTTP_getStationList = params => {
+//   return post(`${base}/ChargeStation/Station/getStationList`, qs.stringify(params))
+// }
+
 export const $HTTP_getStationList = params => {
-  return post(`${base}/ChargeStation/Station/getStationList`, qs.stringify(params))
+  return fetch(`${base_charger}/reports/charge-stations`, params)
 }
 
+export const $HTTP_getStationListById = params => {
+  return fetch(`${base_charger}/reports/charge-stations/${params.chargeStationId}`, params)
+}
 /**
  * @description 取得充電站列表(選單用)
  */
@@ -368,7 +406,10 @@ export const $HTTP_getStationListForSelect = params => { return post(`${base}/Ch
 /**
  * @description 取得充電站明細
  */
-export const $HTTP_getStationDetail = params => { return post(`${base}/ChargeStation/Station/getStationDetail`, qs.stringify(params)) }
+// export const $HTTP_getStationInfo = params => { return post(`${base}/ChargeStation/Station/getStationDetail`, qs.stringify(params)) }
+export const $HTTP_getStationInfo = params => {
+  return fetch(`${base_charger}/reports/charge-stations/${params.stationId}`)
+}
 
 /**
  * @description 取得Kiosk明細
@@ -411,23 +452,25 @@ export const $HTTP_getElectricityRateListForSelect = () => { return fetch(`${bas
 /**
  * @description 新增充電樁
  */
-export const $HTTP_addChargeBox = params => { return post(`${base}/ChargeStation/ChargeBox/addChargeBox`, qs.stringify(params)) }
+// export const $HTTP_addChargeBox = params => { return post(`${base}/ChargeStation/ChargeBox/addChargeBox`, qs.stringify(params)) }
+export const $HTTP_addChargeBox = params => { return post(`${base_charger}/charge-points`, params) }
 
 /**
  * @description 更新充電樁資訊
  */
-export const $HTTP_updateChargeBox = params => { return post(`${base}/ChargeStation/ChargeBox/updateChargeBox`, qs.stringify(params)) }
+export const $HTTP_updateChargeBox = params => { return put(`${base_charger}/charge-points/${params.id}`, params) }
 
 
 /**
  * @description 刪除充電樁
  */
-export const $HTTP_deleteChargeBox = params => { return post(`${base}/ChargeStation/ChargeBox/deleteChargeBox`, qs.stringify(params)) }
+export const $HTTP_deleteChargeBox = params => { return del(`${base_charger}/charge-points/${params.chargePointId}`) }
 
 /**
  * @description 取得充電樁列表
  */
-export const $HTTP_getChargeBoxList = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxList`, qs.stringify(params)) }
+// export const $HTTP_getAllChargeBoxList = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxList`, qs.stringify(params)) }
+// export const $HTTP_getAllChargeBoxList = params => { return fetch(`${base_charger}/reports/charge-points`, params) }
 
 /**
  * @description 取得充電樁列表（選單用）
@@ -442,7 +485,11 @@ export const $HTTP_getChargeBoxListForMap = params => { return post(`${base}/Cha
 /**
  * @description 取得充電樁列表（綁定用）
  */
-export const $HTTP_getChargeBoxListForBinding = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
+// export const $HTTP_getChargeBoxListById = params => { return post(`${base}/ChargeStation/ChargeBox/getChargeBoxListForBinding`, qs.stringify(params)) }
+export const $HTTP_getChargeBoxListById = (params) => { return fetch(`${base_charger}/charge-stations/${params.stationId}/charge-points`) }
+
+// get all chargebox list
+export const $HTTP_getAllChargeBoxList = (params) => { return fetch(`${base_charger}/reports/charge-points`, params) }
 
 /**
  * @description 取得充電樁列表（Kiosk綁定用）
