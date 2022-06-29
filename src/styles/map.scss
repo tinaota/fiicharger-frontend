@@ -63,7 +63,8 @@
             }
         }
         .mCustomScrollBox {
-            .mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+.mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+    .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
                 background-color: #686A68;
             }
         }
@@ -213,7 +214,8 @@
                 }
             }
             .mCustomScrollBox {
-                .mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar, .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+.mCS-dark.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar,
+    .mCS-3d-thick.mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
                     background-color: #686A68;
                 }
             }
@@ -242,24 +244,23 @@
     }
 }
 
-.google-map-marker-label-ts {
-    color: #525E69;
-    background-color: white;
-    font-size: 0.95rem;
-    text-align: center;
-    width: 28.8px;
-    height: 28px;
-    white-space: nowrap;
-    border-radius: 36px;
-    margin-left: 3.5px;
-    line-height: 28px;
-    vertical-align: middle;
-}
-.google-map-marker-label-tm {
+.google-map-marker-label-small {
     color: #525E69;
     background-color: white;
     font-size: 1.2rem;
-    // font-size: 0.85rem;
+    text-align: center;
+    width: 23.5px;
+        height: 24px;
+    white-space: nowrap;
+    border-radius: 24px;
+        margin-left: 3px;
+        line-height: 24px;
+    vertical-align: middle;
+}
+.google-map-marker-label-medium {
+    color: #525E69;
+    background-color: white;
+    font-size: 1.2rem;
     text-align: center;
     width: 28.8px;
     height: 28px;
@@ -270,18 +271,16 @@
     vertical-align: middle;
 }
 
-.google-map-marker-label-tl {
+.google-map-marker-label-large {
     color: #525E69;
     background-color: white;
-    // font-size: 1.5rem;
-    // font-size: 0.75rem;
     font-size: 1.2rem;
     text-align: center;
-    width: 28.8px;
-    height: 28px;
+    width: 37px;
+        height: 37px;
     white-space: nowrap;
-    border-radius: 36px;
+    border-radius: 37px;
     margin-left: 3.5px;
-    line-height: 28px;
+    line-height: 37px;
     vertical-align: middle;
 }
