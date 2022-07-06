@@ -14,12 +14,12 @@
         <div class="hint-bar">
             <div class="item">
                 <img :src="icon.normal">
-                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{statisticsInfo.connectedCount}}</span>
+                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{statisticsInfo.connectedCount || 0}}</span>
                 <span class="text">{{$t('general.connected')}}</span>
             </div>
             <div class="item">
                 <img :src="icon.serviceUnavailable">
-                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{statisticsInfo.disconnectedCount}}</span>
+                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{statisticsInfo.disconnectedCount || 0}}</span>
                 <span class="text">{{$t('general.disconnected')}}</span>
             </div>
             <!-- <div class="item">
