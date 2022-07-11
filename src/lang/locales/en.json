@@ -40,7 +40,8 @@
         "costRevenueNight": "Cost & Revenue (Night)",
         "energyPhm": "Energy & PHM",
         "contact": "Contact",
-        "price": "Charge Price"
+        "price": "Charge Price",
+        "idTag": "ID Tag"
     },
     "login": {
         "login": "Login",
@@ -368,5 +369,13 @@
         "connectedCharging": "Connected & Charging",
         "totalConnectedTime": "Total Connected Time",
         "connectedChargingTime": "Connected Charging Time(%)"
+    },
+    "idTags": {
+        "expiryDate": "Expiry Date",
+        "blocked": "Blocked",
+        "created": "Created Date",
+        "modified": "Latest Modification",
+        "parentIdTagId": " Parent Id Tag Id",
+        "expired": "Expired"
     }
 }

@@ -40,7 +40,8 @@
         "costRevenueNight": "Chi phí và doanh thu (đêm)",
         "energyPhm": "năng lượng",
         "contact": "tiếp xúc",
-        "price": "Giá"
+        "price": "Giá",
+        "idTag": "Nhãn ID"
     },
     "login": {
         "login": "Đăng nhập",
@@ -368,5 +369,13 @@
         "connectedCharging": "Kết nối và sạc",
         "totalConnectedTime": "Tổng thời gian kết nối",
         "connectedChargingTime": "Thời gian sạc kết nối(%)"
-    }
+    },
+    "idTags": {
+        "expiryDate": "Ngày hết hạn",
+        "blocked": "Bị chặn",
+        "created": "ngày tạo ra",
+        "modified": "Sửa đổi mới nhất",
+        "parentIdTagId": "ID cha mẹ",
+        "expired": "Hết hạn"
+        }
 }

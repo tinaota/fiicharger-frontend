@@ -40,7 +40,8 @@
         "costRevenueNight": "成本和收入（夜间）",
         "energyPhm": "能耗 & PHM",
         "contact": "联系方式",
-        "price": "价格"
+        "price": "价格",
+        "idTag": "ID标签"
     },
     "login": {
         "login": "登入",
@@ -368,5 +369,13 @@
         "connectedCharging": "连接和充电",
         "totalConnectedTime": "总连接时间",
         "connectedChargingTime": "连接充电时间(%)"
-    }
+    },
+    "idTags": {
+        "expiryDate": "到期日",
+        "blocked": "封锁",
+        "created": "创建日期",
+        "modified": "最新修改",
+        "parentIdTagId": "父 ID 标签 ID",
+        "expired": "已到期"
+}
 }

@@ -40,7 +40,8 @@
         "costRevenueNight": "Costo e Ingresos (Noche)",
         "energyPhm": "Energía y PHM",
         "contact": "Contacto",
-        "price": "El Precio"
+        "price": "El Precio",
+        "idTag": "Etiqueta de identificación"
     },
     "login": {
         "login": "Acceso",
@@ -369,5 +370,13 @@
         "connectedCharging": "Conectado y cargando",
         "totalConnectedTime": "Tiempo Total Conectado",
         "connectedChargingTime": "Tiempo de carga Conectado (%)"
-    }
+    },
+    "idTags": {
+        "expiryDate": "Fecha de caducidad",
+        "blocked": "Obstruido",
+        "created": "Creado Fecha",
+        "modified": "Última Modificación",
+        "parentIdTagId": "Padre Identificación",
+        "expired": "Caducado"
+        }
 }
