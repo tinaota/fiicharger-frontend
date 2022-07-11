@@ -52,6 +52,17 @@ export const $HTTP_getOperatorTypeList = () => {
   return fetch(`${base}/Home/Operator/getOperatorTypeList`)
 }
 
+// Id Tag apis
+export const $HTTP_getIdTagsList = (params) => { return fetch(`${base_charger}/api/reports/id-tags`, params) }
+
+export const $HTTP_getIdTagsListById = (params) => { return }
+
+export const $HTTP_createIdTags = (params) => { return post(`${base_charger}/api/id-tags`, params) }
+
+export const $HTTP_updateIdTags = (params) => { return put(`${base_charger}/api/id-tags/${params.id}`, params) }
+
+export const $HTTP_deleteIdTags = (params) => { return del(`${base_charger}/api/id-tags/${params.id}`) }
+
 // charge price apis
 export const $HTTP_getPriceStatusList = (params) => { return fetch(`${base_charger}/api/reports/charge-prices`, params) }
 
