@@ -35,8 +35,8 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/location', component: () => import('@/views/info/location.vue'), name: 'menu.location', hidden: false },
-                    { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: false },
-                    { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: false },
+                    { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: true },
+                    { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: true },
                 ]
             },
             {
@@ -51,8 +51,8 @@ let routes = [
                     { path: '/kiosk/kioskDetail', component: () => import('@/views/chargingStation/kioskDetail.vue'), name: 'kioskDetail', hidden: true },
                     { path: '/station/stationDetail', component: () => import('@/views/chargingStation/stationDetail.vue'), name: 'stationDetail', hidden: true },
                     { path: '/chargePoint', component: () => import('@/views/chargingStation/chargePoint.vue'), name: 'menu.chargePoint', hidden: false },
-                    { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: false },
-                    { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: false },
+                    { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: true },
+                    { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: true },
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     { path: '/chargePointDetail', component: () => import('@/views/chargingStation/chargePointDetail.vue'), name: 'chargePointDetail', hidden: true },
                     { path: '/chargePrice', component: () => import('@/views/setting/chargePrice.vue'), name: 'menu.price', hidden: false },
