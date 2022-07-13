@@ -4,97 +4,221 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/chargePoint' }">{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ "#" + curRouteParam.serial }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
                 <div class="charge-point-info" v-loading="isLoading">
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
-                        <div class="content">{{ curRouteParam.chargeBoxName }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
-                        <div class="content">
-                            {{ curRouteParam.chargeBoxId }}
-                            <el-tooltip v-if="curRouteParam.loc && curRouteParam.loc.lon && curRouteParam.loc.lat" :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
-                                <el-button class="no-bg loc" @click="handleShowDialog"></el-button>
-                            </el-tooltip>
+                    <div class="upperBody rank-area firstCol">
+                        <div class="item title">
+                            <div class="label">Charger Name</div>
+                            <div class="content">{{ curRouteParam.chargeBoxName }}</div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.power') }}</div>
-                        <div class="content">{{ curRouteParam.power + "kW" }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('general.status') }}</div>
-                        <div class="content">
-                            <div v-if="curRouteParam.chargeBoxStatus===`Available`">
-                                <span class="circle-status color1"></span>
-                                <span> {{ $t('general.available') }}</span>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
+                            <div class="content">
+                                {{ curRouteParam.chargeBoxId }}
+                                <el-tooltip v-if="curRouteParam.loc && curRouteParam.loc.lon && curRouteParam.loc.lat" :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
+                                    <el-button class="no-bg loc" @click="handleShowDialog"></el-button>
+                                </el-tooltip>
                             </div>
-                            <!-- <div v-else-if="curRouteParam.chargeBoxStatus===2">
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.power') }}</div>
+                            <!-- <div class="content">{{ curRouteParam.power + "kW" }}</div> -->
+                            <div class="content">{{ "347KWH" + "kW" }}</div>
+
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('general.status') }}</div>
+                            <div class="content">
+                                <div v-if="curRouteParam.chargeBoxStatus===`Available`">
+                                    <span class="circle-status color1"></span>
+                                    <span> {{ $t('general.available') }}</span>
+                                </div>
+                                <!-- <div v-else-if="curRouteParam.chargeBoxStatus===2">
                                 <span class="circle-status color2"></span>
                                 <span> {{ $t('general.inUse') }}</span>
                             </div> -->
-                            <div v-else-if="curRouteParam.chargeBoxStatus===`Maintenance`">
-                                <span class="circle-status color3"></span>
-                                <span> {{ $t('general.maintenance') }}</span>
-                            </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===`Alert`">
-                                <span class="circle-status color4"></span>
-                                <span> {{ $t('general.alert') }}</span>
-                            </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===`ConnectionLost`">
-                                <span class="circle-status color7"></span>
-                                <span> {{ $t('general.connectionLost') }}</span>
-                            </div>
-                            <div v-else-if="curRouteParam.chargeBoxStatus===`Unknown`">
-                                <span class="circle-status unknown">
-                                    <img :src="unknown">
-                                </span>
-                                <span> {{ $t('general.unknown') }}</span>
+                                <div v-else-if="curRouteParam.chargeBoxStatus===`Maintenance`">
+                                    <span class="circle-status color3"></span>
+                                    <span> {{ $t('general.maintenance') }}</span>
+                                </div>
+                                <div v-else-if="curRouteParam.chargeBoxStatus===`Alert`">
+                                    <span class="circle-status color4"></span>
+                                    <span> {{ $t('general.alert') }}</span>
+                                </div>
+                                <div v-else-if="curRouteParam.chargeBoxStatus===`ConnectionLost`">
+                                    <span class="circle-status color7"></span>
+                                    <span> {{ $t('general.connectionLost') }}</span>
+                                </div>
+                                <div v-else-if="curRouteParam.chargeBoxStatus===`Unknown`">
+                                    <span class="circle-status unknown">
+                                        <img :src="unknown">
+                                    </span>
+                                    <span> {{ $t('general.unknown') }}</span>
 
-                            </div>
-                            <div v-else>
-                                <span class="circle-status color5"></span>
-                                <span> {{ $t('general.unavailable') }}</span>
+                                </div>
+                                <div v-else>
+                                    <span class="circle-status color5"></span>
+                                    <span> {{ $t('general.unavailable') }}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.connector') }}</div>
-                        <div class="content">
-                            <Connector v-for="(item, idx) in curRouteParam.connectorList" :key="idx" :dataObj="item"></Connector>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.connector') }}</div>
+                            <div class="content">
+                                <Connector v-for="(item, idx) in curRouteParam.connectorList" :key="idx" :dataObj="item"></Connector>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('general.type') }}</div>
+                            <div class="content">{{ curRouteParam.chargeType === 1 ? "AC" : "DC" }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                            <div class="content">{{ $t('chargingStation.onPeak') + ' '+ curRouteParam.currency + curRouteParam.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.onPeakElectricityRateType] }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label"></div>
+                            <div class="content">{{ $t('chargingStation.offPeak') + ' '+ curRouteParam.currency + curRouteParam.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.offPeakElectricityRateType] }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
+                            <div class="content">{{ curRouteParam.currency + curRouteParam.parkingRate + '/' +  $t("chargingStation.parkingRateUnit")[curRouteParam.parkingRateType] }}</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">{{ $t('general.installationDate') }}</div>
+                            <div class="content">2022-04-17 17:00:00</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Operator</div>
+                            <div class="content">Fii USA211</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Last Heartbeat</div>
+                            <div class="content">2022-06-28 12:00:32</div>
+                        </div>
+                        <div class="item">
+                            <div class="label">Connectors</div>
+                            <div class="content">2/2 connectors in use</div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="label">{{ $t('general.type') }}</div>
-                        <div class="content">{{ curRouteParam.chargeType === 1 ? "AC" : "DC" }}</div>
+                    <div class="card-8 rank-area secondCol">
+                        <el-button size="medium" type="primary"> Settings</el-button>
+                        <div class="header">
+                            <div class="title">Actions</div>
+                        </div>
+                        <ul class="rank">
+                            <li>
+                                <span>
+                                    Add Charger Profile
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('add')">Add</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Clear Charger Profile
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('clear')">Clear</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Diagnostics
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('start')">Start</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Updates
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('run')">Run</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Clear Cache
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('clearCache')">Clear</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Soft Reset
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('sodtReset')">Reset</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Hard Reset
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('hardReset')">Reset</el-button>
+                            </li>
+                            <li>
+                                <span>
+                                    Diagnostics
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction('start')">Start</el-button>
+                            </li>
+
+                        </ul>
                     </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                        <div class="content">{{ $t('chargingStation.onPeak') + ' '+ curRouteParam.currency + curRouteParam.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.onPeakElectricityRateType] }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label"></div>
-                        <div class="content">{{ $t('chargingStation.offPeak') + ' '+ curRouteParam.currency + curRouteParam.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.offPeakElectricityRateType] }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                        <div class="content">{{ curRouteParam.currency + curRouteParam.parkingRate + '/' +  $t("chargingStation.parkingRateUnit")[curRouteParam.parkingRateType] }}</div>
-                    </div>
-                    <div class="item">
-                        <div class="label">{{ $t('general.installationDate') }}</div>
-                        <div class="content">{{ curRouteParam.installationDate }}</div>
+                    <div class="card-8 rank-area thirdCol">
+                        <div class="header">
+                            <div class="title">Connectors</div>
+                        </div>
+                        <el-table :data="connectors" class="moreCol enable-row-click" v-loading="isLoading" @row-click="handleRowClick">
+                            <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
+                            <el-table-column label="Status" :min-width="3">
+                                <template slot-scope="scope">
+                                    <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color1"></span>
+                                    </el-tooltip>
+                                    <span style="margin-left:5px">{{scope.row.status}}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="type" label="Type" :min-width="2"></el-table-column>
+                            <el-table-column prop="maxOutput" label="Max Output" :min-width="3"></el-table-column>
+                            <el-table-column label="Charging" :width="146">
+                                <template slot-scope="scope">
+                                    <el-dropdown trigger="click">
+                                        <el-button type="primary">
+                                            {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                        </el-button>
+                                        <el-dropdown-menu slot="dropdown" class="actions">
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
+                                                </span>
+                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Start</el-button>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-stop" aria-hidden="true" style="color:red"></i>
+
+                                                </span>
+                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Stop</el-button>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-unlock" aria-hidden="true"></i>
+                                                </span>
+                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Unlock</el-button>
+                                            </el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </el-dropdown>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
+
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
+                        <!-- <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
                         </el-tab-pane>
                         <el-tab-pane :label="$t('chargingStation.chargePointAlert')" name="chargePointAlert">
                         </el-tab-pane>
                         <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue">
+                        </el-tab-pane> -->
+                        <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
                     </el-tabs>
 
@@ -110,6 +234,7 @@
                         </div>
                         <FMCSTemplate :url="costRevenueUrl+`&var-chargeBoxId=`+curRouteParam.chargeBoxId"></FMCSTemplate>
                     </div>
+                    <Transaction v-if="active==='transaction'"></Transaction>
                 </div>
             </div>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
@@ -123,6 +248,7 @@ import Connector from "@/components/chargingStation/connector";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
+import Transaction from "@/components/chargingStation/transaction";
 import Review from "@/components/chargingStation/review";
 import { $HTTP_getChargeBoxDetail } from "@/api/api";
 import moment from "moment";
@@ -141,10 +267,10 @@ export default {
         ChargePointAlert,
         Review,
         FMCSTemplate,
+        Transaction,
     },
     data() {
         return {
-            active: "chargingSession",
             unknown: unknown,
             costRevenueUrl: costRevenueUrl,
             filter: {
@@ -178,7 +304,7 @@ export default {
                 installationDate: "",
             },
             isLoading: false,
-            active: "chargingSession",
+            active: "transaction",
             mapDialog: {
                 visible: false,
                 itemId: "",
@@ -188,6 +314,20 @@ export default {
                 },
             },
             timer: null,
+            connectors: [
+                {
+                    id: 1,
+                    status: "In Use",
+                    type: "CCS",
+                    maxOutput: "30.70KWH",
+                },
+                {
+                    id: 2,
+                    status: "In Use",
+                    type: "CCS",
+                    maxOutput: "30KWH",
+                },
+            ],
         };
     },
     created() {
@@ -246,6 +386,9 @@ export default {
         clearInterval(this.timer);
     },
     methods: {
+        runAction(data, action) {
+            console.log(data, action);
+        },
         fetchData(notLoading) {
             const that = this,
                 params = {
@@ -300,12 +443,15 @@ export default {
 };
 </script>
 <style lang = "scss" scoped>
-.mainctrl .card-8 {
+.card-8 {
     padding: 28px;
-    width: calc(100% - 56px);
-    position: relative;
+    .header {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
     .charge-point-info {
-        margin-bottom: 28px;
+        display: flex;
+        margin-bottom: 80px;
         .item {
             margin-bottom: 12px;
             .label {
@@ -317,7 +463,6 @@ export default {
             }
             .content {
                 display: inline-block;
-                width: calc(100% - 206px);
                 font-size: 1rem;
                 color: #151e25;
                 letter-spacing: 0;
@@ -326,6 +471,88 @@ export default {
                 }
             }
         }
+        .title {
+            margin-bottom: 12px;
+            .label {
+                display: inline-block;
+                width: 180px;
+                font-size: 1.5rem;
+                color: black;
+                letter-spacing: 0;
+                font-weight: bold;
+            }
+            .content {
+                display: inline-block;
+                font-size: 1.5rem;
+                color: blue;
+                font-weight: bold;
+                letter-spacing: 0;
+                .circle-status {
+                    vertical-align: top;
+                }
+            }
+        }
+    }
+
+    .firstCol {
+        width: calc(26.05% - 32px) !important;
+    }
+
+    .secondCol {
+        width: calc(20.05% - 32px) !important;
+    }
+
+    .rank-area {
+        width: calc(33.05% - 32px);
+        margin-right: 12px;
+        height: 255px;
+        position: relative;
+        vertical-align: top;
+        padding-bottom: 48px;
+        &:nth-child(4n + 1) {
+            margin-right: 0px;
+        }
+        .title {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        ul.rank {
+            margin-top: 14px;
+            padding-left: 0;
+            li {
+                height: 26px;
+                list-style: none;
+                margin-bottom: 12px;
+                display: flex;
+                justify-content: space-between;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                .label {
+                    margin-bottom: 6px;
+                    line-height: 20px;
+                    font-size: 1rem;
+                    display: flex;
+                    justify-content: space-between;
+                    min-width: 65px;
+                    .name {
+                        display: inline-block;
+                        color: #525e69;
+                    }
+                }
+                .actionFunction {
+                    min-width: 65px;
+                }
+            }
+        }
+    }
+}
+.actions li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .actionFunction {
+        min-width: 65px;
     }
 }
 </style>

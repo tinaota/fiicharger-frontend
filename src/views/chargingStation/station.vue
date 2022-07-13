@@ -47,11 +47,58 @@
                             <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.status" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ item }}</el-radio>
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
+                    <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-button class="no-bg bind" @click="openBindDialog(scope.row)"></el-button>
                             <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="deleteStation(scope.row.id, scope.row.name)"></el-button>
+                        </template>
+                    </el-table-column> -->
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
+                        <template slot-scope="scope">
+                            <el-dropdown trigger="click">
+                                <el-button type="primary">
+                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown" class="actions">
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Add</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Clear</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Diagnostics
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Start</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Updates
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">Run</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Edit Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Remove Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -320,6 +367,9 @@ export default {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
+        runAction(data, action) {
+            console.log(data, action);
+        },
         fetchLocationList() {
             const that = this;
             this.locationList.isLoading = true;
@@ -817,6 +867,18 @@ export default {
             width: calc(50% - 9px);
             display: inline-block;
         }
+    }
+}
+ul {
+    min-width: 200px;
+    min-height: 200px;
+}
+.actions li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .actionFunction {
+        min-width: 65px;
     }
 }
 </style>

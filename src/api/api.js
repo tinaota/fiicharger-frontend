@@ -52,6 +52,15 @@ export const $HTTP_getOperatorTypeList = () => {
   return fetch(`${base}/Home/Operator/getOperatorTypeList`)
 }
 
+// transactions
+
+export const $HTTP_getAllTransactionsReasonList = () => {
+  return fetch(`${base_charger}/api/reports/transactions/reason-list`)
+}
+
+export const $HTTP_getAllTransactions = (params) => {
+  return fetch(`${base_charger}/api/reports/transactions`, params)
+}
 // Id Tag apis
 export const $HTTP_getIdTagsList = (params) => { return fetch(`${base_charger}/api/reports/id-tags`, params) }
 

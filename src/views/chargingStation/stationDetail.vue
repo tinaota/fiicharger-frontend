@@ -1,4 +1,4 @@
-<template>
+'<template>
     <div class="scroll">
         <div class="mainctrl">
             <el-breadcrumb separator="/">
@@ -32,108 +32,184 @@
                     </el-table-column>
                 </el-table>
             </div>
+
+            <div class="card-8 rank-area">
+                <div class="header">
+                    <div class="title">{{ $t('menu.summary') }}</div>
+                </div>
+                <ul class="rank">
+                    <li>
+                        <div class="label">
+                            <span class="name">Power Consumption</span>
+                            <span class="num">774Kwh</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Total Revenue</span>
+                            <span class="num">$654.37</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Total Sessions</span>
+                            <span class="num">14</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Number of Chargers</span>
+                            <span class="num">3</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Number of Connectors</span>
+                            <span class="num">6</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-8 rank-area">
+                <div class="header">
+                    <div class="title">{{ $t('general.action') }}</div>
+                </div>
+                <ul class="rank">
+                    <li>
+                        <div class="label">
+                            <span class="name">Update Chargers</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'run')">Run</el-button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Get Diagnostics</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'start')">Start</el-button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Add Charger Profile</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'add')">Add</el-button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">Clear Charger Profile</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">Clear</el-button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-8 rank-area">
+                <div class="header">
+                    <div class="title">Connectors</div>
+                    <div class="title-value">6</div>
+
+                </div>
+                <ul class="rank">
+                    <li>
+                        <div class="connectors">
+                            <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color1"></span>
+                            </el-tooltip>
+                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.available').toLowerCase()  }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="connectors">
+                            <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color8"></span>
+                            </el-tooltip>
+                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.inUse').toLowerCase()  }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="connectors">
+                            <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color4"></span>
+                            </el-tooltip>
+                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.unavailable').toLowerCase()  }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="connectors">
+                            <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color10"></span>
+                            </el-tooltip>
+                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s offline</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
             <div class="card-8">
-                <div class="header">{{ $t('menu.summary')}}</div>
-                <el-table :data="[summary]" v-loading="isLoading" class="center thNoBorder statistic">
-                    <el-table-column prop="chargeBoxCount" :label="$t('support.total')" :min-width="2"></el-table-column>
-                    <el-table-column prop="acChargeBoxInfo.count" :label="$t('chargingStation.nAC')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.acConnectors')" :min-width="3">
+                <div class="header">Chargers</div>
+                <el-table :data="chargers" v-loading="isLoading" class="center">
+                    <el-table-column label="Charger Id" :min-width="2">
                         <template slot-scope="scope">
-                            <div v-for="(item, idx) in scope.row.acChargeBoxInfo.chargeConnectorTypeList" :key="idx">
-                                {{ item.count }}
-                                <span class="unit">{{ '(' + item.name +')' }}</span>
-                            </div>
-                            <div v-if='scope.row.acChargeBoxInfo.chargeConnectorTypeList.length==0'>0</div>
+                            <el-link type="primary" underline>{{scope.row.chargerId}}</el-link>
+
                         </template>
                     </el-table-column>
-                    <el-table-column prop="dcChargeBoxInfo.count" :label="$t('chargingStation.nDC')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.dcConnectors')" :min-width="3">
+
+                    <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
+                    <el-table-column prop="powerConsumption" label="Power Consumption" :min-width="2"></el-table-column>
+                    <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
+                    <el-table-column prop="connector" label="Connectors" :min-width="2"></el-table-column>
+                    <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
+                    <el-table-column prop="type" :label="$t('general.type')" :min-width="2"></el-table-column>
+
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
-                            <div v-for="(item, idx) in scope.row.dcChargeBoxInfo.chargeConnectorTypeList" :key="idx">
-                                {{ item.count }}
-                                <span class="unit">{{ '(' + item.name +')' }}</span>
-                            </div>
-                            <div v-if='scope.row.dcChargeBoxInfo.chargeConnectorTypeList.length==0'>0</div>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('chargingStation.curPowerConsumption')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{ scope.row.chargeBoxTotalPower }}
-                            <span class="unit">kW</span>
+                            <el-dropdown trigger="click">
+                                <el-button type="primary">
+                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown" class="actions">
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Add</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Clear</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Diagnostics
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Start</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Updates
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">Run</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Edit Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Remove Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="card-8">
-                <div class="header">{{ $t('chargingStation.smartChargingSetting')}}</div>
-                <el-table :data="[smartChargingSettingInfo]" v-loading="isLoading" class="center">
-                    <el-table-column :label="$t('chargingStation.smartCharging')" :min-width="2">
-                        <template slot-scope="scope">
-                            {{ scope.row.onOffStatus ? $t('general.enable'):$t('general.disable') }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('chargingStation.onPeakDemandMaxLimit')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{ scope.row.maxDemandPowerLimit + "kW"}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('chargingStation.csMaxPower')+'/'+$t('chargingStation.intervalTime')" :min-width="3">
-                        <template slot-scope="scope">
-                            {{ scope.row.intervalMaxPower + "kW" + '/' + scope.row.intervalTime + $t('chargingStation.elecRateUnit')[1]}}
-                        </template>
-                    </el-table-column>
-                    <!-- <el-table-column :label="$t('general.action')" :min-width="2">
-                        <el-button class="no-bg edit" @click="openSmartSettingDialog"></el-button>
-                    </el-table-column> -->
-                </el-table>
-            </div>
-            <div class="card-8">
-                <div class="header">{{ $t('general.detail')}}</div>
-                <div class="chargePoint" v-for="(item, idx) in smartChargingConnectorAnalysisInfo" :key="idx" v-loading="isLoading">
-                    <div class="title" @click="goChargePointDetail(item.chargeBoxId)">{{ item.chargeBoxName }}</div>
-                    <ConnectorDetail v-for="(connector, i) in item.connectorList" :data="connector" :key="i" :class="{'even': (i%2==1)}"></ConnectorDetail>
-                </div>
-            </div>
-            <!-- 功能尚未確定 -->
-            <!-- <el-dialog
-                :title="$t('general.modify')"
-                width="400px"
-                :visible.sync="smartSettingDialog.visible"
-                :show-close="false"
-                v-loading="smartSettingDialog.isLoading"
-                @close="closeSmartSettingDialog">
-                <div class="vertial formVertical">
-                    <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.smartCharging') }}</div>
-                        <el-switch v-model="smartSettingDialog.info.onOffStatus" active-color="#0263FF" inactive-color="#D5D4D4"></el-switch>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.onPeakDemandMaxLimit') + '(kw)' }}</div>
-                        <el-slider
-                            v-model="smartSettingDialog.info.maxDemandPowerLimit"
-                            :min="0"
-                            :max="smartSettingDialog.info.intervalMaxPower"
-                            :step="5">
-                        </el-slider>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.csMaxPower')+ '(kw)' }}</div>
-                        <el-input v-model="smartSettingDialog.info.intervalMaxPower" disabled></el-input>
-                    </div>
-                    <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.intervalTime') }}</div>
-                        <el-select
-                            class="select-small"
-                            v-model="smartSettingDialog.info.intervalTime">
-                            <el-option v-for="item in smartSettingDialog.intervalTimeList" :label="item + ' ' + $t('chargingStation.elecRateUnit')[1]" :key="item" :value="item"></el-option>
-                        </el-select>
-                    </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                    <el-button size="small" @click="smartSettingDialog.visible = false">{{ $t('general.cancel') }}</el-button>
-                    <el-button size="small" type="primary">{{ $t('general.ok') }}</el-button>
-                </span>
-            </el-dialog> -->
+
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
         </div>
     </div>
@@ -155,6 +231,7 @@ export default {
                 stationId: "",
                 stationName: "",
             },
+            permissionEditAble: this.$store.state.permissionEditable,
             isLoading: false,
             stationInfo: {
                 zipCode: "",
@@ -169,25 +246,6 @@ export default {
                 countryCode: "",
                 phone: "",
             },
-            summary: {
-                chargeBoxCount: 0,
-                acChargeBoxInfo: {
-                    count: 0,
-                    chargeConnectorTypeList: [],
-                },
-                dcChargeBoxInfo: {
-                    count: 0,
-                    chargeConnectorTypeList: [],
-                },
-                chargeBoxTotalPower: 0,
-            },
-            smartChargingSettingInfo: {
-                onOffStatus: 0,
-                maxDemandPowerLimit: 0,
-                intervalMaxPower: 0,
-                intervalTime: 5,
-            },
-            smartChargingConnectorAnalysisInfo: [],
             mapDialog: {
                 visible: false,
                 itemId: "",
@@ -206,6 +264,35 @@ export default {
                 },
                 intervalTimeList: [5, 10, 15, 20, 30, 60],
             },
+            chargers: [
+                {
+                    chargerId: "#123",
+                    name: "TEST",
+                    powerConsumption: "387 KWH",
+                    status: "In Use",
+                    connector: "2/2 In Use",
+                    lastHeartbeat: "2022-04-17 19:00:00",
+                    type: "DC",
+                },
+                {
+                    chargerId: "#1202",
+                    name: "AC11-SC2",
+                    powerConsumption: "387 KWH",
+                    status: "Available",
+                    connector: "2/2 Available",
+                    lastHeartbeat: "2022-04-17 16:00:00",
+                    type: "AC",
+                },
+                {
+                    chargerId: "#1203",
+                    name: "DC30-SC3",
+                    powerConsumption: "0 KWH",
+                    status: "inUse",
+                    connector: "0/2 Unavailable",
+                    lastHeartbeat: "2022-04-17 17:00:00",
+                    type: "DC",
+                },
+            ],
         };
     },
     created() {
@@ -229,6 +316,9 @@ export default {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods: {
+        runAction(data, action) {
+            console.log(data, action);
+        },
         fetchStationDetail() {
             const that = this;
             let param = {
@@ -238,6 +328,7 @@ export default {
             $HTTP_getStationInfo(param)
                 .then((data) => {
                     this.isLoading = false;
+                    console.log(data)
                     if (data?.id >= 0) {
                         this.stationInfo = {
                             stationId: data.id,
@@ -249,25 +340,11 @@ export default {
                                 lon: data.coordinates.longitude,
                                 lat: data.coordinates.latitude,
                             },
-                            serviceStartTime: "no data",
-                            serviceEndTime: "no data",
-                            phone: "no data",
+                            serviceStartTime: "5am",
+                            serviceEndTime: "5pm",
+                            phone: "414 241 2621",
                         };
 
-                        this.summary = {
-                            chargeBoxCount: data.acCount + data.dcCount,
-                            acChargeBoxInfo: {
-                                count: data.acCount,
-                                chargeConnectorTypeList: "",
-                            },
-                            dcChargeBoxInfo: {
-                                count: data.dcCount,
-                                chargeConnectorTypeList: "",
-                            },
-                            chargeBoxTotalPower: "no-data",
-                        };
-                        this.smartChargingSettingInfo = Object.assign(data.smartChargingSettingInfo);
-                        this.smartChargingConnectorAnalysisInfo = data.smartChargingConnectorAnalysisInfo.slice();
                     } else {
                         this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
                     }
@@ -287,15 +364,6 @@ export default {
             this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
-        // openSmartSettingDialog() {
-        //     this.smartSettingDialog.info = Object.assign({}, this,this.smartChargingSettingInfo);
-        //     this.smartSettingDialog.info.onOffStatus = (this.smartSettingDialog.info.onOffStatus) ? true:false;
-        //     this.smartSettingDialog.visible = true;
-        //     this.$jQuery(".scroll").mCustomScrollbar("disable");
-        // },
-        // closeSmartSettingDialog() {
-        //     this.$jQuery(".scroll").mCustomScrollbar("update");
-        // }
         goChargePointDetail(chargeBoxId) {
             const params = {
                 chargeBoxId: chargeBoxId,
@@ -310,6 +378,11 @@ export default {
     .header {
         color: #151e25;
         font-size: 1.25rem;
+        display: flex;
+        .title-value {
+            margin-left: 200px;
+            color: #0056ff;
+        }
     }
     .chargePoint {
         margin-top: 16px;
@@ -326,6 +399,83 @@ export default {
                 margin-left: 0;
             }
         }
+    }
+}
+
+.rank-area {
+    width: calc(33.05% - 32px);
+    margin-right: 12px;
+    height: 255px;
+    position: relative;
+    vertical-align: top;
+    padding-bottom: 48px;
+    &:nth-child(4n + 1) {
+        margin-right: 0px;
+    }
+    ul.rank {
+        margin-top: 24px;
+        padding-left: 0;
+        margin: 28px 0 0 0;
+        li {
+            height: 26px;
+            list-style: none;
+            margin-bottom: 28px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .label {
+                margin-bottom: 6px;
+                line-height: 20px;
+                font-size: 1rem;
+                display: flex;
+                justify-content: space-between;
+                min-width: 65px;
+                .name {
+                    display: inline-block;
+                    color: #525e69;
+                }
+                .num {
+                    display: inline-block;
+                    float: right;
+                    color: #525e69;
+                }
+                .actionFunction {
+                    min-width: 65px;
+                }
+            }
+            .connectors {
+                display: flex;
+                text-align: center;
+                span {
+                    margin-right: 2px;
+                }
+            }
+        }
+    }
+}
+
+@media (min-width: 1251px) {
+    .s-contain .item {
+        width: calc(16.667% - 5px);
+    }
+}
+
+@media (max-width: 1680px) {
+    .rank-area {
+        width: calc(33.05% - 36px);
+    }
+}
+
+.el-link {
+    text-decoration: underline;
+    color: #0056ff;
+}
+.actions li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .actionFunction {
+        min-width: 65px;
     }
 }
 </style>

@@ -89,4 +89,8 @@ export default {
     height: 28px;
     width: 28px;
 }
+
+.connector-obj{
+    vertical-align: middle;
+}
 </style>
