@@ -145,20 +145,36 @@
 
             <div class="card-8">
                 <div class="header">Chargers</div>
-                <el-table :data="chargers" v-loading="isLoading" class="center">
+                <el-table :data="tableData" v-loading="isLoading" class="center">
                     <el-table-column label="Charger Id" :min-width="2">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline>{{scope.row.chargerId}}</el-link>
-
+                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">{{scope.row.id}}</el-link>
                         </template>
                     </el-table-column>
 
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column prop="powerConsumption" label="Power Consumption" :min-width="2"></el-table-column>
-                    <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
-                    <el-table-column prop="connector" label="Connectors" :min-width="2"></el-table-column>
+                    <el-table-column label="Power Consumption" :min-width="2">
+                        <template slot-scope="scope">
+                            {{scope.row.powerKw + "kW"}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column :label="$t('general.status')" :min-width="2">
+                        <template slot-scope="scope">
+                            <el-tooltip v-if="scope.row.status===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color1"></span>
+                            </el-tooltip>
+                            <el-tooltip v-else :content="$t('general.disconnected')" placement="bottom" effect="light" popper-class="custom">
+                                <span class="circle-status color5"></span>
+                            </el-tooltip>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="Connectors" :min-width="2">
+                        <template slot-scope="scope">
+                            {{scope.row.connectors.length}}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
-                    <el-table-column prop="type" :label="$t('general.type')" :min-width="2"></el-table-column>
+                    <el-table-column prop="currentType" :label="$t('general.type')" :min-width="2"></el-table-column>
 
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
@@ -216,7 +232,7 @@
 </template>
 
 <script>
-import { $HTTP_getStationInfo } from "@/api/api";
+import { $HTTP_getStationInfo, $HTTP_getAllChargeBoxList } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ConnectorDetail from "@/components/chargingStation/connectorDetail";
@@ -264,35 +280,9 @@ export default {
                 },
                 intervalTimeList: [5, 10, 15, 20, 30, 60],
             },
-            chargers: [
-                {
-                    chargerId: "#123",
-                    name: "TEST",
-                    powerConsumption: "387 KWH",
-                    status: "In Use",
-                    connector: "2/2 In Use",
-                    lastHeartbeat: "2022-04-17 19:00:00",
-                    type: "DC",
-                },
-                {
-                    chargerId: "#1202",
-                    name: "AC11-SC2",
-                    powerConsumption: "387 KWH",
-                    status: "Available",
-                    connector: "2/2 Available",
-                    lastHeartbeat: "2022-04-17 16:00:00",
-                    type: "AC",
-                },
-                {
-                    chargerId: "#1203",
-                    name: "DC30-SC3",
-                    powerConsumption: "0 KWH",
-                    status: "inUse",
-                    connector: "0/2 Unavailable",
-                    lastHeartbeat: "2022-04-17 17:00:00",
-                    type: "DC",
-                },
-            ],
+            tableData: [],
+            total: 0,
+            page: 1,
         };
     },
     created() {
@@ -311,6 +301,8 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchStationDetail();
+        this.getChargersList("");
+        // this.getChargersList(this.curRouteParam.stationId);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
@@ -318,6 +310,27 @@ export default {
     methods: {
         runAction(data, action) {
             console.log(data, action);
+        },
+        getChargersList(params) {
+            $HTTP_getAllChargeBoxList(params)
+                .then((res) => {
+                    console.log(res);
+                    this.isLoading = false;
+                    if (res?.data?.length > 0) {
+                        this.tableData = res.data;
+                        this.total = res.metadata.totalRows;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                    }
+                })
+                .catch((err) => {
+                    this.tableData = [];
+                    this.total = 0;
+                    console.log(err);
+                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                });
         },
         fetchStationDetail() {
             const that = this;
@@ -328,7 +341,7 @@ export default {
             $HTTP_getStationInfo(param)
                 .then((data) => {
                     this.isLoading = false;
-                    console.log(data)
+                    console.log(data);
                     if (data?.id >= 0) {
                         this.stationInfo = {
                             stationId: data.id,
@@ -344,7 +357,6 @@ export default {
                             serviceEndTime: "5pm",
                             phone: "414 241 2621",
                         };
-
                     } else {
                         this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
                     }
@@ -369,6 +381,14 @@ export default {
                 chargeBoxId: chargeBoxId,
             };
             this.$router.push({ name: "chargePointDetail", params: params });
+        },
+        handleLinkClick(row) {
+            console.log(row);
+            if (row) {
+                const data = Object.assign({}, row);
+                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
+                this.$router.push({ name: "chargePointDetail", params: data }).catch();
+            }
         },
     },
 };
@@ -468,6 +488,11 @@ export default {
 
 .el-link {
     text-decoration: underline;
+    color: #0056ff;
+}
+
+.el-link:hover {
+    text-decoration: none;
     color: #0056ff;
 }
 .actions li {

@@ -32,7 +32,7 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading" @row-click="handleRowClick">
-                    <el-table-column prop="id" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
+                    <el-table-column prop="id" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('chargingStation.power')" :min-width="3">
                         <template slot-scope="scope">
@@ -66,15 +66,18 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')" :width="100">
                         <template slot-scope="scope">
-                            <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector>
+                            {{scope.row.connectors.length}}
+                            <!-- <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector> -->
                         </template>
                     </el-table-column>
+                    <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
+
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
                             {{ scope.row.currentType}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRate')">
+                    <!-- <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
                                 {{scope.row.chargePrice!==null?  getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.onPeak.rate) + '/' + getSymbols(scope.row.chargePrice.onPeak.type):'-'}}
@@ -85,8 +88,8 @@
                                 {{scope.row.chargePrice!==null?  getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.offPeak.rate) + '/' + getSymbols(scope.row.chargePrice.offPeak.type):'-'}}
                             </template>
                         </el-table-column>
-                    </el-table-column>
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="180">
+                    </el-table-column> -->
+                    <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="180">
                         <template slot-scope="scope">
                             <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
@@ -101,6 +104,53 @@
                             <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
                             </el-tooltip>
+                        </template>
+                    </el-table-column> -->
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
+                        <template slot-scope="scope">
+                            <el-dropdown trigger="click">
+                                <el-button type="primary">
+                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                </el-button>
+                                <el-dropdown-menu slot="dropdown" class="actions">
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Add</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Charger Profile
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Clear</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Diagnostics
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Start</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Updates
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">Run</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Edit Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Remove Station
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -239,6 +289,9 @@ export default {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
+        runAction(data, action) {
+            console.log(data, action);
+        },
         fetchLocationList() {
             const that = this;
             this.loctionList.isLoading = true;
