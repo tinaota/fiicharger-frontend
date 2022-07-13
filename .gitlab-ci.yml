@@ -10,18 +10,18 @@ stages:
   - document
 
 verify_commit_format:
-  image: $DOCKER_REGISTRY_URL/fii-commitlint:v0.0.1
+  image: $DOCKER_REGISTRY_URL/fii-commitlint:v0.0.2
   stage: verify
   tags: [ docker_runner ]
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(hotfix)\//
-    - if: $CI_COMMIT_BRANCH =~ /^(feature)\//
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
   needs: [ ]
   dependencies: [ ]
   script:
     - echo "Checking commit message format..."
     - git fetch origin
-    - npx commitlint --from=$(git merge-base remotes/origin/$CI_COMMIT_BRANCH remotes/origin/master)
+    - npx commitlint --from=$(git merge-base remotes/origin/$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME remotes/origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME)
+    - check_merge_status -s $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME -t $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
 
 verify_build:
   stage: verify
@@ -46,8 +46,7 @@ dev_build_image:
   stage: build
   tags: [ shell_runner ]
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(hotfix)\//
-    - if: $CI_COMMIT_BRANCH =~ /^(feature)\//
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
   needs:
     - verify_commit_format
   dependencies: [ ]
@@ -109,8 +108,7 @@ dev_launch_image:
   stage: launch
   tags: [shell_runner]
   rules:
-    - if: $CI_COMMIT_BRANCH =~ /^(hotfix)\//
-    - if: $CI_COMMIT_BRANCH =~ /^(feature)\//
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
   needs:
     - dev_build_image
   dependencies: [ ]
