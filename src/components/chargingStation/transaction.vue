@@ -34,6 +34,9 @@ import { transformUtcToLocTime } from "@/utils/function";
 import { $HTTP_getAllTransactionsReasonList, $HTTP_getAllTransactions } from "@/api/api";
 
 export default {
+    props: {
+        chargerId: String,
+    },
     data() {
         return {
             allTransactions: [],
@@ -62,6 +65,9 @@ export default {
             let params = {};
             if (this.filter.stopReason) {
                 params.StopReason = this.filter.stopReason;
+            }
+            if (this.chargerId) {
+                params.ChargePointId = this.chargerId;
             }
             $HTTP_getAllTransactions(params)
                 .then((res) => {

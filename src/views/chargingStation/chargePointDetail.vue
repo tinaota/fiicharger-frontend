@@ -29,47 +29,25 @@
 
                         </div>
                         <div class="item">
-                            <div class="label">{{ $t('general.status') }}</div>
+                            <div class="label">Connection Status</div>
                             <div class="content">
-                                <div v-if="curRouteParam.chargeBoxStatus===`Available`">
+                                <div v-if="curRouteParam.chargeBoxStatus===`Connected`">
                                     <span class="circle-status color1"></span>
-                                    <span> {{ $t('general.available') }}</span>
+                                    <span> {{ $t('general.connected') }}</span>
                                 </div>
-                                <!-- <div v-else-if="curRouteParam.chargeBoxStatus===2">
-                                <span class="circle-status color2"></span>
-                                <span> {{ $t('general.inUse') }}</span>
-                            </div> -->
-                                <div v-else-if="curRouteParam.chargeBoxStatus===`Maintenance`">
-                                    <span class="circle-status color3"></span>
-                                    <span> {{ $t('general.maintenance') }}</span>
-                                </div>
-                                <div v-else-if="curRouteParam.chargeBoxStatus===`Alert`">
-                                    <span class="circle-status color4"></span>
-                                    <span> {{ $t('general.alert') }}</span>
-                                </div>
-                                <div v-else-if="curRouteParam.chargeBoxStatus===`ConnectionLost`">
-                                    <span class="circle-status color7"></span>
-                                    <span> {{ $t('general.connectionLost') }}</span>
-                                </div>
-                                <div v-else-if="curRouteParam.chargeBoxStatus===`Unknown`">
-                                    <span class="circle-status unknown">
-                                        <img :src="unknown">
-                                    </span>
-                                    <span> {{ $t('general.unknown') }}</span>
 
-                                </div>
                                 <div v-else>
                                     <span class="circle-status color5"></span>
-                                    <span> {{ $t('general.unavailable') }}</span>
+                                    <span> {{ $t('general.disconnected') }}</span>
                                 </div>
                             </div>
                         </div>
-                        <div class="item">
+                        <!-- <div class="item">
                             <div class="label">{{ $t('chargingStation.connector') }}</div>
                             <div class="content">
                                 <Connector v-for="(item, idx) in curRouteParam.connectorList" :key="idx" :dataObj="item"></Connector>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="item">
                             <div class="label">{{ $t('general.type') }}</div>
                             <div class="content">{{ curRouteParam.chargeType === 1 ? "AC" : "DC" }}</div>
@@ -164,18 +142,42 @@
                         <div class="header">
                             <div class="title">Connectors</div>
                         </div>
-                        <el-table :data="connectors" class="moreCol enable-row-click" v-loading="isLoading" @row-click="handleRowClick">
+                        <el-table :data="curRouteParam.connectorList" class="moreCol" v-loading="isLoading">
                             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                            <el-table-column label="Status" :min-width="3">
+                            <el-table-column label="Status(last)" :min-width="7">
                                 <template slot-scope="scope">
-                                    <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                    <el-tooltip v-if="scope.row.status==='Available'" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color1"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Preparing'" :content="'Preparing'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color2"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='SuspendedEVSE'" :content="'SuspendedEVSE'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color6"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='SuspendedEV'" :content="'SuspendedEV'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color6"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Finishing'" :content="'Finishing'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color2"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Reserved'" :content="'Reserved'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color5"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Unavailable'" :content="'Unavailable'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color4"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Faulted'" :content="'Faulted'" placement="bottom" effect="light" popper-class="custom">
+                                        <span class="circle-status color0"></span>
+                                    </el-tooltip>
+                                    <el-tooltip v-if="scope.row.status==='Charging'" :content="'Charging'" placement="bottom" effect="light" popper-class="custom">
                                         <span class="circle-status color1"></span>
                                     </el-tooltip>
                                     <span style="margin-left:5px">{{scope.row.status}}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="type" label="Type" :min-width="2"></el-table-column>
-                            <el-table-column prop="maxOutput" label="Max Output" :min-width="3"></el-table-column>
+                            <el-table-column prop="type" label="Type" :min-width="4"></el-table-column>
+                            <el-table-column prop="powerKw" label="Max Output" :min-width="3"></el-table-column>
                             <el-table-column label="Charging" :width="146">
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
@@ -234,7 +236,7 @@
                         </div>
                         <FMCSTemplate :url="costRevenueUrl+`&var-chargeBoxId=`+curRouteParam.chargeBoxId"></FMCSTemplate>
                     </div>
-                    <Transaction v-if="active==='transaction'"></Transaction>
+                    <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
                 </div>
             </div>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
