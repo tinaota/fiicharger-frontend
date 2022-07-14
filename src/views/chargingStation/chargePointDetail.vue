@@ -176,7 +176,7 @@
                             <el-table-column label="Charging" :width="146">
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
-                                        <el-button type="primary">
+                                        <el-button class="connectors_chargers">
                                             {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
                                         </el-button>
                                         <el-dropdown-menu slot="dropdown" class="actions">
@@ -184,20 +184,20 @@
                                                 <span>
                                                     <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
-                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Start</el-button>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'add')">Start</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-stop" aria-hidden="true" style="color:red"></i>
 
                                                 </span>
-                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Stop</el-button>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'clear')">Stop</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 </span>
-                                                <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Unlock</el-button>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'start')">Unlock</span>
                                             </el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
@@ -570,5 +570,14 @@ export default {
     .actionFunction {
         min-width: 65px;
     }
+
 }
+
+.connectors_chargers {
+    color: #409EFF;
+    background-color: transparent;
+    border-color: transparent;
+    font-weight: 600;
+}
+
 </style>

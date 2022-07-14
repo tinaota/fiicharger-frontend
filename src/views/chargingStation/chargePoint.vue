@@ -113,7 +113,7 @@
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
-                                <el-button type="primary">
+                                <el-button class="action_chargers_stations">
                                     {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" class="actions">
@@ -567,5 +567,12 @@ export default {
     .actionFunction {
         min-width: 65px;
     }
+}
+.action_chargers_stations{
+    background-color: transparent;
+    border-color: #409EFF;
+    border-width: 2px;
+    color: #409EFF;
+    font-weight:600;
 }
 </style>
