@@ -19,7 +19,7 @@
             <el-table-column prop="meterStop" label="Meter Stop" :min-width="2"></el-table-column>
             <el-table-column label="Stop Time Stamp" :min-width="2">
                 <template slot-scope="scope">
-                    {{getLocTime(scope.row.stopTimestamp)}}
+                    {{scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):''}}
                 </template>
             </el-table-column>
             <el-table-column prop="stopReason" label="Stop Reason" :min-width="2"></el-table-column>

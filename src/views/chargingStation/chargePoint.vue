@@ -31,10 +31,14 @@
                     </el-input>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
-                <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading" @row-click="handleRowClick">
-                    <el-table-column prop="id" :label="$t('chargingStation.chargePointID')" :min-width="3"></el-table-column>
+                <el-table :data="tableData" class="moreCol" v-loading="isLoading">
+                    <el-table-column :label="$t('chargingStation.chargePointID')" :min-width="3">
+                        <template slot-scope="scope">
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{scope.row.id}}</el-link>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="3">
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="2">
                         <template slot-scope="scope">
                             {{scope.row.powerKw + "kW"}}
                         </template>
@@ -64,10 +68,10 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :width="100">
+                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.connectors.length}}
-                            <!-- <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector> -->
+                            <!-- {{scope.row.connectors.length}} -->
+                            <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
@@ -139,13 +143,13 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Edit Station
+                                            Edit Charger
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Remove Station
+                                            Remove Charger
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
                                     </el-dropdown-item>
@@ -461,8 +465,8 @@ export default {
             this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        handleRowClick(row, column, event) {
-            if ($(event.path[0]).attr("class") !== undefined && $(event.path[0]).attr("class").includes("cell")) {
+        handleRowClick(row) {
+            if (row) {
                 const data = Object.assign({}, row);
                 window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
                 this.$router.push({ name: "chargePointDetail", params: data }).catch();
@@ -522,6 +526,23 @@ export default {
         width: 20px;
         height: 20px;
         margin-left: -2px;
+    }
+}
+.el-link {
+    text-decoration: underline;
+    color: #0056ff;
+}
+
+.el-link:hover {
+    text-decoration: none;
+    color: #0056ff;
+}
+.actions li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .actionFunction {
+        min-width: 65px;
     }
 }
 </style>

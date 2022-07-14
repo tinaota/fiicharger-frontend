@@ -70,19 +70,19 @@
                         </div>
                         <div class="item">
                             <div class="label">Operator</div>
-                            <div class="content">Fii USA211</div>
+                            <div class="content"></div>
                         </div>
                         <div class="item">
                             <div class="label">Last Heartbeat</div>
-                            <div class="content">2022-06-28 12:00:32</div>
+                            <div class="content"></div>
                         </div>
                         <div class="item">
                             <div class="label">Connectors</div>
-                            <div class="content">2/2 connectors in use</div>
+                            <div class="content"></div>
                         </div>
                     </div>
                     <div class="card-8 rank-area secondCol">
-                        <el-button size="medium" type="primary"> Settings</el-button>
+                        <!-- <el-button size="medium" type="primary"> Settings</el-button> -->
                         <div class="header">
                             <div class="title">Actions</div>
                         </div>

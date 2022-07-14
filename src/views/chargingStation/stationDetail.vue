@@ -143,12 +143,12 @@
                 </ul>
             </div>
 
-            <div class="card-8">
+            <div class="card-8 table-result">
                 <div class="header">Chargers</div>
                 <el-table :data="tableData" v-loading="isLoading" class="center">
                     <el-table-column label="Charger Id" :min-width="2">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">{{scope.row.id}}</el-link>
+                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{scope.row.id}}</el-link>
                         </template>
                     </el-table-column>
 
@@ -209,13 +209,13 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Edit Station
+                                            Edit Charger
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Remove Station
+                                            Remove Charger
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
                                     </el-dropdown-item>

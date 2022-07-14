@@ -21,8 +21,12 @@
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
-                <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading" @row-click="handleRowClick">
-                    <el-table-column prop="id" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
+                <el-table :data="tableData" class="moreCol" v-loading="isLoading">
+                    <el-table-column :label="$t('chargingStation.stationID')" :min-width="2">
+                        <template slot-scope="scope">
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{scope.row.id}}</el-link>
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
                     <el-table-column prop="address.zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('general.address')" :min-width="5">
@@ -485,8 +489,8 @@ export default {
                     this.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
-        handleRowClick(row, column, event) {
-            if ($(event.path[0]).attr("class") !== undefined && $(event.path[0]).attr("class").includes("cell")) {
+        handleRowClick(row) {
+            if (row) {
                 const stationData = {
                     stationId: row.id,
                     stationName: row.name,
@@ -880,5 +884,15 @@ ul {
     .actionFunction {
         min-width: 65px;
     }
+}
+
+.el-link {
+    text-decoration: underline;
+    color: #0056ff;
+}
+
+.el-link:hover {
+    text-decoration: none;
+    color: #0056ff;
 }
 </style>
