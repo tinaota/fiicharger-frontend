@@ -144,7 +144,7 @@
                         </div>
                         <el-table :data="curRouteParam.connectorList" class="moreCol" v-loading="isLoading">
                             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                            <el-table-column label="Status(last)" :min-width="7">
+                            <el-table-column label="Status(last)" :min-width="8">
                                 <template slot-scope="scope">
                                     <el-tooltip v-if="scope.row.status==='Available'" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                         <span class="circle-status color1"></span>
@@ -316,20 +316,6 @@ export default {
                 },
             },
             timer: null,
-            connectors: [
-                {
-                    id: 1,
-                    status: "In Use",
-                    type: "CCS",
-                    maxOutput: "30.70KWH",
-                },
-                {
-                    id: 2,
-                    status: "In Use",
-                    type: "CCS",
-                    maxOutput: "30KWH",
-                },
-            ],
         };
     },
     created() {
@@ -504,8 +490,12 @@ export default {
         width: calc(20.05% - 32px) !important;
     }
 
+    .thirdCol{
+        width: calc(40.05% - 32px) !important
+
+    }
+
     .rank-area {
-        width: calc(33.05% - 32px);
         margin-right: 12px;
         height: 255px;
         position: relative;
