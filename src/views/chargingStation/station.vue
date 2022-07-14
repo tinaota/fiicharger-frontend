@@ -91,15 +91,21 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
+                                            Bind Chargers
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'bind')">Bind</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
                                             Edit Station
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">Edit</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             Remove Station
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">Delete</el-button>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -373,6 +379,13 @@ export default {
     methods: {
         runAction(data, action) {
             console.log(data, action);
+            if (action === "bind") {
+                this.openBindDialog(data);
+            } else if (action === "edit") {
+                this.openDialog(1, data);
+            } else if (action === "delete") {
+                this.deleteStation(data.id, data.name);
+            }
         },
         fetchLocationList() {
             const that = this;

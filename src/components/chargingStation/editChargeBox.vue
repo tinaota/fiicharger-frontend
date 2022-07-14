@@ -89,6 +89,8 @@ export default {
                 };
             },
         },
+    },mounted(){
+        console.log(this.dialog)
     },
     data() {
         return {

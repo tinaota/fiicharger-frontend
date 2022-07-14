@@ -399,6 +399,15 @@
             &.color10 {
                 background: #000013;
             }
+            &.inUse {
+                background: #409eff;
+            }
+            &.available {
+                background: #33c85a;
+            }
+            &.unavailable {
+                background: #fc2e56;
+            }
         }
         &.report {
             margin-bottom: 0;
@@ -1052,6 +1061,16 @@ div.connector-obj {
     }
     .color6 {
         background: #1e5eff;
+    }
+
+    .inUse {
+        background: #409eff;
+    }
+    .available {
+        background: #33c85a;
+    }
+    .unavailable {
+        background: #fc2e56;
     }
     .circular {
         display: inline-block;

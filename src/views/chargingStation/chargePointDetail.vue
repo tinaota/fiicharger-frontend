@@ -78,7 +78,8 @@
                         </div>
                         <div class="item">
                             <div class="label">Connectors</div>
-                            <div class="content"></div>
+                            <Connector :dataObj="curRouteParam.connectorList" :isBreak="true"></Connector>
+
                         </div>
                     </div>
                     <div class="card-8 rank-area secondCol">
@@ -141,31 +142,31 @@
                             <el-table-column label="Status(last)" :min-width="8">
                                 <template slot-scope="scope">
                                     <el-tooltip v-if="scope.row.status==='Available'" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color1"></span>
+                                        <span class="circle-status available"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Preparing'" :content="'Preparing'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color2"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='SuspendedEVSE'" :content="'SuspendedEVSE'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color6"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='SuspendedEV'" :content="'SuspendedEV'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color6"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Finishing'" :content="'Finishing'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color2"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Reserved'" :content="'Reserved'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color5"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Unavailable'" :content="'Unavailable'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color4"></span>
+                                        <span class="circle-status unavailable"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Faulted'" :content="'Faulted'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color0"></span>
+                                        <span class="circle-status unavailable"></span>
                                     </el-tooltip>
                                     <el-tooltip v-if="scope.row.status==='Charging'" :content="'Charging'" placement="bottom" effect="light" popper-class="custom">
-                                        <span class="circle-status color1"></span>
+                                        <span class="circle-status inUse"></span>
                                     </el-tooltip>
                                     <span style="margin-left:5px">{{scope.row.status}}</span>
                                 </template>
@@ -264,6 +265,7 @@ export default {
         Review,
         FMCSTemplate,
         Transaction,
+        Connector
     },
     data() {
         return {
@@ -310,6 +312,12 @@ export default {
                 },
             },
             timer: null,
+            // count: {
+            //     available: 0,
+            //     inUse: 0,
+            //     unavailable: 0,
+            //     total: 0,
+            // },
         };
     },
     created() {
@@ -336,6 +344,21 @@ export default {
             parkingRateType: 1,
             installationDate: chargePointInfo.installed,
         };
+
+        // this.curRouteParam.connectorList.map((item) => {
+        //     if (item.status === "Available") this.count.available += 1;
+        //     else if (item.status === "Unavailable" || item.status === "Faulted") this.count.unavailable += 1;
+        //     else if (
+        //         item.status === "Preparing" ||
+        //         item.status === "Charging" ||
+        //         item.status === "SuspendedEV" ||
+        //         item.status === "SuspendedEVSE" ||
+        //         item.status === "Finishing" ||
+        //         item.status === "Reserved"
+        //     )
+        //         this.count.inUse += 1;
+        // });
+        // this.count.total = this.curRouteParam.connectorList.length;
         // this.fetchData(); //api尚未完成
         // this.lang = window.sessionStorage.getItem("fiics-lang");
         // this.timer = setInterval(() => {
@@ -433,7 +456,7 @@ export default {
     }
     .charge-point-info {
         display: flex;
-        margin-bottom: 80px;
+        margin-bottom: 85px;
         .item {
             margin-bottom: 12px;
             .label {
@@ -450,6 +473,14 @@ export default {
                 letter-spacing: 0;
                 .circle-status {
                     vertical-align: top;
+                }
+                .connectors {
+                    display: flex;
+                    p {
+                        margin-block-start: 0;
+                        margin-block-end: 5px;
+                        margin-left: 5px;
+                    }
                 }
             }
         }
@@ -484,9 +515,8 @@ export default {
         width: calc(20.05% - 32px) !important;
     }
 
-    .thirdCol{
-        width: calc(40.05% - 32px) !important
-
+    .thirdCol {
+        width: calc(40.05% - 32px) !important;
     }
 
     .rank-area {

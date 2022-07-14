@@ -153,12 +153,12 @@
                     </el-table-column>
 
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column label="Power Consumption" :min-width="2">
+                    <el-table-column label="Power Consumption" :min-width="1">
                         <template slot-scope="scope">
                             {{scope.row.powerKw + "kW"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.status')" :min-width="2">
+                    <el-table-column :label="$t('general.status')" :min-width="1">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.status===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -168,9 +168,9 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column label="Connectors" :min-width="2">
+                    <el-table-column label="Connectors" :min-width="3">
                         <template slot-scope="scope">
-                            {{scope.row.connectors.length}}
+                            <Connector :dataObj="scope.row.connectors" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
@@ -209,15 +209,33 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
+                                            Clear Cache
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">Clear</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Hard Reset
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">Reset</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Soft Reset
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">Reset</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
                                             Edit Charger
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">Edit</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             Remove Charger
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">Delete</el-button>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -225,21 +243,26 @@
                     </el-table-column>
                 </el-table>
             </div>
-
+            <EditChargeBox name="chargeBox" :show="dialog.isVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
         </div>
     </div>
 </template>
 
 <script>
-import { $HTTP_getStationInfo, $HTTP_getAllChargeBoxList } from "@/api/api";
+import { $HTTP_getStationInfo, $HTTP_getAllChargeBoxList, $HTTP_deleteChargeBox } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ConnectorDetail from "@/components/chargingStation/connectorDetail";
+import EditChargeBox from "@/components/chargingStation/editChargeBox";
+import Connector from "@/components/chargingStation/connector";
+
 export default {
     components: {
         ShowPostion,
         ConnectorDetail,
+        EditChargeBox,
+        Connector
     },
     data() {
         return {
@@ -283,6 +306,23 @@ export default {
             tableData: [],
             total: 0,
             page: 1,
+            dialog: {
+                type: 1, //always 1 for edit
+                info: {
+                    chargeBoxId: "",
+                    loc: {
+                        lng: "",
+                        lon: "",
+                        lat: "",
+                    },
+                    chargeType: "AC",
+                    installationDate: "",
+                    chargeBoxName: "",
+                    id: "",
+                    power: 0,
+                },
+                isVisible: false,
+            },
         };
     },
     created() {
@@ -308,13 +348,22 @@ export default {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods: {
+        closeDialog(e, dialog) {
+            console.log(e, dialog);
+            this.dialog.isVisible = false;
+            // this.getChargersList();
+            this.$jQuery(".scroll").mCustomScrollbar("update");
+        },
         runAction(data, action) {
-            console.log(data, action);
+            if (action === "edit") {
+                this.openDialog(data);
+            } else if (action === "delete") {
+                this.deleteChargers(data.id);
+            }
         },
         getChargersList(params) {
             $HTTP_getAllChargeBoxList(params)
                 .then((res) => {
-                    console.log(res);
                     this.isLoading = false;
                     if (res?.data?.length > 0) {
                         this.tableData = res.data;
@@ -341,7 +390,6 @@ export default {
             $HTTP_getStationInfo(param)
                 .then((data) => {
                     this.isLoading = false;
-                    console.log(data);
                     if (data?.id >= 0) {
                         this.stationInfo = {
                             stationId: data.id,
@@ -383,12 +431,57 @@ export default {
             this.$router.push({ name: "chargePointDetail", params: params });
         },
         handleLinkClick(row) {
-            console.log(row);
             if (row) {
                 const data = Object.assign({}, row);
                 window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
                 this.$router.push({ name: "chargePointDetail", params: data }).catch();
             }
+        },
+        openDialog(data) {
+            this.dialog.info = {
+                chargeBoxId: data.id,
+                loc: {
+                    lng: data.coordinates.longitude,
+                    lon: data.coordinates.longitude,
+                    lat: data.coordinates.latitude,
+                },
+                chargeType: data.currentType,
+                installationDate: data.installed,
+                chargeBoxName: data.name,
+                id: data.id,
+                power: data.powerKw,
+            };
+            this.dialog.isVisible = true;
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        deleteChargers(id) {
+            const that = this;
+            this.$confirm(i18n.t("general.deleteItem", { item: id }), i18n.t("general.hint"), {
+                showClose: false,
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
+            }).then(() => {
+                $HTTP_deleteChargeBox({ chargePointId: id })
+                    .then((data) => {
+                        if (data?.status === 204) {
+                            that.$message({ type: "success", message: i18n.t("general.sucDelMsg") });
+                            if (this.tableData.length === 1) {
+                                if (this.page >= 2) {
+                                    this.page = this.page - 1;
+                                } else {
+                                    this.page = 1;
+                                }
+                            }
+                            that.fetchData();
+                        } else {
+                            this.$message({ type: "warning", message: i18n.t("error_network") });
+                        }
+                    })
+                    .catch((err) => {
+                        if (err.status === 500) {
+                            that.$message({ type: "warning", message: i18n.t("cannotDelete") });
+                        }
+                    });
+            });
         },
     },
 };

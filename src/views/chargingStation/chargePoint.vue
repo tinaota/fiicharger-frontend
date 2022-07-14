@@ -71,7 +71,7 @@
                     <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
                         <template slot-scope="scope">
                             <!-- {{scope.row.connectors.length}} -->
-                            <Connector v-for="(item, idx) in scope.row.connectors" :key="idx" :dataObj="item" :connectorType="scope.row.currentType" :chargePointStatus="scope.row.status" :isBreak="true"></Connector>
+                            <Connector :dataObj="scope.row.connectors" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
@@ -143,15 +143,33 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
+                                            Clear Cache
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">Clear</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Hard Reset
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">Reset</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            Soft Reset
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">Reset</el-button>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
                                             Edit Charger
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Edit</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">Edit</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             Remove Charger
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'remove')">Add</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">Delete</el-button>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -295,6 +313,11 @@ export default {
     methods: {
         runAction(data, action) {
             console.log(data, action);
+            if (action === "edit") {
+                this.openDialog(1, data);
+            } else if (action === "delete") {
+                this.deleteCheckBox(data.id);
+            }
         },
         fetchLocationList() {
             const that = this;
