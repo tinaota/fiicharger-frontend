@@ -129,12 +129,6 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="runAction('hardReset')">Reset</el-button>
                             </li>
-                            <li>
-                                <span>
-                                    Diagnostics
-                                </span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('start')">Start</el-button>
-                            </li>
 
                         </ul>
                     </div>
