@@ -104,7 +104,7 @@
             <div class="card-8 rank-area">
                 <div class="header">
                     <div class="title">Connectors</div>
-                    <div class="title-value">6</div>
+                    <div class="title-value">3</div>
 
                 </div>
                 <ul class="rank">
@@ -121,7 +121,7 @@
                             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color8"></span>
                             </el-tooltip>
-                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.inUse').toLowerCase()  }}</span>
+                            <span class="name">0 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.inUse').toLowerCase()  }}</span>
                         </div>
                     </li>
                     <li>
@@ -129,7 +129,7 @@
                             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color4"></span>
                             </el-tooltip>
-                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.unavailable').toLowerCase()  }}</span>
+                            <span class="name">0 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.unavailable').toLowerCase()  }}</span>
                         </div>
                     </li>
                     <li>
@@ -137,7 +137,7 @@
                             <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color10"></span>
                             </el-tooltip>
-                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s offline</span>
+                            <span class="name">1 {{  $t('chargingStation.connector').toLowerCase() }}s offline</span>
                         </div>
                     </li>
                 </ul>
@@ -405,7 +405,7 @@ export default {
                             },
                             serviceStartTime: "5am",
                             serviceEndTime: "5pm",
-                            phone: "414 241 2621",
+                            phone: "None",
                         };
                     } else {
                         this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
