@@ -456,7 +456,6 @@ export default {
     }
     .charge-point-info {
         display: flex;
-        margin-bottom: 85px;
         .item {
             margin-bottom: 12px;
             .label {
@@ -521,10 +520,9 @@ export default {
 
     .rank-area {
         margin-right: 12px;
-        height: 255px;
+        height: auto;
         position: relative;
         vertical-align: top;
-        padding-bottom: 48px;
         &:nth-child(4n + 1) {
             margin-right: 0px;
         }
