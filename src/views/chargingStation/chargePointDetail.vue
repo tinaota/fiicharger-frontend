@@ -78,7 +78,7 @@
                         </div>
                         <div class="item">
                             <div class="label">Connectors</div>
-                            <Connector :dataObj="curRouteParam.connectorList" :isBreak="true"></Connector>
+                            <Connector :dataObj="curRouteParam.connectorList" :chargerStatus="curRouteParam.chargeBoxStatus" :isBreak="true"></Connector>
 
                         </div>
                     </div>

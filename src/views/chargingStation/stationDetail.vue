@@ -170,7 +170,7 @@
                     </el-table-column>
                     <el-table-column label="Connectors" :min-width="3">
                         <template slot-scope="scope">
-                            <Connector :dataObj="scope.row.connectors" :isBreak="true"></Connector>
+                            <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.status" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>

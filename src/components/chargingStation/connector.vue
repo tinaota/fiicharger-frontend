@@ -1,29 +1,35 @@
 <template>
     <div class="content">
-        <div class="connectors" v-if="count.available>0">
+        <div class="connectors" v-if="count.available>0 && chargerStatus==='Connected'">
             <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status available"></p>
             </el-tooltip>
             <p>{{count.available}}/{{count.total}} available</p>
         </div>
-        <div class="connectors" v-if="count.inUse>0">
+        <div class="connectors" v-if="count.inUse>0 && chargerStatus==='Connected'">
             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status inUse"></p>
             </el-tooltip>
             <p>{{count.inUse}}/{{count.total}} in use</p>
         </div>
-        <div class="connectors" v-if="count.unavailable>0">
+        <div class="connectors" v-if="count.unavailable>0 && chargerStatus==='Connected'">
             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status unavailable"></p>
             </el-tooltip>
             <p>{{count.unavailable}}/{{count.total}} unavailable</p>
+        </div>
+        <div class="connectors" v-if="chargerStatus!=='Connected'">
+            <el-tooltip :content="$t('general.unknown')" placement="bottom" effect="light" popper-class="custom">
+                <p class="circle-status unknown"></p>
+            </el-tooltip>
+            <p> unknown</p>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    props: { dataObj: Array},
+    props: { dataObj: Array, chargerStatus: String },
     data() {
         return {
             count: {
@@ -64,10 +70,10 @@ export default {
         display: flex;
         p {
             margin-right: 5px;
-            margin-block-start:10px;
-            margin-block-end:10px;
+            margin-block-start: 10px;
+            margin-block-end: 10px;
         }
-        .circle-status{
+        .circle-status {
             margin-top: 12px;
         }
     }

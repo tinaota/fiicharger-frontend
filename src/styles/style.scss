@@ -408,6 +408,9 @@
             &.unavailable {
                 background: #fc2e56;
             }
+            &.unknown {
+                background: #8c8f97;
+            }
         }
         &.report {
             margin-bottom: 0;
