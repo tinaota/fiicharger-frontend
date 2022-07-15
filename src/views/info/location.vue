@@ -64,7 +64,7 @@
                             <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
                                 <div class="label">{{ $t('chargingStation.connector') }} : </div>
                                 <div class="msg">
-                                    <Connector :dataObj="item.connectors" :chargerStatus="item.status" :isBreak="true"></Connector>
+                                    <Connector :dataObj="item.connectors" :chargerStatus="item.connectionStatus" :isBreak="true"></Connector>
                                 </div>
                             </div>
                             <div class="info-item">

@@ -51,6 +51,12 @@ export const $HTTP_removeBoundingToStation = (params) => {
 export const $HTTP_getOperatorTypeList = () => {
   return fetch(`${base}/Home/Operator/getOperatorTypeList`)
 }
+//OCCP availability
+export const $HTTP_updateOccpAvailability = (params) => {
+  console.log(params)
+  return post(`${base_charger}/api/ocpp/charge-points/${params.chargeBoxId}/change-availability`, params)
+
+}
 
 // transactions
 

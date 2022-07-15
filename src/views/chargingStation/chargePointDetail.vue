@@ -4,34 +4,30 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/chargePoint' }">{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ "#" + chargePointById[0].id }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
                 <div class="charge-point-info" v-loading="isLoading">
                     <div class="upperBody rank-area firstCol">
                         <div class="item title">
                             <div class="label">Charger Name</div>
-                            <div class="content">{{ curRouteParam.chargeBoxName }}</div>
+                            <div class="content">{{ chargePointById[0].name }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
                             <div class="content">
-                                {{ curRouteParam.chargeBoxId }}
-                                <el-tooltip v-if="curRouteParam.loc && curRouteParam.loc.lon && curRouteParam.loc.lat" :content="curRouteParam.loc.lon+','+curRouteParam.loc.lat" placement="right" effect="light" popper-class="custom">
-                                    <el-button class="no-bg loc" @click="handleShowDialog"></el-button>
-                                </el-tooltip>
+                                {{ chargePointById[0].id }}
                             </div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.power') }}</div>
-                            <!-- <div class="content">{{ curRouteParam.power + "kW" }}</div> -->
-                            <div class="content">{{ "347KWH" + "kW" }}</div>
+                            <div class="content">{{ chargePointById[0].powerKw}} KWH</div>
 
                         </div>
                         <div class="item">
                             <div class="label">Connection Status</div>
                             <div class="content">
-                                <div v-if="curRouteParam.chargeBoxStatus===`Connected`">
+                                <div v-if="chargePointById[0].connectionStatus===`Connected`">
                                     <span class="circle-status color1"></span>
                                     <span> {{ $t('general.connected') }}</span>
                                 </div>
@@ -42,31 +38,25 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="item">
-                            <div class="label">{{ $t('chargingStation.connector') }}</div>
-                            <div class="content">
-                                <Connector v-for="(item, idx) in curRouteParam.connectorList" :key="idx" :dataObj="item"></Connector>
-                            </div>
-                        </div> -->
                         <div class="item">
                             <div class="label">{{ $t('general.type') }}</div>
-                            <div class="content">{{ curRouteParam.chargeType === 1 ? "AC" : "DC" }}</div>
+                            <div class="content">{{ chargePointById[0].currentType }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                            <div class="content">{{ $t('chargingStation.onPeak') + ' '+ curRouteParam.currency + curRouteParam.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.onPeakElectricityRateType] }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type)  }}</div>
                         </div>
                         <div class="item">
                             <div class="label"></div>
-                            <div class="content">{{ $t('chargingStation.offPeak') + ' '+ curRouteParam.currency + curRouteParam.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[curRouteParam.offPeakElectricityRateType] }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type)  }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                            <div class="content">{{ curRouteParam.currency + curRouteParam.parkingRate + '/' +  $t("chargingStation.parkingRateUnit")[curRouteParam.parkingRateType] }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.occupancy.rate+'/' +getSymbols(chargePointById[0].chargePrice.occupancy.type)}}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('general.installationDate') }}</div>
-                            <div class="content">2022-04-17 17:00:00</div>
+                            <div class="content">{{getLocTime( chargePointById[0].created)}}</div>
                         </div>
                         <div class="item">
                             <div class="label">Operator</div>
@@ -78,7 +68,7 @@
                         </div>
                         <div class="item">
                             <div class="label">Connectors</div>
-                            <Connector :dataObj="curRouteParam.connectorList" :chargerStatus="curRouteParam.chargeBoxStatus" :isBreak="true"></Connector>
+                            <Connector :dataObj="chargePointById[0].connectors" :chargerStatus="chargePointById[0].connectionStatus" :isBreak="true"></Connector>
 
                         </div>
                     </div>
@@ -137,7 +127,7 @@
                         <div class="header">
                             <div class="title">Connectors</div>
                         </div>
-                        <el-table :data="curRouteParam.connectorList" class="moreCol" v-loading="isLoading">
+                        <el-table :data="chargePointById[0].connectors" class="moreCol" v-loading="isLoading">
                             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
                             <el-table-column label="Status(last)" :min-width="8">
                                 <template slot-scope="scope">
@@ -184,20 +174,20 @@
                                                 <span>
                                                     <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'add')">Start</span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'enableConnector')">Enable</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-stop" aria-hidden="true" style="color:red"></i>
 
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'clear')">Stop</span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">Disable</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'start')">Unlock</span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'unlockConnector')">Unlock</span>
                                             </el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
@@ -206,48 +196,27 @@
                         </el-table>
                     </div>
                 </div>
-
                 <div class="tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleTabClick">
-                        <!-- <el-tab-pane :label="$t('menu.chargingSession')" name="chargingSession">
-                        </el-tab-pane>
-                        <el-tab-pane :label="$t('chargingStation.chargePointAlert')" name="chargePointAlert">
-                        </el-tab-pane>
-                        <el-tab-pane :label="$t('menu.costRevenue')" name="costRevenue">
-                        </el-tab-pane> -->
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
                     </el-tabs>
-
-                    <ChargingSession v-if="active==='chargingSession'" :chargeBoxId="curRouteParam.chargeBoxId"></ChargingSession>
-                    <ChargePointAlert v-if="permissionShowAlertAble && active==='chargePointAlert'" :chargeBoxId="curRouteParam.chargeBoxId"></ChargePointAlert>
-                    <!-- <el-tab-pane :label="$t('userAccount.reviewSummary')" name="review">
-                            <Review :chargeBoxId="curRouteParam.chargeBoxId"></Review>
-                        </el-tab-pane> -->
-                    <div v-if="curRouteParam.chargeBoxId!==undefined && active=== 'costRevenue'">
-                        <div class="filter">
-                            <el-date-picker v-model="filter.dateRange" type="daterange" value-format="yyyy-MM-dd" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="true" @change="updateApi()">
-                            </el-date-picker>
-                        </div>
-                        <FMCSTemplate :url="costRevenueUrl+`&var-chargeBoxId=`+curRouteParam.chargeBoxId"></FMCSTemplate>
-                    </div>
-                    <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
+                    <Transaction v-if="active==='transaction'" :chargerId="chargePointById[0].id"></Transaction>
                 </div>
             </div>
-            <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
         </div>
     </div>
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ChargingSession from "@/components/chargingStation/chargingSession";
 import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Transaction from "@/components/chargingStation/transaction";
 import Review from "@/components/chargingStation/review";
-import { $HTTP_getChargeBoxDetail } from "@/api/api";
+import { $HTTP_getChargeBoxDetail, $HTTP_updateOccpAvailability, $HTTP_getAllChargeBoxList } from "@/api/api";
 import moment from "moment";
 import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA } from "@/utils/global";
 import FMCSTemplate from "@/components/info/fmcsTemplate";
@@ -265,7 +234,7 @@ export default {
         Review,
         FMCSTemplate,
         Transaction,
-        Connector
+        Connector,
     },
     data() {
         return {
@@ -303,26 +272,27 @@ export default {
             },
             isLoading: false,
             active: "transaction",
-            mapDialog: {
-                visible: false,
-                itemId: "",
-                position: {
-                    lat: "",
-                    lng: "",
-                },
-            },
+            // mapDialog: {
+            //     visible: false,
+            //     itemId: "",
+            //     position: {
+            //         lat: "",
+            //         lng: "",
+            //     },
+            // },
             timer: null,
+            timeOut:null,
             // count: {
             //     available: 0,
             //     inUse: 0,
             //     unavailable: 0,
             //     total: 0,
             // },
+            chargePointById: [],
         };
     },
     created() {
         let chargePointInfo = JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo"));
-
         this.curRouteParam = {
             chargeBoxId: chargePointInfo.id,
             serial: chargePointInfo.serial,
@@ -345,26 +315,6 @@ export default {
             installationDate: chargePointInfo.installed,
         };
 
-        // this.curRouteParam.connectorList.map((item) => {
-        //     if (item.status === "Available") this.count.available += 1;
-        //     else if (item.status === "Unavailable" || item.status === "Faulted") this.count.unavailable += 1;
-        //     else if (
-        //         item.status === "Preparing" ||
-        //         item.status === "Charging" ||
-        //         item.status === "SuspendedEV" ||
-        //         item.status === "SuspendedEVSE" ||
-        //         item.status === "Finishing" ||
-        //         item.status === "Reserved"
-        //     )
-        //         this.count.inUse += 1;
-        // });
-        // this.count.total = this.curRouteParam.connectorList.length;
-        // this.fetchData(); //api尚未完成
-        // this.lang = window.sessionStorage.getItem("fiics-lang");
-        // this.timer = setInterval(() => {
-        //     this.fetchData(true);
-        // }, 5000);
-
         const todaySplit = moment().format("YYYY-MM-DD").split("-");
         const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
         let dayWeekBefore = parseInt(todaySplit[2]) - 7;
@@ -384,15 +334,35 @@ export default {
         this.updateGrafanaUrl();
     },
     mounted() {
+        this.getChargePointsById(this.curRouteParam.chargeBoxId);
         setScrollBar(".scroll", this);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
         clearInterval(this.timer);
+        clearTimeout(this.timeOut)
+    },
+    computed: {
+        getSymbols() {
+            return (item) => transformToSymbols(item);
+        },
+        getLocTime() {
+            return (item) => transformUtcToLocTime(item);
+        },
     },
     methods: {
         runAction(data, action) {
-            console.log(data, action);
+            let params = { ...data };
+
+            if (action === "enableConnector") {
+                params.type = "Operative";
+                params.connectorId = params.id;
+                this.updateOccpAvailability(params);
+            } else if (action === "disableConnector") {
+                params.type = "Inoperative";
+                params.connectorId = params.id;
+                this.updateOccpAvailability(params);
+            }
         },
         fetchData(notLoading) {
             const that = this,
@@ -418,15 +388,55 @@ export default {
                     this.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
+        getChargePointsById(id) {
+            console.log(id);
+            let params = {};
+            params.Id = id;
+            $HTTP_getAllChargeBoxList(params)
+                .then((res) => {
+                    console.log(res.data[0]);
+                    if (res?.data?.length > 0) {
+                        this.chargePointById = res.data;
+                    } else {
+                        this.chargePointById = [];
+                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                    }
+                })
+                .catch((err) => {
+                    this.chargePointById = [];
+                    console.log(err);
+                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                });
+        },
+        updateOccpAvailability(params) {
+            console.log("update availability");
+            console.log(this.chargePointById);
+            params.chargeBoxId = this.chargePointById[0].id;
+            console.log(params);
+            $HTTP_updateOccpAvailability(params)
+                .then((data) => {
+                    console.log(data);
+                    if (data === "Accepted") {
+                        this.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                        this.timeOut = setTimeout(() => {
+                            this.getChargePointsById(this.chargePointById[0].id);
+                        }, 2000);
+                    }
+                })
+                .catch((err) => {
+                    console.log("occpAvailability", err);
+                    this.$message({ type: "warning", message: err.data });
+                });
+        },
         handleShowDialog() {
-            this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
-            this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
-            this.mapDialog.visible = true;
+            // this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
+            // this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
+            // this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleTabClick(tab, event) {},
         closeShowPosDialog() {
-            this.mapDialog.visible = false;
+            // this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
         updateApi() {
@@ -568,14 +578,12 @@ export default {
     .actionFunction {
         min-width: 65px;
     }
-
 }
 
 .connectors_chargers {
-    color: #409EFF;
+    color: #409eff;
     background-color: transparent;
     border-color: transparent;
     font-weight: 600;
 }
-
 </style>

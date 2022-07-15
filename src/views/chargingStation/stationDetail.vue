@@ -160,7 +160,7 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2">
                         <template slot-scope="scope">
-                            <el-tooltip v-if="scope.row.status===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
+                            <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
                             <el-tooltip v-else :content="$t('general.disconnected')" placement="bottom" effect="light" popper-class="custom">
@@ -170,7 +170,7 @@
                     </el-table-column>
                     <el-table-column label="Connectors" :min-width="2">
                         <template slot-scope="scope">
-                            <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.status" :isBreak="true"></Connector>
+                            <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
                     <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>

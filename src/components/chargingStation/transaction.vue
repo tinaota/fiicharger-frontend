@@ -82,7 +82,6 @@ export default {
             this.allTransactionsReasonList.isLoading = true;
             $HTTP_getAllTransactionsReasonList()
                 .then((res) => {
-                    console.log(res);
                     this.allTransactionsReasonList.data = res;
                     this.allTransactionsReasonList.isLoading = false;
                 })
