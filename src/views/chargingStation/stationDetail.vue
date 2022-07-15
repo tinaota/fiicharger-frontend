@@ -145,20 +145,20 @@
 
             <div class="card-8 table-result">
                 <div class="header">Chargers</div>
-                <el-table :data="tableData" v-loading="isLoading" class="center">
-                    <el-table-column label="Charger Id" :min-width="2">
+                <el-table :data="tableData" v-loading="isLoading" class="moreCol">
+                    <el-table-column label="Charger Id" :min-width="3">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{scope.row.id}}</el-link>
                         </template>
                     </el-table-column>
 
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column label="Power Consumption" :min-width="1">
+                    <el-table-column label="Power Consumption" :min-width="2">
                         <template slot-scope="scope">
                             {{scope.row.powerKw + "kW"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.status')" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.status===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -168,7 +168,7 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column label="Connectors" :min-width="3">
+                    <el-table-column label="Connectors" :min-width="2">
                         <template slot-scope="scope">
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.status" :isBreak="true"></Connector>
                         </template>
@@ -262,7 +262,7 @@ export default {
         ShowPostion,
         ConnectorDetail,
         EditChargeBox,
-        Connector
+        Connector,
     },
     data() {
         return {
@@ -341,8 +341,11 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchStationDetail();
-        this.getChargersList("");
-        // this.getChargersList(this.curRouteParam.stationId);
+        let params={}
+        if (this.curRouteParam.stationId) {
+            params.stationId = this.curRouteParam.stationId;
+        }
+        this.getChargersList(params);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
@@ -351,7 +354,6 @@ export default {
         closeDialog(e, dialog) {
             console.log(e, dialog);
             this.dialog.isVisible = false;
-            // this.getChargersList();
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
         runAction(data, action) {
@@ -515,12 +517,12 @@ export default {
     }
 }
 
-.action_chargers_stations{
+.action_chargers_stations {
     background-color: transparent;
-    border-color: #409EFF;
+    border-color: #409eff;
     border-width: 2px;
-    color: #409EFF;
-     font-weight: 600;
+    color: #409eff;
+    font-weight: 600;
 }
 
 .rank-area {

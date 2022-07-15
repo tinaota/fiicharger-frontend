@@ -61,10 +61,10 @@
                                 <div class="label">{{ $t('chargingStation.power') }} : </div>
                                 <div class="msg">{{ item.powerKw }} KWH</div>
                             </div>
-                            <div class="info-item connector" :class="{ 'doubleHeight': item.connectors.length > 3}">
+                            <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
                                 <div class="label">{{ $t('chargingStation.connector') }} : </div>
                                 <div class="msg">
-                                    <Connector v-for="(connector, idx) in item.connectors" :key="idx" :dataObj="connector" :connectorType="item.currentType" :isBreak="false"></Connector>
+                                    <Connector :dataObj="item.connectors" :chargerStatus="item.status" :isBreak="true"></Connector>
                                 </div>
                             </div>
                             <div class="info-item">
@@ -639,9 +639,8 @@ export default {
                     + .info-item {
                         margin-top: 8px;
                     }
-                    &.connector {
-                        line-height: 24px;
-                        height: 24px;
+                    &.connectorMain {
+                        height: auto;
                         padding: 6px 0 0 0;
                         margin-top: 0;
                         display: flex;
@@ -649,7 +648,10 @@ export default {
                             vertical-align: super;
                         }
                         &.doubleHeight {
-                            height: 48px;
+                            height: auto;
+                        }
+                        .content{
+                            margin-top: -7px;
                         }
                     }
                 }

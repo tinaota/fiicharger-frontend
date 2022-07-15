@@ -41,9 +41,7 @@ export default {
         };
     },
     created() {
-        console.log(this.dataObj);
         this.dataObj.map((item) => {
-            console.log(item);
             if (item.status === "Available") this.count.available += 1;
             else if (item.status === "Unavailable" || item.status === "Faulted") this.count.unavailable += 1;
             else if (
@@ -68,13 +66,29 @@ export default {
     flex-direction: column;
     .connectors {
         display: flex;
+        align-items: center;
         p {
             margin-right: 5px;
             margin-block-start: 10px;
             margin-block-end: 10px;
         }
         .circle-status {
-            margin-top: 12px;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 16px;
+            &.inUse {
+                background: #409eff;
+            }
+            &.available {
+                background: #33c85a;
+            }
+            &.unavailable {
+                background: #fc2e56;
+            }
+            &.unknown {
+                background: #8c8f97;
+            }
         }
     }
 }

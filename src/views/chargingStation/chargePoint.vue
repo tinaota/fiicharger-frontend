@@ -13,7 +13,7 @@
                     <el-input placeholder="Id" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
-                    <el-select class="select-small long" :placeholder="$t('general.status')" v-model="filter.chargeBoxStatus" @change="fetchData('s')" clearable>
+                    <el-select class="select-small long" :placeholder="$t('chargingStation.connection') +' '+ $t('general.status')" v-model="filter.chargeBoxStatus" @change="fetchData('s')" clearable>
                         <el-option :label="$t('general.all')" value=""></el-option>
                         <el-option v-for="(item, idx) in chargeBoxStatusList" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
@@ -43,7 +43,7 @@
                             {{scope.row.powerKw + "kW"}}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.status')" :min-width="2" class-name="center">
+                    <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
 
                             <el-tooltip v-if="scope.row.status===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
