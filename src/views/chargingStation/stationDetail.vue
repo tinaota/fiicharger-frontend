@@ -7,7 +7,7 @@
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
-                <div class="header">{{ $t('chargingStation.stationInfo')}}</div>
+                <div class="header">{{ $t('chargingStation.stationInfo') }}</div>
                 <el-table :data="[stationInfo]" v-loading="isLoading" class="center">
                     <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
                     <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
@@ -113,7 +113,7 @@
                             <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <span class="name">2 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.available').toLowerCase()  }}</span>
+                            <span class="name">2 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.available').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -121,7 +121,7 @@
                             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color8"></span>
                             </el-tooltip>
-                            <span class="name">0 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.inUse').toLowerCase()  }}</span>
+                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.inUse').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -129,7 +129,7 @@
                             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color4"></span>
                             </el-tooltip>
-                            <span class="name">0 {{  $t('chargingStation.connector').toLowerCase() }}s {{  $t('general.unavailable').toLowerCase()  }}</span>
+                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.unavailable').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -137,7 +137,7 @@
                             <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color10"></span>
                             </el-tooltip>
-                            <span class="name">1 {{  $t('chargingStation.connector').toLowerCase() }}s offline</span>
+                            <span class="name">1 {{ $t('chargingStation.connector').toLowerCase() }}s offline</span>
                         </div>
                     </li>
                 </ul>
@@ -148,14 +148,14 @@
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
                     <el-table-column label="Charger Id" :min-width="3">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{scope.row.id}}</el-link>
+                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.id }}</el-link>
                         </template>
                     </el-table-column>
 
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column label="Power Consumption" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.powerKw + "kW"}}
+                            {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2">
@@ -173,14 +173,18 @@
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
+                    <el-table-column label="Last Heartbeat" :min-width="2">
+                        <template slot-scope="scope">
+                            {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="currentType" :label="$t('general.type')" :min-width="2"></el-table-column>
 
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
                                 <el-button class="action_chargers_stations">
-                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                    {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" class="actions">
                                     <el-dropdown-item>
@@ -250,25 +254,27 @@
 </template>
 
 <script>
-import { $HTTP_getStationInfo, $HTTP_getAllChargeBoxList, $HTTP_deleteChargeBox } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import {
+    $HTTP_getStationInfo,
+    $HTTP_getAllChargeBoxList,
+    $HTTP_deleteChargeBox
+} from "@/api/api";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
-import ConnectorDetail from "@/components/chargingStation/connectorDetail";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import Connector from "@/components/chargingStation/connector";
 
 export default {
     components: {
         ShowPostion,
-        ConnectorDetail,
         EditChargeBox,
-        Connector,
+        Connector
     },
     data() {
         return {
             curRouteParam: {
                 stationId: "",
-                stationName: "",
+                stationName: ""
             },
             permissionEditAble: this.$store.state.permissionEditable,
             isLoading: false,
@@ -278,20 +284,20 @@ export default {
                 loc: {
                     lng: "",
                     lon: "",
-                    lat: "",
+                    lat: ""
                 },
                 serviceStartTime: "",
                 serviceEndTime: "",
                 countryCode: "",
-                phone: "",
+                phone: ""
             },
             mapDialog: {
                 visible: false,
                 itemId: "",
                 position: {
                     lat: "",
-                    lng: "",
-                },
+                    lng: ""
+                }
             },
             smartSettingDialog: {
                 visible: false,
@@ -299,9 +305,9 @@ export default {
                     onOffStatus: false,
                     maxDemandPowerLimit: 0,
                     intervalMaxPower: 0,
-                    intervalTime: 5,
+                    intervalTime: 5
                 },
-                intervalTimeList: [5, 10, 15, 20, 30, 60],
+                intervalTimeList: [5, 10, 15, 20, 30, 60]
             },
             tableData: [],
             total: 0,
@@ -313,17 +319,22 @@ export default {
                     loc: {
                         lng: "",
                         lon: "",
-                        lat: "",
+                        lat: ""
                     },
                     chargeType: "AC",
                     installationDate: "",
                     chargeBoxName: "",
                     id: "",
-                    power: 0,
+                    power: 0
                 },
-                isVisible: false,
-            },
+                isVisible: false
+            }
         };
+    },
+    computed: {
+        getLocTime() {
+            return (item) => transformUtcToLocTime(item);
+        }
     },
     created() {
         this.curRouteParam = this.$router.currentRoute.params;
@@ -341,7 +352,7 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchStationDetail();
-        let params={}
+        let params = {};
         if (this.curRouteParam.stationId) {
             params.stationId = this.curRouteParam.stationId;
         }
@@ -373,20 +384,26 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("emptyMessage")
+                        });
                     }
                 })
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
                     console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         fetchStationDetail() {
             const that = this;
             let param = {
-                stationId: that.curRouteParam.stationId,
+                stationId: that.curRouteParam.stationId
             };
             this.isLoading = true;
             $HTTP_getStationInfo(param)
@@ -401,19 +418,26 @@ export default {
                             loc: {
                                 lng: data.coordinates.longitude,
                                 lon: data.coordinates.longitude,
-                                lat: data.coordinates.latitude,
+                                lat: data.coordinates.latitude
                             },
                             serviceStartTime: "5am",
                             serviceEndTime: "5pm",
-                            phone: "None",
+                            phone: "None"
                         };
                     } else {
-                        this.$message({ type: "warning", message: that.lang === "en" ? data.message : data.reason });
+                        this.$message({
+                            type: "warning",
+                            message:
+                                that.lang === "en" ? data.message : data.reason
+                        });
                     }
                 })
                 .catch((err) => {
                     console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         handleShowDialog() {
@@ -428,15 +452,20 @@ export default {
         },
         goChargePointDetail(chargeBoxId) {
             const params = {
-                chargeBoxId: chargeBoxId,
+                chargeBoxId: chargeBoxId
             };
             this.$router.push({ name: "chargePointDetail", params: params });
         },
         handleLinkClick(row) {
             if (row) {
                 const data = Object.assign({}, row);
-                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
-                this.$router.push({ name: "chargePointDetail", params: data }).catch();
+                window.sessionStorage.setItem(
+                    "fiics-chargePointInfo",
+                    JSON.stringify(data)
+                );
+                this.$router
+                    .push({ name: "chargePointDetail", params: data })
+                    .catch();
             }
         },
         openDialog(data) {
@@ -445,27 +474,36 @@ export default {
                 loc: {
                     lng: data.coordinates.longitude,
                     lon: data.coordinates.longitude,
-                    lat: data.coordinates.latitude,
+                    lat: data.coordinates.latitude
                 },
                 chargeType: data.currentType,
                 installationDate: data.installed,
                 chargeBoxName: data.name,
                 id: data.id,
-                power: data.powerKw,
+                power: data.powerKw
             };
             this.dialog.isVisible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         deleteChargers(id) {
             const that = this;
-            this.$confirm(i18n.t("general.deleteItem", { item: id }), i18n.t("general.hint"), {
-                showClose: false,
-                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
-            }).then(() => {
+            this.$confirm(
+                i18n.t("general.deleteItem", { item: id }),
+                i18n.t("general.hint"),
+                {
+                    showClose: false,
+                    customClass: `custom ${
+                        this.isDark ? "dark-theme" : "light-theme"
+                    }`
+                }
+            ).then(() => {
                 $HTTP_deleteChargeBox({ chargePointId: id })
                     .then((data) => {
                         if (data?.status === 204) {
-                            that.$message({ type: "success", message: i18n.t("general.sucDelMsg") });
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucDelMsg")
+                            });
                             if (this.tableData.length === 1) {
                                 if (this.page >= 2) {
                                     this.page = this.page - 1;
@@ -475,17 +513,23 @@ export default {
                             }
                             that.fetchData();
                         } else {
-                            this.$message({ type: "warning", message: i18n.t("error_network") });
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         }
                     })
                     .catch((err) => {
                         if (err.status === 500) {
-                            that.$message({ type: "warning", message: i18n.t("cannotDelete") });
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("cannotDelete")
+                            });
                         }
                     });
             });
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

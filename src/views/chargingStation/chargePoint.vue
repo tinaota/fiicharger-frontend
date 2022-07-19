@@ -73,8 +73,11 @@
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="lastHeartbeat" label="Last Heartbeat" :min-width="2"></el-table-column>
-
+                    <el-table-column label="Last Heartbeat" :min-width="2">
+                        <template slot-scope="scope">
+                            {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
                             {{ scope.row.currentType }}
@@ -187,7 +190,11 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
+import {
+    setScrollBar,
+    transformUtcToLocTime,
+    transformToSymbols
+} from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ModifyChargeBoxPrice from "@/components/chargingStation/modifyChargeBoxPrice";
@@ -196,7 +203,7 @@ import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getZipCodeListForSelect,
     $HTTP_deleteChargeBox,
-    $HTTP_getStatusListChargeBoxes,
+    $HTTP_getStatusListChargeBoxes
 } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
@@ -206,7 +213,7 @@ export default {
         EditChargeBox,
         ShowPostion,
         Connector,
-        ModifyChargeBoxPrice,
+        ModifyChargeBoxPrice
     },
     data() {
         return {
@@ -223,7 +230,7 @@ export default {
                 currentType: null,
                 chargeBoxStatus: null,
                 stationId: null,
-                name: null,
+                name: null
             },
             isLoading: false,
             // stationList: {
@@ -232,7 +239,7 @@ export default {
             // },
             loctionList: {
                 isLoading: false,
-                data: [],
+                data: []
             },
             tableData: [],
             page: 1,
@@ -249,7 +256,7 @@ export default {
                     loc: {
                         lng: "",
                         lon: "",
-                        lat: "",
+                        lat: ""
                     },
                     id: "",
                     stationId: "",
@@ -263,25 +270,25 @@ export default {
                     parkingRate: 0,
                     installationDate: "",
                     operatorTypeId: "",
-                    dateTimeTest: "",
-                },
+                    dateTimeTest: ""
+                }
             },
             mapDialog: {
                 visible: false,
                 itemId: "",
                 position: {
                     lat: "",
-                    lng: "",
-                },
+                    lng: ""
+                }
             },
             chargeBoxPriceDialog: {
                 visible: false,
                 isLoading: false,
-                data: {},
+                data: {}
             },
             connectorList: [],
             chargeBoxStatusList: [],
-            polling: null,
+            polling: null
         };
     },
     computed: {
@@ -290,11 +297,12 @@ export default {
         },
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
-        },
+        }
     },
     mounted() {
         if (this.$router.currentRoute.params.chargeBoxStatus) {
-            this.filter.chargeBoxStatus = this.$router.currentRoute.params.chargeBoxStatus;
+            this.filter.chargeBoxStatus =
+                this.$router.currentRoute.params.chargeBoxStatus;
         }
         if (this.$router.currentRoute.params.stationId) {
             this.filter.stationId = this.$router.currentRoute.params.stationId;
@@ -306,7 +314,8 @@ export default {
     },
     beforeDestroy() {
         clearInterval(this.polling);
-        this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
+        this.dialog.map &&
+            google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
         runAction(data, action) {
@@ -328,29 +337,38 @@ export default {
                 })
                 .catch((err) => {
                     console.log("loctionList", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         fetchData(type) {
             this.isLoading = true;
             let param = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
-            if (this.filter.operatorTypeId && this.filter.operatorTypeId != "1") {
+            if (
+                this.filter.operatorTypeId &&
+                this.filter.operatorTypeId != "1"
+            ) {
                 param.operatorTypeId = this.filter.operatorTypeId;
             }
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
-            if (this.filter.chargeBoxStatus && this.filter.chargeBoxStatus!=="all") {
+            if (
+                this.filter.chargeBoxStatus &&
+                this.filter.chargeBoxStatus !== "all"
+            ) {
                 param.Status = this.filter.chargeBoxStatus;
             }
             if (this.filter.tmpSearch) {
                 param.id = this.filter.tmpSearch;
             }
 
-            if (this.filter.currentType && this.filter.currentType!=="all") {
+            if (this.filter.currentType && this.filter.currentType !== "all") {
                 param.CurrentType = this.filter.currentType;
             }
 
@@ -382,14 +400,20 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("emptyMessage")
+                        });
                     }
                 })
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
                     console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         changePage(page) {
@@ -404,13 +428,13 @@ export default {
                     loc: {
                         lng: data.coordinates.longitude,
                         lon: data.coordinates.longitude,
-                        lat: data.coordinates.latitude,
+                        lat: data.coordinates.latitude
                     },
                     chargeType: data.currentType,
                     installationDate: data.installed,
                     chargeBoxName: data.name,
                     id: data.id,
-                    power: data.powerKw,
+                    power: data.powerKw
                 };
             } else {
                 this.dialog.info = {
@@ -418,13 +442,13 @@ export default {
                     loc: {
                         lng: "",
                         lon: "",
-                        lat: "",
+                        lat: ""
                     },
                     chargeType: "AC",
                     installationDate: "",
                     chargeBoxName: "",
                     id: "",
-                    power: 0,
+                    power: 0
                 };
             }
             this.dialogVisible = true;
@@ -432,14 +456,23 @@ export default {
         },
         deleteCheckBox(id) {
             const that = this;
-            this.$confirm(i18n.t("general.deleteItem", { item: id }), i18n.t("general.hint"), {
-                showClose: false,
-                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
-            }).then(() => {
+            this.$confirm(
+                i18n.t("general.deleteItem", { item: id }),
+                i18n.t("general.hint"),
+                {
+                    showClose: false,
+                    customClass: `custom ${
+                        this.isDark ? "dark-theme" : "light-theme"
+                    }`
+                }
+            ).then(() => {
                 $HTTP_deleteChargeBox({ chargePointId: id })
                     .then((data) => {
                         if (data?.status === 204) {
-                            that.$message({ type: "success", message: i18n.t("general.sucDelMsg") });
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucDelMsg")
+                            });
                             if (this.tableData.length === 1) {
                                 if (this.page >= 2) {
                                     this.page = this.page - 1;
@@ -449,12 +482,18 @@ export default {
                             }
                             that.fetchData();
                         } else {
-                            this.$message({ type: "warning", message: i18n.t("error_network") });
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         }
                     })
                     .catch((err) => {
                         if (err.status === 500) {
-                            that.$message({ type: "warning", message: i18n.t("cannotDelete") });
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("cannotDelete")
+                            });
                         }
                     });
             });
@@ -479,15 +518,23 @@ export default {
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.chargeBoxId;
-            this.mapDialog.position = { lat: data.coordinates.latitude, lng: data.coordinates.longitude };
+            this.mapDialog.position = {
+                lat: data.coordinates.latitude,
+                lng: data.coordinates.longitude
+            };
             this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleRowClick(row) {
             if (row) {
                 const data = Object.assign({}, row);
-                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
-                this.$router.push({ name: "chargePointDetail", params: data }).catch();
+                window.sessionStorage.setItem(
+                    "fiics-chargePointInfo",
+                    JSON.stringify(data)
+                );
+                this.$router
+                    .push({ name: "chargePointDetail", params: data })
+                    .catch();
             }
         },
         renderTipsHeader(h, { column }, isOnPeak) {
@@ -502,23 +549,25 @@ export default {
                                 ? i18n.t("chargingStation.onPeakHint")
                                 : i18n.t("chargingStation.offPeakHint"),
                             placement: "bottom",
-                            "popper-class": "custom",
-                        },
+                            "popper-class": "custom"
+                        }
                     },
                     [
                         h("i", {
                             class: "el-icon-warning-outline",
-                            style: "color:#0C83FF; margin-left:4px; font-weight: bold;",
-                        }),
+                            style: "color:#0C83FF; margin-left:4px; font-weight: bold;"
+                        })
                     ]
-                ),
+                )
             ]);
         },
         getStatusList() {
             let that = this;
-            $HTTP_getStatusListChargeBoxes().then((res) => (that.chargeBoxStatusList = res));
-        },
-    },
+            $HTTP_getStatusListChargeBoxes().then(
+                (res) => (that.chargeBoxStatusList = res)
+            );
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>
@@ -563,11 +612,11 @@ export default {
         min-width: 65px;
     }
 }
-.action_chargers_stations{
+.action_chargers_stations {
     background-color: transparent;
-    border-color: #409EFF;
+    border-color: #409eff;
     border-width: 2px;
-    color: #409EFF;
-    font-weight:600;
+    color: #409eff;
+    font-weight: 600;
 }
 </style>
