@@ -26,3 +26,5 @@ pnpm-debug.log*
 
 /test/unit/coverage/
 
+.eslintrc.json
+.prettierrc.json

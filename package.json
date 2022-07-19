@@ -12,7 +12,9 @@
     "build-prod": "vue-cli-service build --mode production",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "lint": "npx eslint 'src/**'",
+    "lint:fix": "npx eslint 'src/**' --fix"
   },
   "dependencies": {
     "@googlemaps/markerclustererplus": "^1.2.10",
@@ -58,6 +60,8 @@
     "@vue/cli-plugin-router": "^5.0.4",
     "@vue/cli-plugin-vuex": "^5.0.4",
     "@vue/cli-service": "^5.0.4",
+    "eslint": "^8.20.0",
+    "eslint-plugin-vue": "^9.2.0",
     "semantic-release": "^19.0.2",
     "vue-template-compiler": "^2.6.11"
   }

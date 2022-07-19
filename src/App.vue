@@ -41,8 +41,8 @@ export default {
 body {
     height: 100%;
     width: 100%;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     font-family: "Roboto Condensed", sans-serif;
     font-size: 14px;
     -webkit-font-smoothing: antialiased;
@@ -52,8 +52,8 @@ body {
 }
 #app {
     position: absolute;
-    top: 0px;
-    bottom: 0px;
+    top: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
 }
