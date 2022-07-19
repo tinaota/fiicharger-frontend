@@ -34,8 +34,8 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/location', component: () => import('@/views/info/location.vue'), name: 'menu.location', hidden: false },
-                    { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: true },
-                    { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: true },
+                    // { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: true },
+                    // { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: true },
                 ]
             },
             {
@@ -46,12 +46,12 @@ let routes = [
                 component: () => import('@/components/data.vue'),
                 children: [
                     { path: '/station', component: () => import('@/views/chargingStation/station.vue'), name: 'menu.station', hidden: false },
-                    { path: '/kiosk', component: () => import('@/views/chargingStation/kiosk.vue'), name: 'menu.kiosk', hidden: true },
-                    { path: '/kiosk/kioskDetail', component: () => import('@/views/chargingStation/kioskDetail.vue'), name: 'kioskDetail', hidden: true },
+                    // { path: '/kiosk', component: () => import('@/views/chargingStation/kiosk.vue'), name: 'menu.kiosk', hidden: true },
+                    // { path: '/kiosk/kioskDetail', component: () => import('@/views/chargingStation/kioskDetail.vue'), name: 'kioskDetail', hidden: true },
                     { path: '/station/stationDetail', component: () => import('@/views/chargingStation/stationDetail.vue'), name: 'stationDetail', hidden: true },
                     { path: '/chargePoint', component: () => import('@/views/chargingStation/chargePoint.vue'), name: 'menu.chargePoint', hidden: false },
-                    { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: true },
-                    { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: true },
+                    // { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: true },
+                    // { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: true },
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     { path: '/chargePoint/chargePointDetail', component: () => import('@/views/chargingStation/chargePointDetail.vue'), name: 'chargePointDetail', hidden: true },
                     { path: '/chargePrice', component: () => import('@/views/setting/chargePrice.vue'), name: 'menu.price', hidden: false },
@@ -89,9 +89,9 @@ let routes = [
                 children: [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     { path: '/operator', component: () => import('@/views/account/operator.vue'), name: 'menu.operator', hidden: false },
-                    { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: true },
-                    { path: '/member/memberDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
-                    { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
+                    // { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: true },
+                    // { path: '/member/memberDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
+                    // { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
                 ]
             },
             {
@@ -156,28 +156,6 @@ if (uuidValue === null || uuidValue === undefined) {
 router.beforeEach((to, from, next) => {
     if (to.path !== "/login") {
         if (store.state.token && to.path !== "/") {
-            // var userData = window.localStorage.getItem('fiics-user') || null;
-            // if (userData && userData.accountInfo && userData.accountInfo.accPermissionType) {
-            //     var accPermissionType = userData.accountInfo.accPermissionType;
-            //     if (accPermissionType !== 2 && accPermissionType !== 4 ) {
-            //         next();
-            //     } else if (this.userData.accPermissionType === 2) {
-            //         if (to.path !== '/account/accountDetail'...) {
-            //             next();
-            //         } else {
-            //             next({ path: '/404' });
-            //         }
-            //     } else {
-            //         if (to.path !== '/location'...) {
-            //             next();
-            //         } else {
-            //             next({ path: '/404' });
-            //         }
-            //     }
-            // } else {
-            //     store.commit(types.LOGOUT);
-            //     next({ path: '/login' });
-            // }
             next();
         } else {
             redirect();
@@ -185,10 +163,6 @@ router.beforeEach((to, from, next) => {
     } else {
         next();
     }
-    // axios.__axiosPromiseArr.forEach((ele, index) => {
-    //     ele.cancel();
-    //     delete axios.__axiosPromiseArr[index]
-    // })
 })
 
 export default router

@@ -1,5 +1,4 @@
 export const $GLOBAL_PROJECT = "FiiCharger";
-export const $GLOBAL_HTTP = "/EV_Charging_Web"; //EV_Charging_Web EV_Charging_Web_test
 export const $GLOBAL_AUTH = "/gatekeeper";
 export const $GLOBAL_VEHICLE = "/vehicle";
 export const $GLOBAL_CHARGER = "/cosmos";

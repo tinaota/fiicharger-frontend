@@ -4,10 +4,10 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/chargePoint' }">{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ "#" + chargePointById[0].id }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="card-8">
-                <div class="charge-point-info" v-loading="isLoading">
+                <div class="charge-point-info" v-loading="isLoading" v-if="chargePointById.length>=1">
                     <div class="upperBody rank-area firstCol">
                         <div class="item title">
                             <div class="label">Charger Name</div>
@@ -21,7 +21,7 @@
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.power') }}</div>
-                            <div class="content">{{ chargePointById[0].powerKw}} KWH</div>
+                            <div class="content">{{ chargePointById[0].powerKw }} KWH</div>
 
                         </div>
                         <div class="item">
@@ -44,19 +44,19 @@
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type)  }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type) }}</div>
                         </div>
                         <div class="item">
                             <div class="label"></div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type)  }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.occupancy.rate+'/' +getSymbols(chargePointById[0].chargePrice.occupancy.type)}}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.occupancy.rate+'/' +getSymbols(chargePointById[0].chargePrice.occupancy.type) }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('general.installationDate') }}</div>
-                            <div class="content">{{getLocTime( chargePointById[0].created)}}</div>
+                            <div class="content">{{ getLocTime( chargePointById[0].created) }}</div>
                         </div>
                         <div class="item">
                             <div class="label">Operator</div>
@@ -158,7 +158,7 @@
                                     <el-tooltip v-if="scope.row.status==='Charging'" :content="'Charging'" placement="bottom" effect="light" popper-class="custom">
                                         <span class="circle-status inUse"></span>
                                     </el-tooltip>
-                                    <span style="margin-left:5px">{{scope.row.status}}</span>
+                                    <span style="margin-left:5px">{{ scope.row.status }}</span>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="type" label="Type" :min-width="4"></el-table-column>
@@ -167,7 +167,7 @@
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
                                         <el-button class="connectors_chargers">
-                                            {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                            {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                         </el-button>
                                         <el-dropdown-menu slot="dropdown" class="actions">
                                             <el-dropdown-item>
@@ -197,11 +197,11 @@
                     </div>
                 </div>
                 <div class="tabs-contain">
-                    <el-tabs v-model="active" @tab-click="handleTabClick">
+                    <el-tabs v-model="active">
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
                     </el-tabs>
-                    <Transaction v-if="active==='transaction'" :chargerId="chargePointById[0].id"></Transaction>
+                    <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
                 </div>
             </div>
         </div>
@@ -209,129 +209,82 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
+import {
+    setScrollBar,
+    transformUtcToLocTime,
+    transformToSymbols
+} from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
-import ShowPostion from "@/components/chargingStation/showPostion";
-import ChargingSession from "@/components/chargingStation/chargingSession";
-import ChargePointAlert from "@/components/chargingStation/chargingPointAlert";
 import Transaction from "@/components/chargingStation/transaction";
-import Review from "@/components/chargingStation/review";
-import { $HTTP_getChargeBoxDetail, $HTTP_updateOccpAvailability, $HTTP_getAllChargeBoxList } from "@/api/api";
-import moment from "moment";
-import { $GLOBAL_CURRENCY, $GLOBAL_GRAFANA } from "@/utils/global";
-import FMCSTemplate from "@/components/info/fmcsTemplate";
-import unknown from "imgs/help_icon.svg";
-
-const baseGrafanaUrl = $GLOBAL_GRAFANA;
-var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m`;
+import {
+    $HTTP_updateOccpAvailability,
+    $HTTP_getAllChargeBoxList
+} from "@/api/api";
+// import moment from "moment";
+// import { $GLOBAL_GRAFANA } from "@/utils/global";
+// const baseGrafanaUrl = $GLOBAL_GRAFANA;
+// var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m`;
 
 export default {
     components: {
         Connector,
-        ShowPostion,
-        ChargingSession,
-        ChargePointAlert,
-        Review,
-        FMCSTemplate,
-        Transaction,
-        Connector,
+        Transaction
     },
     data() {
         return {
-            unknown: unknown,
-            costRevenueUrl: costRevenueUrl,
+            // costRevenueUrl: costRevenueUrl,
             filter: {
-                dateRange: [],
+                dateRange: []
             },
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
-                },
+                }
             },
             permissionShowAlertAble: this.$store.state.permissionEditable,
             curRouteParam: {
-                chargeBoxId: null,
-                serial: "",
-                chargeBoxName: "",
-                loc: {
-                    lon: "",
-                    lat: "",
-                },
-                power: "",
-                chargeBoxStatus: "",
-                connectorList: [],
-                chargeType: "",
-                currency: "",
-                onPeakElectricityRate: "",
-                onPeakElectricityRateType: 1,
-                offPeakElectricityRate: "",
-                offPeakElectricityRateType: 1,
-                parkingRate: "",
-                parkingRateType: 1,
-                installationDate: "",
+                chargeBoxId: null
             },
             isLoading: false,
             active: "transaction",
-            // mapDialog: {
-            //     visible: false,
-            //     itemId: "",
-            //     position: {
-            //         lat: "",
-            //         lng: "",
-            //     },
-            // },
             timer: null,
-            timeOut:null,
-            // count: {
-            //     available: 0,
-            //     inUse: 0,
-            //     unavailable: 0,
-            //     total: 0,
-            // },
-            chargePointById: [],
+            timeOut: null,
+            chargePointById: []
         };
     },
+    computed: {
+        getSymbols() {
+            return (item) => transformToSymbols(item);
+        },
+        getLocTime() {
+            return (item) => transformUtcToLocTime(item);
+        }
+    },
     created() {
-        let chargePointInfo = JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo"));
+        let chargePointInfo = JSON.parse(
+            window.sessionStorage.getItem("fiics-chargePointInfo")
+        );
         this.curRouteParam = {
-            chargeBoxId: chargePointInfo.id,
-            serial: chargePointInfo.serial,
-            chargeBoxName: chargePointInfo.name,
-            loc: {
-                lon: chargePointInfo.coordinates.longitude,
-                lat: chargePointInfo.coordinates.latitude,
-            },
-            power: chargePointInfo.powerKilowatts,
-            chargeBoxStatus: chargePointInfo.status,
-            connectorList: chargePointInfo.connectors,
-            chargeType: chargePointInfo.currentType,
-            currency: "",
-            onPeakElectricityRate: 0,
-            onPeakElectricityRateType: 1,
-            offPeakElectricityRate: 0,
-            offPeakElectricityRateType: 1,
-            parkingRate: 0,
-            parkingRateType: 1,
-            installationDate: chargePointInfo.installed,
+            chargeBoxId: chargePointInfo.id
         };
 
-        const todaySplit = moment().format("YYYY-MM-DD").split("-");
-        const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
-        let dayWeekBefore = parseInt(todaySplit[2]) - 7;
-        if (dayWeekBefore < 10) {
-            dayWeekBefore = "0" + dayWeekBefore;
-        } else {
-            dayWeekBefore = `${dayWeekBefore}`;
-        }
-        const thisWeekBefore = todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore;
+        // const todaySplit = moment().format("YYYY-MM-DD").split("-");
+        // const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
+        // let dayWeekBefore = parseInt(todaySplit[2]) - 7;
+        // if (dayWeekBefore <script 10) {
+        //     dayWeekBefore = "0" + dayWeekBefore;
+        // } else {
+        //     dayWeekBefore = `${dayWeekBefore}`;
+        // }
+        // const thisWeekBefore = todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore;
 
-        if (todaySplit[2] === "01") {
-            this.filter.dateRange = [thisMonth1st, thisMonth1st];
-        } else {
-            const today = moment().format("YYYY-MM-DD");
-            this.filter.dateRange = [thisWeekBefore, today];
-        }
-        this.updateGrafanaUrl();
+        // if (todaySplit[2] === "01") {
+        //     this.filter.dateRange = [thisMonth1st, thisMonth1st];
+        // } else {
+        //     const today = moment().format("YYYY-MM-DD");
+        //     this.filter.dateRange = [thisWeekBefore, today];
+        // }
+        // this.updateGrafanaUrl();
     },
     mounted() {
         this.getChargePointsById(this.curRouteParam.chargeBoxId);
@@ -340,15 +293,7 @@ export default {
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
         clearInterval(this.timer);
-        clearTimeout(this.timeOut)
-    },
-    computed: {
-        getSymbols() {
-            return (item) => transformToSymbols(item);
-        },
-        getLocTime() {
-            return (item) => transformUtcToLocTime(item);
-        },
+        clearTimeout(this.timeOut);
     },
     methods: {
         runAction(data, action) {
@@ -364,62 +309,47 @@ export default {
                 this.updateOccpAvailability(params);
             }
         },
-        fetchData(notLoading) {
-            const that = this,
-                params = {
-                    chargeBoxId: this.curRouteParam.chargeBoxId,
-                };
-            if (!notLoading) this.isLoading = true;
-            $HTTP_getChargeBoxDetail(params)
-                .then((data) => {
-                    this.isLoading = false;
-                    if (!!data.success) {
-                        this.curRouteParam = Object.assign({}, data.chargeBoxInfo);
-                        this.curRouteParam.installationDate = transformUtcToLocTime(
-                            this.curRouteParam.installationDate
-                        );
-                        this.curRouteParam.currency = $GLOBAL_CURRENCY[data.chargeBoxInfo.unitType];
-                    } else {
-                        this.$message({ type: "warning", message: data?.message });
-                    }
-                })
-                .catch((err) => {
-                    console.log("getChargeBoxDetail", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                });
-        },
         getChargePointsById(id) {
-            console.log(id);
             let params = {};
             params.Id = id;
+            this.isLoading = true;
             $HTTP_getAllChargeBoxList(params)
                 .then((res) => {
-                    console.log(res.data[0]);
                     if (res?.data?.length > 0) {
                         this.chargePointById = res.data;
+                        this.isLoading = false;
                     } else {
                         this.chargePointById = [];
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.isLoading = false;
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("emptyMessage")
+                        });
                     }
                 })
                 .catch((err) => {
                     this.chargePointById = [];
                     console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
-        updateOccpAvailability(params) {
-            console.log("update availability");
-            console.log(this.chargePointById);
+        updateOccpAvailability(data) {
+            let params = { ...data };
             params.chargeBoxId = this.chargePointById[0].id;
-            console.log(params);
             $HTTP_updateOccpAvailability(params)
                 .then((data) => {
-                    console.log(data);
                     if (data === "Accepted") {
-                        this.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                        this.$message({
+                            type: "success",
+                            message: i18n.t("general.sucUpdateMsg")
+                        });
                         this.timeOut = setTimeout(() => {
-                            this.getChargePointsById(this.chargePointById[0].id);
+                            this.getChargePointsById(
+                                this.chargePointById[0].id
+                            );
                         }, 2000);
                     }
                 })
@@ -429,37 +359,33 @@ export default {
                 });
         },
         handleShowDialog() {
-            // this.mapDialog.itemId = this.curRouteParam.chargeBoxId;
-            // this.mapDialog.position = { lat: this.curRouteParam.loc.lat, lng: this.curRouteParam.loc.lon };
-            // this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        handleTabClick(tab, event) {},
         closeShowPosDialog() {
-            // this.mapDialog.visible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-        updateApi() {
-            this.updateGrafanaUrl();
-        },
-        updateGrafanaUrl() {
-            let startDate = this.filter.dateRange[0];
-            let endDate = moment(this.filter.dateRange[1]).endOf("day");
-            startDate = moment(startDate).format("x");
-            endDate = moment(endDate).format("x");
-            this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
-            this.updateTheme();
-        },
-        updateTheme() {
-            let isDark = this.$store.state.darkTheme;
-            this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
-        },
-    },
+        }
+        // updateApi() {
+        //     this.updateGrafanaUrl();
+        // },
+        // updateGrafanaUrl() {
+        //     let startDate = this.filter.dateRange[0];
+        //     let endDate = moment(this.filter.dateRange[1]).endOf("day");
+        //     startDate = moment(startDate).format("x");
+        //     endDate = moment(endDate).format("x");
+        //     this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
+        //     this.updateTheme();
+        // },
+        // updateTheme() {
+        //     let isDark = this.$store.state.darkTheme;
+        //     this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
+        // },
+    }
 };
 </script>
 <style lang = "scss" scoped>
 .card-8 {
     padding: 28px;
+    width: calc(100% - 56px);
     .header {
         font-size: 1.5rem;
         font-weight: bold;

@@ -15,13 +15,13 @@
 
 <script>
 import Operators from "@/components/userAccount/operators";
-import Maintainer from "@/components/userAccount/maintainer";
-import CustomerServices from "@/components/userAccount/customerServices";
+// import Maintainer from "@/components/userAccount/maintainer";
+// import CustomerServices from "@/components/userAccount/customerServices";
 export default {
     components: {
         Operators,
-        Maintainer,
-        CustomerServices
+        // Maintainer,
+        // CustomerServices
     },
     data() {
         return {

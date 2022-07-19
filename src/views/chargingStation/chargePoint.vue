@@ -14,11 +14,11 @@
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-select class="select-small long" :placeholder="$t('chargingStation.connection') +' '+ $t('general.status')" v-model="filter.chargeBoxStatus" @change="fetchData('s')" clearable>
-                        <el-option :label="$t('general.all')" value=""></el-option>
+                        <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option v-for="(item, idx) in chargeBoxStatusList" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
                     <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.currentType" @change="fetchData('s')" clearable>
-                        <el-option :label="$t('general.all')" value=""></el-option>
+                        <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option label="AC" value="AC"></el-option>
                         <el-option label="DC" value="DC"></el-option>
                     </el-select>
@@ -34,13 +34,13 @@
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column :label="$t('chargingStation.chargePointID')" :min-width="3">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{scope.row.id}}</el-link>
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('chargingStation.power')" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.powerKw + "kW"}}
+                            {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2" class-name="center">
@@ -77,7 +77,7 @@
 
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
-                            {{ scope.row.currentType}}
+                            {{ scope.row.currentType }}
                         </template>
                     </el-table-column>
                     <!-- <el-table-column :label="$t('chargingStation.elecRate')">
@@ -113,7 +113,7 @@
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
                                 <el-button class="action_chargers_stations">
-                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                    {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" class="actions">
                                     <el-dropdown-item>
@@ -175,7 +175,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="total">{{ $t("general.result", {item:total})}}</div>
+                <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
             </div>
@@ -199,7 +199,6 @@ import {
     $HTTP_getStatusListChargeBoxes,
 } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
-import $ from "jquery";
 import unknown from "imgs/help_icon.svg";
 
 export default {
@@ -319,7 +318,6 @@ export default {
             }
         },
         fetchLocationList() {
-            const that = this;
             this.loctionList.isLoading = true;
             $HTTP_getZipCodeListForSelect()
                 .then((data) => {
@@ -334,7 +332,6 @@ export default {
                 });
         },
         fetchData(type) {
-            const that = this;
             this.isLoading = true;
             let param = {
                 page: this.page,
@@ -346,14 +343,14 @@ export default {
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
-            if (this.filter.chargeBoxStatus) {
+            if (this.filter.chargeBoxStatus && this.filter.chargeBoxStatus!=="all") {
                 param.Status = this.filter.chargeBoxStatus;
             }
             if (this.filter.tmpSearch) {
                 param.id = this.filter.tmpSearch;
             }
 
-            if (this.filter.currentType) {
+            if (this.filter.currentType && this.filter.currentType!=="all") {
                 param.CurrentType = this.filter.currentType;
             }
 
@@ -400,7 +397,6 @@ export default {
             this.fetchData();
         },
         openDialog(type, data) {
-            const that = this;
             this.dialog.type = type;
             if (type !== 0) {
                 this.dialog.info = {

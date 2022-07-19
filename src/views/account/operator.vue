@@ -8,23 +8,22 @@
             <div v-if="accPermissionType !== 3">
                 <SuperUser></SuperUser>
             </div>
-            <div v-else>
+            <!-- <div v-else>
                 <OperatorSelf></OperatorSelf>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
 import SuperUser from "@/components/userAccount/superUser";
-import OperatorSelf from "@/components/userAccount/operatorSelf";
+// import OperatorSelf from "@/components/userAccount/operatorSelf";
 import store from '../../store/store'
-import types from '../../store/types'
-// console.log(store)
+
 export default {
     components: {
         SuperUser,
-        OperatorSelf
+        // OperatorSelf
     },
     data() {
         return {
