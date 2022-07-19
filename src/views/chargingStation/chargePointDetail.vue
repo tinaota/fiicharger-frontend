@@ -174,20 +174,31 @@
                                                 <span>
                                                     <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'enableConnector')">Enable</span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'startConnector')">Start</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-stop" aria-hidden="true" style="color:red"></i>
-
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">Disable</span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'stopConnector')">Stop</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'unlockConnector')">Unlock</span>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'enableConnector')">Enable</span>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                </span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">Disable</span>
                                             </el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
