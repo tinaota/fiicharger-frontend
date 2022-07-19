@@ -1,6 +1,6 @@
-import turf from 'turf'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import _ from 'lodash'
+import _ from 'lodash';
+import turf from 'turf';
 
 export const buildingsIn3D = {
     id: '3d-buildings',
@@ -91,7 +91,7 @@ export const generatePoleModel = (coordinate, MapBoxObject, gltfUrl, id) => {
         id: id,
         type: 'custom',
         renderingMode: '3d',
-        onAdd: function (map, gl) {
+        onAdd: function () {
             let options = {
                 type: 'gltf', //'gltf'/'mtl'
                 obj: gltfUrl, //model url
@@ -115,7 +115,7 @@ export const generatePoleModel = (coordinate, MapBoxObject, gltfUrl, id) => {
                 window.tb.scene.add(directionalLight2);
             })
         },
-        render: function (gl, matrix) {
+        render: function () {
             window.tb.update()
         }
     };

@@ -2,7 +2,7 @@
     <div><i class="fa fa-spinner fa-spin"></i> Redirecting</div>
 </template>
 <script type="text/javascript">
-import { $HTTP_login_auth, $HTTP_getUserInfo, $HTTP_getOperatorTypeList } from "@/api/api";
+import { $HTTP_login_auth, $HTTP_getUserInfo } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
 import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID } from "@/utils/global";
@@ -65,25 +65,20 @@ export default {
                             _data.roles.indexOf("Owner") !== -1 ||
                             _data.roles.indexOf("Admin") !== -1
                         ) {
-                            $HTTP_getOperatorTypeList()
-                                .then((res) => {
-                                    let opertorTypeInfo = { operatorList: res.operatorTypeInfo };
-                                    window.sessionStorage.setItem("fiics-user", JSON.stringify(opertorTypeInfo));
-                                })
-                                .then(() => {
-                                    this.$router.push({ path: "/location" });
-                                    this.$store.commit(types.ROLE, "Super");
-                                    this.$store.commit(types.UPDATE_PERMISSION, true);
-                                });
+                            this.$store.commit(types.ROLE, "Super");
+                            this.$store.commit(types.UPDATE_PERMISSION, true);
+                            this.$router.push({ path: "/location" });
+
                         } else {
-                            this.$router.push({ path: "/contactadmin" });
                             this.$store.commit(types.ROLE, "Member");
                             this.$store.commit(types.UPDATE_PERMISSION, false);
+                            this.$router.push({ path: "/contactadmin" });
+
                         }
                     })
                     .catch((e) => console.log(e));
             })
-            .catch((error) => {
+            .catch(() => {
                 this.isLoading = false;
                 this.$message({ type: "error", message: i18n.t("error_network") });
                 this.$store.commit(types.LOGIN, null);

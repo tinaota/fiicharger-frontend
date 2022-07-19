@@ -1,5 +1,4 @@
-import moment, { lang } from "moment";
-
+import moment from "moment";
 /**
  * @description 在視窗發生改變時，重新渲染圖表
  * @param {Array} chartsId 放置圖表的HTML ID 數組
@@ -71,7 +70,6 @@ export const transformLangCookieToSymbol = function (languageCookie) {
 
 export const updateLangCookie = function (oldLang, newLang) {
     const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
-    console.log(oldLang, newLang)
     let cookieSymbol;
     switch (newLang) {
         case "en":

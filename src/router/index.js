@@ -1,11 +1,10 @@
+import { $GLOBAL_PROJECT } from '@/utils/global'
+import { v4 as uuidv4 } from "uuid"
 import Vue from 'vue'
 import Router from 'vue-router'
-import i18n from '../lang/lang'
+import redirect from '../router/redirect'
 import store from '../store/store'
 import * as types from '../store/types'
-import { $GLOBAL_PROJECT } from '@/utils/global'
-import redirect from '../router/redirect'
-import { v4 as uuidv4 } from "uuid";
 
 //先不跑登入
 Vue.use(Router)
@@ -150,7 +149,7 @@ let uuidValue = window.localStorage.getItem("fiics-uuid");
 if (uuidValue === null || uuidValue === undefined) {
     let uuid = uuidv4();
     window.localStorage.setItem("fiics-uuid", uuid)
-} 
+}
 /**
  * @description 处理页面跳转前后的路由逻辑操作
  */

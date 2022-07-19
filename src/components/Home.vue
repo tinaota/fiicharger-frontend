@@ -13,10 +13,10 @@
                 </div>
                 <el-dropdown trigger="click">
                     <div class="el-dropdown-link userinfo-inner">
-                        {{userName!==" " ? userName : roleNameObj}}
+                        {{ userName!==" " ? userName : roleNameObj }}
                     </div>
                     <el-dropdown-menu slot="dropdown" :class="isDark? 'logout dark-theme':'logout light-theme'">
-                        <el-dropdown-item @click.native="logout">{{$t('login.logout')}}</el-dropdown-item>
+                        <el-dropdown-item @click.native="logout">{{ $t('login.logout') }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
                 <el-divider direction="vertical"></el-divider>
@@ -29,15 +29,15 @@
                         <el-menu :default-active="activeIndex" mode="vertical" collapse :class="isDark? 'dark-theme':'light-theme'">
                             <el-submenu index="1">
                                 <template slot="title">
-                                    {{$t('general.language')}}
+                                    {{ $t('general.language') }}
                                 </template>
-                                <el-menu-item :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveLang===key?'is-active':'')]" v-for="(item, key) in langList" :key="key" @click.native="handleChangeLang(key,item)">{{ item }}</el-menu-item>
+                                <el-menu-item v-for="(item, key) in langList" :key="key" :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveLang===key?'is-active':'')]" @click.native="handleChangeLang(key,item)">{{ item }}</el-menu-item>
                             </el-submenu>
                             <el-submenu index="2">
                                 <template slot="title">
-                                    {{$t('general.theme')}}
+                                    {{ $t('general.theme') }}
                                 </template>
-                                <el-menu-item :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveTheme===item?'is-active':'')]" v-for="(item, key) in themeList" :key="key" @click.native="changeTheme(item,key)">{{ item }}</el-menu-item>
+                                <el-menu-item v-for="(item, key) in themeList" :key="key" :index="key" :class="[(isDark? 'dark-theme':'light-theme'),(isActiveTheme===item?'is-active':'')]" @click.native="changeTheme(item,key)">{{ item }}</el-menu-item>
                             </el-submenu>
                         </el-menu>
                     </el-dropdown-menu>
@@ -46,21 +46,21 @@
         </el-row>
         <section class="container">
             <aside class="left-container">
-                <el-menu unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect" id="list-wraper" ref="menuCollapsed">
+                <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect">
                     <template v-for="item in $router.options.routes">
                         <template v-if="!item.hidden && item.ename ==='Home'">
                             <template v-for="child in item.children">
                                 <template v-if="menuShowCtrl(child)">
-                                    <el-menu-item v-if="!child.hasChild" :index="child.path" :key="child.path">
+                                    <el-menu-item v-if="!child.hasChild" :key="child.path" :index="child.path">
                                         <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
                                     </el-menu-item>
-                                    <el-submenu v-else :index="child.path" :key="child.path">
+                                    <el-submenu v-else :key="child.path" :index="child.path">
                                         <template slot="title">
                                             <div style="margin-right:6px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
-                                            <span>{{$t(child.name)}}</span>
+                                            <span>{{ $t(child.name) }}</span>
                                         </template>
                                         <template v-for="subChild in child.children">
-                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :key="subChild.path" :class="{menuEn:lang =='en', subMenu: true}">{{$t(subChild.name) }}</el-menu-item>
+                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}">{{ $t(subChild.name) }}</el-menu-item>
                                         </template>
                                     </el-submenu>
                                 </template>
@@ -85,7 +85,6 @@
 import * as types from "../store/types";
 import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
 import { $HTTP_logout } from "@/api/api";
-import Vue from "vue";
 import { $GLOBAL_CLIENT_ID } from "@/utils/global";
 import { setScrollBar, updateLangCookie, transformLangCookieToSymbol } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
@@ -144,6 +143,17 @@ export default {
         },
         isActiveTheme() {
             return this.$store.state.darkTheme ? `${i18n.t("general.dark")}` : `${i18n.t("general.light")}`;
+        },
+    },
+    watch: {
+        "$route.path": function () {
+            if (
+                this.routerName !== this.$route.path &&
+                this.routerName === "/location" &&
+                this.$route.path === "/chargePoint"
+            ) {
+                this.handleMenuSelect("/chargePoint", ["/chargingStation", "/chargePoint"]);
+            }
         },
     },
     created() {
@@ -226,17 +236,6 @@ export default {
     mounted() {
         setScrollBar(".home-menu", this);
     },
-    watch: {
-        "$route.path": function () {
-            if (
-                this.routerName !== this.$route.path &&
-                this.routerName === "/location" &&
-                this.$route.path === "/chargePoint"
-            ) {
-                this.handleMenuSelect("/chargePoint", ["/chargingStation", "/chargePoint"]);
-            }
-        },
-    },
     methods: {
         menuShowCtrl: function (child) {
             if (
@@ -292,19 +291,16 @@ export default {
                         token: _token,
                         device_id: this.uuid,
                     };
-                    $HTTP_logout(params).then((data) => {
+                    $HTTP_logout(params).then(() => {
                         this.$store.commit(types.LOGOUT, JSON.stringify({}));
-                        // this.$router.push("/login");
-
                         this.$destroy();
                         window.location.reload();
                         redirect();
                     });
-                    // .catch(this.$message.error(i18n.t("login.err_logout")));
                 })
                 .catch(() => {});
         },
-        changeTheme(item, key) {
+        changeTheme(item) {
             let _isDark = item === i18n.t("general.dark");
             this.isDark = _isDark;
             this.$store.commit(types.DARKTHEME, _isDark);

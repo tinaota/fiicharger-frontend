@@ -1,7 +1,6 @@
-import Vuex from 'vuex'
 import Vue from 'vue'
+import Vuex from 'vuex'
 import * as types from './types'
-import { app } from '../main'
 Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
@@ -24,12 +23,10 @@ export default new Vuex.Store({
             window.localStorage.clear();
             window.localStorage.setItem('fiics-uuid', uuid);
             window.localStorage.setItem('fiics-dark-theme', fiicsDarkTheme)
-            state = {
-                token: null,
-                lang: 'en',
-                role: ''
-            };
-        },
+            state.token= null
+            state.lang= 'en'
+            state.role= ''
+       },
         [types.ROLE]: (state, data) => {
             state.role = data;
         },
