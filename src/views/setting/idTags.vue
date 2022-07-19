@@ -5,19 +5,18 @@
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ $t('menu.idTag') }}</el-breadcrumb-item>
             </el-breadcrumb>
-
             <div class="card-8 table-result">
                 <div class="filter">
                     <el-input placeholder="ID" v-model="filter.id" @change="fetchData('filter')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-select class="select-small long" :placeholder="$t('idTags.expired')" v-model="filter.isExpired" @change="fetchData('filter')" clearable>
-                        <el-option :label="$t('general.all')"></el-option>
+                        <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option label="True" value="true"></el-option>
                         <el-option label="False" value="false"></el-option>
                     </el-select>
                     <el-select class="select-small long" :placeholder="$t('idTags.blocked')" v-model="filter.isBlocked" @change="fetchData('filter')" clearable>
-                        <el-option :label="$t('general.all')"></el-option>
+                        <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option label="True" value="true"></el-option>
                         <el-option label="False" value="false"></el-option>
                     </el-select>
@@ -32,22 +31,22 @@
                     <el-table-column prop="parentIdTagId" :label="$t('idTags.parentIdTagId')" :min-width="2"></el-table-column>
                     <el-table-column prop="isBlocked" :label="$t('idTags.blocked')" :min-width="2">
                         <template slot-scope="scope">
-                            {{scope.row.isBlocked.toString()}}
+                            {{ scope.row.isBlocked.toString() }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="expiryDate" :label="$t('idTags.expiryDate')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getLocTime(scope.row.expiryDate)}}
+                            {{ getLocTime(scope.row.expiryDate) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="created" :label="$t('idTags.created')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getLocTime(scope.row.created)}}
+                            {{ getLocTime(scope.row.created) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="modified" :label="$t('idTags.modified')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getLocTime(scope.row.modified)}}
+                            {{ getLocTime(scope.row.modified) }}
                         </template>
                     </el-table-column>
 
@@ -58,7 +57,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="total">{{ $t("general.result", {item:total})}}</div>
+                <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
             </div>
@@ -116,17 +115,17 @@ export default {
             },
         };
     },
+    computed: {
+        getLocTime() {
+            return (item) => transformUtcToLocTime(item);
+        },
+    },
     mounted() {
         setScrollBar(".scroll", this);
         // get parent Id Tag List
         this.getParentIdTagList();
         // get table data
         this.fetchData();
-    },
-    computed: {
-        getLocTime() {
-            return (item) => transformUtcToLocTime(item);
-        },
     },
     methods: {
         // get parent Id Tag List
@@ -158,11 +157,11 @@ export default {
                 params.ParentIdTagId = this.filter.parentIdTagId;
             }
 
-            if (this.filter.isExpired) {
+            if (this.filter.isExpired && this.filter.isExpired!=="all") {
                 params.IsExpired = this.filter.isExpired;
             }
 
-            if (this.filter.isBlocked) {
+            if (this.filter.isBlocked && this.filter.isBlocked!=="all") {
                 params.IsBlocked = this.filter.isBlocked;
             }
 
