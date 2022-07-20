@@ -4,7 +4,7 @@
         <el-table
             :data="tableData.slice((page - 1) * 5, page * 5)"
             v-loading="isLoading">
-            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
+            <el-table-column prop="chargeBoxId" :label="$t('chargingStation.chargerId')" :min-width="2"></el-table-column>
             <el-table-column prop="chargeBoxName" :label="$t('general.name')" :min-width="1"></el-table-column>
             <el-table-column :label="$t('general.status')" :min-width="1">
                 <template slot-scope="scope">
@@ -18,7 +18,7 @@
             </el-table-column>
             <el-table-column :label="$t('chargingStation.power')" :min-width="1">
                 <template slot-scope="scope">
-                    {{scope.row.power + "kW"}}
+                    {{ scope.row.power + "kW" }}
                 </template>
             </el-table-column>
             <el-table-column :label="$t('chargingStation.connector')" :min-width="1">
@@ -34,12 +34,12 @@
             <el-table-column :label="$t('chargingStation.elecRate')">
                 <el-table-column :label="$t('chargingStation.onPeak')" :min-width="1">
                     <template slot-scope="scope">
-                        {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType]}}
+                        {{ scope.row.currency + scope.row.onPeakElectricityRate + '/' + $t("chargingStation.elecRateUnit")[scope.row.onPeakElectricityRateType] }}
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('chargingStation.offPeak')" :min-width="1">
                     <template slot-scope="scope">
-                        {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' +  $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType]}}
+                        {{ scope.row.currency + scope.row.offPeakElectricityRate + '/' + $t("chargingStation.elecRateUnit")[scope.row.offPeakElectricityRateType] }}
                     </template>
                 </el-table-column>
             </el-table-column>
@@ -49,7 +49,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="total">{{ $t("general.result", {item:total})}}</div>
+        <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next"
             :total="total"
             :pager-count="5"
@@ -57,7 +57,7 @@
             :current-page.sync="page"
             @current-change="changePage">
         </el-pagination>
-        <EditChargeBox name="stationDetail" :show="dialogVisible" :dialog="dialog" @close="()=> {this.dialogVisible = false;}"></EditChargeBox>
+        <EditChargeBox name="stationDetail" :show="dialogVisible" :dialog="dialog" @close="()=> {dialogVisible = false;}"></EditChargeBox>
     </div>
 </template>
 
@@ -67,12 +67,12 @@ import { $HTTP_getChargeBoxList } from "@/api/api";
 import EditChargeBox from "@/components/chargingStation/editChargeBox"
 import Connector from "@/components/chargingStation/connector";
 export default {
-    props: {
-        stationId: String
-    },
     components: {
         EditChargeBox,
         Connector
+    },
+    props: {
+        stationId: String
     },
     data() {
         return {

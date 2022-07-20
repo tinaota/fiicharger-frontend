@@ -17,7 +17,7 @@
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-select class="select-small" v-model="filter.status" :placeholder="$t('general.status')" v-loading="locationList.isLoading" @change="fetchData('status')" filterable clearable>
-                        <el-option v-for="item in statusList.data" :label="item" :key="item" :value="item"></el-option>
+                        <el-option v-for="item in statusList.data" :label="$t(`general.${item.toLowerCase()}`)" :key="item" :value="item"></el-option>
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
@@ -39,7 +39,7 @@
                             </div>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.chargePoint#')" label-class-name="center">
+                    <el-table-column :label="$t('chargingStation.nChargers')" label-class-name="center">
                         <el-table-column prop="acCount" label="AC" :width="68" label-class-name="center" class-name="center">
                         </el-table-column>
                         <el-table-column prop="dcCount" label="DC" :width="68" label-class-name="center" class-name="center">
@@ -48,7 +48,7 @@
                     <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3">
                         <template slot-scope="scope">
-                            <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.status" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ item }}</el-radio>
+                            <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.status" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ $t(`general.${item.toLowerCase()}`) }}</el-radio>
                         </template>
                     </el-table-column>
                     <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
@@ -67,13 +67,13 @@
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
@@ -91,19 +91,19 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('general.bind') }} {{ $t('menu.chargePoint') }}
+                                            {{ $t('chargingStation.bindCharger') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'bind')">{{ $t('general.bind') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('general.modify') }} {{ $t('chargingStation.station') }}
+                                            {{ $t('chargingStation.modifyStation') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('general.delete') }} {{ $t('chargingStation.station') }}
+                                            {{ $t('chargingStation.deleteStation') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>

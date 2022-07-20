@@ -6,7 +6,7 @@
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
         </el-breadcrumb>
         <div class="loc-filter">
-            {{filter.stationName}}
+            {{ filter.stationName }}
             <el-select class="select-small" v-model="filter.stationId" v-loading="stationSearchList.isLoading" :placeholder="$t('menu.station')" @change="handleStationChanged()" filterable clearable style="width: 200px">
                 <el-option v-for="(item, key) in stationSearchList.data" :label="item" :key="key" :value="key"></el-option>
             </el-select>
@@ -14,13 +14,13 @@
         <div class="hint-bar">
             <div class="item">
                 <img :src="icon.normal">
-                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{statisticsInfo.connectedCount || 0}}</span>
-                <span class="text">{{$t('general.connected')}}</span>
+                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{ statisticsInfo.connectedCount || 0 }}</span>
+                <span class="text">{{ $t('general.connected') }}</span>
             </div>
             <div class="item">
                 <img :src="icon.serviceUnavailable">
-                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{statisticsInfo.disconnectedCount || 0}}</span>
-                <span class="text">{{$t('general.disconnected')}}</span>
+                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{ statisticsInfo.disconnectedCount || 0 }}</span>
+                <span class="text">{{ $t('general.disconnected') }}</span>
             </div>
             <!-- <div class="item">
                 <img :src="icon.abnormal">
@@ -45,7 +45,7 @@
         </div>
         <div v-show="chargeBoxDrawer.visible" class="chargeBox-drawer">
             <button class="drawer-closeBtn" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = !chargeBoxDrawer.isOpen">
-                {{ chargeBoxDrawer.isOpen ?  `&gt;` : `&lt;` }}
+                {{ chargeBoxDrawer.isOpen ? `&gt;` : `&lt;` }}
             </button>
             <div class="drawer-body" v-show="chargeBoxDrawer.isOpen" v-loading="chargeBoxDrawer.isLoading">
                 <ul>
@@ -54,7 +54,7 @@
                         <div class="title">{{ item.chargeBoxName }}</div>
                         <div class="info">
                             <div class="info-item">
-                                <div class="label">{{ $t('chargingStation.chargePointID') }} :</div>
+                                <div class="label">{{ $t('chargingStation.chargerId') }} :</div>
                                 <div class="msg">{{ item.id }}</div>
                             </div>
                             <div class="info-item">
@@ -69,22 +69,22 @@
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.onPeak') }} : </div>
-                                <div class="msg"> {{item.chargePrice!==null?  getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):'-'}}
+                                <div class="msg"> {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):'-' }}
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.offPeak') }} : </div>
-                                <div class="msg"> {{item.chargePrice!==null?  getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.offPeak.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-'}}
+                                <div class="msg"> {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.offPeak.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-' }}
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.parkingRate') }} : </div>
                                 <div class="msg">
-                                    {{item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-'}} </div>
+                                    {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-' }} </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('general.status') }} : </div>
-                                <div class="msg">{{item.status!==null?  item.status:'-'}}
+                                <div class="msg">{{ item.status!==null? item.status:'-' }}
                                 </div>
                             </div>
                         </div>

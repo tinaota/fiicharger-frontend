@@ -6,7 +6,7 @@
             </el-select>
         </div>
         <el-table :data="allTransactions" v-loading="isLoading">
-            <el-table-column prop="chargePointId" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
+            <el-table-column prop="chargePointId" :label="$t('chargingStation.chargerId')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
             <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
             <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')" :min-width="2"></el-table-column>

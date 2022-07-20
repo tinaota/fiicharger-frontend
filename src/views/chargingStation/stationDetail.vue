@@ -89,13 +89,13 @@
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">{{ $t('general.add') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                            <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
                             <el-button type="primary" class="actionFunction" @click="runAction( 'add')">{{ $t('general.add') }}</el-button>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">{{ $t('general.clear') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                            <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
                             <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">{{ $t('general.clear') }}</el-button>
                         </div>
                     </li>
@@ -113,7 +113,7 @@
                             <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <span class="name">2 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.available').toLowerCase() }}</span>
+                            <span class="name">2 {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -121,7 +121,7 @@
                             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color8"></span>
                             </el-tooltip>
-                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.inUse').toLowerCase() }}</span>
+                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -129,7 +129,7 @@
                             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color4"></span>
                             </el-tooltip>
-                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}s {{ $t('general.unavailable').toLowerCase() }}</span>
+                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -137,7 +137,7 @@
                             <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color10"></span>
                             </el-tooltip>
-                            <span class="name">1 {{ $t('chargingStation.connector').toLowerCase() }}s offline</span>
+                            <span class="name">1 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
                         </div>
                     </li>
                 </ul>
@@ -158,7 +158,7 @@
                             {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="2">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -189,13 +189,13 @@
                                 <el-dropdown-menu slot="dropdown" :class="isDark? 'dark-theme actions' : 'actions'">
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
@@ -273,6 +273,7 @@ export default {
     },
     data() {
         return {
+            lang: this.$store.state.lang,
             curRouteParam: {
                 stationId: "",
                 stationName: ""

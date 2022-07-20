@@ -13,7 +13,10 @@
                     <el-input placeholder="Id" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
-                    <el-select class="select-small long" :placeholder="$t('chargingStation.connection') +' '+ $t('general.status')" v-model="filter.chargeBoxStatus" @change="fetchData('s')" clearable>
+                    <el-input :placeholder="$t('general.name')" v-model="filter.name" @change="fetchData('s')" clearable>
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                    <el-select class="select-small long" :placeholder="$t('chargingStation.connectionStatus')" v-model="filter.chargeBoxStatus" @change="fetchData('s')" clearable>
                         <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option v-for="(item, idx) in chargeBoxStatusList" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
@@ -23,16 +26,13 @@
                         <el-option label="DC" value="DC"></el-option>
                     </el-select>
 
-                    <el-input :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="fetchData('s')" clearable>
+                    <!-- <el-input :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
-                    <el-input :placeholder="$t('general.name')" v-model="filter.name" @change="fetchData('s')" clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input>
+                    </el-input> -->
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column :label="$t('chargingStation.chargePointID')" :min-width="3">
+                    <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
                         </template>
@@ -43,7 +43,7 @@
                             {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connection') +' '+ $t('general.status')" :min-width="2" class-name="center">
+                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -121,13 +121,13 @@
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargerProfile') }}
+                                            {{ $t('chargingStation.chargingProfile') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
@@ -163,13 +163,13 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('general.modify') }} {{ $t('chargingStation.charger') }}
+                                            {{ $t('chargingStation.modifyCharger') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('general.delete') }} {{ $t('chargingStation.charger') }}
+                                            {{ $t('chargingStation.deleteCharger') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>

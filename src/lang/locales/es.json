@@ -152,7 +152,10 @@
         "reset": "Reiniciar",
         "last": "Ultimo",
         "stop": "Deténgase",
-        "unlock": "Desbloquear"
+        "unlock": "Desbloquear",
+        "enabled": "Activado",
+        "disabled": "Desactivado",
+        "offline": "Desconectado"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -196,9 +199,7 @@
             "1": "min",
             "2": "times"
         },
-        "chargePointID": "Identificación del punto de recarga",
         "chargePointName": "Punto de recarga Nombre",
-        "chargePoint#": "Número de punto de recarga",
         "power": "Energía",
         "connector": "Conector",
         "connectorStatus": "Estado del conector",
@@ -280,7 +281,7 @@
         "clearCache": "Limpiar cache",
         "hardReset": "Restablecimiento completo",
         "softReset": "Reinicio suave",
-        "chargerProfile": "Perfil de cargador",
+        "chargingProfile": "Perfil de carga",
         "chargerId": "Identificación del cargador",
         "lastHeartbeat": "Último latido",
         "maxOutput": "Salida máxima",
@@ -292,7 +293,16 @@
         "stopTimestamp": "Detener marca de tiempo",
         "charging": "Cargando",
         "stopReason": "Motivo de parada",
-        "charger": "Cargador"
+        "charger": "Cargador",
+        "connectionStatus": "Estado de conexión",
+        "modifyCharger": "Modificar cargador",
+        "deleteCharger": "Eliminar cargador",
+        "bindCharger": "Cargador de enlace",
+        "modifyStation": "Modificar estación",
+        "deleteStation": "Eliminar estación",
+        "addChargingProfile": "Agregar perfil de carga",
+        "clearChargingProfile": "Borrar perfil de carga",
+        "lastStatus": "Estado (último)"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

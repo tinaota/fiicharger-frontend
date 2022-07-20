@@ -14,7 +14,7 @@
                             <div class="content">{{ chargePointById[0].name }}</div>
                         </div>
                         <div class="item">
-                            <div class="label">{{ $t('chargingStation.chargePointID') }}</div>
+                            <div class="label">{{ $t('chargingStation.chargerId') }}</div>
                             <div class="content">
                                 {{ chargePointById[0].id }}
                             </div>
@@ -25,7 +25,7 @@
 
                         </div>
                         <div class="item">
-                            <div class="label">{{ $t('chargingStation.connection') }} {{ $t('general.status') }}</div>
+                            <div class="label">{{ $t('chargingStation.connectionStatus') }}</div>
                             <div class="content">
                                 <div v-if="chargePointById[0].connectionStatus===`Connected`">
                                     <span class="circle-status color1"></span>
@@ -79,11 +79,11 @@
                         </div>
                         <ul class="rank actions">
                             <li>
-                                <span class="name">{{ $t('general.add') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                                <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
                                 <el-button type="primary" class="actionFunction" @click="runAction('add')">{{ $t('general.add') }}</el-button>
                             </li>
                             <li>
-                                <span class="name">{{ $t('general.clear') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                                <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
                                 <el-button type="primary" class="actionFunction" @click="runAction('clear')">{{ $t('general.clear') }}</el-button>
                             </li>
                             <li>
@@ -124,7 +124,7 @@
                         </div>
                         <el-table :data="chargePointById[0].connectors" class="moreCol" v-loading="isLoading">
                             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                            <el-table-column :label="$t('general.status')+'(' +$t('general.last') + ')'" :min-width="8">
+                            <el-table-column :label="$t('chargingStation.lastStatus')" :min-width="8">
                                 <template slot-scope="scope">
                                     <el-tooltip v-if="scope.row.status==='Available'" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                         <span class="circle-status available"></span>

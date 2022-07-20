@@ -152,7 +152,10 @@
         "reset": "Cài lại",
         "last": "Cuối",
         "stop": "Dừng lại",
-        "unlock": "Mở khóa"
+        "unlock": "Mở khóa",
+        "enabled": "Đã bật",
+        "disabled": "Vô hiệu hóa",
+        "offline": "Ngoại tuyến"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -196,9 +199,7 @@
             "1": "Phút",
             "2": "Lần"
         },
-        "chargePointID": "ID điểm sạc",
         "chargePointName": "Tên điểm sạc",
-        "chargePoint#": "Điểm sạc",
         "power": "Năng lượng",
         "connector": "Đầu nối",
         "connectorStatus": "Trạng thái đầu nối",
@@ -279,7 +280,7 @@
         "clearCache": "Xóa bộ nhớ cache",
         "hardReset": "Hard Reset",
         "softReset": "Đặt lại mềm",
-        "chargerProfile": "Cấu hình bộ sạc",
+        "chargingProfile": "Hồ sơ sạc",
         "chargerId": "ID bộ sạc",
         "lastHeartbeat": "Nhịp tim cuối cùng",
         "maxOutput": "Đầu ra tối đa",
@@ -291,7 +292,16 @@
         "stopTimestamp": "Dấu thời gian dừng",
         "charging": "Sạc",
         "stopReason": "Lý do dừng lại",
-        "charger": "Bộ sạc"
+        "charger": "Bộ sạc",
+        "connectionStatus": "Tình trạng kết nối",
+        "modifyCharger": "Sửa đổi bộ sạc",
+        "deleteCharger": "Xóa bộ sạc",
+        "bindCharger": "Bộ sạc ràng buộc",
+        "modifyStation": "Trạm sửa đổi",
+        "deleteStation": "Xóa trạm",
+        "addChargingProfile": "Thêm cấu hình sạc",
+        "clearChargingProfile": "Xóa hồ sơ sạc",
+        "lastStatus": "Trạng thái (cuối cùng)"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
