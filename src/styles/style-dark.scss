@@ -92,7 +92,8 @@ $dark-background-color: #2d3855;
             .card-8 {
                 background: $dark-background-color;
                 box-shadow: 0 1px 4px 0 $dark-background-color;
-                .header,
+                .header,.rank li .label span,
+                .rank li .connectors span:nth-child(2),
                 .s-contain .item .label {
                     background: inherit !important;
                     color: $dark-font-color !important;
@@ -102,6 +103,7 @@ $dark-background-color: #2d3855;
                 }
                 .carDetail,
                 .charge-point-info {
+                    color: $dark-font-color !important;
                     .item {
                         .label,
                         .info,
@@ -169,6 +171,15 @@ $dark-background-color: #2d3855;
         &:hover {
             color: inherit;
             background-color: inherit;
+        }
+    }
+    &.actions li {
+        width: auto;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        .actionFunction {
+            min-width: 85px;
         }
     }
 }

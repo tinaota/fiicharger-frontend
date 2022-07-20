@@ -25,7 +25,7 @@
 
                         </div>
                         <div class="item">
-                            <div class="label">Connection Status</div>
+                            <div class="label">{{ $t('chargingStation.connection') }} {{ $t('general.status') }}</div>
                             <div class="content">
                                 <div v-if="chargePointById[0].connectionStatus===`Connected`">
                                     <span class="circle-status color1"></span>
@@ -164,7 +164,7 @@
                                         <el-button class="connectors_chargers">
                                             {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                         </el-button>
-                                        <el-dropdown-menu slot="dropdown" class="actions">
+                                        <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
@@ -239,6 +239,7 @@ export default {
     data() {
         return {
             // costRevenueUrl: costRevenueUrl,
+            isDark: this.$store.state.darkTheme,
             filter: {
                 dateRange: []
             },

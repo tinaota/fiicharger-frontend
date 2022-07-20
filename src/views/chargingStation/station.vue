@@ -64,7 +64,7 @@
                                 <el-button class="action_chargers_stations">
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
-                                <el-dropdown-menu slot="dropdown" class="actions">
+                                <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
                                     <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.chargerProfile') }}
