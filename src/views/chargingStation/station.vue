@@ -24,7 +24,7 @@
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column :label="$t('chargingStation.stationID')" :min-width="2">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{scope.row.id}}</el-link>
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
@@ -62,57 +62,57 @@
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
                                 <el-button class="action_chargers_stations">
-                                    {{$t('general.action')}}<i class="el-icon-arrow-down el-icon--right"></i>
+                                    {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" class="actions">
                                     <el-dropdown-item>
                                         <span>
-                                            Charger Profile
+                                            {{ $t('chargingStation.chargerProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Add</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Charger Profile
+                                            {{ $t('chargingStation.chargerProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Clear</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Diagnostics
+                                            {{ $t('chargingStation.diagnostics') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Start</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">{{ $t('general.start') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Updates
+                                            {{ $t('chargingStation.updates') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">Run</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Bind Chargers
+                                            {{ $t('general.bind') }} {{ $t('menu.chargePoint') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'bind')">Bind</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'bind')">{{ $t('general.bind') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Edit Station
+                                            {{ $t('general.modify') }} {{ $t('chargingStation.station') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">Edit</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Remove Station
+                                            {{ $t('general.delete') }} {{ $t('chargingStation.station') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">Delete</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="total">{{ $t("general.result", {item:total})}}</div>
+                <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
             </div>
@@ -175,8 +175,8 @@
                                 <el-input v-model="dialog.info.loc.lat" disabled></el-input>
                             </el-form-item>
                         </div>
-                        <div class="hint" v-if="dialog.mapInfo.marker === null">{{$t('general.clickAddMarker')}}</div>
-                        <div class="hint" v-else>{{$t('general.dragMarker')}}</div>
+                        <div class="hint" v-if="dialog.mapInfo.marker === null">{{ $t('general.clickAddMarker') }}</div>
+                        <div class="hint" v-else>{{ $t('general.dragMarker') }}</div>
                         <div class="form-item">
                             <div class="label">{{ $t('general.businessHours') }}</div>
                             <div class="timeRange">
@@ -246,19 +246,17 @@ import {
     $HTTP_getIndividualStationData,
     $HTTP_getAllChargeBoxList,
     $HTTP_removeBoundingToStation,
-    $HTTP_updateStatusStation,
+    $HTTP_updateStatusStation
 } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ic_green_dot from "imgs/ic_green_dot.png";
 import googleMapStyle from "@/assets/js/googleMapStyle_normal";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { SELECT_NOW_TAB } from "@/store/types";
-import $ from "jquery";
 import { validateIsEmpty } from "@/utils/validation";
-
 export default {
     components: {
-        ShowPostion,
+        ShowPostion
     },
     data() {
         return {
@@ -268,17 +266,17 @@ export default {
             permissionEditAble: this.$store.state.permissionEditable,
             locationList: {
                 isLoading: false,
-                data: [],
+                data: []
             },
             statusList: {
                 isLoading: false,
-                data: [],
+                data: []
             },
             filter: {
                 stationName: "",
                 // operatorTypeId: "",
                 zipCode: "",
-                status: "",
+                status: ""
             },
             isLoading: false,
             tableData: [],
@@ -286,7 +284,7 @@ export default {
             total: 0,
             countryCode: {
                 isLoading: false,
-                data: [],
+                data: []
             },
             currencyList: $GLOBAL_CURRENCY,
             dialog: {
@@ -306,7 +304,7 @@ export default {
                         city: "",
                         country: "",
                         state: "",
-                        zipCode: "",
+                        zipCode: ""
                     },
                     serviceStartTime: "",
                     serviceEndTime: "",
@@ -315,8 +313,8 @@ export default {
                     loc: {
                         lng: "",
                         lon: "",
-                        lat: "",
-                    },
+                        lat: ""
+                    }
                 },
                 map: null,
                 mapInfo: {
@@ -326,18 +324,18 @@ export default {
                     marker: null,
                     initCenter: {
                         lat: 42.677811124442854,
-                        lng: -87.91695010215827,
+                        lng: -87.91695010215827
                     },
-                    icon: ic_green_dot,
-                },
+                    icon: ic_green_dot
+                }
             },
             mapDialog: {
                 visible: false,
                 itemId: "",
                 position: {
                     lat: "",
-                    lng: "",
-                },
+                    lng: ""
+                }
             },
             bindDialog: {
                 visible: false,
@@ -349,8 +347,8 @@ export default {
                     stationName: "",
                     zipCode: "",
                     selectedChargeBoxNameArr: [],
-                    originalSelectedChargeBoxNameArr: [],
-                },
+                    originalSelectedChargeBoxNameArr: []
+                }
             },
             rules: {
                 stationName: [{ validator: validateIsEmpty }],
@@ -363,8 +361,8 @@ export default {
                 "loc.lat": [{ validator: validateIsEmpty }],
                 serviceStartTime: [{ validator: validateIsEmpty }],
                 serviceEndTime: [{ validator: validateIsEmpty }],
-                phone: [{ validator: validateIsEmpty }],
-            },
+                phone: [{ validator: validateIsEmpty }]
+            }
         };
     },
     mounted() {
@@ -374,7 +372,8 @@ export default {
         this.fetchData();
     },
     beforeDestroy() {
-        this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
+        this.dialog.map &&
+            google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
         runAction(data, action) {
@@ -388,7 +387,6 @@ export default {
             }
         },
         fetchLocationList() {
-            const that = this;
             this.locationList.isLoading = true;
             $HTTP_getZipCodeListForSelect()
                 .then((data) => {
@@ -399,11 +397,13 @@ export default {
                 })
                 .catch((err) => {
                     console.log("locationList", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         fetchStatusList() {
-            const that = this;
             this.statusList.isLoading = true;
             $HTTP_getStatusListChargeStations()
                 .then((data) => {
@@ -414,15 +414,17 @@ export default {
                 })
                 .catch((err) => {
                     console.log("locationList", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         fetchData(type) {
-            const that = this;
             this.isLoading = true;
             let param = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
 
             if (this.filter.zipCode) {
@@ -447,19 +449,27 @@ export default {
                     if (res?.data?.length > 0) {
                         this.total = res.metadata.totalRows;
                         this.tableData = res.data.map((item) => {
-                            item["modified"] = transformUtcToLocTime(item.modified);
+                            item["modified"] = transformUtcToLocTime(
+                                item.modified
+                            );
                             return item;
                         });
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("emptyMessage")
+                        });
                     }
                 })
-                .catch((err) => {
+                .catch(() => {
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         changePage(page) {
@@ -470,7 +480,7 @@ export default {
             const that = this,
                 params = {
                     zipCode: this.bindDialog.info.zipCode,
-                    stationId: this.bindDialog.info.stationId,
+                    stationId: this.bindDialog.info.stationId
                 };
             this.bindDialog.oriChargePointList = {};
             this.bindDialog.chargeBoxNameArr = [];
@@ -483,7 +493,8 @@ export default {
                     let allChargeBoxes = res?.data;
                     if (allChargeBoxes?.length > 0) {
                         allChargeBoxes.forEach((item) => {
-                            that.bindDialog.oriChargePointList[item.name] = item.id;
+                            that.bindDialog.oriChargePointList[item.name] =
+                                item.id;
                             that.bindDialog.chargeBoxNameArr.push(item.name);
                         });
                     }
@@ -491,37 +502,54 @@ export default {
                         let allBindedBoxes = res;
                         // push only if it is binded
                         allBindedBoxes.map((bindedBox) => {
-                            that.bindDialog.info.selectedChargeBoxNameArr.push(bindedBox.name);
-                            that.bindDialog.info.originalSelectedChargeBoxNameArr.push(bindedBox.name);
+                            that.bindDialog.info.selectedChargeBoxNameArr.push(
+                                bindedBox.name
+                            );
+                            that.bindDialog.info.originalSelectedChargeBoxNameArr.push(
+                                bindedBox.name
+                            );
                         });
                         that.bindDialog.isLoading = false;
                     });
                 })
-                .catch((err) => {
+                .catch(() => {
                     that.bindDialog.isLoading = false;
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         handleRowClick(row) {
             if (row) {
                 const stationData = {
                     stationId: row.id,
-                    stationName: row.name,
+                    stationName: row.name
                 };
-                window.sessionStorage.setItem("fiics-stationInfo", JSON.stringify(stationData));
-                this.$router.push({ name: "stationDetail", params: stationData }).catch();
+                window.sessionStorage.setItem(
+                    "fiics-stationInfo",
+                    JSON.stringify(stationData)
+                );
+                this.$router
+                    .push({ name: "stationDetail", params: stationData })
+                    .catch();
             }
         },
         openDialog(type, data) {
-            const that = this;
             this.dialog.type = type;
             if (type === 1) {
                 let stationId = data.id;
 
                 $HTTP_getIndividualStationData(stationId)
                     .then((res) => {
-                        let serviceStartTime = this.computeTime(res.openHour) + ":" + this.computeTime(res.openMinute);
-                        let serviceEndTime = this.computeTime(res.closeHour) + ":" + this.computeTime(res.closeMinute);
+                        let serviceStartTime =
+                            this.computeTime(res.openHour) +
+                            ":" +
+                            this.computeTime(res.openMinute);
+                        let serviceEndTime =
+                            this.computeTime(res.closeHour) +
+                            ":" +
+                            this.computeTime(res.closeMinute);
 
                         this.dialog.info = {
                             stationId: res.id,
@@ -531,24 +559,27 @@ export default {
                                 city: res.address.city,
                                 country: res.address.country,
                                 state: res.address.state,
-                                zipCode: res.address.zipCode,
+                                zipCode: res.address.zipCode
                             },
 
                             loc: {
                                 lat: res.coordinates.latitude,
                                 lon: res.coordinates.longitude,
-                                lng: res.coordinates.longitude,
+                                lng: res.coordinates.longitude
                             },
                             phone: res.phoneNumber,
                             serviceStartTime: serviceStartTime,
-                            serviceEndTime: serviceEndTime,
+                            serviceEndTime: serviceEndTime
                         };
 
                         this.drawMap();
                     })
 
                     .catch(() => {
-                        this.$message({ type: "warning", message: i18n.t("error_network") });
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("error_network")
+                        });
                     });
             } else {
                 this.drawMap();
@@ -556,45 +587,62 @@ export default {
         },
         initMap() {
             const that = this;
-            this.dialog.map = new google.maps.Map(document.getElementById("map-container"), {
-                center: this.dialog.mapInfo.initCenter,
-                zoom: this.dialog.mapInfo.zoom,
-                maxZoom: this.dialog.mapInfo.maxZoom,
-                streetViewControl: false, //設定是否呈現右下角街景小人
-                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                fullscreenControl: false,
-                zoomControl: false,
-                styles: googleMapStyle,
-            });
-            google.maps.event.addListener(this.dialog.map, "click", function (event) {
-                if (!that.dialog.type) {
-                    that.removeMarker();
-                    that.dialog.info.loc = event.latLng.toJSON();
-                    that.dialog.info.loc.lon = that.dialog.info.loc.lng;
-                    that.drawMarker();
+            this.dialog.map = new google.maps.Map(
+                document.getElementById("map-container"),
+                {
+                    center: this.dialog.mapInfo.initCenter,
+                    zoom: this.dialog.mapInfo.zoom,
+                    maxZoom: this.dialog.mapInfo.maxZoom,
+                    streetViewControl: false, //設定是否呈現右下角街景小人
+                    mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                    fullscreenControl: false,
+                    zoomControl: false,
+                    styles: googleMapStyle
                 }
-            });
+            );
+            google.maps.event.addListener(
+                this.dialog.map,
+                "click",
+                function (event) {
+                    if (!that.dialog.type) {
+                        that.removeMarker();
+                        that.dialog.info.loc = event.latLng.toJSON();
+                        that.dialog.info.loc.lon = that.dialog.info.loc.lng;
+                        that.drawMarker();
+                    }
+                }
+            );
         },
         drawMarker() {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(this.dialog.mapInfo.icon, new google.maps.Size(36, 55)); //size  預設位子圖案中間底
+            var markerImage = new google.maps.MarkerImage(
+                this.dialog.mapInfo.icon,
+                new google.maps.Size(36, 55)
+            ); //size  預設位子圖案中間底
             // new google.maps.Point(0, 0), //origin point
             // new google.maps.Point(18, 55)); // offset point
             let marker = new google.maps.Marker({
                 map: this.dialog.map,
                 position: this.dialog.info.loc,
                 icon: markerImage,
-                draggable: true,
+                draggable: true
             });
             this.dialog.mapInfo.marker = marker;
-            google.maps.event.addListener(this.dialog.mapInfo.marker, "dragend", function (event) {
-                that.dialog.info.loc = event.latLng.toJSON();
-                that.dialog.info.loc.lon = that.dialog.info.loc.lng;
-            });
+            google.maps.event.addListener(
+                this.dialog.mapInfo.marker,
+                "dragend",
+                function (event) {
+                    that.dialog.info.loc = event.latLng.toJSON();
+                    that.dialog.info.loc.lon = that.dialog.info.loc.lng;
+                }
+            );
         },
         removeMarker() {
             if (this.dialog.mapInfo.marker) {
-                google.maps.event.clearListeners(this.dialog.mapInfo.marker, "dragend");
+                google.maps.event.clearListeners(
+                    this.dialog.mapInfo.marker,
+                    "dragend"
+                );
                 this.dialog.mapInfo.marker.setMap();
                 this.dialog.mapInfo.marker = null;
             }
@@ -606,7 +654,7 @@ export default {
                 stationName: data.name,
                 zipCode: data.address.zipCode,
                 selectedChargeBoxNameArr: [],
-                originalSelectedChargeBoxNameArr: [],
+                originalSelectedChargeBoxNameArr: []
             };
             this.fetchChargeBoxListForBinding();
             this.bindDialog.visible = true;
@@ -615,50 +663,72 @@ export default {
                 setScrollBar(".vertial.formVertical", that);
             });
         },
-        handleBindChargePointChange(value) {},
+        handleBindChargePointChange() {},
         updateBindStation() {
             const that = this;
 
             let config = {
                 headers: {
-                    "Content-Type": "application/json",
-                },
+                    "Content-Type": "application/json"
+                }
             };
-            let newBindedArray = that.bindDialog.info.selectedChargeBoxNameArr.filter(
-                (item) => that.bindDialog.info.originalSelectedChargeBoxNameArr.indexOf(item) === -1
-            );
+            let newBindedArray =
+                that.bindDialog.info.selectedChargeBoxNameArr.filter(
+                    (item) =>
+                        that.bindDialog.info.originalSelectedChargeBoxNameArr.indexOf(
+                            item
+                        ) === -1
+                );
             if (newBindedArray.length > 0) {
                 newBindedArray.map((item) => {
                     let params = {
-                        chargePointId: this.bindDialog.oriChargePointList[`${item}`],
+                        chargePointId:
+                            this.bindDialog.oriChargePointList[`${item}`],
                         config: config,
-                        stationId: that.bindDialog.info.stationId,
+                        stationId: that.bindDialog.info.stationId
                     };
                     $HTTP_addBoundingToStation(params).then((res) => {
                         if (res) {
-                            that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucUpdateMsg")
+                            });
                             that.fetchData();
                         } else {
-                            that.$message({ type: "warning", message: i18n.t("error_network") });
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         }
                     });
                 });
             }
 
-            let unbindedArray = that.bindDialog.info.originalSelectedChargeBoxNameArr.filter(
-                (item) => that.bindDialog.info.selectedChargeBoxNameArr.indexOf(item) === -1
-            );
+            let unbindedArray =
+                that.bindDialog.info.originalSelectedChargeBoxNameArr.filter(
+                    (item) =>
+                        that.bindDialog.info.selectedChargeBoxNameArr.indexOf(
+                            item
+                        ) === -1
+                );
             if (unbindedArray.length > 0) {
                 unbindedArray.map((item) => {
                     let params = {
-                        chargePointId: this.bindDialog.oriChargePointList[`${item}`],
+                        chargePointId:
+                            this.bindDialog.oriChargePointList[`${item}`]
                     };
                     $HTTP_removeBoundingToStation(params).then((res) => {
                         if (res) {
-                            that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucUpdateMsg")
+                            });
                             that.fetchData();
                         } else {
-                            that.$message({ type: "warning", message: i18n.t("error_network") });
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         }
                     });
                 });
@@ -667,13 +737,22 @@ export default {
         },
         deleteStation(id, name) {
             const that = this;
-            this.$confirm(i18n.t("general.deleteItem", { item: name }), i18n.t("general.hint"), {
-                showClose: false,
-                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
-            }).then(() => {
+            this.$confirm(
+                i18n.t("general.deleteItem", { item: name }),
+                i18n.t("general.hint"),
+                {
+                    showClose: false,
+                    customClass: `custom ${
+                        this.isDark ? "dark-theme" : "light-theme"
+                    }`
+                }
+            ).then(() => {
                 $HTTP_deleteStation({ stationId: id }).then((data) => {
                     if (data.status === 204) {
-                        that.$message({ type: "success", message: i18n.t("general.sucDelMsg") });
+                        that.$message({
+                            type: "success",
+                            message: i18n.t("general.sucDelMsg")
+                        });
                         if (this.tableData.length === 1) {
                             if (this.page >= 2) {
                                 this.page = this.page - 1;
@@ -683,7 +762,10 @@ export default {
                         }
                         that.fetchData();
                     } else {
-                        that.$message({ type: "warning", message: i18n.t("error_network") });
+                        that.$message({
+                            type: "warning",
+                            message: i18n.t("error_network")
+                        });
                     }
                 });
             });
@@ -693,13 +775,14 @@ export default {
                 if (valid) {
                     const that = this;
 
-                    let startTime = that.dialog.info.serviceStartTime.split(":");
+                    let startTime =
+                        that.dialog.info.serviceStartTime.split(":");
                     let endTime = that.dialog.info.serviceEndTime.split(":");
                     let $API,
                         params = {
                             coordinates: {
                                 latitude: that.dialog.info.loc.lat,
-                                longitude: that.dialog.info.loc.lon,
+                                longitude: that.dialog.info.loc.lon
                             },
                             name: that.dialog.info.stationName,
                             phoneNumber: that.dialog.info.phone,
@@ -707,7 +790,7 @@ export default {
                             openHour: parseInt(startTime[0]),
                             openMinute: parseInt(startTime[1]),
                             closeHour: parseInt(endTime[0]),
-                            closeMinute: parseInt(endTime[0]),
+                            closeMinute: parseInt(endTime[0])
                         },
                         sucMsg = "";
 
@@ -725,15 +808,24 @@ export default {
                         .then((data) => {
                             that.dialog.isLoading = false;
                             if (data.id >= 0) {
-                                that.$message({ type: "success", message: sucMsg });
+                                that.$message({
+                                    type: "success",
+                                    message: sucMsg
+                                });
                                 that.dialog.visible = false;
                                 that.fetchData();
                             } else {
-                                that.$message({ type: "warning", message: i18n.t("error_network") });
+                                that.$message({
+                                    type: "warning",
+                                    message: i18n.t("error_network")
+                                });
                             }
                         })
-                        .catch((err) => {
-                            that.$message({ type: "warning", message: i18n.t("error_network") });
+                        .catch(() => {
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         });
                 } else {
                     console.log("error submit!!");
@@ -744,10 +836,14 @@ export default {
         closeDialog(isEdit) {
             if (isEdit) {
                 this.$jQuery(".right-form.formVertical").length > 0 &&
-                    this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
+                    this.$jQuery(".right-form.formVertical").mCustomScrollbar(
+                        "destroy"
+                    );
             } else {
                 this.$jQuery(".vertial.formVertical").length > 0 &&
-                    this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
+                    this.$jQuery(".vertial.formVertical").mCustomScrollbar(
+                        "destroy"
+                    );
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
             this.dialog.info = {
@@ -758,16 +854,16 @@ export default {
                     city: "",
                     country: "",
                     state: "",
-                    zipCode: "",
+                    zipCode: ""
                 },
                 loc: {
                     lat: "",
                     lon: "",
-                    lng: "",
+                    lng: ""
                 },
                 phone: "",
                 serviceStartTime: "",
-                serviceEndTime: "",
+                serviceEndTime: ""
             };
 
             this.$nextTick(() => {
@@ -784,7 +880,10 @@ export default {
         },
         handleShowDialog(data) {
             this.mapDialog.itemId = data.stationId;
-            this.mapDialog.position = { lat: data.coordinates.latitude, lng: data.coordinates.longitude };
+            this.mapDialog.position = {
+                lat: data.coordinates.latitude,
+                lng: data.coordinates.longitude
+            };
             this.mapDialog.visible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
@@ -827,26 +926,32 @@ export default {
             const that = this;
             let config = {
                 headers: {
-                    "Content-Type": "application/json",
-                },
+                    "Content-Type": "application/json"
+                }
             };
 
             let params = {
                 stationId: data.id,
                 config: config,
-                status: data.status,
+                status: data.status
             };
 
             $HTTP_updateStatusStation(params).then((res) => {
                 if (res) {
-                    that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
+                    that.$message({
+                        type: "success",
+                        message: i18n.t("general.sucUpdateMsg")
+                    });
                 } else {
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    that.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 }
                 that.fetchData();
             });
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>
@@ -890,14 +995,6 @@ ul {
     min-width: 200px;
     min-height: 200px;
 }
-.actions li {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    .actionFunction {
-        min-width: 65px;
-    }
-}
 
 .el-link {
     text-decoration: underline;
@@ -909,11 +1006,11 @@ ul {
     color: #0056ff;
 }
 
-.action_chargers_stations{
+.action_chargers_stations {
     background-color: transparent;
-    border-color: #409EFF;
+    border-color: #409eff;
     border-width: 2px;
-    color: #409EFF;
+    color: #409eff;
     font-weight: 600;
 }
 </style>

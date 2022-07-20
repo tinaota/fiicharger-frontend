@@ -41,7 +41,8 @@
         "energyPhm": "Energía y PHM",
         "contact": "Contacto",
         "price": "El Precio",
-        "idTag": "Etiqueta de identificación"
+        "idTag": "Etiqueta",
+        "transaction": "Transacción"
     },
     "login": {
         "login": "Acceso",
@@ -88,8 +89,8 @@
         "endTime": "Hora de finalización",
         "time": "Tiempo",
         "searchChargePoint": "Buscar punto de recarga",
-        "connected":"Conectado",
-        "disconnected":"Desconectado",
+        "connected": "Conectado",
+        "disconnected": "Desconectado",
         "available": "Disponible",
         "unavailable": "Indisponible",
         "maintenance": "Mantenimiento",
@@ -143,7 +144,15 @@
         "changeRoles": "Cambiar roles a:",
         "deleteThis": "Estás seguro que quieres eliminar esto ",
         "updateThis": "¿Estás seguro de que quieres actualizar esto?",
-        "user": "Usuario"
+        "user": "Usuario",
+        "run": "Correr",
+        "start": "Comienzo",
+        "add": "Agregar",
+        "clear": "Claro",
+        "reset": "Reiniciar",
+        "last": "Ultimo",
+        "stop": "Deténgase",
+        "unlock": "Desbloquear"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -258,7 +267,32 @@
         "csMaxPower": "CS Máx. Energía",
         "intervalTime": "Tiempo de intervalo",
         "loadBalance": "Equilibrio de carga",
-        "serial": "De serie"
+        "serial": "De serie",
+        "connectors": "Conectores",
+        "powerConsumption": "El consumo de energía",
+        "totalRevenue": "Los ingresos totales",
+        "totalSessions": "Sesiones totales",
+        "nChargers": "Número de cargadores",
+        "nConnectors": "Número de conectores",
+        "updateChargers": "Actualizar cargadores",
+        "diagnostics": "Diagnóstico",
+        "updates": "Actualizaciones",
+        "clearCache": "Limpiar cache",
+        "hardReset": "Restablecimiento completo",
+        "softReset": "Reinicio suave",
+        "chargerProfile": "Perfil de cargador",
+        "chargerId": "Identificación del cargador",
+        "lastHeartbeat": "Último latido",
+        "maxOutput": "Salida máxima",
+        "startIdTag": "Iniciar etiqueta de identificación",
+        "meterStart": "Inicio del medidor",
+        "meterStop": "Parada de medidor",
+        "meterTotal": "Medidor total",
+        "startTimestamp": "Marca de tiempo de inicio",
+        "stopTimestamp": "Detener marca de tiempo",
+        "charging": "Cargando",
+        "stopReason": "Motivo de parada",
+        "charger": "Cargador"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -378,5 +412,5 @@
         "modified": "Última Modificación",
         "parentIdTagId": "Padre Identificación",
         "expired": "Caducado"
-        }
+    }
 }

@@ -4,25 +4,25 @@
             <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status available"></p>
             </el-tooltip>
-            <p>{{count.available}}/{{count.total}} available</p>
+            <p>{{ count.available }}/{{ count.total }} {{ $t('general.available') }}</p>
         </div>
         <div class="connectors" v-if="count.inUse>0 && chargerStatus==='Connected'">
             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status inUse"></p>
             </el-tooltip>
-            <p>{{count.inUse}}/{{count.total}} in use</p>
+            <p>{{ count.inUse }}/{{ count.total }} {{ $t('general.inUse') }}</p>
         </div>
         <div class="connectors" v-if="count.unavailable>0 && chargerStatus==='Connected'">
             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status unavailable"></p>
             </el-tooltip>
-            <p>{{count.unavailable}}/{{count.total}} unavailable</p>
+            <p>{{ count.unavailable }}/{{ count.total }} {{ $t('general.unavailable') }}</p>
         </div>
         <div class="connectors" v-if="chargerStatus!=='Connected'">
             <el-tooltip :content="$t('general.unknown')" placement="bottom" effect="light" popper-class="custom">
                 <p class="circle-status unknown"></p>
             </el-tooltip>
-            <p> unknown</p>
+            <p> {{ $t('general.unknown') }}</p>
         </div>
     </div>
 </template>

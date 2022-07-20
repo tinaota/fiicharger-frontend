@@ -1268,3 +1268,12 @@ input[type="number"] {
 .el-dialog__body {
     word-break: normal !important;
 }
+
+.actions li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    .actionFunction {
+        min-width: 85px;
+    }
+}

@@ -41,7 +41,8 @@
         "energyPhm": "năng lượng",
         "contact": "tiếp xúc",
         "price": "Giá",
-        "idTag": "Nhãn ID"
+        "idTag": "Nhãn ID",
+        "transaction": "Giao dịch"
     },
     "login": {
         "login": "Đăng nhập",
@@ -88,8 +89,8 @@
         "endTime": "Thời gian kết thúc",
         "time": "Thời gian",
         "searchChargePoint": "Tìm kiếm điểm sạc",
-        "connected":"Đã kết nối",
-        "disconnected":"Đã ngắt kết nối",
+        "connected": "Đã kết nối",
+        "disconnected": "Đã ngắt kết nối",
         "available": "Có sẵn",
         "unavailable": "Không có",
         "maintenance": "Bảo trì",
@@ -143,7 +144,15 @@
         "changeRoles": "Thay đổi vai trò thành:",
         "deleteThis": "Bạn có chắc chắn muốn xóa cái này không",
         "updateThis": "Bạn có chắc chắn muốn cập nhật cái này không",
-        "user": "Người dùng"
+        "user": "Người dùng",
+        "run": "Chạy",
+        "start": "Bắt đầu",
+        "add": "cộng",
+        "clear": "Xa lạ",
+        "reset": "Cài lại",
+        "last": "Cuối",
+        "stop": "Dừng lại",
+        "unlock": "Mở khóa"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -257,7 +266,32 @@
         "csMaxPower": "Công suất cực đại của cọc sạc",
         "intervalTime": "Khoảng thời gian",
         "loadBalance": "Cân bằng tải",
-        "serial": "Sê-ri"
+        "serial": "Sê-ri",
+        "connectors": "Kết nối",
+        "powerConsumption": "Sự tiêu thụ năng lượng",
+        "totalRevenue": "Tổng doanh thu",
+        "totalSessions": "Tổng số phiên",
+        "nChargers": "Số lượng bộ sạc",
+        "nConnectors": "Số lượng kết nối",
+        "updateChargers": "Cập nhật bộ sạc",
+        "diagnostics": "Chẩn đoán",
+        "updates": "Cập nhật",
+        "clearCache": "Xóa bộ nhớ cache",
+        "hardReset": "Hard Reset",
+        "softReset": "Đặt lại mềm",
+        "chargerProfile": "Cấu hình bộ sạc",
+        "chargerId": "ID bộ sạc",
+        "lastHeartbeat": "Nhịp tim cuối cùng",
+        "maxOutput": "Đầu ra tối đa",
+        "startIdTag": "Bắt đầu thẻ ID",
+        "meterStart": "Bắt đầu đồng hồ",
+        "meterStop": "Đồng hồ dừng",
+        "meterTotal": "Tổng số mét",
+        "startTimestamp": "Dấu thời gian bắt đầu",
+        "stopTimestamp": "Dấu thời gian dừng",
+        "charging": "Sạc",
+        "stopReason": "Lý do dừng lại",
+        "charger": "Bộ sạc"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -377,5 +411,5 @@
         "modified": "Sửa đổi mới nhất",
         "parentIdTagId": "ID cha mẹ",
         "expired": "Hết hạn"
-        }
+    }
 }

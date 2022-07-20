@@ -1,29 +1,29 @@
 <template>
     <div>
         <div class="filter">
-            <el-select class="select-small" v-model="filter.stopReason" placeholder="Stop Reason" v-loading="allTransactionsReasonList.isLoading" @change="getAllTransactions('filter')" clearable>
+            <el-select class="select-small" v-model="filter.stopReason" :placeholder="$t('chargingStation.stopReason')" v-loading="allTransactionsReasonList.isLoading" @change="getAllTransactions('filter')" clearable>
                 <el-option v-for="item in allTransactionsReasonList.data" :label="item" :key="item" :value="item"></el-option>
             </el-select>
         </div>
         <el-table :data="allTransactions" v-loading="isLoading">
-            <el-table-column prop="chargePointId" label="Charge Point Id" :min-width="2"></el-table-column>
-            <el-table-column prop="connectorId" label="Connector Id" :min-width="2"></el-table-column>
-            <el-table-column prop="startIdTag" label="Start Id Tag" :min-width="2"></el-table-column>
-            <el-table-column prop="meterStart" label="Meter Start" :min-width="2"></el-table-column>
+            <el-table-column prop="chargePointId" :label="$t('chargingStation.chargePointID')" :min-width="2"></el-table-column>
+            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
+            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
+            <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')" :min-width="2"></el-table-column>
             <!-- <el-table-column prop="reservationId" label="Reservation Id" :min-width="2"></el-table-column> -->
-            <el-table-column label="Start Time Stamp" :min-width="2">
+            <el-table-column :label="$t('chargingStation.startTimestamp')" :min-width="2">
                 <template slot-scope="scope">
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="meterStop" label="Meter Stop" :min-width="2"></el-table-column>
-            <el-table-column label="Stop Time Stamp" :min-width="2">
+            <el-table-column prop="meterStop" :label="$t('chargingStation.meterStop')" :min-width="2"></el-table-column>
+            <el-table-column :label="$t('chargingStation.stopTimestamp')" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopReason" label="Stop Reason" :min-width="2"></el-table-column>
-            <el-table-column prop="meterTotal" label="Meter Total" :min-width="2"></el-table-column>
+            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2"></el-table-column>
+            <el-table-column prop="meterTotal" :label="$t('chargingStation.meterTotal')" :min-width="2"></el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">

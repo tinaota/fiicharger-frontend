@@ -41,7 +41,8 @@
         "energyPhm": "能耗 & PHM",
         "contact": "联系方式",
         "price": "价格",
-        "idTag": "ID 标签"
+        "idTag": "ID 标签",
+        "transaction": "交易"
     },
     "login": {
         "login": "登入",
@@ -88,8 +89,8 @@
         "endTime": "结束时间",
         "time": "时间",
         "searchChargePoint": "搜索充电桩",
-        "connected":"在线",
-        "disconnected":"离线",
+        "connected": "在线",
+        "disconnected": "离线",
         "available": "可用",
         "unavailable": "不可用",
         "maintenance": "维护",
@@ -143,7 +144,15 @@
         "changeRoles": "将角色更改为：",
         "deleteThis": "你确定要删除这个吗",
         "updateThis": "你确定要更新这个吗",
-        "user": "用户"
+        "user": "用户",
+        "run": "跑",
+        "start": "开始",
+        "add": "添加",
+        "clear": "清除",
+        "reset": "重置",
+        "last": "最后的",
+        "stop": "停止",
+        "unlock": "开锁"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -257,7 +266,32 @@
         "csMaxPower": "充电桩最大功率",
         "intervalTime": "间隔时间",
         "loadBalance": "负载平衡",
-        "serial": "系列"
+        "serial": "系列",
+        "connectors": "连接器",
+        "powerConsumption": "能量消耗",
+        "totalRevenue": "总收入",
+        "totalSessions": "总会话数",
+        "nChargers": "充电器数量",
+        "nConnectors": "连接器数量",
+        "updateChargers": "更新充电器",
+        "diagnostics": "诊断",
+        "updates": "更新",
+        "clearCache": "清除缓存",
+        "hardReset": "硬重置",
+        "softReset": "软复位",
+        "chargerProfile": "充电器简介",
+        "chargerId": "充电器 ID",
+        "lastHeartbeat": "最后的心跳",
+        "maxOutput": "最大输出",
+        "startIdTag": "开始 ID 标签",
+        "meterStart": "仪表启动",
+        "meterStop": "仪表停止",
+        "meterTotal": "仪表总数",
+        "startTimestamp": "开始时间戳",
+        "stopTimestamp": "停止时间戳",
+        "charging": "收费",
+        "stopReason": "停止原因",
+        "charger": "充电器"
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -377,5 +411,5 @@
         "modified": "最新修改",
         "parentIdTagId": "父标签 ID",
         "expired": "已到期"
-}
+    }
 }

@@ -40,31 +40,31 @@
                 <ul class="rank">
                     <li>
                         <div class="label">
-                            <span class="name">Power Consumption</span>
+                            <span class="name">{{ $t('chargingStation.powerConsumption') }}</span>
                             <span class="num">774Kwh</span>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Total Revenue</span>
+                            <span class="name">{{ $t('chargingStation.totalRevenue') }}</span>
                             <span class="num">$654.37</span>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Total Sessions</span>
+                            <span class="name">{{ $t('chargingStation.totalSessions') }}</span>
                             <span class="num">14</span>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Number of Chargers</span>
+                            <span class="name">{{ $t('chargingStation.nChargers') }}</span>
                             <span class="num">3</span>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Number of Connectors</span>
+                            <span class="name">{{ $t('chargingStation.nConnectors') }}</span>
                             <span class="num">6</span>
                         </div>
                     </li>
@@ -77,33 +77,33 @@
                 <ul class="rank">
                     <li>
                         <div class="label">
-                            <span class="name">Update Chargers</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'run')">Run</el-button>
+                            <span class="name">{{ $t('chargingStation.updateChargers') }}</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'run')">{{ $t('general.run') }}</el-button>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Get Diagnostics</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'start')">Start</el-button>
+                            <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Add Charger Profile</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'add')">Add</el-button>
+                            <span class="name">{{ $t('general.add') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'add')">{{ $t('general.add') }}</el-button>
                         </div>
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">Clear Charger Profile</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">Clear</el-button>
+                            <span class="name">{{ $t('general.clear') }} {{ $t('chargingStation.chargerProfile') }}</span>
+                            <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">{{ $t('general.clear') }}</el-button>
                         </div>
                     </li>
                 </ul>
             </div>
             <div class="card-8 rank-area">
                 <div class="header">
-                    <div class="title">Connectors</div>
+                    <div class="title">{{ $t('chargingStation.connectors') }}</div>
                     <div class="title-value">3</div>
 
                 </div>
@@ -144,16 +144,16 @@
             </div>
 
             <div class="card-8 table-result">
-                <div class="header">Chargers</div>
+                <div class="header">{{ $t('menu.chargePoint') }}</div>
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
-                    <el-table-column label="Charger Id" :min-width="3">
+                    <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.id }}</el-link>
                         </template>
                     </el-table-column>
 
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column label="Power Consumption" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.powerConsumption')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.powerKw + "kW" }}
                         </template>
@@ -168,12 +168,12 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column label="Connectors" :min-width="2">
+                    <el-table-column :label="$t('menu.chargePoint')" :min-width="2">
                         <template slot-scope="scope">
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column label="Last Heartbeat" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.lastHeartbeat')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                         </template>
@@ -189,57 +189,58 @@
                                 <el-dropdown-menu slot="dropdown" class="actions">
                                     <el-dropdown-item>
                                         <span>
-                                            Charger Profile
+                                            {{ $t('chargingStation.chargerProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">Add</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Charger Profile
+                                            {{ $t('chargingStation.chargerProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">Clear</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Diagnostics
+                                            {{ $t('chargingStation.diagnostics') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">Start</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">{{ $t('general.start') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Updates
+                                            {{ $t('chargingStation.updates') }}
+
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">Run</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Clear Cache
+                                            {{ $t('chargingStation.clearCache') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">Clear</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Hard Reset
+                                            {{ $t('chargingStation.hardReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">Reset</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Soft Reset
+                                            {{ $t('chargingStation.softReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">Reset</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Edit Charger
+                                            {{ $t('general.modify') }} {{ $t('chargingStation.charger') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">Edit</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            Remove Charger
+                                            {{ $t('general.delete') }} {{ $t('chargingStation.charger') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">Delete</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -607,7 +608,7 @@ export default {
                     color: #525e69;
                 }
                 .actionFunction {
-                    min-width: 65px;
+                    min-width: 85px;
                 }
             }
             .connectors {
@@ -641,13 +642,5 @@ export default {
 .el-link:hover {
     text-decoration: none;
     color: #0056ff;
-}
-.actions li {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    .actionFunction {
-        min-width: 65px;
-    }
 }
 </style>
