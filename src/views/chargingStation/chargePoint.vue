@@ -25,10 +25,6 @@
                         <el-option label="AC" value="AC"></el-option>
                         <el-option label="DC" value="DC"></el-option>
                     </el-select>
-
-                    <!-- <el-input :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="fetchData('s')" clearable>
-                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-                    </el-input> -->
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
@@ -229,7 +225,6 @@ export default {
                 operatorTypeId: "",
                 currentType: null,
                 chargeBoxStatus: null,
-                stationId: null,
                 name: null
             },
             isLoading: false,
@@ -304,9 +299,6 @@ export default {
             this.filter.chargeBoxStatus =
                 this.$router.currentRoute.params.chargeBoxStatus;
         }
-        if (this.$router.currentRoute.params.stationId) {
-            this.filter.stationId = this.$router.currentRoute.params.stationId;
-        }
         setScrollBar(".scroll", this);
         this.fetchData();
         this.fetchLocationList();
@@ -370,10 +362,6 @@ export default {
 
             if (this.filter.currentType && this.filter.currentType !== "all") {
                 param.CurrentType = this.filter.currentType;
-            }
-
-            if (this.filter.stationId) {
-                param.StationId = this.filter.stationId;
             }
 
             if (this.filter.name) {

@@ -159,7 +159,7 @@
                             <el-table-column :label="$t('general.type')" :min-width="7">
                                 <template slot-scope="scope">
                                     {{ scope.row.type }}
-                                    <i class="fa fa-exchange" aria-hidden="true" @click="openConnectorTypeModal(scope.row)"></i>
+                                    <i class="fa fa-pencil" aria-hidden="true" @click="openConnectorTypeModal(scope.row)"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column>
@@ -533,10 +533,10 @@ export default {
     font-weight: 600;
 }
 
-.fa-exchange {
+.fa-pencil {
     float: right;
 }
-.fa-exchange:hover {
+.fa-pencil:hover {
     cursor: pointer;
 }
 </style>
