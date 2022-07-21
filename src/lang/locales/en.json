@@ -269,7 +269,7 @@
         "loadBalance": "Load Balance",
         "serial": "Serial",
         "connectors": "Connectors",
-        "powerConsumption": "Power Consumption",
+        "powerConsumption": "Energy Consumption",
         "totalRevenue": "Total Revenue",
         "totalTransaction": "Total Transactions",
         "nChargers": "Number of Chargers",
@@ -302,7 +302,8 @@
         "addChargingProfile": "Add Charging Profile",
         "clearChargingProfile": "Clear Charging Profile",
         "lastStatus": "Status(last)",
-        "changeConnector": "Choose a connector to replace with:"
+        "changeConnector": "Choose a connector to replace with:",
+        "lastThirtyDays": "Last 30 days"
     },
     "userAccount": {
         "memberName": "Member Name",

@@ -35,7 +35,7 @@
 
             <div class="card-8 rank-area">
                 <div class="header">
-                    <div class="title">{{ $t('menu.summary') }}</div>
+                    <div class="title">{{ $t('menu.summary') }} ({{ $t('chargingStation.lastThirtyDays') }})</div>
                 </div>
                 <ul class="rank">
                     <li>

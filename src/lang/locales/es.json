@@ -303,7 +303,8 @@
         "addChargingProfile": "Agregar perfil de carga",
         "clearChargingProfile": "Borrar perfil de carga",
         "lastStatus": "Estado (último)",
-        "changeConnector": "Elija un conector para reemplazar con:"
+        "changeConnector": "Elija un conector para reemplazar con:",
+        "lastThirtyDays": "últimos 30 días"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

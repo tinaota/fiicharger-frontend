@@ -302,7 +302,8 @@
         "addChargingProfile": "新增充電配置",
         "clearChargingProfile": "清除充電配置",
         "lastStatus": "狀態 （上一次）",
-        "changeConnector": "選擇一個連接器來替換："
+        "changeConnector": "選擇一個連接器來替換：",
+        "lastThirtyDays": "過去 30 天"
     },
     "userAccount": {
         "memberName": "會員名稱",
