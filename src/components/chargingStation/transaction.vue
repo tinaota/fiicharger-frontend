@@ -9,21 +9,33 @@
             <el-table-column prop="chargePointId" :label="$t('chargingStation.chargerId')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
             <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
-            <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')" :min-width="2"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" :min-width="2">
+                <template slot-scope="scope">
+                    {{ scope.row.meterStart.toFixed(2) }}
+                </template>
+            </el-table-column>
             <!-- <el-table-column prop="reservationId" label="Reservation Id" :min-width="2"></el-table-column> -->
             <el-table-column :label="$t('chargingStation.startTimestamp')" :min-width="2">
                 <template slot-scope="scope">
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="meterStop" :label="$t('chargingStation.meterStop')" :min-width="2"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" :min-width="2">
+                <template slot-scope="scope">
+                    {{ scope.row.meterStop.toFixed(2) }}
+                </template>
+            </el-table-column>
             <el-table-column :label="$t('chargingStation.stopTimestamp')" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
             </el-table-column>
             <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2"></el-table-column>
-            <el-table-column prop="meterTotal" :label="$t('chargingStation.meterTotal')" :min-width="2"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" :min-width="2">
+                <template slot-scope="scope">
+                    {{ scope.row.meterTotal.toFixed(2) }}
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
@@ -33,33 +45,36 @@
 
     <script>
 import { transformUtcToLocTime } from "@/utils/function";
-import { $HTTP_getAllTransactionsReasonList, $HTTP_getAllTransactions } from "@/api/api";
+import {
+    $HTTP_getAllTransactionsReasonList,
+    $HTTP_getAllTransactions
+} from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 
 export default {
     props: {
-        chargerId: String,
+        chargerId: String
     },
     data() {
         return {
             allTransactions: [],
             filter: {
-                stopReason: "",
+                stopReason: ""
             },
             isLoading: false,
             allTransactionsReasonList: {
                 data: [],
-                isLoading: false,
+                isLoading: false
             },
-            total:0,
+            total: 0,
             limit: $GLOBAL_PAGE_LIMIT,
-            page:1
+            page: 1
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
-        },
+        }
     },
     mounted() {
         this.getAllTransactions();
@@ -70,7 +85,7 @@ export default {
             this.isLoading = true;
             let params = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
             if (this.filter.stopReason) {
                 params.StopReason = this.filter.stopReason;
@@ -78,9 +93,9 @@ export default {
             if (this.chargerId) {
                 params.ChargePointId = this.chargerId;
             }
-            if(type==="filter"){
-                this.page=1;
-                params.page=1;
+            if (type === "filter") {
+                this.page = 1;
+                params.page = 1;
             }
             $HTTP_getAllTransactions(params)
                 .then((res) => {
@@ -91,14 +106,20 @@ export default {
                     } else {
                         this.allTransactions = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("emptyMessage")
+                        });
                     }
                 })
                 .catch((err) => {
-                    this.allTransactions=[]
-                    this.total=0
+                    this.allTransactions = [];
+                    this.total = 0;
                     console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         getTransactionsReasonList() {
@@ -115,8 +136,8 @@ export default {
         changePage(page) {
             this.page = page;
             this.getAllTransactions();
-        },
-    },
+        }
+    }
 };
 </script>
 
