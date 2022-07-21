@@ -600,4 +600,13 @@ export default {
     color: #409eff;
     font-weight: 600;
 }
+
+.actionFunction{
+    margin-left:10px;
+}
+.actions{
+ padding:10px 0px;
+ margin:0px;  
+}
+
 </style>

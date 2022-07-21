@@ -1013,4 +1013,9 @@ ul {
     color: #409eff;
     font-weight: 600;
 }
+
+.actions{
+ padding:10px 0px;
+ margin:0px;  
+}
 </style>

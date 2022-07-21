@@ -78,7 +78,7 @@
                     <li>
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
+                            <el-button type="primary" class="actionFunction " @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
                         </div>
                     </li>
                     <li>
@@ -667,6 +667,13 @@ export default {
             }
         }
     }
+}
+.actionFunction{
+    margin-left:10px;
+}
+.actions{
+ padding:10px 0px;
+ margin:0px;  
 }
 
 @media (min-width: 1251px) {
