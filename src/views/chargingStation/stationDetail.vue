@@ -58,8 +58,14 @@
                     </li>
                     <li>
                         <div class="label">
-                            <span class="name">{{ $t('chargingStation.nChargers') }}</span>
-                            <span class="num">3</span>
+                            <span class="name">{{ $t('chargingStation.nChargers') }}(AC)</span>
+                            <span class="num">{{ chargerCount.acCount }}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="label">
+                            <span class="name">{{ $t('chargingStation.nChargers') }}(DC)</span>
+                            <span class="num">{{ chargerCount.dcCount }}</span>
                         </div>
                     </li>
                 </ul>
@@ -289,6 +295,10 @@ export default {
                 countryCode: "",
                 phone: ""
             },
+            chargerCount: {
+                acCount: null,
+                dcCount: null
+            },
             mapDialog: {
                 visible: false,
                 itemId: "",
@@ -471,6 +481,10 @@ export default {
                             serviceStartTime: "5am",
                             serviceEndTime: "5pm",
                             phone: "None"
+                        };
+                        this.chargerCount = {
+                            acCount: data.acCount,
+                            dcCount: data.dcCount
                         };
                     } else {
                         this.$message({
