@@ -155,7 +155,11 @@
         "unlock": "Mở khóa",
         "enabled": "Đã bật",
         "disabled": "Vô hiệu hóa",
-        "offline": "Ngoại tuyến"
+        "offline": "Ngoại tuyến",
+        "settings": "Cài đặt",
+        "accessibility": "Khả năng tiếp cận",
+        "description": "Sự mô tả",
+        "value": "Giá trị"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

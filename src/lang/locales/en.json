@@ -155,7 +155,11 @@
         "unlock": "Unlock",
         "enabled": "Enabled",
         "disabled": "Disabled",
-        "offline": "Offline"
+        "offline": "Offline",
+        "settings": "Settings",
+        "accessibility": "Accessibility",
+        "description": "Description",
+        "value": "Value"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

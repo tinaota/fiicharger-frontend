@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="card-8 rank-area secondCol">
-                        <!-- <el-button size="medium" type="primary"> Settings</el-button> -->
+                        <el-button size="medium" type="primary" @click="openDialog(chargePointById[0].id, 'configuration')"> {{ $t('general.settings') }}</el-button>
                         <div class="header">
                             <div class="title">{{ $t('general.action') }}</div>
                         </div>
@@ -118,7 +118,7 @@
 
                         </ul>
                     </div>
-                    <div class="card-8 rank-area thirdCol">
+                    <div class="card-8 rank-area thirdCol table-result">
                         <div class="header">
                             <div class="title">{{ $t('chargingStation.connectors') }}</div>
                         </div>
@@ -159,7 +159,7 @@
                             <el-table-column :label="$t('general.type')" :min-width="7">
                                 <template slot-scope="scope">
                                     {{ scope.row.type }}
-                                    <i class="fa fa-pencil" aria-hidden="true" @click="openConnectorTypeModal(scope.row)"></i>
+                                    <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
                                 </template>
                             </el-table-column>
                             <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column>
@@ -214,7 +214,8 @@
                     </el-tabs>
                     <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
                 </div>
-                <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog()" />
+                <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
+                <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
             </div>
         </div>
     </div>
@@ -233,6 +234,7 @@ import {
     $HTTP_getAllChargeBoxList
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
+import Configuration from "@/views/setting/configuration";
 // import moment from "moment";
 // import { $GLOBAL_GRAFANA } from "@/utils/global";
 // const baseGrafanaUrl = $GLOBAL_GRAFANA;
@@ -242,7 +244,8 @@ export default {
     components: {
         Connector,
         Transaction,
-        UpdateConnectorType
+        UpdateConnectorType,
+        Configuration
     },
     data() {
         return {
@@ -253,6 +256,10 @@ export default {
                 connectorId: null,
                 chargePointId: null,
                 connectorType: null
+            },
+            configuration: {
+                show: false,
+                chargePointId: null
             },
             filter: {
                 dateRange: []
@@ -400,14 +407,25 @@ export default {
         //     let isDark = this.$store.state.darkTheme;
         //     this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
         // },
-        openConnectorTypeModal(row) {
-            this.changeConnectorType.show = true;
-            this.changeConnectorType.connectorId = row.id;
-            this.changeConnectorType.chargePointId = this.chargePointById[0].id;
-            this.changeConnectorType.connectorType = row.type;
+        openDialog(row, type) {
+            if (type === "connectorType") {
+                this.changeConnectorType.show = true;
+                this.changeConnectorType.connectorId = row.id;
+                this.changeConnectorType.chargePointId =
+                    this.chargePointById[0].id;
+                this.changeConnectorType.connectorType = row.type;
+            } else if (type === "configuration") {
+                console.log(row, type);
+                this.configuration.show = true;
+                this.configuration.chargePointId = this.chargePointById[0].id;
+            }
         },
-        closeDialog() {
-            this.changeConnectorType.show = false;
+        closeDialog(type) {
+            if (type === "connectorType") {
+                this.changeConnectorType.show = false;
+            } else if (type === "configuration") {
+                this.configuration.show = false;
+            }
             this.getChargePointsById(this.chargePointById[0].id);
         }
     }

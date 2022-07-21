@@ -155,7 +155,11 @@
         "unlock": "解鎖",
         "enabled": "啟用",
         "disabled": "停用",
-        "offline": "離線"
+        "offline": "離線",
+        "settings": "設置",
+        "accessibility": "可訪問性",
+        "description": "描述",
+        "value": "價值"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="table-result">
         <div class="filter">
             <el-select class="select-small" v-model="filter.stopReason" :placeholder="$t('chargingStation.stopReason')" v-loading="allTransactionsReasonList.isLoading" @change="getAllTransactions('filter')" clearable>
                 <el-option v-for="item in allTransactionsReasonList.data" :label="item" :key="item" :value="item"></el-option>

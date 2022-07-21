@@ -22,10 +22,15 @@ export const $HTTP_getRoles = params => {
 export const $HTTP_updateImage = params => {
     return putWithConfig(`${base_auth}/api/Users/${params.id}/picture`, params.formData, params.config)
 }
-
-//OCCP availability
+//OCPP
+//OCPP availability
 export const $HTTP_updateOccpAvailability = (params) => {
     return post(`${base_charger}/api/ocpp/charge-points/${params.chargeBoxId}/change-availability`, params)
+}
+
+//get configurations of each chargepoint
+export const $HTTP_getConfiguration = (params) => {
+    return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`,params)
 }
 
 // transactions
