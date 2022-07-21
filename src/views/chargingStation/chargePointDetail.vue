@@ -423,6 +423,7 @@ export default {
     }
     .charge-point-info {
         display: flex;
+        flex-wrap: wrap;
         .item {
             margin-bottom: 12px;
             .label {
@@ -538,5 +539,17 @@ export default {
 }
 .fa-pencil:hover {
     cursor: pointer;
+}
+@media screen and (max-width: 1500px) {
+    .firstCol {
+        flex: 60%;
+    }
+    .secondCol {
+        flex: 30%;
+    }
+    .thirdCol {
+        flex: 75%;
+        padding: 28px 0px;
+    }
 }
 </style>
