@@ -271,7 +271,7 @@
         "connectors": "Connectors",
         "powerConsumption": "Power Consumption",
         "totalRevenue": "Total Revenue",
-        "totalSessions": "Total Sessions",
+        "totalTransaction": "Total Transactions",
         "nChargers": "Number of Chargers",
         "nConnectors": "Number of Connectors",
         "updateChargers": "Update Chargers",

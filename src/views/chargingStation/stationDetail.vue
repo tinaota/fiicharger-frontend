@@ -44,15 +44,15 @@
                             <span class="num">774Kwh</span>
                         </div>
                     </li>
-                    <li>
+                      <!-- <li>
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.totalRevenue') }}</span>
                             <span class="num">$654.37</span>
                         </div>
-                    </li>
+                    </li>  -->
                     <li>
                         <div class="label">
-                            <span class="name">{{ $t('chargingStation.totalSessions') }}</span>
+                            <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
                             <span class="num">14</span>
                         </div>
                     </li>
@@ -60,12 +60,6 @@
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.nChargers') }}</span>
                             <span class="num">3</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.nConnectors') }}</span>
-                            <span class="num">6</span>
                         </div>
                     </li>
                 </ul>

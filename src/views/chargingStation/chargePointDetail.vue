@@ -178,7 +178,7 @@
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
-                                                    <i class="fa fa-stop" aria-hidden="true" style="color:red"></i>
+                                                    <i class="fa fa-stop" aria-hidden="true" style="color:#fc2e56"></i>
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'stopConnector')">{{ $t('general.stop') }}</span>
                                             </el-dropdown-item>
@@ -190,13 +190,13 @@
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
-                                                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                    <i class="fa fa-toggle-on" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'enableConnector')">{{ $t('general.enable') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
-                                                    <i class="fa fa-circle-o" aria-hidden="true"></i>
+                                                    <i class="fa fa-toggle-off" aria-hidden="true" style="color:#fc2e56"></i>
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">{{ $t('general.disable') }}</span>
                                             </el-dropdown-item>

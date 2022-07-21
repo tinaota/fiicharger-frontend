@@ -271,7 +271,7 @@
         "connectors": "充電槍",
         "powerConsumption": "能量消耗",
         "totalRevenue": "總收入",
-        "totalSessions": "總次數",
+        "totalTransaction": "交易總額",
         "nChargers": "充電樁數量",
         "nConnectors": "充電槍數量",
         "updateChargers": "更新充電器",

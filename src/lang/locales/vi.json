@@ -271,7 +271,7 @@
         "connectors": "Kết nối",
         "powerConsumption": "Sự tiêu thụ năng lượng",
         "totalRevenue": "Tổng doanh thu",
-        "totalSessions": "Tổng số phiên",
+        "totalTransaction": "Tổng số giao dịch",
         "nChargers": "Số lượng bộ sạc",
         "nConnectors": "Số lượng kết nối",
         "updateChargers": "Cập nhật bộ sạc",

@@ -271,7 +271,7 @@
         "connectors": "充电枪",
         "powerConsumption": "电量消耗",
         "totalRevenue": "总收入",
-        "totalSessions": "总充电次数",
+        "totalTransaction": "交易总额",
         "nChargers": "充电桩数量",
         "nConnectors": "充电枪数量",
         "updateChargers": "更新充电桩",
