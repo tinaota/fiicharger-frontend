@@ -156,8 +156,13 @@
                                     <span style="margin-left:5px">{{ scope.row.status }}</span>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="type" :label="$t('general.type')" :min-width="4"></el-table-column>
-                            <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="3"></el-table-column>
+                            <el-table-column :label="$t('general.type')" :min-width="7">
+                                <template slot-scope="scope">
+                                    {{ scope.row.type }}
+                                    <i class="fa fa-exchange" aria-hidden="true" @click="openConnectorTypeModal(scope.row)"></i>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column>
                             <el-table-column :label="$t('chargingStation.charging')" :width="146">
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
@@ -209,6 +214,7 @@
                     </el-tabs>
                     <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
                 </div>
+                <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog()" />
             </div>
         </div>
     </div>
@@ -226,6 +232,7 @@ import {
     $HTTP_updateOccpAvailability,
     $HTTP_getAllChargeBoxList
 } from "@/api/api";
+import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 // import moment from "moment";
 // import { $GLOBAL_GRAFANA } from "@/utils/global";
 // const baseGrafanaUrl = $GLOBAL_GRAFANA;
@@ -234,12 +241,19 @@ import {
 export default {
     components: {
         Connector,
-        Transaction
+        Transaction,
+        UpdateConnectorType
     },
     data() {
         return {
             // costRevenueUrl: costRevenueUrl,
             isDark: this.$store.state.darkTheme,
+            changeConnectorType: {
+                show: false,
+                connectorId: null,
+                chargePointId: null,
+                connectorType: null
+            },
             filter: {
                 dateRange: []
             },
@@ -370,7 +384,7 @@ export default {
         },
         closeShowPosDialog() {
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        }
+        },
         // updateApi() {
         //     this.updateGrafanaUrl();
         // },
@@ -386,6 +400,16 @@ export default {
         //     let isDark = this.$store.state.darkTheme;
         //     this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
         // },
+        openConnectorTypeModal(row) {
+            this.changeConnectorType.show = true;
+            this.changeConnectorType.connectorId = row.id;
+            this.changeConnectorType.chargePointId = this.chargePointById[0].id;
+            this.changeConnectorType.connectorType = row.type;
+        },
+        closeDialog() {
+            this.changeConnectorType.show = false;
+            this.getChargePointsById(this.chargePointById[0].id);
+        }
     }
 };
 </script>
@@ -507,5 +531,12 @@ export default {
     background-color: transparent;
     border-color: transparent;
     font-weight: 600;
+}
+
+.fa-exchange {
+    float: right;
+}
+.fa-exchange:hover {
+    cursor: pointer;
 }
 </style>

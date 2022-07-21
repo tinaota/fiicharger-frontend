@@ -301,7 +301,8 @@
         "deleteStation": "Xóa trạm",
         "addChargingProfile": "Thêm cấu hình sạc",
         "clearChargingProfile": "Xóa hồ sơ sạc",
-        "lastStatus": "Trạng thái (cuối cùng)"
+        "lastStatus": "Trạng thái (cuối cùng)",
+        "changeConnector": "Chọn một đầu nối để thay thế bằng:"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

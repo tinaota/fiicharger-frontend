@@ -178,3 +178,12 @@ export const $HTTP_updateStatusStation = (params) => {
 export const $HTTP_removeBoundingToStation = (params) => {
     return del(`${base_charger}/api/charge-points/${params.chargePointId}/charge-station`)
 }
+//get connector type list
+export const $HTTP_getConnectorTypeList = () => {
+    return fetch(`${base_charger}/api/charge-points/connector-type-list`)
+}
+
+//update connector type
+export const $HTTP_updateConnectorType = (params) => {
+    return putWithConfig(`${base_charger}/api/charge-points/${params.chargePointId}/connectors/${params.connectorId}`, params.connectorType, params.config);
+}

@@ -301,7 +301,8 @@
         "deleteStation": "删除充电站",
         "addChargingProfile": "新增充电配置",
         "clearChargingProfile": "清除充电配置",
-        "lastStatus": "状态（上一次）"
+        "lastStatus": "状态（上一次）",
+        "changeConnector": "选择一个连接器来替换："
     },
     "userAccount": {
         "memberName": "会员名称",

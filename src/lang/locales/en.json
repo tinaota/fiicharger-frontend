@@ -297,11 +297,12 @@
         "modifyCharger": "Modify Charger",
         "deleteCharger": "Delete Charger",
         "bindCharger": "Bind Charger(s)",
-        "modifyStation":"Modify Station",
-        "deleteStation":"Delete Station",
+        "modifyStation": "Modify Station",
+        "deleteStation": "Delete Station",
         "addChargingProfile": "Add Charging Profile",
         "clearChargingProfile": "Clear Charging Profile",
-        "lastStatus": "Status(last)"
+        "lastStatus": "Status(last)",
+        "changeConnector": "Choose a connector to replace with:"
     },
     "userAccount": {
         "memberName": "Member Name",
