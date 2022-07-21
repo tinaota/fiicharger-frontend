@@ -187,3 +187,18 @@ export const $HTTP_getConnectorTypeList = () => {
 export const $HTTP_updateConnectorType = (params) => {
     return putWithConfig(`${base_charger}/api/charge-points/${params.chargePointId}/connectors/${params.connectorId}`, params.connectorType, params.config);
 }
+
+//get connector summary
+export const $HTTP_getConnectorSummary = (params) => {
+    return fetch(
+        `${base_charger}/api/reports/charge-stations/${params.chargeStationId}/connector-summary`,params
+    );
+}
+
+//get transaction summary
+export const $HTTP_getTransactionSummary = (params) => {
+    return fetch(
+        `${base_charger}/api/reports/charge-stations/${params.chargeStationId}/transaction-summary`,
+        params
+    );
+}

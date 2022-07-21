@@ -41,10 +41,10 @@
                     <li>
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.powerConsumption') }}</span>
-                            <span class="num">774Kwh</span>
+                            <span class="num">{{ transactionSummary.totalEnergyKwh }} KWH</span>
                         </div>
                     </li>
-                      <!-- <li>
+                    <!-- <li>
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.totalRevenue') }}</span>
                             <span class="num">$654.37</span>
@@ -53,7 +53,7 @@
                     <li>
                         <div class="label">
                             <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                            <span class="num">14</span>
+                            <span class="num">{{ transactionSummary.transactionCount }}</span>
                         </div>
                     </li>
                     <li>
@@ -98,8 +98,7 @@
             <div class="card-8 rank-area">
                 <div class="header">
                     <div class="title">{{ $t('chargingStation.connectors') }}</div>
-                    <div class="title-value">3</div>
-
+                    <div class="title-value">{{ getTotal(connectorSummary) }}</div>
                 </div>
                 <ul class="rank">
                     <li>
@@ -107,7 +106,7 @@
                             <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <span class="name">2 {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
+                            <span class="name">{{ connectorSummary.available }} {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -115,7 +114,7 @@
                             <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color8"></span>
                             </el-tooltip>
-                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
+                            <span class="name">{{ connectorSummary.inUse }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -123,7 +122,7 @@
                             <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color4"></span>
                             </el-tooltip>
-                            <span class="name">0 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
+                            <span class="name">{{ connectorSummary.unavailable }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
                         </div>
                     </li>
                     <li>
@@ -131,7 +130,7 @@
                             <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color10"></span>
                             </el-tooltip>
-                            <span class="name">1 {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
+                            <span class="name">{{ connectorSummary.offline }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
                         </div>
                     </li>
                 </ul>
@@ -252,7 +251,9 @@
 import {
     $HTTP_getStationInfo,
     $HTTP_getAllChargeBoxList,
-    $HTTP_deleteChargeBox
+    $HTTP_deleteChargeBox,
+    $HTTP_getConnectorSummary,
+    $HTTP_getTransactionSummary
 } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
@@ -325,12 +326,24 @@ export default {
                     power: 0
                 },
                 isVisible: false
-            }
+            },
+            connectorSummary: [],
+            transactionSummary: []
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        getTotal() {
+            // add sum of values of object
+            return (item) => {
+                const values = Object.values(item);
+                const sum = values.reduce((accumulator, value) => {
+                    return accumulator + value;
+                }, 0);
+                return sum;
+            };
         }
     },
     created() {
@@ -354,11 +367,49 @@ export default {
             params.stationId = this.curRouteParam.stationId;
         }
         this.getChargersList(params);
+        this.getConnectorsSummary(this.curRouteParam.stationId);
+        this.getTransactionSummary(this.curRouteParam.stationId);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods: {
+        getConnectorsSummary(id) {
+            let params = {};
+            params.chargeStationId = id;
+            $HTTP_getConnectorSummary(params)
+                .then((res) => {
+                    if (res) {
+                        this.connectorSummary = res;
+                    }
+                })
+                .catch((err) => {
+                    this.connectorSummary = [];
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
+        getTransactionSummary(id) {
+            let params = {};
+            params.chargeStationId = id;
+            $HTTP_getTransactionSummary(params)
+                .then((res) => {
+                    if (res) {
+                        this.transactionSummary = res;
+                    }
+                })
+                .catch((err) => {
+                    this.transactionSummary = [];
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
         closeDialog(e, dialog) {
             console.log(e, dialog);
             this.dialog.isVisible = false;
