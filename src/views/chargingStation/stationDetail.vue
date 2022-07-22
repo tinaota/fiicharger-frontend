@@ -386,7 +386,7 @@ export default {
     methods: {
         getConnectorsSummary(id) {
             let params = {};
-            params.chargeStationId = id;
+            params.StationId = id;
             $HTTP_getConnectorSummary(params)
                 .then((res) => {
                     if (res) {
@@ -404,7 +404,7 @@ export default {
         },
         getTransactionSummary(id) {
             let params = {};
-            params.chargeStationId = id;
+            params.StationId = id;
             $HTTP_getTransactionSummary(params)
                 .then((res) => {
                     if (res) {
@@ -687,7 +687,7 @@ export default {
 }
 .actions{
  padding:10px 0px;
- margin:0px;  
+ margin:0px;
 }
 
 @media (min-width: 1251px) {

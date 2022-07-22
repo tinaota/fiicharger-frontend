@@ -1,6 +1,8 @@
 <template>
     <div class="inputComponent">
-        <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize type="textarea">
+        <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize type="textarea" v-if="rowData.type==='CSL'">
+        </el-input>
+         <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize type="textarea" v-else resize="none">
         </el-input>
         <i :class="{'hide':(rowData.isReadOnly),'fa fa-floppy-o':(!rowData.isReadOnly)}" aria-hidden="true" @click="updateInputValue"></i>
     </div>

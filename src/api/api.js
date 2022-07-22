@@ -209,14 +209,14 @@ export const $HTTP_updateConnectorType = (params) => {
 //get connector summary
 export const $HTTP_getConnectorSummary = (params) => {
     return fetch(
-        `${base_charger}/api/reports/charge-stations/${params.chargeStationId}/connector-summary`,params
+        `${base_charger}/api/reports/charge-points/connector-summary`,params
     );
 }
 
 //get transaction summary
 export const $HTTP_getTransactionSummary = (params) => {
     return fetch(
-        `${base_charger}/api/reports/charge-stations/${params.chargeStationId}/transaction-summary`,
+        `${base_charger}/api/reports/charge-points/transaction-summary`,
         params
     );
 }
