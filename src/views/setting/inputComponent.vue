@@ -1,8 +1,8 @@
 <template>
     <div class="inputComponent">
-        <el-input :placeholder="$t('general.value')" v-model="value" @change="updateValue">
+        <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue">
         </el-input>
-        <i class="fa fa-floppy-o" aria-hidden="true" @click="updateInputValue"></i>
+        <i :class="{'hide':(rowData.isReadOnly),'fa fa-floppy-o':(!rowData.isReadOnly)}" aria-hidden="true" @click="updateInputValue"></i>
     </div>
 </template>
 
