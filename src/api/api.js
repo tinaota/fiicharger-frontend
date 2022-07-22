@@ -4,7 +4,11 @@ import qs from 'qs'
 const base_auth = $GLOBAL_AUTH
 const base_vehicle = $GLOBAL_VEHICLE
 const base_charger = $GLOBAL_CHARGER
-
+let configForAppJson = {
+    headers: {
+        "Content-Type": "application/json"
+    }
+};
 //login with authorization code
 export const $HTTP_login_auth = params => {
     return post(`${base_auth}/auth/token`, params);
@@ -31,6 +35,15 @@ export const $HTTP_updateOccpAvailability = (params) => {
 //get configurations of each chargepoint
 export const $HTTP_getConfiguration = (params) => {
     return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`,params)
+}
+
+//update configurations of each chargepoint
+export const $HTTP_updateConfiguration = (params) => {
+    return putWithConfig(
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration/${params.key}`,
+        JSON.stringify(params.value),
+        configForAppJson
+    );
 }
 
 // transactions

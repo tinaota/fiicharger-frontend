@@ -16,11 +16,11 @@
                     <el-table-column :label="$t('general.value')" :min-width="2">
                         <template slot-scope="scope">
                             <div v-if="scope.row.type==='boolean'">
-                                <el-switch v-model="scope.row.value" active-color="#13ce66" inactive-color="#ff4949">
-                                </el-switch>
+                                <SwitchComponent :rowData="scope.row" @switchClicked="updateConfiguration"></SwitchComponent>
                             </div>
+                            <!-- use input component for all the other types(integer, empty, CSL) -->
                             <div v-else>
-                                nth
+                                <InputComponent :rowData="scope.row" @saveInputClicked="updateConfiguration"></InputComponent>
                             </div>
                         </template>
                     </el-table-column>
@@ -33,9 +33,16 @@
 </template>
 
 <script>
-import { $HTTP_getConfiguration } from "@/api/api";
+import { $HTTP_getConfiguration, $HTTP_updateConfiguration } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import SwitchComponent from "@/views/setting/switchComponent";
+import InputComponent from "@/views/setting/inputComponent";
+
 export default {
+    components: {
+        SwitchComponent,
+        InputComponent
+    },
     props: {
         show: Boolean,
         chargePointId: String
@@ -79,7 +86,6 @@ export default {
                     .catch((err) => {
                         this.configurations = [];
                         this.isLoading = false;
-
                         console.log(err);
                         this.$message({
                             type: "warning",
@@ -87,6 +93,27 @@ export default {
                         });
                     });
             }
+        },
+        updateConfiguration(data) {
+            let params = { ...data };
+            params.chargePointId = this.chargePointId;
+            this.isLoading = true;
+            this.configurations = [];
+
+            $HTTP_updateConfiguration(params)
+                .then((res) => {
+                    if (res === "Accepted") {
+                        this.getConfiguration(this.chargePointId);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.isLoading = false;
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);

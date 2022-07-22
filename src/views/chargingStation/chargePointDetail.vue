@@ -415,7 +415,6 @@ export default {
                     this.chargePointById[0].id;
                 this.changeConnectorType.connectorType = row.type;
             } else if (type === "configuration") {
-                console.log(row, type);
                 this.configuration.show = true;
                 this.configuration.chargePointId = this.chargePointById[0].id;
             }
