@@ -1,5 +1,5 @@
 <template>
-    <el-switch v-model="defaultVal" @change="changeSwitch">
+    <el-switch v-model="defaultVal" :disabled="rowData.isReadOnly" @change="changeSwitch">
     </el-switch>
 </template>
 
