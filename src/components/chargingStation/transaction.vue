@@ -106,10 +106,13 @@ export default {
                     } else {
                         this.allTransactions = [];
                         this.total = 0;
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("emptyMessage")
-                        });
+                        // only show empty message if filter is present
+                        if (this.filter.stopReason !== "") {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("emptyMessage")
+                            });
+                        }
                     }
                 })
                 .catch((err) => {
