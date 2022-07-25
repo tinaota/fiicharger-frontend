@@ -215,7 +215,7 @@
                                         <span>
                                             {{ $t('chargingStation.clearCache') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">{{ $t('general.clear') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -249,6 +249,8 @@
             </div>
             <EditChargeBox name="chargeBox" :show="dialog.isVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
+            <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
+
         </div>
     </div>
 </template>
@@ -265,12 +267,14 @@ import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import Connector from "@/components/chargingStation/connector";
+import CommonPopup from "@/components/commonPopup";
 
 export default {
     components: {
         ShowPostion,
         EditChargeBox,
-        Connector
+        Connector,
+        CommonPopup
     },
     data() {
         return {
@@ -338,7 +342,12 @@ export default {
                 isVisible: false
             },
             connectorSummary: [],
-            transactionSummary: []
+            transactionSummary: [],
+            commonpopup: {
+                show: false,
+                chargePointId: null,
+                action: ""
+            }
         };
     },
     computed: {
@@ -547,6 +556,20 @@ export default {
             this.dialog.isVisible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
+        openActionDialog(row, type, action = "") {
+            if (type === "commonpopup") {
+                this.commonpopup.show = true;
+                this.commonpopup.chargePointId = row;
+                this.commonpopup.action = action;
+            }
+        },
+        closeActionDialog(type) {
+            if (type === "commonpopup") {
+                this.commonpopup.show = false;
+                this.commonpopup.chargePointId = null;
+                this.commonpopup.action = "";
+            }
+        },
         deleteChargers(id) {
             const that = this;
             this.$confirm(
@@ -682,12 +705,12 @@ export default {
         }
     }
 }
-.actionFunction{
-    margin-left:10px;
+.actionFunction {
+    margin-left: 10px;
 }
-.actions{
- padding:10px 0px;
- margin:0px;
+.actions {
+    padding: 10px 0px;
+    margin: 0px;
 }
 
 @media (min-width: 1251px) {

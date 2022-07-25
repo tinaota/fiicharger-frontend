@@ -143,7 +143,7 @@
                                         <span>
                                             {{ $t('chargingStation.clearCache') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clearCache')">{{ $t('general.clear') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -181,6 +181,7 @@
             <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="(e)=>closeDialog(e,'map')"></ShowPostion>
             <ModifyChargeBoxPrice v-if="chargeBoxPriceDialog.visible" :show="chargeBoxPriceDialog.visible" :data="chargeBoxPriceDialog.data" @close="(e)=>closeDialog(e, 'modifyChargeBoxPrice')"></ModifyChargeBoxPrice>
+            <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
         </div>
     </div>
 </template>
@@ -203,13 +204,14 @@ import {
 } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
-
+import CommonPopup from "@/components/commonPopup";
 export default {
     components: {
         EditChargeBox,
         ShowPostion,
         Connector,
-        ModifyChargeBoxPrice
+        ModifyChargeBoxPrice,
+        CommonPopup
     },
     data() {
         return {
@@ -283,7 +285,12 @@ export default {
             },
             connectorList: [],
             chargeBoxStatusList: [],
-            polling: null
+            polling: null,
+            commonpopup: {
+                show: false,
+                chargePointId: null,
+                action: ""
+            }
         };
     },
     computed: {
@@ -316,6 +323,20 @@ export default {
                 this.openDialog(1, data);
             } else if (action === "delete") {
                 this.deleteCheckBox(data.id);
+            }
+        },
+        openActionDialog(row, type, action = "") {
+            if (type === "commonpopup") {
+                this.commonpopup.show = true;
+                this.commonpopup.chargePointId = row;
+                this.commonpopup.action = action;
+            }
+        },
+        closeActionDialog(type) {
+            if (type === "commonpopup") {
+                this.commonpopup.show = false;
+                this.commonpopup.chargePointId = null;
+                this.commonpopup.action = "";
             }
         },
         fetchLocationList() {
@@ -601,12 +622,11 @@ export default {
     font-weight: 600;
 }
 
-.actionFunction{
-    margin-left:10px;
+.actionFunction {
+    margin-left: 10px;
 }
-.actions{
- padding:10px 0px;
- margin:0px;  
+.actions {
+    padding: 10px 0px;
+    margin: 0px;
 }
-
 </style>

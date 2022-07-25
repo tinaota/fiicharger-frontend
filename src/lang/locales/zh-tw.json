@@ -427,5 +427,10 @@
         "modified": "最新修改",
         "parentIdTagId": "父標籤 ID",
         "expired": "已到期"
+    },
+    "actions": {
+        "clearCache": "Clear Cache",
+        "clearCacheQuestion": "Are you sure you wish to clear cache for charger",
+        "clearCacheSuccess": "Cache has been cleared"
     }
 }

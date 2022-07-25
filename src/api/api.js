@@ -46,6 +46,13 @@ export const $HTTP_updateConfiguration = (params) => {
     );
 }
 
+// ocpp actions
+export const $HTTP_clearCache = (params) => {
+    return post(
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/clear-cache`
+    );
+}
+
 // transactions
 export const $HTTP_getAllTransactionsReasonList = () => {
     return fetch(`${base_charger}/api/reports/transactions/reason-list`)

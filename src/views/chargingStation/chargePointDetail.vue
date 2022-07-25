@@ -101,7 +101,7 @@
                                 <span>
                                     {{ $t('chargingStation.clearCache') }}
                                 </span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('clearCache')">{{ $t('general.clear') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="openDialog(chargePointById[0].id,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
                             </li>
                             <li>
                                 <span>
@@ -216,6 +216,7 @@
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
+                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
             </div>
         </div>
     </div>
@@ -235,6 +236,8 @@ import {
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
+import CommonPopup from "@/components/commonPopup";
+
 // import moment from "moment";
 // import { $GLOBAL_GRAFANA } from "@/utils/global";
 // const baseGrafanaUrl = $GLOBAL_GRAFANA;
@@ -245,7 +248,8 @@ export default {
         Connector,
         Transaction,
         UpdateConnectorType,
-        Configuration
+        Configuration,
+        CommonPopup
     },
     data() {
         return {
@@ -260,6 +264,11 @@ export default {
             configuration: {
                 show: false,
                 chargePointId: null
+            },
+            commonpopup: {
+                show: false,
+                chargePointId: null,
+                action: ""
             },
             filter: {
                 dateRange: []
@@ -407,7 +416,7 @@ export default {
         //     let isDark = this.$store.state.darkTheme;
         //     this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
         // },
-        openDialog(row, type) {
+        openDialog(row, type, action = "") {
             if (type === "connectorType") {
                 this.changeConnectorType.show = true;
                 this.changeConnectorType.connectorId = row.id;
@@ -417,13 +426,25 @@ export default {
             } else if (type === "configuration") {
                 this.configuration.show = true;
                 this.configuration.chargePointId = this.chargePointById[0].id;
+            } else if (type === "commonpopup") {
+                this.commonpopup.show = true;
+                this.commonpopup.chargePointId = this.chargePointById[0].id;
+                this.commonpopup.action = action;
             }
         },
         closeDialog(type) {
             if (type === "connectorType") {
                 this.changeConnectorType.show = false;
+                this.changeConnectorType.connectorId = null;
+                this.changeConnectorType.chargePointId = null;
+                this.changeConnectorType.connectorType = null;
             } else if (type === "configuration") {
                 this.configuration.show = false;
+                this.commonpopup.chargePointId = null;
+            } else if (type === "commonpopup") {
+                this.commonpopup.show = false;
+                this.commonpopup.chargePointId = null;
+                this.commonpopup.action = "";
             }
             this.getChargePointsById(this.chargePointById[0].id);
         }

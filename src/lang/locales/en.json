@@ -427,5 +427,10 @@
         "modified": "Latest Modification",
         "parentIdTagId": " Parent Id Tag Id",
         "expired": "Expired"
+    },
+    "actions":{
+        "clearCache":"Clear Cache",
+        "clearCacheQuestion":"Are you sure you wish to clear cache for charger",
+        "clearCacheSuccess": "Cache has been cleared"
     }
 }

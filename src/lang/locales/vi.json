@@ -427,5 +427,10 @@
         "modified": "Sửa đổi mới nhất",
         "parentIdTagId": "ID cha mẹ",
         "expired": "Hết hạn"
+    },
+    "actions": {
+        "clearCache": "Clear Cache",
+        "clearCacheQuestion": "Are you sure you wish to clear cache for charger",
+        "clearCacheSuccess": "Cache has been cleared"
     }
 }
