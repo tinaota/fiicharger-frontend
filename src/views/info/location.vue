@@ -1,6 +1,6 @@
 <template>
     <div class="mainctrl location">
-        <div id="map-container" class="google-map" v-loading="stationData.isLoading"></div>
+        <div id="map-container" class="google-map"></div>
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.information') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.location') }}</el-breadcrumb-item>
@@ -8,40 +8,22 @@
         <div class="loc-filter">
             {{ filter.stationName }}
             <el-select class="select-small" v-model="filter.stationId" v-loading="stationSearchList.isLoading" :placeholder="$t('menu.station')" @change="handleStationChanged()" filterable clearable style="width: 200px">
-                <el-option v-for="(item, key) in stationSearchList.data" :label="item" :key="key" :value="key"></el-option>
+                <el-option v-for="(item, key) in stationSearchList.allData" :label="item.name" :key="key" :value="item.id"></el-option>
             </el-select>
         </div> -->
         <div class="hint-bar">
             <div class="item">
                 <img :src="icon.normal">
-                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{ statisticsInfo.connectedCount || 0 }}</span>
+                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{ statisticsInfo.connectedCount }}</span>
+                <span class="num" v-else>0</span>
                 <span class="text">{{ $t('general.connected') }}</span>
             </div>
             <div class="item">
                 <img :src="icon.serviceUnavailable">
-                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{ statisticsInfo.disconnectedCount || 0 }}</span>
+                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{ statisticsInfo.disconnectedCount }}</span>
+                <span class="num" v-else>0</span>
                 <span class="text">{{ $t('general.disconnected') }}</span>
             </div>
-            <!-- <div class="item">
-                <img :src="icon.abnormal">
-                <span class="num" v-if="statisticsInfo.alertCount !== 0" @click="goChargePointPage(`Alert`)">{{statisticsInfo.alertCount}}</span>
-                <span class="text">{{$t('general.alert')}}</span>
-            </div>
-            <div class="item">
-                <img :src="icon.connectionLost">
-                <span class="num" v-if="statisticsInfo.connectionLostCount !== 0" @click="goChargePointPage(`ConnectionLost`)">{{statisticsInfo.connectionLostCount}}</span>
-                <span class="text">{{$t('general.connectionLost')}}</span>
-            </div>
-            <div class="item">
-                <img :src="icon.maintenance">
-                <span class="num" v-if="statisticsInfo.maintenanceCount !== 0" @click="goChargePointPage(`Maintenance`)">{{statisticsInfo.maintenanceCount}}</span>
-                <span class="text">{{$t('general.maintenance')}}</span>
-            </div>
-            <div class="item">
-                <img :src="icon.unknown">
-                <span class="num" v-if="statisticsInfo.unknownCount !== 0" @click="goChargePointPage(`Unknown`)">{{statisticsInfo.unknownCount}}</span>
-                <span class="text">{{$t('general.unknown')}}</span>
-            </div> -->
         </div>
         <div v-show="chargeBoxDrawer.visible" class="chargeBox-drawer">
             <button class="drawer-closeBtn" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = !chargeBoxDrawer.isOpen">
@@ -50,7 +32,6 @@
             <div class="drawer-body" v-show="chargeBoxDrawer.isOpen" v-loading="chargeBoxDrawer.isLoading">
                 <ul>
                     <li v-for="item in chargeBoxDrawer.data" :key="item.chargeBoxId">
-                        <!-- :class="{'long': chargeBoxDrawer.data.length > 3}"> -->
                         <div class="title">{{ item.chargeBoxName }}</div>
                         <div class="info">
                             <div class="info-item">
@@ -97,8 +78,12 @@
 
 <script>
 import { setScrollBar, transformToSymbols } from "@/utils/function";
-import { $HTTP_getStationList, $HTTP_getAllChargeBoxList, $HTTP_getStationListById } from "@/api/api";
-import { $GLOBAL_CURRENCY } from "@/utils/global";
+import {
+    $HTTP_getStationList,
+    $HTTP_getAllChargeBoxList,
+    $HTTP_getStationListById,
+    $HTTP_getConnectionSummary
+} from "@/api/api";
 import ic_info_green from "imgs/ic_info_green.png";
 import ic_info_brown from "imgs/ic_info_brown.png";
 import ic_info_red from "imgs/ic_info_red.png";
@@ -112,9 +97,9 @@ import ic_info_green_b from "imgs/ic_green_b_dot_number.png";
 import ic_info_green_m from "imgs/ic_green_m_dot_number.png";
 import ic_info_green_s from "imgs/ic_green_s_dot_number.png";
 
-import ic_info_brown_b from "imgs/ic_brown_b_dot_number.png";
-import ic_info_brown_m from "imgs/ic_brown_m_dot_number.png";
-import ic_info_brown_s from "imgs/ic_brown_s_dot_number.png";
+// import ic_info_brown_b from "imgs/ic_brown_b_dot_number.png";
+// import ic_info_brown_m from "imgs/ic_brown_m_dot_number.png";
+// import ic_info_brown_s from "imgs/ic_brown_s_dot_number.png";
 
 import ic_info_red_b from "imgs/ic_red_b_dot_number.png";
 import ic_info_red_m from "imgs/ic_red_m_dot_number.png";
@@ -131,11 +116,6 @@ import "snazzy-info-window/dist/snazzy-info-window.min.css";
 import "@/styles/map.scss";
 import SnazzyInfoWindow from "snazzy-info-window";
 
-import markerPos1 from "imgs/ic_green_dot_number.png";
-import markerPos2 from "imgs/ic_orange_dot_number.png";
-import markerPos3 from "imgs/ic_orange_dot_number.png"; //'imgs/ic_brown_dot_number.png';
-import markerPos4 from "imgs/ic_red_dot_number.png";
-import markerPos5 from "imgs/ic_gray_dot_number.png";
 import googleMapStyle from "@/assets/js/googleMapStyle_normal";
 import $ from "jquery";
 import { MarkerWithLabel } from "@googlemaps/markerwithlabel";
@@ -144,13 +124,26 @@ import unknown from "imgs/help_icon.svg";
 
 export default {
     components: {
-        Connector,
+        Connector
     },
     data() {
         return {
+            stationSearchList: {
+                isLoading: false,
+                data: [],
+                allData: []
+            },
+            filter: {
+                stationId: "",
+                stationName: ""
+            },
+            statisticsInfo: {
+                connectedCount: 0,
+                disconnectedCount: 0
+            },
             center: {
                 lat: 0,
-                lng: 0,
+                lng: 0
             },
             defaultZoomSize: 16,
             minZoomSize: 2,
@@ -164,31 +157,10 @@ export default {
                 deviceInfo: ic_device_info,
                 charging: ic_charging,
                 revenue: ic_revenue,
-                unknown: unknown,
-            },
-            filter: {
-                stationId: "",
-                stationName: "",
-            },
-            stationSearchList: {
-                isLoading: false,
-                data: {},
-                allData: {},
-            },
-            chargeBoxData: {
-                isLoading: false,
-                data: [],
-            },
-            statisticsInfo: {
-                connectedCount: 0,
-                disconnectedCount: 0,
+                unknown: unknown
             },
             map: null,
             markers: [],
-            currentInfoWindowStationId: "",
-            currentInfoWindow: null,
-            timer: null,
-            frequence: 10000, //1 min:1000*60
             markerImgStyle: {
                 small: {
                     labelAnchor: [-15, -43],
@@ -198,8 +170,8 @@ export default {
                         green: ic_info_green_s,
                         orange: ic_info_orange_s,
                         red: ic_info_red_s,
-                        gray: ic_info_gray_s,
-                    },
+                        gray: ic_info_gray_s
+                    }
                 },
                 medium: {
                     labelAnchor: [-18, -50], //不用改
@@ -209,8 +181,8 @@ export default {
                         green: ic_info_green_m,
                         orange: ic_info_orange_m,
                         red: ic_info_red_m,
-                        gray: ic_info_gray_m,
-                    },
+                        gray: ic_info_gray_m
+                    }
                 },
                 large: {
                     labelAnchor: [-23.5, -67],
@@ -220,33 +192,36 @@ export default {
                         green: ic_info_green_b,
                         orange: ic_info_orange_b,
                         red: ic_info_red_b,
-                        gray: ic_info_gray_b,
-                    },
-                },
-            },
-            markerImgList: [markerPos1, markerPos2, markerPos3, markerPos4, markerPos5],
-            stationData: {
-                isLoading: false,
-                data: [],
+                        gray: ic_info_gray_b
+                    }
+                }
             },
             chargeBoxDrawer: {
                 visible: false,
                 isLoading: false,
                 isOpen: false,
                 data: [],
-                frequence: 5000 * 1.5,
+                frequence: 5000 * 1.5
             },
+            currentInfoWindowStationId: "",
+            currentInfoWindow: null,
+            timer: null,
+            timerBox: null,
+            frequence: 10000 //1 min:1000*60
         };
     },
     computed: {
         getSymbols() {
             return (item) => transformToSymbols(item);
-        },
+        }
     },
     mounted() {
         const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width() / 2 + 12;
-        this.$jQuery(".hint-bar").css("left", `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
+        this.$jQuery(".hint-bar").css(
+            "left",
+            `calc(50vw + 104px -  ${halfHintBarWidth}px)`
+        );
         this.initMap();
         this.fetchStationList();
         this.setTimer();
@@ -262,132 +237,161 @@ export default {
         this.removeAllMarkers();
     },
     methods: {
+        setTimer() {
+            const that = this;
+            this.timer = setInterval(() => {
+                that.fetchStationList();
+            }, that.frequence);
+        },
+        initMap() {
+            this.map = new google.maps.Map(
+                document.getElementById("map-container"),
+                {
+                    center: this.center,
+                    zoom: this.minZoomSize,
+                    minZoom: this.minZoomSize,
+                    maxZoom: this.maxZoomSize,
+                    streetViewControl: false, //設定是否呈現右下角街景小人
+                    mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                    fullscreenControl: false,
+                    zoomControl: false,
+                    styles: googleMapStyle
+                }
+            );
+        },
         fetchStationList() {
             const that = this;
             let $API;
             let param = {};
+            let paramsConnectionSummary = {};
+
             if (this.filter.stationId !== "") {
                 param = {
-                    chargeStationId: this.filter.stationId,
+                    chargeStationId: this.filter.stationId
                 };
+                paramsConnectionSummary.StationId = this.filter.stationId;
+
                 $API = $HTTP_getStationListById;
             } else {
                 $API = $HTTP_getStationList;
+                this.stationSearchList.isLoading = true;
             }
-            this.isLoading = true;
 
-            this.stationSearchList.isLoading = true;
             $API(param)
                 .then((res) => {
                     this.stationSearchList.isLoading = false;
-                    let response = res?.data || [res];
-                    let responseLength = res?.data?.length || [res].length;
 
-                    if (response) {
-                        let connectedCount = 0,
-                            disconnectedCount = 0;
+                    let response;
+                    let responseLength;
 
-                        let maxLat = -90,
+                    if (res) {
+                        if (this.filter.stationId === "") {
+                            response = res?.data;
+                            responseLength = res?.data?.length;
+                            that.stationSearchList.allData = response;
+                        } else {
+                            response = [res];
+                            responseLength = [res].length;
+                            that.stationSearchList.data = response;
+                        }
+                        // get connected count
+                        $HTTP_getConnectionSummary(paramsConnectionSummary)
+                            .then((res) => {
+                                that.statisticsInfo.connectedCount =
+                                    res.connected;
+                                that.statisticsInfo.disconnectedCount =
+                                    res.disconnected;
+                            })
+                            .catch((err) => console.log(err));
+
+                        let maxLat = -85,
                             maxLng = -180,
-                            minLat = 90,
+                            minLat = 85,
                             minLng = 180;
 
                         response.forEach((item) => {
-                            if (this.filter.stationId === "") {
-                                this.stationSearchList.data[item.id] = item.name;
-                            }
                             item.location = {
-                                lng: item.coordinates.longitude,
-                                lat: item.coordinates.latitude,
+                                lng: parseFloat(item.coordinates.longitude),
+                                lat: parseFloat(item.coordinates.latitude)
                             };
+                            that.drawMarker(item, true);
+
                             if (item.coordinates.longitude > maxLng) {
                                 maxLng = item.coordinates.longitude;
-                            } else if (item.coordinates.longitude < minLng) {
+                            }
+                            if (item.coordinates.longitude < minLng) {
                                 minLng = item.coordinates.longitude;
                             }
                             if (item.coordinates.latitude > maxLat) {
                                 maxLat = item.coordinates.latitude;
-                            } else if (item.coordinates.latitude < minLat) {
+                            }
+                            if (item.coordinates.latitude < minLat) {
                                 minLat = item.coordinates.latitude;
                             }
 
-                            connectedCount += item.chargePointStatusCounts.Connected;
-                            disconnectedCount += item.chargePointStatusCounts.Disconnected;
-                            that.stationData.data[item.id] = Object.assign({}, item);
-
                             if (responseLength === 1) {
-                                that.map.setCenter(item.location);
+                                that.map.setCenter(response[0].location);
                                 that.map.setZoom(that.defaultZoomSize);
                             } else {
-                                const nePoint = new google.maps.LatLng(maxLat, maxLng),
-                                    swPoint = new google.maps.LatLng(minLat, minLng),
+                                const nePoint = new google.maps.LatLng(
+                                        maxLat,
+                                        maxLng
+                                    ),
+                                    swPoint = new google.maps.LatLng(
+                                        minLat,
+                                        minLng
+                                    ),
                                     bounds = new google.maps.LatLngBounds();
                                 bounds.extend(swPoint);
                                 bounds.extend(nePoint);
                                 that.map.fitBounds(bounds);
                             }
-                            that.drawMarker(that.stationData.data[item.id], true);
                         });
-
-                        this.statisticsInfo = {
-                            connectedCount: connectedCount,
-                            disconnectedCount: disconnectedCount,
-                        };
-                        this.stationSearchList.allData = response;
-                    } else {
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                     }
                 })
                 .catch((err) => {
                     console.log("stationSearchList", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
-        },
-        initMap() {
-            this.map = new google.maps.Map(document.getElementById("map-container"), {
-                center: this.center,
-                zoom: this.minZoomSize,
-                minZoom: this.minZoomSize,
-                maxZoom: this.maxZoomSize,
-                streetViewControl: false, //設定是否呈現右下角街景小人
-                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                fullscreenControl: false,
-                zoomControl: false,
-                styles: googleMapStyle,
-            });
-            const that = this;
         },
         drawMarker(item, isRefresh = false) {
             const that = this;
             var markerStyle, markerImage;
-            let chargeBoxCountArr = Object.values(item.chargePointStatusCounts);
-            let noOfChargeBox = chargeBoxCountArr.reduce((partialSum, a) => partialSum + a, 0);
-            if (noOfChargeBox < 10) {
+            let noOfChargers = item.acCount + item.dcCount;
+
+            if (noOfChargers < 10) {
                 markerStyle = this.markerImgStyle.small;
-            } else if (noOfChargeBox > 99) {
+            } else if (noOfChargers > 99) {
                 markerStyle = this.markerImgStyle.large;
             } else {
                 markerStyle = this.markerImgStyle.medium;
             }
+
             markerImage = new google.maps.MarkerImage(
                 markerStyle.icon[item.status === "Enabled" ? "green" : "red"], //這裡要判斷顯是哪個
                 new google.maps.Size(markerStyle.size[0], markerStyle.size[1])
-            ); //size  預設位子圖案中間底
-
+            );
             const marker = new MarkerWithLabel({
                 position: item.location,
                 clickable: true,
                 draggable: false,
                 map: that.map,
-                labelContent: noOfChargeBox.toString(),
-                labelAnchor: new google.maps.Point(markerStyle.labelAnchor[0], markerStyle.labelAnchor[1]),
+                labelContent: noOfChargers.toString(),
+                labelAnchor: new google.maps.Point(
+                    markerStyle.labelAnchor[0],
+                    markerStyle.labelAnchor[1]
+                ),
                 labelClass: markerStyle.labelClass, // the CSS class for the label
                 labelStyle: { opacity: 1.0 },
-                icon: markerImage,
+                icon: markerImage
             });
+            // console.log(item);
 
             marker.addListener("click", () => {
-                that.changeChargeBoxDrawerData(false);
+                that.changeChargeBoxDrawerData(false, this.filter.stationId);
 
                 const htmlContent = `<div class="info-tite">${item.name}</div>
                                      <div class="info-msg">${item.address.street} ${item.address.city} ${item.address.state}</div>`;
@@ -404,7 +408,7 @@ export default {
                             borderRadius: "8px",
                             offset: {
                                 top: "-36px",
-                                left: "20px",
+                                left: "20px"
                             },
                             border: false,
                             backgroundColor: "#F7F9FD",
@@ -415,12 +419,12 @@ export default {
                                 blur: "3px",
                                 spread: "0px",
                                 opacity: 0.3,
-                                color: "#000",
+                                color: "#000"
                             },
                             maxWidth: 200,
                             showCloseButton: false,
                             closeOnMapClick: false,
-                            closeWhenOthersOpen: true,
+                            closeWhenOthersOpen: true
                         }
                     )
                 );
@@ -435,19 +439,6 @@ export default {
             }
             that.markers.push(marker);
         },
-        removeAllMarkers(isClearInfoWindow) {
-            //this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
-            if (isClearInfoWindow) {
-                this.currentInfoWindow && this.currentInfoWindow.close();
-                this.currentInfoWindow = null;
-                this.currentInfoWindowStationId = "";
-            }
-            this.markers.forEach((marker) => {
-                google.maps.event.clearInstanceListeners(marker);
-                marker.setMap(null);
-            });
-            this.markers = [];
-        },
         handleStationChanged() {
             this.removeAllMarkers();
             if (this.filter.stationId !== "") {
@@ -455,43 +446,29 @@ export default {
             } else {
                 this.statisticsInfo = {
                     connectedCount: 0,
-                    disconnectedCount: 0,
+                    disconnectedCount: 0
                 };
                 this.fetchStationList();
             }
-
             this.currentInfoWindow && this.currentInfoWindow.close();
             this.currentInfoWindow = null;
             this.currentInfoWindowStationId = "";
-            this.changeChargeBoxDrawerData(false);
+            this.changeChargeBoxDrawerData(false, this.filter.stationId);
             clearInterval(this.timer);
             this.setTimer();
-        },
-        setTimer() {
-            const that = this;
-            this.timer = setInterval(() => {
-                that.fetchStationList();
-            }, that.frequence);
         },
         goChargePointPage(chargeBoxStatus) {
             const params = {
                 chargeBoxStatus: chargeBoxStatus,
-                stationId: this.filter.stationId,
+                stationId: this.filter.stationId
             };
             this.$router.push({ name: "menu.chargePoint", params: params });
-        },
-        getChargeBoxList(param, isVisible) {
-            this.chargeBoxDrawer.isLoading = isVisible;
-            $HTTP_getAllChargeBoxList(param).then((res) => {
-                this.chargeBoxDrawer.data = res.data;
-                this.chargeBoxDrawer.isLoading = !isVisible;
-            });
         },
         changeChargeBoxDrawerData(isVisible, stationId) {
             this.chargeBoxDrawer.visible = isVisible;
             this.chargeBoxDrawer.isOpen = isVisible;
             let param = {
-                StationId: stationId,
+                StationId: stationId
             };
             if (isVisible) {
                 this.getChargeBoxList(param, isVisible);
@@ -504,12 +481,33 @@ export default {
                 this.chargeBoxDrawer.data = [];
             }
         },
-    },
+        getChargeBoxList(param, isVisible) {
+            this.chargeBoxDrawer.isLoading = isVisible;
+            $HTTP_getAllChargeBoxList(param).then((res) => {
+                this.chargeBoxDrawer.data = res.data;
+                this.chargeBoxDrawer.isLoading = !isVisible;
+            });
+        },
+        removeAllMarkers(isClearInfoWindow) {
+            //this.$jQuery(".si-content .info-msg").length > 0 && this.$jQuery(".si-content .info-msg").mCustomScrollbar('destroy');
+            if (isClearInfoWindow) {
+                this.currentInfoWindow && this.currentInfoWindow.close();
+                this.currentInfoWindow = null;
+                this.currentInfoWindowStationId = "";
+            }
+            this.markers.forEach((marker) => {
+                google.maps.event.clearInstanceListeners(marker);
+                marker.setMap(null);
+            });
+            this.markers = [];
+        }
+    }
 };
 </script>
+
+
 <style lang = "scss" scoped>
 .mainctrl {
-    /* padding: 2.4vh 1.6vw 2.4vh 1.6vw; */
     .el-breadcrumb {
         display: block;
         position: absolute;
@@ -650,7 +648,7 @@ export default {
                         &.doubleHeight {
                             height: auto;
                         }
-                        .content{
+                        .content {
                             margin-top: -7px;
                         }
                     }

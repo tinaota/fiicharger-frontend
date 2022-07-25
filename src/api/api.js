@@ -220,3 +220,10 @@ export const $HTTP_getTransactionSummary = (params) => {
         params
     );
 }
+//get connection Summary
+export const $HTTP_getConnectionSummary = (params) => {
+    return fetch(
+        `${base_charger}/api/reports/charge-points/connection-summary`,
+        params
+    );
+}
