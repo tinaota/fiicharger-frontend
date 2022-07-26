@@ -36,27 +36,44 @@ export default {
                 available: 0,
                 inUse: 0,
                 unavailable: 0,
-                total: 0,
-            },
+                total: 0
+            }
         };
     },
-    created() {
-        this.dataObj.map((item) => {
-            if (item.status === "Available") this.count.available += 1;
-            else if (item.status === "Unavailable" || item.status === "Faulted") this.count.unavailable += 1;
-            else if (
-                item.status === "Preparing" ||
-                item.status === "Charging" ||
-                item.status === "SuspendedEV" ||
-                item.status === "SuspendedEVSE" ||
-                item.status === "Finishing" ||
-                item.status === "Reserved"
-            )
-                this.count.inUse += 1;
-        });
-        this.count.total = this.dataObj.length;
+    watch: {
+        dataObj: function () {
+            // If "dataObj" ever changes, then we will console log its new value.
+            this.countConnectors();
+        }
     },
-    methods: {},
+    created() {
+        this.countConnectors();
+    },
+    methods: {
+        countConnectors() {
+            this.count.available = 0;
+            this.count.unavailable = 0;
+            this.count.inUse = 0;
+            this.dataObj.map((item) => {
+                if (item.status === "Available") this.count.available += 1;
+                else if (
+                    item.status === "Unavailable" ||
+                    item.status === "Faulted"
+                )
+                    this.count.unavailable += 1;
+                else if (
+                    item.status === "Preparing" ||
+                    item.status === "Charging" ||
+                    item.status === "SuspendedEV" ||
+                    item.status === "SuspendedEVSE" ||
+                    item.status === "Finishing" ||
+                    item.status === "Reserved"
+                )
+                    this.count.inUse += 1;
+            });
+            this.count.total = this.dataObj.length;
+        }
+    }
 };
 </script>
 
