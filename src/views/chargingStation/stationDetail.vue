@@ -219,15 +219,15 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.hardReset') }}
+                                            {{ $t('chargingStation.softReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">{{ $t('general.reset') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'softReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.softReset') }}
+                                            {{ $t('chargingStation.hardReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">{{ $t('general.reset') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'hardReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -347,7 +347,8 @@ export default {
                 show: false,
                 chargePointId: null,
                 action: ""
-            }
+            },
+            timeOut: null
         };
     },
     computed: {
@@ -390,6 +391,8 @@ export default {
         this.getTransactionSummary(this.curRouteParam.stationId);
     },
     beforeDestroy() {
+        clearTimeout(this.timeOut);
+
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods: {
@@ -562,6 +565,17 @@ export default {
                 this.commonpopup.chargePointId = row;
                 this.commonpopup.action = action;
             }
+            this.setTimerApiCall();
+        },
+        setTimerApiCall() {
+            //delay for 2seconds before requesting data
+            this.timeOut = setTimeout(() => {
+                let params = {};
+                if (this.curRouteParam.stationId) {
+                    params.stationId = this.curRouteParam.stationId;
+                }
+                this.getChargersList(params);
+            }, 2000);
         },
         closeActionDialog(type) {
             if (type === "commonpopup") {

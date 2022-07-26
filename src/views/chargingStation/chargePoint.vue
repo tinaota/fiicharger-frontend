@@ -147,15 +147,15 @@
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.hardReset') }}
+                                            {{ $t('chargingStation.softReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'hardReset')">{{ $t('general.reset') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'softReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.softReset') }}
+                                            {{ $t('chargingStation.hardReset') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'softReset')">{{ $t('general.reset') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'hardReset')">{{ $t('general.reset') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -290,7 +290,8 @@ export default {
                 show: false,
                 chargePointId: null,
                 action: ""
-            }
+            },
+            timeOut: null
         };
     },
     computed: {
@@ -313,6 +314,7 @@ export default {
     },
     beforeDestroy() {
         clearInterval(this.polling);
+        clearTimeout(this.timeOut);
         this.dialog.map &&
             google.maps.event.clearListeners(this.dialog.map, "click");
     },
@@ -338,6 +340,13 @@ export default {
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
             }
+            this.setTimerApiCall();
+        },
+        setTimerApiCall() {
+            //delay for 2seconds before requesting data
+            this.timeOut = setTimeout(() => {
+                this.fetchData();
+            }, 2000);
         },
         fetchLocationList() {
             this.loctionList.isLoading = true;
