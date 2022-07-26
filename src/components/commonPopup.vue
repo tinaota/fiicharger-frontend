@@ -44,7 +44,6 @@ export default {
             this.$API = $HTTP_resetChargers;
             this.params.type = "Soft";
         }
-        console.log(this.params);
     },
     methods: {
         callApi() {

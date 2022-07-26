@@ -64,7 +64,7 @@
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.lastHeartbeat') }}</div>
-                            <div class="content"></div>
+                            <div class="content">{{ getLocTime(chargePointById[0].lastHeartbeat) }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.connectors') }}</div>
@@ -383,17 +383,19 @@ export default {
                             type: "success",
                             message: i18n.t("general.sucUpdateMsg")
                         });
-                        this.timeOut = setTimeout(() => {
-                            this.getChargePointsById(
-                                this.chargePointById[0].id
-                            );
-                        }, 2000);
+                        this.setTimerApiCall();
                     }
                 })
                 .catch((err) => {
                     console.log("occpAvailability", err);
                     this.$message({ type: "warning", message: err.data });
                 });
+        },
+        setTimerApiCall() {
+            //delay for 2seconds before requesting data
+            this.timeOut = setTimeout(() => {
+                this.getChargePointsById(this.chargePointById[0].id);
+            }, 2000);
         },
         handleShowDialog() {
             this.$jQuery(".scroll").mCustomScrollbar("disable");
@@ -446,7 +448,7 @@ export default {
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
             }
-            this.getChargePointsById(this.chargePointById[0].id);
+            this.setTimerApiCall();
         }
     }
 };
