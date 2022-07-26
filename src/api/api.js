@@ -53,6 +53,12 @@ export const $HTTP_clearCache = (params) => {
     );
 }
 
+export const $HTTP_resetChargers = (params) => {
+    return post(
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/reset/${params.type}`
+    );
+};
+
 // transactions
 export const $HTTP_getAllTransactionsReasonList = () => {
     return fetch(`${base_charger}/api/reports/transactions/reason-list`)

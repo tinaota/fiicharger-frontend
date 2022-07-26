@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { $HTTP_clearCache } from "@/api/api";
+import { $HTTP_clearCache, $HTTP_resetChargers } from "@/api/api";
 
 export default {
     props: {
@@ -24,21 +24,31 @@ export default {
             visible: false,
             isLoading: false,
             isUpdate: false,
-            $API: null
+            $API: null,
+            params: {
+                chargePointId: "",
+                type: ""
+            }
         };
     },
     mounted() {
         const that = this;
         that.visible = that.show;
+        this.params.chargePointId = this.chargePointId;
         if (this.action === "clearCache") {
             this.$API = $HTTP_clearCache;
+        } else if (this.action === "hardReset") {
+            this.$API = $HTTP_resetChargers;
+            this.params.type = "Hard";
+        } else if (this.action === "softReset") {
+            this.$API = $HTTP_resetChargers;
+            this.params.type = "Soft";
         }
+        console.log(this.params);
     },
     methods: {
         callApi() {
-            let params = {};
-            params.chargePointId = this.chargePointId;
-            this.$API(params)
+            this.$API(this.params)
                 .then((res) => {
                     if (res === "Accepted") {
                         this.isUpdate = true;

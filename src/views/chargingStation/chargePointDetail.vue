@@ -107,13 +107,13 @@
                                 <span>
                                     {{ $t('chargingStation.softReset') }}
                                 </span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('sodtReset')">{{ $t('general.reset') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="openDialog(chargePointById[0].id,'commonpopup','softReset')">{{ $t('general.reset') }}</el-button>
                             </li>
                             <li>
                                 <span>
                                     {{ $t('chargingStation.hardReset') }}
                                 </span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('hardReset')">{{ $t('general.reset') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="openDialog(chargePointById[0].id,'commonpopup','hardReset')">{{ $t('general.reset') }}</el-button>
                             </li>
 
                         </ul>

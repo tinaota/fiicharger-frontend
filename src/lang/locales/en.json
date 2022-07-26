@@ -431,6 +431,12 @@
     "actions":{
         "clearCache":"Clear Cache",
         "clearCacheQuestion":"Are you sure you wish to clear cache for charger",
-        "clearCacheSuccess": "Cache has been cleared"
+        "clearCacheSuccess": "Cache has been cleared",
+        "hardReset":"Hard Reset",
+        "hardResetQuestion":"Are you sure you wish to hard reset for charger",
+        "hardResetSuccess":"Hard reset has been performed",
+        "softReset": "Soft Reset",
+        "softResetQuestion": "Are you sure you wish to soft reset for charger",
+        "softResetSuccess": "Soft reset has been performed"
     }
 }
