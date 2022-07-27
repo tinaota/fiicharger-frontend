@@ -240,3 +240,18 @@ export const $HTTP_getConnectionSummary = (params) => {
         params
     );
 }
+
+/**
+ * @description reserve now
+ */
+export const $HTTP_reserveNow = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/reservations`, params) }
+
+/**
+ * @description get reservation
+ */
+export const $HTTP_getReservation = params => { return fetch(`${base_charger}/api/reports/reservations`, params) }
+
+/**
+ * @description cancel reservation
+ */
+export const $HTTP_cancelReservation = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/reservations/cancel`, params) }

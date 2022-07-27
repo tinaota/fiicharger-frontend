@@ -108,6 +108,7 @@
         "sucAddMsg": "新增成功！",
         "sucUpdateMsg": "更新完成！",
         "sucDelMsg": "刪除完成！",
+        "sucCancelMsg": "取消完成!",
         "status": "狀態",
         "all": "全部",
         "statusList": [
@@ -159,7 +160,8 @@
         "settings": "設置",
         "accessibility": "可訪問性",
         "description": "描述",
-        "value": "價值"
+        "value": "價值",
+        "perform": "執行"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -307,7 +309,16 @@
         "clearChargingProfile": "清除充電配置",
         "lastStatus": "狀態 （上一次）",
         "changeConnector": "選擇一個連接器來替換：",
-        "lastThirtyDays": "過去 30 天"
+        "lastThirtyDays": "過去 30 天",
+        "reservation": "預約",
+        "reserveNow": "立即預約",
+        "startReservation": "開始預約",
+        "cancelReservation": "取消預約",
+        "reservationId": "預約編號",
+        "connectorId": "充電槍編號",
+        "transactionId": "交易編號",
+        "startDateTime": "開始日期/時間",
+        "expiryDateTime": "失效日期/時間"
     },
     "userAccount": {
         "memberName": "會員名稱",

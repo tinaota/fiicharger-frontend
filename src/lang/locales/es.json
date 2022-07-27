@@ -108,6 +108,7 @@
         "sucAddMsg": "¡Agregado exitosamente!",
         "sucUpdateMsg": "¡Actualización completada!",
         "sucDelMsg": "¡Eliminación completada!",
+        "sucCancelMsg": "Cancelación completada",
         "status": "Estado",
         "all": "Todos",
         "statusList": [
@@ -159,7 +160,8 @@
         "settings": "Ajustes",
         "accessibility": "Accesibilidad",
         "description": "Descripción",
-        "value": "Valor"
+        "value": "Valor",
+        "perform": "Llevar a cabo"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -308,7 +310,16 @@
         "clearChargingProfile": "Borrar perfil de carga",
         "lastStatus": "Estado (último)",
         "changeConnector": "Elija un conector para reemplazar con:",
-        "lastThirtyDays": "últimos 30 días"
+        "lastThirtyDays": "últimos 30 días",
+        "reservation": "Reserva",
+        "reserveNow": "Reservar ahora",
+        "startReservation": "Iniciar Reserva",
+        "cancelReservation": "Cancelar la reserva",
+        "reservationId": "ID de reserva",
+        "connectorId": "Identificación del conector",
+        "transactionId": "ID de transacción",
+        "startDateTime": "Fecha/hora de inicio",
+        "expiryDateTime": "Fecha/hora de caducidad"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

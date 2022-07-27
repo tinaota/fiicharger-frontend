@@ -108,6 +108,7 @@
         "sucAddMsg": "Bổ sung thành công!",
         "sucUpdateMsg": "Cập nhật thành công!",
         "sucDelMsg": "Xóa thành công!",
+        "sucCancelMsg": "Đã hủy xong",
         "status": "Trạng thái",
         "all": "Tất cả",
         "statusList": [
@@ -159,7 +160,8 @@
         "settings": "Cài đặt",
         "accessibility": "Khả năng tiếp cận",
         "description": "Sự mô tả",
-        "value": "Giá trị"
+        "value": "Giá trị",
+        "perform": "Trình diễn"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -307,7 +309,16 @@
         "clearChargingProfile": "Xóa hồ sơ sạc",
         "lastStatus": "Trạng thái (cuối cùng)",
         "changeConnector": "Chọn một đầu nối để thay thế bằng:",
-        "lastThirtyDays": "30 ngày trước"
+        "lastThirtyDays": "30 ngày trước",
+        "reservation": "Sự đặt chỗ",
+        "reserveNow": "Đặt trước ngay bây giờ",
+        "startReservation": "Bắt đầu đặt trước",
+        "cancelReservation": "Hủy đặt phòng",
+        "reservationId": "ID đặt chỗ",
+        "connectorId": "ID trình kết nối",
+        "transactionId": "ID giao dịch",
+        "startDateTime": "Ngày / Giờ bắt đầu",
+        "expiryDateTime": "Ngày / Giờ hết hạn"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

@@ -108,6 +108,7 @@
         "sucAddMsg": "新增成功！",
         "sucUpdateMsg": "更新完成！",
         "sucDelMsg": "删除完成!",
+        "sucCancelMsg": "取消完成",
         "status": "状态",
         "all": "全部",
         "statusList": [
@@ -159,7 +160,8 @@
         "settings": "设置",
         "accessibility": "可访问性",
         "description": "描述",
-        "value": "价值"
+        "value": "价值",
+        "perform": "执行"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -307,7 +309,16 @@
         "clearChargingProfile": "清除充电配置",
         "lastStatus": "状态（上一次）",
         "changeConnector": "选择一个连接器来替换：",
-        "lastThirtyDays": "过去 30 天"
+        "lastThirtyDays": "过去 30 天",
+        "reservation": "预约",
+        "reserveNow": "立即预约",
+        "startReservation": "开始预约",
+        "cancelReservation": "取消预约",
+        "reservationId": "预约编号",
+        "connectorId": "充电枪编号",
+        "transactionId": "交易编号",
+        "startDateTime": "开始日期/时间",
+        "expiryDateTime": "失效日期/时间"
     },
     "userAccount": {
         "memberName": "会员名称",

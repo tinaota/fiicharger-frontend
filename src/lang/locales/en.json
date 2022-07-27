@@ -108,6 +108,7 @@
         "sucAddMsg": "Added successfully!",
         "sucUpdateMsg": "Update completed!",
         "sucDelMsg": "Delete completed!",
+        "sucCancelMsg": "Cancellation completed",
         "status": "Status",
         "all": "All",
         "statusList": [
@@ -159,7 +160,8 @@
         "settings": "Settings",
         "accessibility": "Accessibility",
         "description": "Description",
-        "value": "Value"
+        "value": "Value",
+        "perform": "Perform"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -307,7 +309,16 @@
         "clearChargingProfile": "Clear Charging Profile",
         "lastStatus": "Status(last)",
         "changeConnector": "Choose a connector to replace with:",
-        "lastThirtyDays": "Last 30 days"
+        "lastThirtyDays": "Last 30 days",
+        "reservation": "Reservation",
+        "reserveNow": "Reserve Now",
+        "startReservation": "Start Reservation",
+        "cancelReservation": "Cancel Reservation",
+        "reservationId": "Reservation ID",
+        "connectorId": "Connector ID",
+        "transactionId": "Transaction ID",
+        "startDateTime": "Start Date/Time",
+        "expiryDateTime": "Expiry Date/Time"
     },
     "userAccount": {
         "memberName": "Member Name",

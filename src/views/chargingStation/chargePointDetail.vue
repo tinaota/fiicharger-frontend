@@ -115,7 +115,6 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="openDialog(chargePointById[0].id,'commonpopup','hardReset')">{{ $t('general.reset') }}</el-button>
                             </li>
-
                         </ul>
                     </div>
                     <div class="card-8 rank-area thirdCol table-result">
@@ -200,6 +199,18 @@
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">{{ $t('general.disable') }}</span>
                                             </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-book" aria-hidden="true" style="color:#1E5EFF"></i>
+                                                </span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'reserveNow')">{{ $t('chargingStation.reserveNow') }}</span>
+                                            </el-dropdown-item>
+                                            <el-dropdown-item>
+                                                <span>
+                                                    <i class="fa fa-ban" aria-hidden="true" style="color:#1E5EFF"></i>
+                                                </span>
+                                                <span class="actionFunction" @click="runAction(scope.row, 'cancelReservation')">{{ $t('chargingStation.cancelReservation') }}</span>
+                                            </el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
                                 </template>
@@ -211,12 +222,17 @@
                     <el-tabs v-model="active">
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
+                        <el-tab-pane :label="$t('chargingStation.reservation')" name="reservation">
+                        </el-tab-pane>
                     </el-tabs>
                     <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
+                    <Reservation v-else-if="active==='reservation'" :chargePointId="this.chargePointById[0].id" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
+                <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
+                <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
             </div>
         </div>
     </div>
@@ -230,6 +246,9 @@ import {
 } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import Transaction from "@/components/chargingStation/transaction";
+import Reservation from "@/components/chargingStation/reservation";
+import ReserveNow from "@/components/chargingStation/reserveNow";
+import CancelReservation from "@/components/chargingStation/cancelReservation";
 import {
     $HTTP_updateOccpAvailability,
     $HTTP_getAllChargeBoxList
@@ -249,7 +268,10 @@ export default {
         Transaction,
         UpdateConnectorType,
         Configuration,
-        CommonPopup
+        CommonPopup,
+        Reservation,
+        ReserveNow,
+        CancelReservation
     },
     data() {
         return {
@@ -286,7 +308,16 @@ export default {
             active: "transaction",
             timer: null,
             timeOut: null,
-            chargePointById: []
+            chargePointById: [],
+            isUpDateReservationData: true,
+            reserveNow: {
+                visible: false,
+                data: {}
+            },
+            cancelReservation: {
+                visible: false,
+                data: {}
+            }
         };
     },
     computed: {
@@ -344,6 +375,26 @@ export default {
                 params.type = "Inoperative";
                 params.connectorId = params.id;
                 this.updateOccpAvailability(params);
+            } else if (action === "reserveNow") {
+                this.reserveNow.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    name: this.chargePointById[0].name,
+                    connectorId: params.id,
+                    connectorType: params.type
+                };
+                this.reserveNow.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+                this.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+                this.$nextTick(() => {
+                    setScrollBar(".formVertical", this);
+                });
+            } else if (action === "cancelReservation") {
+                this.cancelReservation.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    connectorId: params.id
+                };
+                this.cancelReservation.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
         getChargePointsById(id) {
@@ -434,7 +485,7 @@ export default {
                 this.commonpopup.action = action;
             }
         },
-        closeDialog(type) {
+        closeDialog(type, data) {
             if (type === "connectorType") {
                 this.changeConnectorType.show = false;
                 this.changeConnectorType.connectorId = null;
@@ -447,8 +498,19 @@ export default {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
+            } else if (type === "reserveNow") {
+                this.reserveNow.visible = false;
+                this.isUpDateReservationData = data;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "cancelReservation") {
+                this.cancelReservation.visible = false;
+                this.isUpDateReservationData = data;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();
+        },
+        aleadyUpdateReservationData () {
+            this.isUpDateReservationData = false;
         }
     }
 };
