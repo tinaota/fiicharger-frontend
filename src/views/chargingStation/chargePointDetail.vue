@@ -158,7 +158,7 @@
                                     <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
                                 </template>
                             </el-table-column>
-                          <!-- <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column> -->
+                            <!-- <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column> -->
                             <el-table-column :label="$t('chargingStation.charging')" :width="146">
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <div class="tabs-contain">
-                    <el-tabs v-model="active">
+                    <el-tabs v-model="active" @tab-click="handleClick">
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
                         <el-tab-pane :label="$t('chargingStation.reservation')" name="reservation">
@@ -331,6 +331,11 @@ export default {
             chargeBoxId: chargePointInfo.id
         };
 
+        let activeTab = window.sessionStorage.getItem("fiics-activeTab");
+        if (activeTab) {
+            this.active = activeTab;
+        }
+
         // const todaySplit = moment().format("YYYY-MM-DD").split("-");
         // const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
         // let dayWeekBefore = parseInt(todaySplit[2]) - 7;
@@ -355,6 +360,7 @@ export default {
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
+        window.sessionStorage.removeItem("fiics-activeTab");
         clearInterval(this.timer);
         clearTimeout(this.timeOut);
     },
@@ -484,6 +490,9 @@ export default {
         },
         aleadyUpdateReservationData() {
             this.isUpDateReservationData = false;
+        },
+        handleClick() {
+            window.sessionStorage.setItem("fiics-activeTab", this.active);
         }
     }
 };
@@ -555,12 +564,12 @@ export default {
 
     .secondCol {
         width: calc(20.05% - 32px) !important;
-        padding:0px 28px;
+        padding: 0px 28px;
     }
 
     .thirdCol {
         width: calc(40.05% - 32px) !important;
-          padding:0px 28px;
+        padding: 0px 28px;
     }
 
     .rank-area {
@@ -624,8 +633,8 @@ export default {
     .thirdCol {
         flex: 75%;
     }
-    .card-8   .thirdCol{
-    padding: 28px 0px;
+    .card-8 .thirdCol {
+        padding: 28px 0px;
     }
 }
 </style>
