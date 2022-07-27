@@ -73,7 +73,9 @@ export default {
             let params = {
                 page: this.page,
                 limit: this.limit,
-                ChargePointId: this.chargerId
+                ChargePointId: this.chargerId,
+                IsDescending: true,
+                OrderBy: 'created'
             };
             this.isLoading = true;
             $HTTP_getReservation(params)
