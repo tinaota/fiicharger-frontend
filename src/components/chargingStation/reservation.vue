@@ -16,6 +16,16 @@
                     {{ scope.row.expiryDate ? getLocTime(scope.row.expiryDate) : '' }}
                 </template>
             </el-table-column>
+            <el-table-column :label="$t('chargingStation.cancelledDateTime')" :min-width="3">
+                <template slot-scope="scope">
+                    {{ scope.row.cancelled ? getLocTime(scope.row.cancelled) : '' }}
+                </template>
+            </el-table-column>
+            <el-table-column :label="$t('chargingStation.usedDateTime')" :min-width="3">
+                <template slot-scope="scope">
+                    {{ scope.row.used ? getLocTime(scope.row.used) : '' }}
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
@@ -24,28 +34,27 @@
 </template>
 <script>
 import { transformUtcToLocTime } from "@/utils/function";
-import {
-    $HTTP_getReservation
-} from "@/api/api";
+import { $HTTP_getReservation } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 export default {
     props: {
         chargerId: String,
         isUpdateData: Boolean
     },
+    emits: ["updated"],
     data() {
         return {
             isLoading: false,
             tableData: [],
-            page:1,
+            page: 1,
             total: 0,
-            limit: $GLOBAL_PAGE_LIMIT,
+            limit: $GLOBAL_PAGE_LIMIT
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
-        },
+        }
     },
     watch: {
         isUpdateData: {
@@ -64,7 +73,7 @@ export default {
             let params = {
                 page: this.page,
                 limit: this.limit,
-                ChargePointId:this.chargerId
+                ChargePointId: this.chargerId
             };
             this.isLoading = true;
             $HTTP_getReservation(params)
@@ -87,7 +96,7 @@ export default {
                     this.isLoading = false;
                     this.tableData = [];
                     this.total = 0;
-                    console.log('fetchReservations', err);
+                    console.log("fetchReservations", err);
                     this.$emit("updated");
                     this.$message({
                         type: "warning",
@@ -99,7 +108,7 @@ export default {
             this.page = page;
             this.fetchReservations();
         }
-    },
+    }
 };
 </script>
 <style lang = "scss" scoped>
@@ -117,6 +126,6 @@ export default {
         font-size: 1rem;
         color: #5a607f;
         letter-spacing: 0;
-    };
+    }
 }
 </style>

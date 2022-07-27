@@ -318,7 +318,9 @@
         "connectorId": "充電槍編號",
         "transactionId": "交易編號",
         "startDateTime": "開始日期/時間",
-        "expiryDateTime": "失效日期/時間"
+        "expiryDateTime": "失效日期/時間",
+        "cancelledDateTime": "Cancelled Date/Time",
+        "usedDateTime": "Used Date/Time"
     },
     "userAccount": {
         "memberName": "會員名稱",

@@ -318,7 +318,9 @@
         "connectorId": "充电枪编号",
         "transactionId": "交易编号",
         "startDateTime": "开始日期/时间",
-        "expiryDateTime": "失效日期/时间"
+        "expiryDateTime": "失效日期/时间",
+        "cancelledDateTime": "Cancelled Date/Time",
+        "usedDateTime": "Used Date/Time"
     },
     "userAccount": {
         "memberName": "会员名称",

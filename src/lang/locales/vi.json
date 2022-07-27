@@ -318,7 +318,9 @@
         "connectorId": "ID trình kết nối",
         "transactionId": "ID giao dịch",
         "startDateTime": "Ngày / Giờ bắt đầu",
-        "expiryDateTime": "Ngày / Giờ hết hạn"
+        "expiryDateTime": "Ngày / Giờ hết hạn",
+        "cancelledDateTime": "Cancelled Date/Time",
+        "usedDateTime": "Used Date/Time"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

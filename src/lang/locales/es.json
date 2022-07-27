@@ -319,7 +319,9 @@
         "connectorId": "Identificación del conector",
         "transactionId": "ID de transacción",
         "startDateTime": "Fecha/hora de inicio",
-        "expiryDateTime": "Fecha/hora de caducidad"
+        "expiryDateTime": "Fecha/hora de caducidad",
+        "cancelledDateTime": "Cancelled Date/Time",
+        "usedDateTime": "Used Date/Time"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
