@@ -335,6 +335,8 @@
         "usedDateTime": "Ngày / giờ đã sử dụng",
         "remoteTrigger": "Kích hoạt từ xa",
         "triggerMsg": "Thông báo kích hoạt",
+        "fileName": "Tên tệp",
+        "fileSize": "Kích thước",
         "timeOpt": {
             "1Min": "1 phút",
             "5Mins": "5 phút",
@@ -540,5 +542,17 @@
         "versionMismatch": "Số phiên bản trong yêu cầu cập nhật khác biệt nhỏ hơn hoặc bằng số phiên bản của danh sách hiện tại",
         "clearListSuccessMsg": "Xóa danh sách thành công",
         "getIdtagFiledMsg": "Không lấy được danh sách các thẻ id."
+    },
+    "diagnostic": {
+        "uploadingBtn": "Đang tải lên",
+        "waitingBtn": "Đang chờ đợi",
+        "err_catch": "Yêu cầu nhận chẩn đoán không thành công.",
+        "emptyFileName": "Không có thông tin chẩn đoán nào có sẵn.",
+        "uploadIdleMsg": "Tác vụ không được thực hiện, vui lòng nhấp vào nút để khởi động lại.",
+        "uploadFailedMsg": "Không thể truy xuất chẩn đoán, vui lòng lại.",
+        "uploadedMsg": "Truy xuất chẩn đoán thành công, vui lòng nhấp vào nút để tải xuống tệp.",
+        "downloadFileSuccess": "Tệp tải xuống hoàn tất.",
+        "downloadFileFiled": "Tải xuống tệp không thành công.",
+        "fileListErrorMsg": "Không tải được danh sách tệp."
     }
 }

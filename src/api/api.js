@@ -263,6 +263,9 @@ export const $HTTP_getConnectionSummary = (params) => {
     );
 }
 
+// get charge point by id
+export const $HTTP_getChargePointById = (params) => { return fetch(`${base_charger}/api/reports/charge-points/${params.chargePointId}`, {})}
+
 /**
  * @description reserve now
  */
@@ -294,3 +297,15 @@ export const $HTTP_sendAuthLocalList = params => { return post(`${base_charger}/
 
 //clear auth local list
 export const $HTTP_deleteAuthLocalList = params => { return del(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param)}
+
+//get diagnostics
+export const $HTTP_postDiagnostics = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/get-diagnostics`, params.param) }
+
+// polling get diagnostics status
+export const $HTTP_getDiagnosticsStatus = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/diagnostics-status`, {})}
+
+//get diagnostics file list
+export const $HTTP_getFileList = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.param) }
+
+//get Diagnostics Download File
+export const $HTTP_getDownloadFile = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}/${params.filename}`, params) }

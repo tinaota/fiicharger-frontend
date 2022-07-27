@@ -335,6 +335,8 @@
         "usedDateTime": "Used Date/Time",
         "remoteTrigger": "Remote Trigger",
         "triggerMsg": "Trigger Message",
+        "fileName": "File Name",
+        "fileSize": "Size",
         "timeOpt": {
             "1Min": "1 min",
             "5Mins": "5 mins",
@@ -540,5 +542,17 @@
         "versionMismatch": "Version number in the request for a differential update is less or equal then version number of current list.",
         "clearListSuccessMsg": "Local list has been cleared.",
         "getIdtagFiledMsg": "Failed to get list of id tags."
+    },
+    "diagnostic": {
+        "uploadingBtn": "Uploading",
+        "waitingBtn": "Waiting",
+        "err_catch": "Request to get diagnostic failed.",
+        "emptyFileName": "No diagnostic information is available.",
+        "uploadIdleMsg": "Task not executed, please click the button to restart.",
+        "uploadFailedMsg": "Retrieving diagnostic failed, please again.",
+        "uploadedMsg": "Retrieving diagnostic successful, please click the button to download the file.",
+        "downloadFileSuccess": "File download complete.",
+        "downloadFileFiled": "File download failed.",
+        "fileListErrorMsg": "File list failed to load."
     }
 }

@@ -335,6 +335,8 @@
         "usedDateTime": "Fecha/hora de uso",
         "remoteTrigger": "Disparador remoto",
         "triggerMsg": "Mensaje de activación",
+        "fileName": "Nombre del archivo",
+        "fileSize": "Tamaño",
         "timeOpt": {
             "1Min": "1 minuto",
             "5Mins": "5 minutos",
@@ -541,5 +543,17 @@
         "versionMismatch": "El número de versión en la solicitud de una actualización diferencial es menor o igual que el número de versión de la lista actual.",
         "clearListSuccessMsg": "Eliminación de lista exitosa",
         "getIdtagFiledMsg": "Error al obtener la lista de etiquetas de identificación."
+    },
+    "diagnostic": {
+        "uploadingBtn": "Cargando",
+        "waitingBtn": "Esperando",
+        "err_catch": "La solicitud para obtener el diagnóstico falló.",
+        "emptyFileName": "No hay información de diagnóstico disponible.",
+        "uploadIdleMsg": "Tarea no ejecutada, haga clic en el botón para reiniciar.",
+        "uploadFailedMsg": "Error al recuperar el diagnóstico, por favor nuevamente.",
+        "uploadedMsg": "Recuperando el diagnóstico con éxito, haga clic en el botón para descargar el archivo.",
+        "downloadFileSuccess": "Descarga de archivos completa.",
+        "downloadFileFiled": "La descarga del archivo falló.",
+        "fileListErrorMsg": "No se pudo cargar la lista de archivos."
     }
 }

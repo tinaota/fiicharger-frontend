@@ -293,8 +293,8 @@
         "nChargers": "充电桩数量",
         "nConnectors": "充电枪数量",
         "updateChargers": "更新充电桩",
-        "diagnostics": "诊断",
-        "updates": "更新",
+        "diagnostics": "获取诊断",
+        "updates": "更新固件",
         "clearCache": "清除缓存",
         "hardReset": "硬复位",
         "softReset": "软复位",
@@ -334,6 +334,8 @@
         "cancelledDateTime": "取消日期/时间",
         "usedDateTime": "使用日期/时间",
         "remoteTrigger": "远程触发",
+        "fileName": "档案名称",
+        "fileSize": "大小",
         "triggerMsg": "触发信息",
         "timeOpt": {
             "1Min": "1分钟",
@@ -540,5 +542,19 @@
         "versionMismatch": "版本号小于或等于当前列表的版本号",
         "clearListSuccessMsg": "删除列表成功",
         "getIdtagFiledMsg": "取得ID标签列表失败"
+    },
+    "diagnostic": {
+        "uploadingBtn": "上传中",
+        "waitingBtn": "充电站接收指令中",
+        "uploadedBtn": "已上传",
+        "uploadFailedBtn": "上传失败",
+        "err_catch": "获取诊断的请求失败",
+        "emptyFileName": "没有可用的诊断信息",
+        "uploadIdleMsg": "任务未执行，请点击按钮重新启动。",
+        "uploadFailedMsg": "檢索診斷失敗，請重試。",
+        "uploadedMsg": "檢索診斷成功，請點擊按鈕下載文件。",
+        "downloadFileSuccess": "档案下载完成",
+        "downloadFileFiled": "档案下载失败",
+        "fileListErrorMsg": "档案列表加载失败"
     }
 }

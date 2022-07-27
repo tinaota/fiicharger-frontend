@@ -335,6 +335,8 @@
         "usedDateTime": "使用日期/時間",
         "remoteTrigger": "遠程觸發",
         "triggerMsg": "觸發訊息",
+        "fileName": "檔案名稱",
+        "fileSize": "大小",
         "timeOpt": {
             "1Min": "1分鐘",
             "5Mins": "5分鐘",
@@ -540,5 +542,17 @@
         "versionMismatch": "版本號小於或等於當前列表的版號",
         "clearListSuccessMsg": "刪除列表成功",
         "getIdtagFiledMsg": "取得ID標籤列表失敗"
+    },
+    "diagnostic": {
+        "uploadingBtn": "上傳中",
+        "waitingBtn": "充電站接收指令中",
+        "err_catch": "獲取診斷的請求失敗。",
+        "emptyFileName": "沒有可用的診斷信息。",
+        "uploadIdleMsg": "任務未執行，請點擊按鈕重新啟動。",
+        "uploadFailedMsg": "檢索診斷失敗，請重試。",
+        "uploadedMsg": "檢索診斷成功，請點擊按鈕下載文件。",
+        "downloadFileSuccess": "檔案下載完成",
+        "downloadFileFiled": "檔案下載失敗",
+        "fileListErrorMsg": "檔案列表加載失敗"
     }
 }
