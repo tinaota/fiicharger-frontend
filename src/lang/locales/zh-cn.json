@@ -3,6 +3,7 @@
     "app_name_short": "Fiicharger系统",
     "error_network": "网路异常!",
     "emptyMessage": "不存在指定搜索条件的数据，请使用新的过滤条件重试！",
+    "noData": "No Data",
     "cannotDelete": "无法删除绑定项目",
     "version": "版本 ",
     "menu": {

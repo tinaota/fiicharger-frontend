@@ -17,23 +17,23 @@
                     <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
-                                {{ getSymbols(scope.row.currencyType) + getSymbols(scope.row.onPeak.rate) + '/' +  getSymbols(scope.row.onPeak.type)}}
+                                {{ getSymbols(scope.row.currencyType) + getSymbols(scope.row.onPeak.rate) + '/' + getSymbols(scope.row.onPeak.type) }}
                             </template>
                         </el-table-column>
                         <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, false)">
                             <template slot-scope="scope">
-                                {{ getSymbols(scope.row.currencyType) + getSymbols(scope.row.offPeak.rate) + '/' +  getSymbols(scope.row.offPeak.type)}}
+                                {{ getSymbols(scope.row.currencyType) + getSymbols(scope.row.offPeak.rate) + '/' + getSymbols(scope.row.offPeak.type) }}
                             </template>
                         </el-table-column>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.parkingRate')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getSymbols(scope.row.currencyType) + getSymbols(scope.row.occupancy.rate) + '/' + getSymbols(scope.row.occupancy.type)}}
+                            {{ getSymbols(scope.row.currencyType) + getSymbols(scope.row.occupancy.rate) + '/' + getSymbols(scope.row.occupancy.type) }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="2">
                         <template slot-scope="scope">
-                            {{getLocTime(scope.row.modified)}}
+                            {{ getLocTime(scope.row.modified) }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
@@ -117,10 +117,6 @@ export default {
             },
         };
     },
-    mounted() {
-        setScrollBar(".scroll", this);
-        this.fetchData();
-    },
     computed: {
         getSymbols() {
             return (item) => transformToSymbols(item);
@@ -129,13 +125,16 @@ export default {
             return (item) => transformUtcToLocTime(item);
         },
     },
+    mounted() {
+        setScrollBar(".scroll", this);
+        this.fetchData();
+    },
     methods: {
         changePage(page) {
             this.page = page;
             this.fetchData();
         },
         fetchData(type) {
-            const that = this;
             this.isLoading = true;
             let params = {
                 page: this.page,
@@ -158,7 +157,9 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        if(this.filter.name){
+                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        }
                     }
                 })
                 .catch((err) => {

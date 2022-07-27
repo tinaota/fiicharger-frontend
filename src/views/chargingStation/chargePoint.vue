@@ -222,18 +222,12 @@ export default {
             filter: {
                 tmpSearch: "",
                 search: "",
-                // stationId: '',
                 zipCode: "",
-                operatorTypeId: "",
                 currentType: null,
                 chargeBoxStatus: null,
                 name: null
             },
             isLoading: false,
-            // stationList: {
-            //     isLoading: false,
-            //     data: {}
-            // },
             loctionList: {
                 isLoading: false,
                 data: []
@@ -256,7 +250,6 @@ export default {
                         lat: ""
                     },
                     id: "",
-                    stationId: "",
                     chargeType: "AC",
                     unitType: "",
                     power: 0,
@@ -266,7 +259,6 @@ export default {
                     offPeakElectricityRateType: 1,
                     parkingRate: 0,
                     installationDate: "",
-                    operatorTypeId: "",
                     dateTimeTest: ""
                 }
             },
@@ -371,12 +363,6 @@ export default {
                 page: this.page,
                 limit: this.limit
             };
-            if (
-                this.filter.operatorTypeId &&
-                this.filter.operatorTypeId != "1"
-            ) {
-                param.operatorTypeId = this.filter.operatorTypeId;
-            }
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
@@ -418,10 +404,18 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("emptyMessage")
-                        });
+                        if (
+                            this.filter.name ||
+                            this.filter.tmpSearch ||
+                            this.filter.zipCode ||
+                            this.filter.chargeBoxStatus ||
+                            this.filter.currentType
+                        ) {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("emptyMessage")
+                            });
+                        }
                     }
                 })
                 .catch((err) => {

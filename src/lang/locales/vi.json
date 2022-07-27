@@ -3,6 +3,7 @@
     "app_name_short": "Hệ thống Fiicharger",
     "error_network": "Lỗi mạng",
     "emptyMessage": "Không có Dữ liệu nào tồn tại với tiêu chí tìm kiếm được chỉ định, hãy thử lại với tiêu chí lọc mới!",
+    "noData": "No Data",
     "cannotDelete": "Không thể xóa mục liên kết",
     "version": "Bản quyền ",
     "menu": {

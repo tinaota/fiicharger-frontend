@@ -110,6 +110,11 @@ export default {
             },
         };
     },
+    computed: {
+        getSymbols() {
+            return (item) => transformToSymbols(item);
+        },
+    },
     mounted() {
         this.fetchCurrencyList();
         this.fetchRateTypeList();
@@ -131,11 +136,6 @@ export default {
             setScrollBar(".formVertical", that);
         });
     },
-    computed: {
-        getSymbols() {
-            return (item) => transformToSymbols(item);
-        },
-    },
     methods: {
         fetchRateTypeList() {
             $HTTP_getRateTypeList()
@@ -143,7 +143,7 @@ export default {
                     if (res.length > 0) {
                         this.rateList = res;
                     } else {
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
@@ -158,7 +158,7 @@ export default {
                     if (res.length > 0) {
                         this.currencyList = res;
                     } else {
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {

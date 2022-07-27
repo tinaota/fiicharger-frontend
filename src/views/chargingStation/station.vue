@@ -457,10 +457,16 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("emptyMessage")
-                        });
+                        if (
+                            this.filter.stationName ||
+                            this.filter.zipCode ||
+                            this.filter.status
+                        ) {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("emptyMessage")
+                            });
+                        }
                     }
                 })
                 .catch(() => {
@@ -1014,11 +1020,11 @@ ul {
     font-weight: 600;
 }
 
-.actions{
- padding:10px 0px;
- margin:0px;  
+.actions {
+    padding: 10px 0px;
+    margin: 0px;
 }
-.actionFunction{
+.actionFunction {
     margin-left: 10px;
 }
 </style>

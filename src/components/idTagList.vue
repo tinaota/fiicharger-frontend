@@ -9,6 +9,7 @@
 import { $HTTP_getIdTagsList } from "@/api/api";
 
 export default {
+    emits: ["idTag"],
     data() {
         return {
             idTag: "",
@@ -40,8 +41,8 @@ export default {
                     });
                 });
         },
-        updateIdTag(){
-            this.$emit("idTag",this.idTag)
+        updateIdTag() {
+            this.$emit("idTag", this.idTag);
         }
     }
 };

@@ -400,7 +400,7 @@ export default {
                         this.isLoading = false;
                         this.$message({
                             type: "warning",
-                            message: i18n.t("emptyMessage")
+                            message: i18n.t("noData")
                         });
                     }
                 })

@@ -456,7 +456,7 @@ export default {
                         this.total = 0;
                         this.$message({
                             type: "warning",
-                            message: i18n.t("emptyMessage")
+                            message: i18n.t("noData")
                         });
                     }
                 })

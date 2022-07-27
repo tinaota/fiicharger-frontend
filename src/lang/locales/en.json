@@ -3,6 +3,7 @@
     "app_name_short": "Fiicharger System",
     "error_network": "Network request error!",
     "emptyMessage": "No Data exists with specified search criteria, try again with new filter criteria!",
+    "noData":"No Data",
     "cannotDelete": "Cannot delete binded item",
     "version": "Ver ",
     "menu": {

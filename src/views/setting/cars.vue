@@ -23,13 +23,13 @@
                     <el-table-column prop="year" :label="$t('cars.year')" :min-width="4"></el-table-column>
                     <el-table-column :label="$t('cars.acPower')" :min-width="3">
                         <template slot-scope="scope">
-                            {{scope.row.chargePower ? scope.row.chargePower + "kW" : ''}}
+                            {{ scope.row.chargePower ? scope.row.chargePower + "kW" : '' }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="plugType" :label="$t('cars.acPlug')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('cars.dcPower')" :min-width="3">
                         <template slot-scope="scope">
-                            {{scope.row.fastChargePower ? scope.row.fastChargePower + "kW" : ''}}
+                            {{ scope.row.fastChargePower ? scope.row.fastChargePower + "kW" : '' }}
                         </template>
                     </el-table-column>
                     <el-table-column prop="fastChargePlugType" :label="$t('cars.dcPlug')" :min-width="3"></el-table-column>
@@ -46,7 +46,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <div class="total">{{ $t("general.result", {item:total})}}</div>
+                <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
                 <el-dialog :title="$t('general.detail')" width="50%" :visible.sync="dialog.visible" :show-close="false" v-loading="dialog.isLoading" @close="closeDialog(null,'detail')">
@@ -96,7 +96,7 @@
                                     </div>
                                     <div class="item">
                                         <div class="label">{{ $t('cars.dcPower') }}</div>
-                                        <div class="info">{{ dialog.info.carBatteryInfo.dcPower ? dialog.info.carBatteryInfo.dcPower +' kW' : '-'}}</div>
+                                        <div class="info">{{ dialog.info.carBatteryInfo.dcPower ? dialog.info.carBatteryInfo.dcPower +' kW' : '-' }}</div>
                                     </div>
                                     <div class="item">
                                         <div class="label">{{ $t('cars.chargeSpeed') }}</div>
@@ -226,7 +226,7 @@ export default {
                         that.carBandList.data = res.data;
                     } else {
                         that.carBandList.data = {};
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
@@ -249,7 +249,7 @@ export default {
                         that.carModelList.data = res.data;
                     } else {
                         that.carModelList.data = {};
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
@@ -259,7 +259,6 @@ export default {
                 });
         },
         fetchData(type) {
-            const that = this;
             this.isLoading = true;
             let param = {
                 page: this.page,
@@ -286,7 +285,9 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        if(this.filter.carBrand || this.filter.carModel){
+                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        }
                     }
                 })
                 .catch((err) => {
@@ -325,7 +326,7 @@ export default {
                         that.dialog.info.carTypeInfo = Object.assign({}, _carTypeInfo);
                         that.dialog.info.carBatteryInfo = Object.assign({}, _carBatteryInfo);
                     } else {
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        this.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
@@ -348,7 +349,6 @@ export default {
             this.fetchData();
         },
         openDetailDialog(carId) {
-            const that = this;
             this.dialog.carId = carId;
             this.dialog.info = {
                 carTypeInfo: {
@@ -391,7 +391,7 @@ export default {
             this.editCarsDialog.data = data;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        handleTabClick(tab, event) {},
+        handleTabClick() {},
         closeDialog(e, dialog) {
             if (dialog === "create") {
                 this.createCarsDialog.show = false;

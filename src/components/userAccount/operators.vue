@@ -16,13 +16,13 @@
             <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                 <el-table-column :label="$t('userAccount.operatorName')" :min-width="3">
                     <template slot-scope="scope">
-                        {{clientName(scope.row)}}
+                        {{ clientName(scope.row) }}
                     </template>
                 </el-table-column>
 
                 <el-table-column :label="$t('userAccount.logo')" :min-width="3">
                     <template slot-scope="scope">
-                        <img :src="getImageUrl(scope.row.picture)" class="logo" v-bind:style="{maxHeight: '50px',maxWidth:'50px'}">
+                        <img :src="getImageUrl(scope.row.picture)" class="logo" :style="{maxHeight: '50px',maxWidth:'50px'}">
                     </template>
                 </el-table-column>
 
@@ -33,14 +33,14 @@
                 </el-table-column>
                 <el-table-column :label="$t('userAccount.mobileVerification')" :min-width="2">
                     <template slot-scope="scope">
-                        {{convertBooleanToString(scope.row.phoneNumberConfirmed)}}
+                        {{ convertBooleanToString(scope.row.phoneNumberConfirmed) }}
                     </template>
                 </el-table-column>
 
                 <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
                 <el-table-column prop="emailConfirmed" :label="$t('userAccount.emailVerification')" :min-width="2">
                     <template slot-scope="scope">
-                        {{convertBooleanToString(scope.row.emailConfirmed)}}
+                        {{ convertBooleanToString(scope.row.emailConfirmed) }}
                     </template>
                 </el-table-column>
 
@@ -70,7 +70,7 @@
                         <div class="label">{{ $t('userAccount.lastName') }}</div>
                         <el-input v-model="dialog.info.lastName"></el-input>
                     </div>
-                    <div v-bind:class="{'hide': (dialog.type===0),'form-item':true}">
+                    <div :class="{'hide': (dialog.type===0),'form-item':true}">
                         <el-tabs v-model="activeImageTab">
                             <el-tab-pane :label="$t('userAccount.uploadPicture')" name="upload">
                                 <el-upload ref="updateImg" class="upload-demo" list-type="picture-card" :action="dialog.$Api" :data="dialog.uploadParams" accept="image/gif,image/jpeg,image/png,image/jpg" :limit="1" :auto-upload="false" :on-exceed="handleExceed" :before-upload="onBeforeUploadPic" :on-success="handleSuccess" :on-error="handleError" :on-change="handleFileChange" :on-remove="handleFileChange" :file-list="dialog.file">
@@ -87,7 +87,7 @@
                         </el-tabs>
                     </div>
 
-                    <div v-bind:class="{'hide': (dialog.type===0),'form-item':true}">
+                    <div :class="{'hide': (dialog.type===0),'form-item':true}">
                         <div class="label">{{ $t('userAccount.mobile') }}</div>
                         <el-input v-model="dialog.info.phoneNumber"></el-input>
                     </div>
@@ -144,7 +144,7 @@ import { setScrollBar } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
 import AddRoles from "@/components/userAccount/addRoles";
-import { validateImageUrl, validateEmail, validatePassword, validateConfirmedNewPassword } from "@/utils/validation";
+import { validateImageUrl, validateEmail, validatePassword } from "@/utils/validation";
 export default {
     components: {
         ChangePwd,
@@ -224,6 +224,14 @@ export default {
             globalBaseUrl: $GLOBAL_BASE_URL,
         };
     },
+    computed: {
+        clientName() {
+            return (customer) => customer.firstName + " " + customer.lastName;
+        },
+        convertBooleanToString() {
+            return (value) => value.toString();
+        },
+    },
     created() {
         let fiics_user = this.$store.state.userInfo;
         let roles = fiics_user.roles;
@@ -236,14 +244,6 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchData();
-    },
-    computed: {
-        clientName() {
-            return (customer) => customer.firstName + " " + customer.lastName;
-        },
-        convertBooleanToString() {
-            return (value) => value.toString();
-        },
     },
     methods: {
         showPasswordMethod(value) {
@@ -262,7 +262,6 @@ export default {
             return final_url;
         },
         fetchData(type) {
-            const that = this;
             let param = {
                 page: this.page,
                 limit: this.limit,
@@ -292,12 +291,15 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        if(this.filter.roles || this.filter.tmpEmail || this.filter.tmpContactPersion){
+                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        }
                     }
                 })
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
+                    console.log(err)
                     this.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
@@ -345,7 +347,7 @@ export default {
                 setScrollBar(".formVertical", this);
             });
         },
-        handleExceed(response, file, fileList) {
+        handleExceed() {
             this.$message.warning(i18n.t("general.onlyOneFile"));
         },
         handleFileChange(file, fileList) {
@@ -364,7 +366,7 @@ export default {
             }
             return flag;
         },
-        handleSuccess(response, file, fileList) {
+        handleSuccess(response) {
             if (response.success == 1) {
                 this.$message({
                     type: "success",
@@ -379,7 +381,7 @@ export default {
                 this.$refs.updateImg && this.$refs.updateImg.clearFiles();
             }
         },
-        handleError(response, file, fileList) {
+        handleError() {
             this.dialog.isLoading = false;
             this.$refs.updateImg && this.$refs.updateImg.clearFiles();
             this.$message({ type: "error", message: i18n.t("error_network") });

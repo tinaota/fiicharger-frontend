@@ -180,7 +180,9 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        if(this.filter.id ||this.filter.isExpired || this.filter.isBlocked || this.filter.parentIdTagId){
+                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        }
                     }
                 })
                 .catch((err) => {
