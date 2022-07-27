@@ -44,17 +44,16 @@
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type) }}</div>
-                            <div class="content" v-else>{{ $t('general.free') }}</div>
+                            <div class="content">{{ chargePointById[0].chargePrice? $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type) :$t('general.free') }}</div>
                         </div>
-                        <div class="item">
+                        <!-- add a condition to show only one free line -->
+                        <div class="item" v-if="chargePointById[0].chargePrice">
                             <div class="label"></div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
-                            <div class="content" v-else>{{ $t('general.free') }}</div>
+                            <div class="content">{{ chargePointById[0].chargePrice? $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type):$t('general.free') }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.occupancy.rate+'/' +getSymbols(chargePointById[0].chargePrice.occupancy.type) }}</div>
+                            <div class="content">{{ chargePointById[0].chargePrice? getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.occupancy.rate+'/' +getSymbols(chargePointById[0].chargePrice.occupancy.type):$t('general.free') }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('general.installationDate') }}</div>

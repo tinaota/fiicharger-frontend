@@ -50,18 +50,18 @@
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.onPeak') }} : </div>
-                                <div class="msg"> {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):'-' }}
+                                <div class="msg"> {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):$t('general.free') }}
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.offPeak') }} : </div>
-                                <div class="msg"> {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.offPeak.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-' }}
+                                <div class="msg"> {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.offPeak.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }}
                                 </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.parkingRate') }} : </div>
                                 <div class="msg">
-                                    {{ item.chargePrice!==null? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):'-' }} </div>
+                                    {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }} </div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('general.status') }} : </div>
