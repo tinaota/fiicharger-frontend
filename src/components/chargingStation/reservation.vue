@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-table :data="tableData" v-loading="isLoading">
-            <el-table-column prop="reservationId" :label="$t('chargingStation.reservationId')" :min-width="2"></el-table-column>
+            <el-table-column prop="id" :label="$t('chargingStation.reservationId')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2"></el-table-column>
             <el-table-column prop="idTag" :label="$t('menu.idTag')" :min-width="2"></el-table-column>
             <el-table-column prop="transatctionId" :label="$t('chargingStation.transactionId')" :min-width="2"></el-table-column>
@@ -17,7 +17,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <div class="total">{{ $t("general.result", {item:total})}}</div>
+        <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
     </div>
@@ -33,15 +33,6 @@ export default {
         chargerId: String,
         isUpdateData: Boolean
     },
-    watch: {
-        isUpdateData: {
-            handler() {
-                if (this.isUpdateData) {
-                    this.fetchReservations();
-                }
-            }
-        }
-    },
     data() {
         return {
             isLoading: false,
@@ -55,6 +46,15 @@ export default {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
         },
+    },
+    watch: {
+        isUpdateData: {
+            handler() {
+                if (this.isUpdateData) {
+                    this.fetchReservations();
+                }
+            }
+        }
     },
     mounted() {
         this.fetchReservations();
@@ -101,7 +101,7 @@ export default {
     },
 };
 </script>
-<style lang = "scss"scoped>
+<style lang = "scss" scoped>
 .mainctrl .card-8 {
     padding: 28px;
     width: calc(100% - 56px);
