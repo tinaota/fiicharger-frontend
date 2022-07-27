@@ -77,6 +77,14 @@ export const $HTTP_getAllTransactions = (params) => {
     return fetch(`${base_charger}/api/reports/transactions`, params)
 }
 
+export const $HTTP_startConnectorTransaction = (params) => {
+    return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions`,params);
+}
+
+export const $HTTP_stopConnectorTransaction = (params) => {
+        return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions/stop`,params);
+}
+
 // Id Tag apis
 export const $HTTP_getIdTagsList = (params) => { return fetch(`${base_charger}/api/reports/id-tags`, params) }
 

@@ -161,7 +161,8 @@
         "accessibility": "可訪問性",
         "description": "描述",
         "value": "價值",
-        "perform": "執行"
+        "perform": "執行",
+        "free": "Free"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -466,6 +467,12 @@
         "disableConnector": "Disable Connector",
         "disableConnectorQuestion": "Are you sure you wish to disable connector of",
         "disableConnectorSuccess": "Connector has been disabled",
-        "disableConnectorRejected": "Connector has not been disabled(Rejected)"
+        "disableConnectorRejected": "Connector has not been disabled(Rejected)",
+        "startConnectorTransaction": "Start Transaction",
+        "startConnectorTransactionQuestion": "Are you sure you wish to start transaction for connector",
+        "startConnectorTransactionSuccess": "Remote transaction has been started",
+        "stopConnectorTransaction": "Stop Transaction",
+        "stopConnectorTransactionQuestion": "Are you sure you wish to stop transaction for connector",
+        "stopConnectorTransactionSuccess": "Remote transaction has been stopped"
     }
 }

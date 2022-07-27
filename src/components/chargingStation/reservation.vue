@@ -4,7 +4,7 @@
             <el-table-column prop="id" :label="$t('chargingStation.reservationId')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2"></el-table-column>
             <el-table-column prop="idTag" :label="$t('menu.idTag')" :min-width="2"></el-table-column>
-            <el-table-column prop="transatctionId" :label="$t('chargingStation.transactionId')" :min-width="2"></el-table-column>
+            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" :min-width="2"></el-table-column>
             <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
             <el-table-column :label="$t('chargingStation.startDateTime')" :min-width="3">
                 <template slot-scope="scope">

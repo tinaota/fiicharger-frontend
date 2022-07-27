@@ -45,10 +45,12 @@
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.elecRate') }}</div>
                             <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type) }}</div>
+                            <div class="content" v-else>{{ $t('general.free') }}</div>
                         </div>
-                        <div class="item" v-if="chargePointById[0].chargePrice!==null">
+                        <div class="item">
                             <div class="label"></div>
-                            <div class="content">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
+                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
+                            <div class="content" v-else>{{ $t('general.free') }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
@@ -173,13 +175,13 @@
                                                 <span>
                                                     <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'startConnector')">{{ $t('general.start') }}</span>
+                                                <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'startConnectorTransaction')">{{ $t('general.start') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-stop" aria-hidden="true" style="color:#fc2e56"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'stopConnector')">{{ $t('general.stop') }}</span>
+                                                <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'stopConnectorTransaction')">{{ $t('general.stop') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
@@ -249,9 +251,7 @@ import Transaction from "@/components/chargingStation/transaction";
 import Reservation from "@/components/chargingStation/reservation";
 import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
-import {
-    $HTTP_getAllChargeBoxList
-} from "@/api/api";
+import { $HTTP_getAllChargeBoxList } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import CommonPopup from "@/components/commonPopup";
@@ -376,7 +376,8 @@ export default {
                 };
                 this.reserveNow.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
-                this.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+                this.$jQuery(".formVertical").length > 0 &&
+                    this.$jQuery(".formVertical").mCustomScrollbar("destroy");
                 this.$nextTick(() => {
                     setScrollBar(".formVertical", this);
                 });
@@ -486,7 +487,7 @@ export default {
             }
             this.setTimerApiCall();
         },
-        aleadyUpdateReservationData () {
+        aleadyUpdateReservationData() {
             this.isUpDateReservationData = false;
         }
     }
