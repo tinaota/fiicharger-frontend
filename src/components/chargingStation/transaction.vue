@@ -85,7 +85,9 @@ export default {
             this.isLoading = true;
             let params = {
                 page: this.page,
-                limit: this.limit
+                limit: this.limit,
+                IsDescending: true,
+                OrderBy: "startTimestamp"
             };
             if (this.filter.stopReason) {
                 params.StopReason = this.filter.stopReason;
