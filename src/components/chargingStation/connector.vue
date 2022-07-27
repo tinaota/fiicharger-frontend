@@ -42,7 +42,7 @@ export default {
     },
     watch: {
         dataObj: function () {
-            // If "dataObj" ever changes, then we will console log its new value.
+            // If "dataObj" ever changes, then we will count the no of connectors.
             this.countConnectors();
         }
     },

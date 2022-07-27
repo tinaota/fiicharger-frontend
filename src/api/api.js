@@ -29,7 +29,10 @@ export const $HTTP_updateImage = params => {
 //OCPP
 //OCPP availability
 export const $HTTP_updateOccpAvailability = (params) => {
-    return post(`${base_charger}/api/ocpp/charge-points/${params.chargeBoxId}/change-availability`, params)
+    return post(
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/change-availability`,
+        params
+    );
 }
 
 //get configurations of each chargepoint
@@ -56,6 +59,12 @@ export const $HTTP_clearCache = (params) => {
 export const $HTTP_resetChargers = (params) => {
     return post(
         `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/reset/${params.type}`
+    );
+};
+
+export const $HTTP_unlockConnector = (params) => {
+    return post(
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/unlock`,params
     );
 };
 

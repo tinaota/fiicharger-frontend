@@ -46,9 +46,9 @@
                             <div class="label">{{ $t('chargingStation.elecRate') }}</div>
                             <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.onPeak') + ' '+ getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.onPeak.rate+ '/'+getSymbols(chargePointById[0].chargePrice.onPeak.type) }}</div>
                         </div>
-                        <div class="item">
+                        <div class="item" v-if="chargePointById[0].chargePrice!==null">
                             <div class="label"></div>
-                            <div class="content" v-if="chargePointById[0].chargePrice!==null">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
+                            <div class="content">{{ $t('chargingStation.offPeak') + ' '+getSymbols(chargePointById[0].chargePrice.currencyType)+ chargePointById[0].chargePrice.offPeak.rate+'/' +getSymbols(chargePointById[0].chargePrice.offPeak.type) }}</div>
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.parkingRate') }}</div>
@@ -185,19 +185,19 @@
                                                 <span>
                                                     <i class="fa fa-unlock" aria-hidden="true"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'unlockConnector')">{{ $t('general.unlock') }}</span>
+                                                <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'unlockConnector')">{{ $t('general.unlock') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-toggle-on" aria-hidden="true" style="color:#61b061"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'enableConnector')">{{ $t('general.enable') }}</span>
+                                                <span class="actionFunction" @click="openDialog(scope.row, 'commonpopup', 'enableConnector')">{{ $t('general.enable') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
                                                     <i class="fa fa-toggle-off" aria-hidden="true" style="color:#fc2e56"></i>
                                                 </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'disableConnector')">{{ $t('general.disable') }}</span>
+                                                <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'disableConnector')">{{ $t('general.disable') }}</span>
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
@@ -230,7 +230,7 @@
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
-                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
+                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
             </div>
@@ -250,7 +250,6 @@ import Reservation from "@/components/chargingStation/reservation";
 import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
 import {
-    $HTTP_updateOccpAvailability,
     $HTTP_getAllChargeBoxList
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
@@ -290,7 +289,8 @@ export default {
             commonpopup: {
                 show: false,
                 chargePointId: null,
-                action: ""
+                action: "",
+                rowData: {}
             },
             filter: {
                 dateRange: []
@@ -367,15 +367,7 @@ export default {
         runAction(data, action) {
             let params = { ...data };
 
-            if (action === "enableConnector") {
-                params.type = "Operative";
-                params.connectorId = params.id;
-                this.updateOccpAvailability(params);
-            } else if (action === "disableConnector") {
-                params.type = "Inoperative";
-                params.connectorId = params.id;
-                this.updateOccpAvailability(params);
-            } else if (action === "reserveNow") {
+            if (action === "reserveNow") {
                 this.reserveNow.data = {
                     chargePointId: this.chargePointById[0].id,
                     name: this.chargePointById[0].name,
@@ -424,24 +416,6 @@ export default {
                     });
                 });
         },
-        updateOccpAvailability(data) {
-            let params = { ...data };
-            params.chargeBoxId = this.chargePointById[0].id;
-            $HTTP_updateOccpAvailability(params)
-                .then((data) => {
-                    if (data === "Accepted") {
-                        this.$message({
-                            type: "success",
-                            message: i18n.t("general.sucUpdateMsg")
-                        });
-                        this.setTimerApiCall();
-                    }
-                })
-                .catch((err) => {
-                    console.log("occpAvailability", err);
-                    this.$message({ type: "warning", message: err.data });
-                });
-        },
         setTimerApiCall() {
             //delay for 2seconds before requesting data
             this.timeOut = setTimeout(() => {
@@ -483,6 +457,9 @@ export default {
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = this.chargePointById[0].id;
                 this.commonpopup.action = action;
+                if (row) {
+                    this.commonpopup.rowData = row;
+                }
             }
         },
         closeDialog(type, data) {

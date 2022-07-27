@@ -1,7 +1,8 @@
 <template>
     <el-dialog :title="$t(`actions.${action}`)" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
-            <p>{{ $t(`actions.${action}Question`) }} {{ chargePointId }} ?</p>
+            <!-- choose connector if row data is present else charger id -->
+            <p>{{ $t(`actions.${action}Question`) }} {{ rowData.id!==undefined? rowData.id: chargePointId }} ?</p>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -11,13 +12,19 @@
 </template>
 
 <script>
-import { $HTTP_clearCache, $HTTP_resetChargers } from "@/api/api";
+import {
+    $HTTP_clearCache,
+    $HTTP_resetChargers,
+    $HTTP_updateOccpAvailability,
+    $HTTP_unlockConnector
+} from "@/api/api";
 
 export default {
     props: {
         show: Boolean,
         chargePointId: String,
-        action: String
+        action: String,
+        rowData: Object
     },
     data() {
         return {
@@ -27,7 +34,8 @@ export default {
             $API: null,
             params: {
                 chargePointId: "",
-                type: ""
+                type: "",
+                connectorId: null
             }
         };
     },
@@ -43,20 +51,25 @@ export default {
         } else if (this.action === "softReset") {
             this.$API = $HTTP_resetChargers;
             this.params.type = "Soft";
+        } else if (this.action === "disableConnector") {
+            this.params.type = "Inoperative";
+            this.params.connectorId = this.rowData.id;
+            this.$API = $HTTP_updateOccpAvailability;
+        } else if (this.action === "enableConnector") {
+            this.params.type = "Operative";
+            this.params.connectorId = this.rowData.id;
+            this.$API = $HTTP_updateOccpAvailability;
+        } else if (this.action === "unlockConnector") {
+            this.params.connectorId = this.rowData.id;
+            this.$API = $HTTP_unlockConnector;
         }
+        console.log(this.action, this.rowData);
     },
     methods: {
         callApi() {
             this.$API(this.params)
                 .then((res) => {
-                    if (res === "Accepted") {
-                        this.isUpdate = true;
-                        this.visible = false;
-                        this.$message({
-                            type: "success",
-                            message: i18n.t(`actions.${this.action}Success`)
-                        });
-                    }
+                    this.checkResponse(res);
                 })
                 .catch((err) => {
                     console.log(err);
@@ -66,6 +79,40 @@ export default {
                         message: i18n.t("error_network")
                     });
                 });
+        },
+        checkResponse(res) {
+            this.isUpdate = true;
+            this.visible = false;
+            if (this.action === "unlockConnector") {
+                if (res === "Unlocked") {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t("actions.unlockConnectorSuccess")
+                    });
+                } else if (res === "UnlockFailed") {
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("actions.unlockConnectorFailed")
+                    });
+                } else if (res === "NotSupported") {
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("actions.unlockConnectorNotSupported")
+                    });
+                }
+            } else {
+                if (res === "Accepted") {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t(`actions.${this.action}Success`)
+                    });
+                } else {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t(`actions.${this.action}Rejected`)
+                    });
+                }
+            }
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);
