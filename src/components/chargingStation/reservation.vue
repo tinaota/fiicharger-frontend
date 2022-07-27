@@ -63,7 +63,8 @@ export default {
         fetchReservations() {
             let params = {
                 page: this.page,
-                limit: this.limit
+                limit: this.limit,
+                ChargePointId:this.chargerId
             };
             this.isLoading = true;
             $HTTP_getReservation(params)

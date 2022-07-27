@@ -226,7 +226,7 @@
                         </el-tab-pane>
                     </el-tabs>
                     <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
-                    <Reservation v-else-if="active==='reservation'" :chargePointId="this.chargePointById[0].id" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
+                    <Reservation v-else-if="active==='reservation'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
