@@ -1018,4 +1018,7 @@ ul {
  padding:10px 0px;
  margin:0px;  
 }
+.actionFunction{
+    margin-left: 10px;
+}
 </style>

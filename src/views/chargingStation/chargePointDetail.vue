@@ -61,10 +61,6 @@
                             <div class="content">{{ getLocTime( chargePointById[0].created) }}</div>
                         </div>
                         <div class="item">
-                            <div class="label">{{ $t('general.operator') }}</div>
-                            <div class="content"></div>
-                        </div>
-                        <div class="item">
                             <div class="label">{{ $t('chargingStation.lastHeartbeat') }}</div>
                             <div class="content">{{ getLocTime(chargePointById[0].lastHeartbeat) }}</div>
                         </div>
@@ -163,7 +159,7 @@
                                     <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column>
+                          <!-- <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column> -->
                             <el-table-column :label="$t('chargingStation.charging')" :width="146">
                                 <template slot-scope="scope">
                                     <el-dropdown trigger="click">
@@ -560,10 +556,12 @@ export default {
 
     .secondCol {
         width: calc(20.05% - 32px) !important;
+        padding:0px 28px;
     }
 
     .thirdCol {
         width: calc(40.05% - 32px) !important;
+          padding:0px 28px;
     }
 
     .rank-area {
@@ -614,9 +612,6 @@ export default {
     font-weight: 600;
 }
 
-.fa-pencil {
-    float: right;
-}
 .fa-pencil:hover {
     cursor: pointer;
 }
@@ -629,7 +624,9 @@ export default {
     }
     .thirdCol {
         flex: 75%;
-        padding: 28px 0px;
+    }
+    .card-8   .thirdCol{
+    padding: 28px 0px;
     }
 }
 </style>

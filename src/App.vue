@@ -44,7 +44,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Roboto Condensed", sans-serif;
-    font-size: 14px;
+    font-size: 1rem;
     -webkit-font-smoothing: antialiased;
     background: #d5e0ef;
     letter-spacing: 0.7px;
