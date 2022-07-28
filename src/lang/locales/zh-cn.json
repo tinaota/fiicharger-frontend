@@ -161,9 +161,9 @@
         "settings": "设置",
         "accessibility": "可访问性",
         "description": "描述",
-        "value": "价值",
+        "value": "值",
         "perform": "执行",
-        "free": "自由的"
+        "free": "免费"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -321,8 +321,8 @@
         "transactionId": "交易编号",
         "startDateTime": "开始日期/时间",
         "expiryDateTime": "失效日期/时间",
-        "cancelledDateTime": "已取消的日期时间",
-        "usedDateTime": "已被使用的日期时间"
+        "cancelledDateTime": "取消日期/时间",
+        "usedDateTime": "使用日期/时间"
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -460,7 +460,7 @@
         "unlockConnectorQuestion": "确定要解锁充电枪{item}吗",
         "unlockConnectorSuccess": "解锁充电枪成功",
         "unlockConnectorFailed": "解锁充电枪失败",
-        "unlockConnectorNotSupported": "无可用充电枪锁或充电枪ID无效",
+        "unlockConnectorNotSupported": "无充电枪锁",
         "enableConnector": "启用充电枪",
         "enableConnectorQuestion": "确定要启用充电枪{item}吗",
         "enableConnectorSuccess": "启用充电枪成功",

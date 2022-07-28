@@ -460,7 +460,7 @@
         "unlockConnectorQuestion": "Are you sure you wish to unlock connector {item}?",
         "unlockConnectorSuccess": "Request to unlock the connector succeeded",
         "unlockConnectorFailed": "Request to unlock the connector failed",
-        "unlockConnectorNotSupported": "Charger has no connector lock, or connector Id is unknown",
+        "unlockConnectorNotSupported": "Charger has no connector lock",
         "enableConnector": "Enable Connector",
         "enableConnectorQuestion": "Are you sure you wish to enable connector {item}?",
         "enableConnectorSuccess": "Request to enable the connector succeeded",
