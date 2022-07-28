@@ -322,7 +322,9 @@
         "startDateTime": "Ngày / Giờ bắt đầu",
         "expiryDateTime": "Ngày / Giờ hết hạn",
         "cancelledDateTime": "Ngày / giờ bị hủy",
-        "usedDateTime": "Ngày / giờ đã sử dụng"
+        "usedDateTime": "Ngày / giờ đã sử dụng",
+        "remoteTrigger": "Kích hoạt từ xa",
+        "triggerMsg": "Thông báo kích hoạt"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

@@ -272,3 +272,8 @@ export const $HTTP_getReservation = params => { return fetch(`${base_charger}/ap
  * @description cancel reservation
  */
 export const $HTTP_cancelReservation = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/reservations/cancel`, params) }
+
+/**
+ * @description Send Trigger Message
+ */
+ export const $HTTP_sendTriggerMessage = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/trigger-message`, params) }

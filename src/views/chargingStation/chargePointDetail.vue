@@ -112,6 +112,13 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="openDialog(chargePointById[0].id,'commonpopup','hardReset')">{{ $t('general.reset') }}</el-button>
                             </li>
+                            <li>
+                                <span>
+                                    {{ $t('chargingStation.remoteTrigger') }}
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'remoteTrigger')">{{ $t('general.run') }}</el-button>
+                            </li>
+
                         </ul>
                     </div>
                     <div class="card-8 rank-area thirdCol table-result">
@@ -230,6 +237,7 @@
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
+                <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
             </div>
         </div>
     </div>
@@ -250,7 +258,7 @@ import { $HTTP_getAllChargeBoxList } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import CommonPopup from "@/components/commonPopup";
-
+import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
 // import moment from "moment";
 // import { $GLOBAL_GRAFANA } from "@/utils/global";
 // const baseGrafanaUrl = $GLOBAL_GRAFANA;
@@ -265,7 +273,8 @@ export default {
         CommonPopup,
         Reservation,
         ReserveNow,
-        CancelReservation
+        CancelReservation,
+        RemoteTrigger
     },
     data() {
         return {
@@ -310,6 +319,10 @@ export default {
                 data: {}
             },
             cancelReservation: {
+                visible: false,
+                data: {}
+            },
+            remoteTrigger: {
                 visible: false,
                 data: {}
             }
@@ -367,7 +380,6 @@ export default {
     methods: {
         runAction(data, action) {
             let params = { ...data };
-
             if (action === "reserveNow") {
                 this.reserveNow.data = {
                     chargePointId: this.chargePointById[0].id,
@@ -388,6 +400,13 @@ export default {
                     connectorId: params.id
                 };
                 this.cancelReservation.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "remoteTrigger") {
+                this.remoteTrigger.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    name: this.chargePointById[0].name
+                }
+                this.remoteTrigger.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
@@ -484,6 +503,9 @@ export default {
             } else if (type === "cancelReservation") {
                 this.cancelReservation.visible = false;
                 this.isUpDateReservationData = data;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "remoteTrigger") {
+                this.remoteTrigger.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();

@@ -322,7 +322,9 @@
         "startDateTime": "開始日期/時間",
         "expiryDateTime": "失效日期/時間",
         "cancelledDateTime": "取消日期/時間",
-        "usedDateTime": "使用日期/時間"
+        "usedDateTime": "使用日期/時間",
+        "remoteTrigger": "遠程觸發",
+        "triggerMsg": "觸發訊息"
     },
     "userAccount": {
         "memberName": "會員名稱",

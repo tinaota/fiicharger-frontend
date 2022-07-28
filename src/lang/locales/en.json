@@ -322,7 +322,9 @@
         "startDateTime": "Start Date/Time",
         "expiryDateTime": "Expiry Date/Time",
         "cancelledDateTime": "Cancelled Date/Time",
-        "usedDateTime": "Used Date/Time"
+        "usedDateTime": "Used Date/Time",
+        "remoteTrigger": "Remote Trigger",
+        "triggerMsg": "Trigger Message"
     },
     "userAccount": {
         "memberName": "Member Name",

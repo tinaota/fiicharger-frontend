@@ -322,7 +322,9 @@
         "startDateTime": "Fecha/hora de inicio",
         "expiryDateTime": "Fecha/hora de caducidad",
         "cancelledDateTime": "Fecha/hora cancelada",
-        "usedDateTime": "Fecha/hora de uso"
+        "usedDateTime": "Fecha/hora de uso",
+        "remoteTrigger": "Disparador remoto",
+        "triggerMsg": "Mensaje de activación"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
