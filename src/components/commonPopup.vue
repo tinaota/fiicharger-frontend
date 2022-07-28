@@ -2,7 +2,7 @@
     <el-dialog :title="$t(`actions.${action}`)" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <!-- choose connector if row data is present else charger id -->
-            <p>{{ $t(`actions.${action}Question`) }} {{ rowData.id!==undefined? rowData.id: chargePointId }} ?</p>
+            <p>{{ $t(`actions.${action}Question`,{item:rowData.id!==undefined? rowData.id: chargePointId}) }}</p>
             <!-- only show id tag list for start/stop transaction -->
             <div class="item" v-if="action==='startConnectorTransaction'">
                 <div class="label">{{ $t('menu.idTag') }}</div>
@@ -132,6 +132,11 @@ export default {
                     this.$message({
                         type: "success",
                         message: i18n.t(`actions.${this.action}Success`)
+                    });
+                } else if (res === "Scheduled") {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t(`actions.${this.action}Scheduled`)
                     });
                 } else {
                     this.$message({
