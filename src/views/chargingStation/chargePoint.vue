@@ -10,7 +10,7 @@
                     <el-select class="select-small" v-model="filter.zipCode" :placeholder="$t('general.location')" v-loading="loctionList.isLoading" @change="fetchData('s')" clearable>
                         <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
                     </el-select>
-                    <el-input placeholder="Id" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
+                    <el-input :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
                     <el-input :placeholder="$t('general.name')" v-model="filter.name" @change="fetchData('s')" clearable>
