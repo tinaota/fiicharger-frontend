@@ -19,3 +19,6 @@ export const $GLOBAL_CURRENCY = {
     1: "$",
     2: "NT$"
 };
+export const $ALL_DATA_COUNT = 200;
+export const $GLOBAL_REFRESH = 10000;
+

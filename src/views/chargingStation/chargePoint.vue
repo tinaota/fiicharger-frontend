@@ -10,6 +10,9 @@
                     <el-select class="select-small" v-model="filter.zipCode" :placeholder="$t('general.location')" v-loading="loctionList.isLoading" @change="fetchData('s')" clearable>
                         <el-option v-for="item in loctionList.data" :label="item" :key="item" :value="item"></el-option>
                     </el-select>
+                    <el-select class="select-small" v-model="filter.stationId" :placeholder="$t('chargingStation.station')" v-loading="stationList.isLoading" @change="fetchData('s')" clearable>
+                        <el-option v-for="item in stationList.data" :label="item.name" :key="item.id" :value="item.id"></el-option>
+                    </el-select>
                     <el-input :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.tmpSearch" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
@@ -199,12 +202,18 @@ import {
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ModifyChargeBoxPrice from "@/components/chargingStation/modifyChargeBoxPrice";
-import { $GLOBAL_CURRENCY, $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import {
+    $GLOBAL_CURRENCY,
+    $GLOBAL_PAGE_LIMIT,
+    $ALL_DATA_COUNT,
+    $GLOBAL_REFRESH
+} from "@/utils/global";
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getZipCodeListForSelect,
     $HTTP_deleteChargeBox,
-    $HTTP_getStatusListChargeBoxes
+    $HTTP_getStatusListChargeBoxes,
+    $HTTP_getStationList
 } from "@/api/api";
 import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
@@ -229,10 +238,15 @@ export default {
                 zipCode: "",
                 currentType: null,
                 chargeBoxStatus: null,
-                name: null
+                name: null,
+                stationId: null
             },
             isLoading: false,
             loctionList: {
+                isLoading: false,
+                data: []
+            },
+            stationList: {
                 isLoading: false,
                 data: []
             },
@@ -307,6 +321,7 @@ export default {
         this.fetchData();
         this.fetchLocationList();
         this.getStatusList();
+        this.getStationList();
     },
     beforeDestroy() {
         clearInterval(this.polling);
@@ -363,6 +378,7 @@ export default {
         },
         fetchData(type) {
             this.isLoading = true;
+            clearInterval(this.polling);
             let param = {
                 page: this.page,
                 limit: this.limit
@@ -378,6 +394,9 @@ export default {
             }
             if (this.filter.tmpSearch) {
                 param.id = this.filter.tmpSearch;
+            }
+            if (this.filter.stationId) {
+                param.StationId = this.filter.stationId;
             }
 
             if (this.filter.currentType && this.filter.currentType !== "all") {
@@ -396,7 +415,44 @@ export default {
 
             this.polling = setInterval(() => {
                 this.getAllChargeBoxList(param);
-            }, 30000);
+            }, $GLOBAL_REFRESH);
+        },
+        getStationList() {
+            let params = {
+                page: this.page,
+                limit: $ALL_DATA_COUNT
+            };
+            this.stationList.isLoading = true;
+            $HTTP_getStationList(params)
+                .then((res) => {
+                    this.stationList.isLoading = false;
+                    if (res.data.length > 0) {
+                        this.stationList.data = res.data;
+                    } else {
+                        this.stationList.data = [];
+                        if (
+                            this.filter.name ||
+                            this.filter.tmpSearch ||
+                            this.filter.zipCode ||
+                            this.filter.chargeBoxStatus ||
+                            this.filter.currentType ||
+                            this.filter.stationId
+                        ) {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("emptyMessage")
+                            });
+                        }
+                    }
+                })
+                .catch((err) => {
+                    this.stationList.data = [];
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
         },
         getAllChargeBoxList(param) {
             $HTTP_getAllChargeBoxList(param)
@@ -413,7 +469,8 @@ export default {
                             this.filter.tmpSearch ||
                             this.filter.zipCode ||
                             this.filter.chargeBoxStatus ||
-                            this.filter.currentType
+                            this.filter.currentType ||
+                            this.filter.stationId
                         ) {
                             this.$message({
                                 type: "warning",
