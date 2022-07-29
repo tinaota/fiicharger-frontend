@@ -367,7 +367,8 @@
         "emailValidation": "Por favor introduzca una dirección de correo electrónico válida Dirección",
         "emptyValidation": "El campo no puede estar vacío",
         "numberValidation": "por favor ingrese un número valido",
-        "urlValidation": "Por favor introduzca un URL válido"
+        "urlValidation": "Por favor introduzca un URL válido",
+        "emptyTriggerMsgValidation": "El mensaje de activación no puede estar vacío"
     },
     "cars": {
         "maker": "Fabricante",
@@ -481,6 +482,24 @@
         "stopConnectorTransaction": "Detener transacción",
         "stopConnectorTransactionQuestion": "¿Está seguro de que desea detener de forma remota la transacción para el conector {item}?",
         "stopConnectorTransactionSuccess": "Solicitud de transacción de detención remota exitosa",
-        "stopConnectorTransactionRejected": "El cargador ha rechazado la solicitud de transacción de detención remota"
+        "stopConnectorTransactionRejected": "El cargador ha rechazado la solicitud de transacción de detención remota",
+        "bootNotificationAccepted": "Boot Notification is triggered to accept",
+        "bootNotificationRejected": "Boot Notification is triggered to rejected",
+        "bootNotificationNotImplemented": "Boot Notification is not implemented",
+        "diagnosticsStatusNotificationAccepted": "Diagnostics Status Notification is triggered to accept",
+        "diagnosticsStatusNotificationRejected": "Diagnostics Status Notification is triggered to rejected",
+        "diagnosticsStatusNotificationNotImplemented": "Diagnostics Status Notification is not implemented",
+        "firmwareStatusNotificationAccepted": "Firmware Status Notification is triggered to accept",
+        "firmwareStatusNotificationRejected": "Firmware Status Notification is triggered to rejected",
+        "firmwareStatusNotificationNotImplemented": "Firmware Status Notification is not implemented",
+        "heartbeatAccepted": "Heartbeat is triggered to accept",
+        "heartbeatRejected": "Heartbeat is triggered to rejected",
+        "heartbeatNotImplemented": "Heartbeat is not implemented",
+        "meterValuesAccepted": "Meter Values is triggered to accept",
+        "meterValuesRejected": "Meter Values is triggered to rejected",
+        "meterValuesNotImplemented": "Meter Values is not implemented",
+        "statusNotificationAccepted": "Status Notification is triggered to accept",
+        "statusNotificationRejected": "Status Notification is triggered to rejected",
+        "statusNotificationNotImplemented": "Status Notification is not implemented"
     }
 }

@@ -367,7 +367,8 @@
         "emailValidation": "请输入有效的电子邮件地址。",
         "emptyValidation": "该字段不能为空。",
         "numberValidation": "请输入一个有效的数字。",
-        "urlValidation": "请输入有效的网址。"
+        "urlValidation": "请输入有效的网址。",
+        "emptyTriggerMsgValidation": "触发信息不能为空"
     },
     "cars": {
         "maker": "制造商",
@@ -481,6 +482,24 @@
         "stopConnectorTransaction": "停止充电",
         "stopConnectorTransactionQuestion": "确定要远程终止充电枪{item}充电吗",
         "stopConnectorTransactionSuccess": "远程终止充电枪成功",
-        "stopConnectorTransactionRejected": "远程终止充电枪失败"
+        "stopConnectorTransactionRejected": "远程终止充电枪失败",
+        "bootNotificationAccepted": "Boot Notification is triggered to accept",
+        "bootNotificationRejected": "Boot Notification is triggered to rejected",
+        "bootNotificationNotImplemented": "Boot Notification is not implemented",
+        "diagnosticsStatusNotificationAccepted": "Diagnostics Status Notification is triggered to accept",
+        "diagnosticsStatusNotificationRejected": "Diagnostics Status Notification is triggered to rejected",
+        "diagnosticsStatusNotificationNotImplemented": "Diagnostics Status Notification is not implemented",
+        "firmwareStatusNotificationAccepted": "Firmware Status Notification is triggered to accept",
+        "firmwareStatusNotificationRejected": "Firmware Status Notification is triggered to rejected",
+        "firmwareStatusNotificationNotImplemented": "Firmware Status Notification is not implemented",
+        "heartbeatAccepted": "Heartbeat is triggered to accept",
+        "heartbeatRejected": "Heartbeat is triggered to rejected",
+        "heartbeatNotImplemented": "Heartbeat is not implemented",
+        "meterValuesAccepted": "Meter Values is triggered to accept",
+        "meterValuesRejected": "Meter Values is triggered to rejected",
+        "meterValuesNotImplemented": "Meter Values is not implemented",
+        "statusNotificationAccepted": "Status Notification is triggered to accept",
+        "statusNotificationRejected": "Status Notification is triggered to rejected",
+        "statusNotificationNotImplemented": "Status Notification is not implemented"
     }
 }

@@ -60,40 +60,47 @@ export default {
     },
     methods: {
         remoteTrigger() {
-            const that = this;
-            let params = {
-                chargePointId: that.data.chargePointId,
-                requestedMessage: that.param.requestedMessage,
-                connectorId: 0
-            };
-            that.isLoading = true;
-            $HTTP_sendTriggerMessage(params)
-                .then((res) => {
-                    that.isLoading = false;
-                    switch(res) {
-                        case "Accepted":
-                            this.$message({ type: "success", message: res });
-                            break;
-                        case "Rejected":
-                            this.$message.error(res);
-                            break;
-                        case "NotImplemented":
-                            this.$message({ type: "warning", message: "Not Implemented" });
-                            break;
-                        default:
-                            this.$message({ type: "warning", message: res });
-                    }
-                    that.visible = false;
-                })
-                .catch((err) => {
-                    console.log('remoteTrigger', err)
-                    that.isLoading = false;
-                    that.visible = false;
-                    that.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
+            if (this.param.requestedMessage === '') {
+                this.$message.error(i18n.t("validation.emptyTriggerMsgValidation"));
+            } else {
+                const that = this;
+                let params = {
+                    chargePointId: that.data.chargePointId,
+                    requestedMessage: that.param.requestedMessage,
+                    connectorId: 0
+                };
+                that.isLoading = true;
+                $HTTP_sendTriggerMessage(params)
+                    .then((res) => {
+                        that.isLoading = false;
+                        const type = that.param.requestedMessage[0].toLowerCase()+that.param.requestedMessage.slice(1);
+                        switch(res) {
+                            case "Accepted":
+                                this.$message({ type: "success", message: i18n.t(`actions.${type}Accepted`) });
+                                break;
+                            case "Rejected":
+                                this.$message.error(i18n.t(`actions.${type}Rejected`));
+                                break;
+                            case "NotImplemented":
+                                this.$message({ type: "warning", message: i18n.t(`actions.${type}NotImplemented`) });
+                                break;
+                            default:
+                                this.$message({ type: "warning", message: res });
+                        }
+                        that.visible = false;
+                    })
+                    .catch((err) => {
+                        console.log('remoteTrigger', err)
+                        that.isLoading = false;
+                        that.visible = false;
+                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
+                    
+                        that.$message({
+                                type: "warning",
+                                message: _errors.toString()
+                            });
                     });
-                });
+            }
         },
         closeDialog() {
             this.param = {
