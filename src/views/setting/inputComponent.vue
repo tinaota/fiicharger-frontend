@@ -1,6 +1,6 @@
 <template>
     <div class="inputComponent">
-        <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize type="textarea" v-if="rowData.type==='CSL'">
+        <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize resize="none" type="textarea" v-if="rowData.type==='CSL'">
         </el-input>
          <el-input :placeholder="$t('general.value')" :disabled="rowData.isReadOnly" v-model="value" @change="updateValue" autosize type="textarea" v-else resize="none">
         </el-input>

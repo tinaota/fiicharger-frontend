@@ -37,7 +37,7 @@ export const $HTTP_updateOccpAvailability = (params) => {
 
 //get configurations of each chargepoint
 export const $HTTP_getConfiguration = (params) => {
-    return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`,params)
+    return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`,{keys: params.keys})
 }
 
 //update configurations of each chargepoint

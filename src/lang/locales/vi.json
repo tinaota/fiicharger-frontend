@@ -163,7 +163,8 @@
         "description": "Sự mô tả",
         "value": "Giá trị",
         "perform": "Trình diễn",
-        "free": "Tự do"
+        "free": "Tự do",
+        "customConfigurationPlaceholder": "Tìm kiếm hoặc Nhập cài đặt tùy chỉnh"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

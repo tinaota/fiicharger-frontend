@@ -313,6 +313,16 @@
                     vertical-align: middle;
                 }
             }
+            .autoresizeselect{
+                height: auto;
+                .el-input{
+                    height: auto;
+                    margin-bottom: 0;
+                    input{
+                        height: auto;
+                    }
+                }
+            }
             .el-input {
                 width: 250px;
                 height: 40px;
@@ -1309,4 +1319,16 @@ input[type="number"] {
             }
         }
     }
+}
+
+//default scrollbar height and width and color
+//Width of scroll bar
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+//Slider for scroll bar
+::-webkit-scrollbar-thumb {
+  background-color: #0d74de;
+  border-radius: 3px;
 }

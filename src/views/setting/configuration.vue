@@ -1,7 +1,12 @@
 <template>
-    <el-dialog :title="$t('general.settings')" width="80%" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog :title="$t('general.settings')" width="80%" style="margin-top:-6vh" :visible.sync="visible" custom-class="configurationDialog" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="configuration table-result">
             <el-button class="cross" size="small" @click="isUpdate = false; visible = false;">X</el-button>
+            <div class="filter">
+                <el-select class="autoresizeselect configurationSelect" v-model="filter.selectedConfiguration" :placeholder="$t('general.customConfigurationPlaceholder')" v-loading="configurationSearchList.isLoading" @change="getConfiguration(chargePointId)" clearable multiple filterable allow-create default-first-option>
+                    <el-option v-for="item in configurationSearchList.data" :label="item.key" :key="item.key" :value="item.key"></el-option>
+                </el-select>
+            </div>
             <div class="formVertical" :key="componentKey">
                 <el-table :data="configurations" v-loading="isLoading">
                     <el-table-column prop="key" :label="$t('general.type')" :min-width="3"></el-table-column>
@@ -22,7 +27,6 @@
                             </div>
                         </template>
                     </el-table-column>
-
                 </el-table>
             </div>
         </div>
@@ -35,7 +39,6 @@ import { $HTTP_getConfiguration, $HTTP_updateConfiguration } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 import SwitchComponent from "@/views/setting/switchComponent";
 import InputComponent from "@/views/setting/inputComponent";
-
 export default {
     components: {
         SwitchComponent,
@@ -52,7 +55,14 @@ export default {
             isUpdate: false,
             defaultChargePointId: null,
             configurations: [],
-            componentKey: 0
+            componentKey: 0,
+            configurationSearchList: {
+                data: [],
+                isLoading: false
+            },
+            filter: {
+                selectedConfiguration: []
+            }
         };
     },
     mounted() {
@@ -66,6 +76,11 @@ export default {
             if (id !== null && id !== "" && id !== undefined) {
                 let params = {};
                 params.chargePointId = id;
+                let configurationLength =
+                    this.filter.selectedConfiguration.length;
+                if (configurationLength > 0) {
+                    params.keys = this.filter.selectedConfiguration;
+                }
                 this.isLoading = true;
                 $HTTP_getConfiguration(params)
                     .then((res) => {
@@ -74,6 +89,13 @@ export default {
                             this.isLoading = false;
                             this.forceRerender();
                             this.runScrollFunction();
+                            // only when filter is empty
+                            // reserves all list for filter
+                            if (
+                                this.filter.selectedConfiguration.length === 0
+                            ) {
+                                this.configurationSearchList.data = res;
+                            }
                         } else {
                             this.configurations = [];
                             this.isLoading = false;
@@ -115,7 +137,7 @@ export default {
             this.$emit("close", this.isUpdate);
         },
         runScrollFunction() {
-            const that=this
+            const that = this;
             that.$jQuery(".formVertical").length > 0 &&
                 this.$jQuery(".formVertical").mCustomScrollbar("destroy");
             that.$nextTick(() => {
@@ -127,15 +149,26 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
-.configuration {
-    .cross {
-        display: block;
-        float: right;
-        margin-top: -65px;
-        margin-right: -25px;
-    }
-    .formVertical {
-        max-height: 70vh !important;
+.configurationDialog {
+    margin-top: 8vh;
+    .configuration {
+        .cross {
+            display: block;
+            float: right;
+            margin-top: -65px;
+            margin-right: -25px;
+        }
+        .formVertical {
+            max-height: 68vh !important;
+        }
+
+        .filter {
+            display: flex;
+            .configurationSelect{
+                width: 40vw;
+                height: auto;
+            }
+        }
     }
 }
 </style>

@@ -1,8 +1,8 @@
-import axios from 'axios'
-import { $GLOBAL_REDIRECT_URL, $GLOBAL_AUTH, $GLOBAL_CLIENT_ID } from "@/utils/global";
-import store from '../store/store'
-import * as types from '../store/types'
-
+import { $GLOBAL_AUTH, $GLOBAL_CLIENT_ID, $GLOBAL_REDIRECT_URL } from "@/utils/global";
+import axios from 'axios';
+import qs from 'qs';
+import store from '../store/store';
+import * as types from '../store/types';
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = ''
 axios.defaults.timeout = 120000
@@ -132,22 +132,26 @@ axios.interceptors.response.use(
 
 export function fetch(url, params = {}) {
     return new Promise((resolve, reject) => {
-        axios.get(url, {
-            params: params
-        })
-            .then(response => {
+        axios
+            .get(url, {
+                params: params,
+                paramsSerializer: (params) => {
+                    return qs.stringify(params);
+                }
+            })
+            .then((response) => {
                 if (response) {
-                    resolve(response.data)
+                    resolve(response.data);
                 } else {
-                    reject(response)
+                    reject(response);
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 if (err.status === 403) {
-                    err['data'] = 'Permission denied.'
+                    err["data"] = "Permission denied.";
                 }
-                err.status && err !== 204 && reject(err)
-            })
+                err.status && err !== 204 && reject(err);
+            });
     })
 }
 

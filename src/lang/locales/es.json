@@ -163,7 +163,8 @@
         "description": "Descripción",
         "value": "Valor",
         "perform": "Llevar a cabo",
-        "free": "Libre"
+        "free": "Libre",
+        "customConfigurationPlaceholder": "Buscar o ingresar una configuración personalizada"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
