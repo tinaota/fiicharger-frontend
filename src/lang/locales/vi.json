@@ -483,23 +483,8 @@
         "stopConnectorTransactionQuestion": "Bạn có chắc chắn muốn dừng giao dịch từ xa cho trình kết nối {item} không?",
         "stopConnectorTransactionSuccess": "Yêu cầu dừng giao dịch từ xa đã thành công",
         "stopConnectorTransactionRejected": "Yêu cầu dừng giao dịch từ xa đã bị bộ sạc từ chối",
-        "bootNotificationAccepted": "Boot Notification is triggered to accept",
-        "bootNotificationRejected": "Boot Notification is triggered to rejected",
-        "bootNotificationNotImplemented": "Boot Notification is not implemented",
-        "diagnosticsStatusNotificationAccepted": "Diagnostics Status Notification is triggered to accept",
-        "diagnosticsStatusNotificationRejected": "Diagnostics Status Notification is triggered to rejected",
-        "diagnosticsStatusNotificationNotImplemented": "Diagnostics Status Notification is not implemented",
-        "firmwareStatusNotificationAccepted": "Firmware Status Notification is triggered to accept",
-        "firmwareStatusNotificationRejected": "Firmware Status Notification is triggered to rejected",
-        "firmwareStatusNotificationNotImplemented": "Firmware Status Notification is not implemented",
-        "heartbeatAccepted": "Heartbeat is triggered to accept",
-        "heartbeatRejected": "Heartbeat is triggered to rejected",
-        "heartbeatNotImplemented": "Heartbeat is not implemented",
-        "meterValuesAccepted": "Meter Values is triggered to accept",
-        "meterValuesRejected": "Meter Values is triggered to rejected",
-        "meterValuesNotImplemented": "Meter Values is not implemented",
-        "statusNotificationAccepted": "Status Notification is triggered to accept",
-        "statusNotificationRejected": "Status Notification is triggered to rejected",
-        "statusNotificationNotImplemented": "Status Notification is not implemented"
+        "triggerMessageAccepted": "Yêu cầu kích hoạt {message} đã thành công.",
+        "triggerMessageRejected": "Yêu cầu kích hoạt {message} đã bị bộ sạc từ chối.",
+        "triggerMessageNotImplemented": "{message} không được bộ sạc triển khai."
     }
 }

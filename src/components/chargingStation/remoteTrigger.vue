@@ -73,16 +73,15 @@ export default {
                 $HTTP_sendTriggerMessage(params)
                     .then((res) => {
                         that.isLoading = false;
-                        const type = that.param.requestedMessage[0].toLowerCase()+that.param.requestedMessage.slice(1);
                         switch(res) {
                             case "Accepted":
-                                this.$message({ type: "success", message: i18n.t(`actions.${type}Accepted`) });
+                                this.$message({ type: "success", message: i18n.t(`actions.triggerMessageAccepted`, {message: that.param.requestedMessage}) });
                                 break;
                             case "Rejected":
-                                this.$message.error(i18n.t(`actions.${type}Rejected`));
+                                this.$message.error(i18n.t(`actions.triggerMessageRejected`, {message: that.param.requestedMessage}));
                                 break;
                             case "NotImplemented":
-                                this.$message({ type: "warning", message: i18n.t(`actions.${type}NotImplemented`) });
+                                this.$message({ type: "warning", message: i18n.t(`actions.triggerMessageNotImplemented`, {message: that.param.requestedMessage}) });
                                 break;
                             default:
                                 this.$message({ type: "warning", message: res });
@@ -94,7 +93,7 @@ export default {
                         that.isLoading = false;
                         that.visible = false;
                         let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    
+
                         that.$message({
                                 type: "warning",
                                 message: _errors.toString()
