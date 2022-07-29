@@ -340,9 +340,14 @@ export default {
         let chargePointInfo = JSON.parse(
             window.sessionStorage.getItem("fiics-chargePointInfo")
         );
-        this.curRouteParam = {
-            chargeBoxId: chargePointInfo.id
-        };
+        if (chargePointInfo) {
+            this.curRouteParam = {
+                chargeBoxId: chargePointInfo.id
+            };
+        } else if (!chargePointInfo) {
+            // redirect to main page if the charger id is null
+            this.$router.go(-1);
+        }
 
         let activeTab = window.sessionStorage.getItem("fiics-activeTab");
         if (activeTab) {
