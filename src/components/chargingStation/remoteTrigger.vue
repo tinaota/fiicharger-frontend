@@ -66,8 +66,7 @@ export default {
                 const that = this;
                 let params = {
                     chargePointId: that.data.chargePointId,
-                    requestedMessage: that.param.requestedMessage,
-                    connectorId: 0
+                    requestedMessage: that.param.requestedMessage
                 };
                 that.isLoading = true;
                 $HTTP_sendTriggerMessage(params)
