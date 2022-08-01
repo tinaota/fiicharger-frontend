@@ -485,6 +485,14 @@
         "stopConnectorTransactionRejected": "Request to remote stop transaction has been rejected by charger",
         "triggerMessageAccepted": "Request to trigger {message} succeeded.",
         "triggerMessageRejected": "Request to trigger {message} has been rejected by charger.",
-        "triggerMessageNotImplemented": "{message} is not implemented by charger."
+        "triggerMessageNotImplemented": "{message} is not implemented by charger.",
+        "triggerCommand": {
+            "bootNotification": "Boot Notification",
+            "diagnosticsStatusNotification": "Diagnostics Status Notification",
+            "firmwareStatusNotification": "Firmware Status Notification",
+            "heartbeat": "Heartbeat",
+            "meterValues": "Meter Values",
+            "statusNotification": "Status Notification"
+        }
     }
 }

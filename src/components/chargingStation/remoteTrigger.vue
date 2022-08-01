@@ -40,12 +40,12 @@ export default {
                 requestedMessage: "",
             },
             triggerList: {
-                BootNotification: "Boot Notification",
-                DiagnosticsStatusNotification: "Diagnostics Status Notification",
-                FirmwareStatusNotification: "Firmware Status Notification",
-                Heartbeat: "Heartbeat",
-                MeterValues: "Meter Values",
-                StatusNotification: "Status Notification"
+                BootNotification: i18n.t('actions.triggerCommand.bootNotification'),
+                DiagnosticsStatusNotification: i18n.t('actions.triggerCommand.diagnosticsStatusNotification'),
+                FirmwareStatusNotification: i18n.t('actions.triggerCommand.firmwareStatusNotification'),
+                Heartbeat: i18n.t('actions.triggerCommand.heartbeat'),
+                MeterValues: i18n.t('actions.triggerCommand.meterValues'),
+                StatusNotification: i18n.t('actions.triggerCommand.statusNotification')
             }
         };
     },

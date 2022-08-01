@@ -485,6 +485,14 @@
         "stopConnectorTransactionRejected": "Yêu cầu dừng giao dịch từ xa đã bị bộ sạc từ chối",
         "triggerMessageAccepted": "Yêu cầu kích hoạt {message} đã thành công.",
         "triggerMessageRejected": "Yêu cầu kích hoạt {message} đã bị bộ sạc từ chối.",
-        "triggerMessageNotImplemented": "{message} không được bộ sạc triển khai."
+        "triggerMessageNotImplemented": "{message} không được bộ sạc triển khai.",
+        "triggerCommand": {
+            "bootNotification": "Thông báo khởi động",
+            "diagnosticsStatusNotification": "Thông báo trạng thái chẩn đoán",
+            "firmwareStatusNotification": "Thông báo trạng thái chương trình cơ sở",
+            "heartbeat": "Nhịp tim",
+            "meterValues": "Giá trị đồng hồ",
+            "statusNotification": "Thông báo trạng thái"
+        }
     }
 }

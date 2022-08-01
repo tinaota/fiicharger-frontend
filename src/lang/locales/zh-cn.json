@@ -485,6 +485,14 @@
         "stopConnectorTransactionRejected": "远程终止充电枪失败",
         "triggerMessageAccepted": "触发 {message} 信息成功。",
         "triggerMessageRejected": "触发 {message} 信息失败。",
-        "triggerMessageNotImplemented": "充电桩不支持 {message} 信息。"
+        "triggerMessageNotImplemented": "充电桩不支持 {message} 信息。",
+        "triggerCommand": {
+            "bootNotification": "开机通知",
+            "diagnosticsStatusNotification": "诊断状态通知",
+            "firmwareStatusNotification": "固件状态通知",
+            "heartbeat": "心跳事件",
+            "meterValues": "读值事件",
+            "statusNotification": "状态通知"
+        }
     }
 }
