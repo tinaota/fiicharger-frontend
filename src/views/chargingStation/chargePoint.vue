@@ -31,15 +31,19 @@
                     <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
+                            <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
+                                <el-button class="no-bg" @click="handleShowDialog(scope.row)"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                </el-button>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.power')" :min-width="1">
                         <template slot-scope="scope">
                             {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="2" class-name="center">
+                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="1" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -82,12 +86,12 @@
                     <!-- <el-table-column :label="$t('chargingStation.elecRate')">
                         <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
                             <template slot-scope="scope">
-                                {{scope.row.chargePrice!==null?  getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.onPeak.rate) + '/' + getSymbols(scope.row.chargePrice.onPeak.type):'-'}}
+                                {{ scope.row.chargePrice!==null? getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.onPeak.rate) + '/' + getSymbols(scope.row.chargePrice.onPeak.type):'-' }}
                             </template>
                         </el-table-column>
                         <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, false)">
                             <template slot-scope="scope">
-                                {{scope.row.chargePrice!==null?  getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.offPeak.rate) + '/' + getSymbols(scope.row.chargePrice.offPeak.type):'-'}}
+                                {{ scope.row.chargePrice!==null? getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.offPeak.rate) + '/' + getSymbols(scope.row.chargePrice.offPeak.type):'-' }}
                             </template>
                         </el-table-column>
                     </el-table-column> -->
@@ -605,6 +609,9 @@ export default {
         width: 20px;
         height: 20px;
         margin-left: -2px;
+    }
+    .fa-map-marker {
+        font-size: 1rem;
     }
 }
 .el-link {
