@@ -27,10 +27,7 @@
 </template>
 
 <script>
-import {
-    $HTTP_getIdTagsList,
-    $HTTP_reserveNow
-} from "@/api/api";
+import { $HTTP_getIdTagsList, $HTTP_reserveNow } from "@/api/api";
 
 export default {
     props: {
@@ -43,7 +40,7 @@ export default {
             isLoading: false,
             isUpdate: false,
             param: {
-                idTag: "",
+                idTag: ""
             },
             idTagList: {
                 isLoading: false,
@@ -57,7 +54,7 @@ export default {
             handler() {
                 this.visible = this.show;
             }
-        },
+        }
     },
     mounted() {
         this.fetchIdTags();
@@ -75,7 +72,10 @@ export default {
                 .catch((err) => {
                     this.idTagList.data = [];
                     console.log("idTagListError", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         reserveNow() {
@@ -97,10 +97,16 @@ export default {
                             type: "success",
                             message: res
                         });
+                    } else {
+                        that.visible = false;
+                        this.$message({
+                            type: "warning",
+                            message: res
+                        });
                     }
                 })
                 .catch((err) => {
-                    console.log('reserveNow', err)
+                    console.log("reserveNow", err);
                     that.visible = false;
                     that.isLoading = false;
                     that.$message({
