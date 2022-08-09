@@ -95,13 +95,13 @@ export default {
                         this.isUpdateReservation = true;
                         this.$message({
                             type: "success",
-                            message: res
+                            message: i18n.t(`actions.reserveNow${res}`)
                         });
                     } else {
                         that.visible = false;
                         this.$message({
                             type: "warning",
-                            message: res
+                            message: i18n.t(`actions.reserveNow${res}`)
                         });
                     }
                 })

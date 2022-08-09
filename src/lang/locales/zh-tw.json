@@ -494,6 +494,10 @@
             "heartbeat": "心跳事件",
             "meterValues": "讀值事件",
             "statusNotification": "狀態通知"
-        }
+        },
+        "reserveNowAccepted": "已預約完成",
+        "reserveNowFaulted": "預約請求失敗",
+        "reserveNowOccupied": "預約尚未完成。所有充電槍或指定充電槍已被佔用",
+        "reserveNowRejected": "預約請求已被充電樁拒絕"
     }
 }

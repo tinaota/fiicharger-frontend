@@ -494,6 +494,10 @@
             "heartbeat": "Nhịp tim",
             "meterValues": "Giá trị đồng hồ",
             "statusNotification": "Thông báo trạng thái"
-        }
+        },
+        "reserveNowAccepted": "Đặt trước đã được thực hiện",
+        "ReserveNowFaulted": "Yêu cầu đặt chỗ không thành công",
+        "reserveNowOccupied": "Đặt chỗ chưa được thực hiện. Tất cả các đầu nối hoặc đầu nối được chỉ định đều bị chiếm dụng",
+        "reserveNowRejected": "Yêu cầu đặt chỗ đã bị bộ sạc từ chối"
     }
 }

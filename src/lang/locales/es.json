@@ -494,6 +494,10 @@
             "heartbeat": "Latido del corazón",
             "meterValues": "Valores del medidor",
             "statusNotification": "Notificación de estado"
-        }
+        },
+        "reserveNowAccepted": "se ha hecho la reserva",
+        "reserveNowFaulted": "Se ha producido un error en la solicitud de reserva",
+        "reserveNowOccupied": "No se ha realizado la reserva. Todos los conectores o el conector especificado están ocupados",
+        "reserveNowRejected": "La solicitud de reserva ha sido rechazada por el cargador"
     }
 }
