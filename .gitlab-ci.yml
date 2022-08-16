@@ -35,7 +35,9 @@ verify_build:
   before_script:
     - npm ci --cache .npm --prefer-offline
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key:
+      files:
+        - package-lock.json
     paths:
       - .npm/
   script:
@@ -53,7 +55,9 @@ dev_build_image:
   before_script:
     - npm ci --cache .npm --prefer-offline
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key:
+      files:
+        - package-lock.json
     paths:
       - .npm/
   script:
@@ -72,7 +76,9 @@ test_build_image:
   before_script:
     - npm ci --cache .npm --prefer-offline
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key:
+      files:
+        - package-lock.json
     paths:
       - .npm/
   script:
@@ -93,7 +99,9 @@ prod_build_image:
   before_script:
     - npm ci --cache .npm --prefer-offline
   cache:
-    key: ${CI_COMMIT_REF_SLUG}
+    key:
+      files:
+        - package-lock.json
     paths:
       - .npm/
   script:
@@ -106,7 +114,7 @@ prod_build_image:
 
 dev_launch_image:
   stage: launch
-  tags: [shell_runner]
+  tags: [ shell_runner ]
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"
   needs:
@@ -118,7 +126,7 @@ dev_launch_image:
       "kubectl rollout restart deploy fiicharger-dashboard -n fiicharger-dev;"
 
 generate_release:
-  image: node:16.13.2
+  image: $DOCKER_REGISTRY_URL/fii-semantic-release:v0.0.1
   stage: release
   tags: [ docker_runner ]
   rules:
@@ -134,15 +142,11 @@ generate_release:
       {
         echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
         echo "${CI_API_V4_URL#https?}/projects/${CI_PROJECT_ID}/packages/npm/:_authToken=\${CI_JOB_TOKEN}"
-      } | tee --append .npmrc
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - .npm/
+      } | tee --a .npmrc
   script:
     - echo "Generating new release"
     - touch CHANGELOG.md
-    - npm run semantic-release
+    - npx semantic-release
   artifacts:
     paths:
       - CHANGELOG.md
