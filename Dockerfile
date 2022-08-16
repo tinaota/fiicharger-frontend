@@ -1,6 +1,7 @@
 ARG BUILD_MODE=prod
 FROM node:16.13.2 AS build
 ARG BUILD_MODE
+COPY node_modules/ .
 WORKDIR /app
 COPY . .
 RUN npm run build-$BUILD_MODE
