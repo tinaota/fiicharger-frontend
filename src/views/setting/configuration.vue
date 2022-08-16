@@ -85,7 +85,7 @@ export default {
                 $HTTP_getConfiguration(params)
                     .then((res) => {
                         if (res.length > 0) {
-                            this.configurations = res;
+                            this.configurations = this.sortByKey(res);;
                             this.isLoading = false;
                             this.forceRerender();
                             this.runScrollFunction();
@@ -94,7 +94,7 @@ export default {
                             if (
                                 this.filter.selectedConfiguration.length === 0
                             ) {
-                                this.configurationSearchList.data = res;
+                                this.configurationSearchList.data = this.sortByKey(res);
                             }
                         } else {
                             this.configurations = [];
@@ -111,6 +111,19 @@ export default {
                         });
                     });
             }
+        },
+        sortByKey(data) {
+            return data.sort((firstItem, secondItem) => {
+                let firstKey = firstItem.key;
+                let secondKey = secondItem.key;
+                if (firstKey < secondKey) {
+                    return -1;
+                }
+                if (firstKey > secondKey) {
+                    return 1;
+                }
+                return 0;
+            });
         },
         updateConfiguration(data) {
             let params = { ...data };
@@ -164,7 +177,7 @@ export default {
 
         .filter {
             display: flex;
-            .configurationSelect{
+            .configurationSelect {
                 width: 40vw;
                 height: auto;
             }
