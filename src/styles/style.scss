@@ -1332,3 +1332,7 @@ input[type="number"] {
   background-color: #0d74de;
   border-radius: 3px;
 }
+
+.notNow .el-picker-panel__footer .el-button--text.el-picker-panel__link-btn {
+    display: none;
+}

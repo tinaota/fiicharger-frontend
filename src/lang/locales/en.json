@@ -325,7 +325,13 @@
         "cancelledDateTime": "Cancelled Date/Time",
         "usedDateTime": "Used Date/Time",
         "remoteTrigger": "Remote Trigger",
-        "triggerMsg": "Trigger Message"
+        "triggerMsg": "Trigger Message",
+        "timeOpt": {
+            "1Min": "1 min",
+            "5Mins": "5 mins",
+            "10Mins": "10 mins",
+            "30Mins": "30 mins"
+        }
     },
     "userAccount": {
         "memberName": "Member Name",
@@ -369,7 +375,9 @@
         "emptyValidation": "The field cannot be empty",
         "numberValidation": "Please enter a valid number",
         "urlValidation": "Please enter a valid url",
-        "emptyTriggerMsgValidation": "Trigger message cannot be empty"
+        "emptyTriggerMsgValidation": "Trigger message cannot be empty",
+        "emptyIdTagValidation": "ID Tag cannot be empty",
+        "emptyExpiryDateValidation": "Expiry Date cannot be empty"
     },
     "cars": {
         "maker": "Maker",

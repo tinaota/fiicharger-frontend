@@ -325,7 +325,13 @@
         "cancelledDateTime": "取消日期/时间",
         "usedDateTime": "使用日期/时间",
         "remoteTrigger": "远程触发",
-        "triggerMsg": "触发信息"
+        "triggerMsg": "触发信息",
+        "timeOpt": {
+            "1Min": "1分钟",
+            "5Mins": "5分钟",
+            "10Mins": "10分钟",
+            "30Mins": "30分钟"
+        }
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -369,7 +375,9 @@
         "emptyValidation": "该字段不能为空。",
         "numberValidation": "请输入一个有效的数字。",
         "urlValidation": "请输入有效的网址。",
-        "emptyTriggerMsgValidation": "触发信息不能为空"
+        "emptyTriggerMsgValidation": "触发信息不能为空",
+        "emptyIdTagValidation": "ID 标签不能为空",
+        "emptyExpiryDateValidation": "到期日不能为空"
     },
     "cars": {
         "maker": "制造商",

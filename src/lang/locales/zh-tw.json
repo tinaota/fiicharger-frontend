@@ -325,7 +325,13 @@
         "cancelledDateTime": "取消日期/時間",
         "usedDateTime": "使用日期/時間",
         "remoteTrigger": "遠程觸發",
-        "triggerMsg": "觸發訊息"
+        "triggerMsg": "觸發訊息",
+        "timeOpt": {
+            "1Min": "1分鐘",
+            "5Mins": "5分鐘",
+            "10Mins": "10分鐘",
+            "30Mins": "30分鐘"
+        }
     },
     "userAccount": {
         "memberName": "會員名稱",
@@ -369,7 +375,9 @@
         "emptyValidation": "該字段不能為空。",
         "numberValidation": "請輸入一個有效的數字。",
         "urlValidation": "請輸入有效的網址。",
-        "emptyTriggerMsgValidation": "觸發訊息不能為空"
+        "emptyTriggerMsgValidation": "觸發訊息不能為空",
+        "emptyIdTagValidation": "ID標籤不能為空",
+        "emptyExpiryDateValidation": "到期日不能為空"
     },
     "cars": {
         "maker": "製造商",

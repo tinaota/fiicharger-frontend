@@ -325,7 +325,13 @@
         "cancelledDateTime": "Fecha/hora cancelada",
         "usedDateTime": "Fecha/hora de uso",
         "remoteTrigger": "Disparador remoto",
-        "triggerMsg": "Mensaje de activación"
+        "triggerMsg": "Mensaje de activación",
+        "timeOpt": {
+            "1Min": "1 minuto",
+            "5Mins": "5 minutos",
+            "10Mins": "10 minutos",
+            "30Mins": "30 minutos"
+        }
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -369,7 +375,9 @@
         "emptyValidation": "El campo no puede estar vacío",
         "numberValidation": "por favor ingrese un número valido",
         "urlValidation": "Por favor introduzca un URL válido",
-        "emptyTriggerMsgValidation": "El mensaje de activación no puede estar vacío"
+        "emptyTriggerMsgValidation": "El mensaje de activación no puede estar vacío",
+        "emptyIdTagValidation": "La etiqueta de identificación no puede estar vacía",
+        "emptyExpiryDateValidation": "La fecha de caducidad no puede estar vacía"
     },
     "cars": {
         "maker": "Fabricante",

@@ -325,7 +325,13 @@
         "cancelledDateTime": "Ngày / giờ bị hủy",
         "usedDateTime": "Ngày / giờ đã sử dụng",
         "remoteTrigger": "Kích hoạt từ xa",
-        "triggerMsg": "Thông báo kích hoạt"
+        "triggerMsg": "Thông báo kích hoạt",
+        "timeOpt": {
+            "1Min": "1 phút",
+            "5Mins": "5 phút",
+            "10Mins": "10 phút",
+            "30Mins": "30 phút"
+        }
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -369,7 +375,9 @@
         "emptyValidation": "Trường không được để trống",
         "numberValidation": "Vui lòng nhập một số hợp lệ",
         "urlValidation": "Vui lòng nhập một url hợp lệ",
-        "emptyTriggerMsgValidation": "Thông báo kích hoạt không được để trống"
+        "emptyTriggerMsgValidation": "Thông báo kích hoạt không được để trống",
+        "emptyIdTagValidation": "Thẻ ID không được để trống",
+        "emptyExpiryDateValidation": "Ngày hết hạn không được để trống"
     },
     "cars": {
         "maker": "Dấu",
