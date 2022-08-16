@@ -243,6 +243,11 @@ export const $HTTP_getConnectorSummary = (params) => {
     );
 }
 
+//get connector statuses
+export const $HTTP_getConnectorStatusesById = (params) => {
+    return fetch(`${base_charger}/api/reports/charge-points/${params.chargePointId}/connectors`)
+}
+
 //get transaction summary
 export const $HTTP_getTransactionSummary = (params) => {
     return fetch(

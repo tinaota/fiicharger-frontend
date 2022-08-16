@@ -65,8 +65,7 @@
                         </div>
                         <div class="item">
                             <div class="label">{{ $t('chargingStation.connectors') }}</div>
-                            <Connector :dataObj="chargePointById[0].connectors" :chargerStatus="chargePointById[0].connectionStatus" :isBreak="true"></Connector>
-
+                            <Connector :dataObj="connectorStatuses.data" :chargerStatus="chargePointById[0].connectionStatus" :isBreak="true"></Connector>
                         </div>
                     </div>
                     <div class="card-8 rank-area secondCol">
@@ -125,7 +124,7 @@
                         <div class="header">
                             <div class="title">{{ $t('chargingStation.connectors') }}</div>
                         </div>
-                        <el-table :data="chargePointById[0].connectors" class="moreCol" v-loading="isLoading">
+                        <el-table :data="connectorStatuses.data" class="moreCol" v-loading="connectorStatuses.isLoading">
                             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
                             <el-table-column :label="$t('chargingStation.lastStatus')" :min-width="8">
                                 <template slot-scope="scope">
@@ -254,15 +253,15 @@ import Transaction from "@/components/chargingStation/transaction";
 import Reservation from "@/components/chargingStation/reservation";
 import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
-import { $HTTP_getAllChargeBoxList } from "@/api/api";
+import {
+    $HTTP_getAllChargeBoxList,
+    $HTTP_getConnectorStatusesById
+} from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import CommonPopup from "@/components/commonPopup";
 import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
-// import moment from "moment";
-// import { $GLOBAL_GRAFANA } from "@/utils/global";
-// const baseGrafanaUrl = $GLOBAL_GRAFANA;
-// var costRevenueUrl = `${baseGrafanaUrl}/UmtVrts7k/cost-and-revenue?orgId=1&kiosk&refresh=1m`;
+import { $GLOBAL_REFRESH } from "@/utils/global";
 
 export default {
     components: {
@@ -310,8 +309,8 @@ export default {
             },
             isLoading: false,
             active: "transaction",
-            timer: null,
             timeOut: null,
+            connectorTimer:null,
             chargePointById: [],
             isUpDateReservationData: true,
             reserveNow: {
@@ -325,6 +324,10 @@ export default {
             remoteTrigger: {
                 visible: false,
                 data: {}
+            },
+            connectorStatuses: {
+                data: [],
+                isLoading: false
             }
         };
     },
@@ -353,34 +356,23 @@ export default {
         if (activeTab) {
             this.active = activeTab;
         }
-
-        // const todaySplit = moment().format("YYYY-MM-DD").split("-");
-        // const thisMonth1st = todaySplit[0] + "-" + todaySplit[1] + "-01";
-        // let dayWeekBefore = parseInt(todaySplit[2]) - 7;
-        // if (dayWeekBefore <script 10) {
-        //     dayWeekBefore = "0" + dayWeekBefore;
-        // } else {
-        //     dayWeekBefore = `${dayWeekBefore}`;
-        // }
-        // const thisWeekBefore = todaySplit[0] + "-" + todaySplit[1] + "-" + dayWeekBefore;
-
-        // if (todaySplit[2] === "01") {
-        //     this.filter.dateRange = [thisMonth1st, thisMonth1st];
-        // } else {
-        //     const today = moment().format("YYYY-MM-DD");
-        //     this.filter.dateRange = [thisWeekBefore, today];
-        // }
-        // this.updateGrafanaUrl();
     },
     mounted() {
         this.getChargePointsById(this.curRouteParam.chargeBoxId);
+
+        this.getConnectorStatusesById(this.curRouteParam.chargeBoxId);
+
+        // update connector statuses in certain interval
+        this.connectorTimer = setInterval(()=>{
+            this.getConnectorStatusesById(this.curRouteParam.chargeBoxId);
+        }, $GLOBAL_REFRESH)
         setScrollBar(".scroll", this);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
         window.sessionStorage.removeItem("fiics-activeTab");
-        clearInterval(this.timer);
         clearTimeout(this.timeOut);
+        clearInterval(this.connectorTimer)
     },
     methods: {
         runAction(data, action) {
@@ -410,10 +402,37 @@ export default {
                 this.remoteTrigger.data = {
                     chargePointId: this.chargePointById[0].id,
                     name: this.chargePointById[0].name
-                }
+                };
                 this.remoteTrigger.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
+        },
+        getConnectorStatusesById(id) {
+            let params = {};
+            params.chargePointId = id;
+            this.connectorStatuses.isLoading = true;
+            $HTTP_getConnectorStatusesById(params)
+                .then((res) => {
+                    if (res.length > 0) {
+                        this.connectorStatuses.isLoading = false;
+                        this.connectorStatuses.data = res;
+                    } else {
+                        this.connectorStatuses.data = [];
+                        this.connectorStatuses.isLoading = false;
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("noData")
+                        });
+                    }
+                })
+                .catch((err) => {
+                    this.connectorStatuses.data = [];
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
         },
         getChargePointsById(id) {
             let params = {};
@@ -445,7 +464,7 @@ export default {
         setTimerApiCall() {
             //delay for 2seconds before requesting data
             this.timeOut = setTimeout(() => {
-                this.getChargePointsById(this.chargePointById[0].id);
+                this.getConnectorStatusesById(this.chargePointById[0].id);
             }, 2000);
         },
         handleShowDialog() {
@@ -454,21 +473,6 @@ export default {
         closeShowPosDialog() {
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
-        // updateApi() {
-        //     this.updateGrafanaUrl();
-        // },
-        // updateGrafanaUrl() {
-        //     let startDate = this.filter.dateRange[0];
-        //     let endDate = moment(this.filter.dateRange[1]).endOf("day");
-        //     startDate = moment(startDate).format("x");
-        //     endDate = moment(endDate).format("x");
-        //     this.costRevenueUrl = costRevenueUrl + `&from=` + startDate + `&to=` + endDate;
-        //     this.updateTheme();
-        // },
-        // updateTheme() {
-        //     let isDark = this.$store.state.darkTheme;
-        //     this.costRevenueUrl = isDark ? this.costRevenueUrl + `&theme=dark` : this.costRevenueUrl + `&theme=light`;
-        // },
         openDialog(row, type, action = "") {
             if (type === "connectorType") {
                 this.changeConnectorType.show = true;
