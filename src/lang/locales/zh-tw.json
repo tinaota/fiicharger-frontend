@@ -507,6 +507,7 @@
         "reserveNowAccepted": "已預約完成",
         "reserveNowFaulted": "預約請求失敗",
         "reserveNowOccupied": "預約尚未完成。所有充電槍或指定充電槍已被佔用",
-        "reserveNowRejected": "預約請求已被充電樁拒絕"
+        "reserveNowRejected": "預約請求已被充電樁拒絕",
+        "reserveNowUnavailable": "預約尚未完成。所有充電槍或指定充電槍目前暫停服務。"
     }
 }
