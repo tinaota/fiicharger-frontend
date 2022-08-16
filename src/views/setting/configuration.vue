@@ -9,7 +9,7 @@
             </div>
             <div class="formVertical" :key="componentKey">
                 <el-table :data="configurations" v-loading="isLoading">
-                    <el-table-column prop="key" :label="$t('general.type')" :min-width="3"></el-table-column>
+                    <el-table-column prop="key" :label="$t('general.key')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.accessibility')" :min-width="1">
                         <template slot-scope="scope">
                             {{ scope.row.isReadOnly? 'R' : 'RW' }}

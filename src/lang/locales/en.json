@@ -124,6 +124,7 @@
         "telephone": "Telephone",
         "businessHours": "Business Hours",
         "type": "Type",
+        "key": "Key",
         "name": "Name",
         "operator": "Operator",
         "billingAmt": "Billing amt.",

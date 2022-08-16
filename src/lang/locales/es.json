@@ -124,6 +124,7 @@
         "telephone": "Teléfono",
         "businessHours": "Horas de trabajo",
         "type": "Escribe",
+        "key": "Llave",
         "name": "Nombre",
         "operator": "Operador",
         "billingAmt": "Monto de facturación",
