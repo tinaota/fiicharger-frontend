@@ -166,7 +166,7 @@
         "perform": "Trình diễn",
         "free": "Tự do",
         "customConfigurationPlaceholder": "Tìm kiếm hoặc Nhập cài đặt tùy chỉnh",
-        "default": "Mặc định"
+        "default": "Không xác định"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

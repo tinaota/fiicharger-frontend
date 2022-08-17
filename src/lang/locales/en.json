@@ -166,7 +166,7 @@
         "perform": "Perform",
         "free": "Free",
         "customConfigurationPlaceholder": "Search or Enter Custom Setting",
-        "default": "Default"
+        "default": "Unspecified"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

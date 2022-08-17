@@ -166,7 +166,7 @@
         "perform": "執行",
         "free": "免費",
         "customConfigurationPlaceholder": "搜索或輸入自定義設置",
-        "default": "預設"
+        "default": "未指定"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
