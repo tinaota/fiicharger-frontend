@@ -31,8 +31,8 @@ export default {
                 const that = this;
                 that.visible = that.show;
                 that.isUpdate = false;
-            },
-        },
+            }
+        }
     },
     beforeDestroy() {},
     methods: {
@@ -52,14 +52,24 @@ export default {
                     if (res === "Accepted") {
                         this.$message({
                             type: "success",
-                            message: i18n.t('general.sucCancelMsg')
+                            message: i18n.t("actions.cancelReservationAccepted")
                         });
-                        that.isUpdate = true;
-                        that.visible = false;
+                    } else if (res === "Rejected") {
+                        this.$message({
+                            type: "success",
+                            message: i18n.t("actions.cancelReservationRejected")
+                        });
+                    } else if (res === "NoAction") {
+                        this.$message({
+                            type: "success",
+                            message: i18n.t("actions.cancelReservationNoAction")
+                        });
                     }
+                    that.isUpdate = true;
+                    that.visible = false;
                 })
                 .catch((err) => {
-                    console.log('cancelReservation', err);
+                    console.log("cancelReservation", err);
                     that.isLoading = false;
                     that.isUpdate = false;
                     that.visible = false;
@@ -71,8 +81,8 @@ export default {
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

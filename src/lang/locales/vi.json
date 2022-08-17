@@ -512,6 +512,9 @@
         "reserveNowRejected": "Yêu cầu đặt chỗ đã bị bộ sạc từ chối",
         "reserveNowUnavailable": "Đặt chỗ chưa được thực hiện. Tất cả các đầu nối hoặc trình kết nối được chỉ định đều không khả dụng",
         "cancelReservation": "Bạn có chắc chắn muốn hủy đặt chỗ không?",
+        "cancelReservationAccepted": "Yêu cầu hủy đặt chỗ đã thành công",
+        "cancelReservationRejected": "Yêu cầu hủy đặt chỗ đã bị bộ sạc từ chối",
+        "cancelReservationNoAction": "Không tìm thấy đặt chỗ đang hoạt động",
         "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối"
     }
 }

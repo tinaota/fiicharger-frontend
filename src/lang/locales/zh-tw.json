@@ -512,6 +512,9 @@
         "reserveNowRejected": "預約請求已被充電樁拒絕",
         "reserveNowUnavailable": "預約尚未完成。所有充電槍或指定充電槍目前暫停服務。",
         "cancelReservation": "你確定要取消預定嗎?",
+        "cancelReservationAccepted": "取消預訂請求成功",
+        "cancelReservationRejected": "取消預訂的請求已被充電器拒絕",
+        "cancelReservationNoAction": "未找到有效預訂",
         "configurationNotSupported": "更改配置的請求已被充電器拒絕"
     }
 }

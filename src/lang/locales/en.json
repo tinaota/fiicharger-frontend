@@ -512,6 +512,9 @@
         "reserveNowRejected": "Request to make reservation has been rejected by the charger",
         "reserveNowUnavailable": "Reservation has not been made. All connectors or the specified connector are unavailable",
         "cancelReservation": "Are you sure you want to cancel reservation?",
+        "cancelReservationAccepted":"Request to cancel reservation succeeded",
+        "cancelReservationRejected":"Request to cancel reservation has been rejected by charger",
+        "cancelReservationNoAction":"No active reservation found",
         "configurationNotSupported": "Request to change configuration has been rejected by the charger"
     }
 }
