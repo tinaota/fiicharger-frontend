@@ -494,6 +494,7 @@
         "stopConnectorTransactionQuestion": "¿Está seguro de que desea detener de forma remota la transacción para el conector {item}?",
         "stopConnectorTransactionSuccess": "Solicitud de transacción de detención remota exitosa",
         "stopConnectorTransactionRejected": "El cargador ha rechazado la solicitud de transacción de detención remota",
+        "stopConnectorTransactionNoAction": "No se encontró ninguna transacción activa",
         "triggerMessageAccepted": "La solicitud para activar {message} tuvo éxito.",
         "triggerMessageRejected": "El cargador ha rechazado la solicitud para activar {message}.",
         "triggerMessageNotImplemented": "El cargador no implementa {message}.",

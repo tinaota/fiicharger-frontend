@@ -494,6 +494,7 @@
         "stopConnectorTransactionQuestion": "Are you sure you wish to remote stop transaction for connector {item}?",
         "stopConnectorTransactionSuccess": "Request to remote stop transaction succeeded",
         "stopConnectorTransactionRejected": "Request to remote stop transaction has been rejected by charger",
+        "stopConnectorTransactionNoAction":"No active transaction found",
         "triggerMessageAccepted": "Request to trigger {message} succeeded.",
         "triggerMessageRejected": "Request to trigger {message} has been rejected by charger.",
         "triggerMessageNotImplemented": "{message} is not implemented by charger.",

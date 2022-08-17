@@ -494,6 +494,7 @@
         "stopConnectorTransactionQuestion": "確定停止{item}號充電槍交易？",
         "stopConnectorTransactionSuccess": "已遠端停止交易",
         "stopConnectorTransactionRejected": "遠端停止交易已被拒絕",
+        "stopConnectorTransactionNoAction": "未找到活動交易",
         "triggerMessageAccepted": "觸發 {message} 訊息成功。",
         "triggerMessageRejected": "觸發 {message} 訊息失敗。",
         "triggerMessageNotImplemented": "充電樁不支援 {message} 訊息。",

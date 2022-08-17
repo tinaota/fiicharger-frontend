@@ -494,6 +494,7 @@
         "stopConnectorTransactionQuestion": "确定要远程终止充电枪{item}充电吗",
         "stopConnectorTransactionSuccess": "远程终止充电枪成功",
         "stopConnectorTransactionRejected": "远程终止充电枪失败",
+        "stopConnectorTransactionNoAction": "未找到活动交易",
         "triggerMessageAccepted": "触发 {message} 信息成功。",
         "triggerMessageRejected": "触发 {message} 信息失败。",
         "triggerMessageNotImplemented": "充电桩不支持 {message} 信息。",

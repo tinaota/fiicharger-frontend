@@ -138,6 +138,11 @@ export default {
                         type: "success",
                         message: i18n.t(`actions.${this.action}Scheduled`)
                     });
+                } else if (res === "NoAction") {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t(`actions.${this.action}NoAction`)
+                    });
                 } else {
                     this.$message({
                         type: "success",
