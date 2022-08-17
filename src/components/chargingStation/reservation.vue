@@ -26,17 +26,29 @@
                     {{ scope.row.used ? getLocTime(scope.row.used) : '' }}
                 </template>
             </el-table-column>
+            <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="65">
+                <template slot-scope="scope">
+                    <el-button v-if="scope.row.status === 'Accepted' && scope.row.cancelled === null && scope.row.used === null" class="no-bg" @click="openDialog('cancel', scope.row)" style="padding: 4px 8px;">
+                        <i class="fa fa-ban" aria-hidden="true" style="color:#1E5EFF; font-size: 24px;"></i>
+                    </el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
+        <CancelReservation :show="cancelDialog.visible" :data="cancelDialog.data" @close="isUpdate => { closeDialog('cancel', isUpdate) }"></CancelReservation>
     </div>
 </template>
 <script>
 import { transformUtcToLocTime } from "@/utils/function";
 import { $HTTP_getReservation } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import CancelReservation from "@/components/chargingStation/cancelReservation";
 export default {
+    components: {
+        CancelReservation
+    },
     props: {
         chargerId: String,
         isUpdateData: Boolean
@@ -44,11 +56,16 @@ export default {
     emits: ["updated"],
     data() {
         return {
+            permissionEditAble: this.$store.state.permissionEditable,
             isLoading: false,
             tableData: [],
             page: 1,
             total: 0,
-            limit: $GLOBAL_PAGE_LIMIT
+            limit: $GLOBAL_PAGE_LIMIT,
+            cancelDialog: {
+                visible: false,
+                data: {}
+            }
         };
     },
     computed: {
@@ -109,7 +126,25 @@ export default {
         changePage(page) {
             this.page = page;
             this.fetchReservations();
-        }
+        },
+        openDialog(type, data) {
+            if (type === "cancel") {
+                this.cancelDialog.data = {
+                    chargePointId: data.chargePointId,
+                    connectorId: data.connectorId,
+                    reservationId: data.id
+                };
+                this.cancelDialog.visible = true;
+            }
+            this.$jQuery(".scroll").mCustomScrollbar("disable");
+        },
+        closeDialog(type, isUpdate) {
+            if (type === "cancel") {
+                this.cancelDialog.visible = false;
+                isUpdate && this.fetchReservations();
+            }
+            this.$jQuery(".scroll").mCustomScrollbar("update");
+        },
     }
 };
 </script>

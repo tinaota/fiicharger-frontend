@@ -1,7 +1,7 @@
 <template>
     <el-dialog :title="$t('chargingStation.cancelReservation')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
-            <p>Are you sure you want to cancel current reservation?</p>
+            <p>{{ $t("actions.cancelReservation") }}</p>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -42,13 +42,14 @@ export default {
                 chargePointId: that.data.chargePointId,
                 connectorId: that.data.connectorId
             };
-
+            if (that.data.reservationId) {
+                params.reservationId = that.data.reservationId;
+            }
             that.isLoading = true;
             $HTTP_cancelReservation(params)
                 .then((res) => {
                     that.isLoading = false;
                     if (res === "Accepted") {
-                        that.$message(res.status);
                         this.$message({
                             type: "success",
                             message: i18n.t('general.sucCancelMsg')
