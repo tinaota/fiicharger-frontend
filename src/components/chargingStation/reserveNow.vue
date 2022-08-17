@@ -11,7 +11,10 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
-                <div class="info">{{ data.connectorId + ' ' + data.connectorType }}</div>
+                <el-select class="select-small info" v-model="param.connectorId" v-loading="connectorData.isLoading">
+                    <el-option :value="0" :label="'0 ' + $t('general.default')"></el-option>
+                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + item.type" :key="item.id" :value="item.id"></el-option>
+                </el-select>
             </div>
             <div class="item">
                 <div class="label">{{ $t('menu.idTag') }}</div>
@@ -33,11 +36,12 @@
 
 <script>
 import { $HTTP_getIdTagsList, $HTTP_reserveNow } from "@/api/api";
-
+import { setScrollBar } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
-        data: Object
+        data: Object,
+        connectorData: Object
     },
     data() {
         return {
@@ -45,6 +49,7 @@ export default {
             isLoading: false,
             isUpdate: false,
             param: {
+                connectorId: 0,
                 idTag: "",
                 expiryDate: ""
             },
@@ -97,6 +102,11 @@ export default {
                     const date = new Date();
                     date.setTime(date.getTime() + 30 * 60 * 1000);
                     this.param.expiryDate = date;
+                    this.$jQuery(".dialogForm").length > 0 &&
+                        this.$jQuery(".dialogForm").mCustomScrollbar("destroy");
+                    this.$nextTick(() => {
+                        setScrollBar(".dialogForm", this);
+                    });
                 }
             }
         }
@@ -132,7 +142,7 @@ export default {
                 const that = this;
                 let params = {
                     chargePointId: that.data.chargePointId,
-                    connectorId: parseInt(that.data.connectorId),
+                    connectorId: parseInt(that.param.connectorId),
                     idTag: that.param.idTag,
                     expiryDate: that.param?.expiryDate !== null ? new Date(that.param?.expiryDate).toISOString() : null
                 };
@@ -168,7 +178,7 @@ export default {
         },
         closeDialog() {
             this.param = {
-                connectorId: "",
+                connectorId: 0,
                 idTag: "",
                 expiryDate: ""
             };

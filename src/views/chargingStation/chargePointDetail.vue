@@ -117,7 +117,12 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="runAction(null, 'remoteTrigger')">{{ $t('general.run') }}</el-button>
                             </li>
-
+                            <li>
+                                <span>
+                                    {{ $t('chargingStation.startReservation') }}
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'reserveNow')">{{ $t('general.start') }}</el-button>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-8 rank-area thirdCol table-result">
@@ -204,12 +209,6 @@
                                             </el-dropdown-item>
                                             <el-dropdown-item>
                                                 <span>
-                                                    <i class="fa fa-book" aria-hidden="true" style="color:#1E5EFF"></i>
-                                                </span>
-                                                <span class="actionFunction" @click="runAction(scope.row, 'reserveNow')">{{ $t('chargingStation.reserveNow') }}</span>
-                                            </el-dropdown-item>
-                                            <el-dropdown-item>
-                                                <span>
                                                     <i class="fa fa-ban" aria-hidden="true" style="color:#1E5EFF"></i>
                                                 </span>
                                                 <span class="actionFunction" @click="runAction(scope.row, 'cancelReservation')">{{ $t('chargingStation.cancelReservation') }}</span>
@@ -234,7 +233,7 @@
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
-                <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
+                <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData ="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
                 <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
             </div>
@@ -380,17 +379,10 @@ export default {
             if (action === "reserveNow") {
                 this.reserveNow.data = {
                     chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name,
-                    connectorId: params.id,
-                    connectorType: params.type
+                    name: this.chargePointById[0].name
                 };
                 this.reserveNow.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
-                this.$jQuery(".formVertical").length > 0 &&
-                    this.$jQuery(".formVertical").mCustomScrollbar("destroy");
-                this.$nextTick(() => {
-                    setScrollBar(".formVertical", this);
-                });
             } else if (action === "cancelReservation") {
                 this.cancelReservation.data = {
                     chargePointId: this.chargePointById[0].id,

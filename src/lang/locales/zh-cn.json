@@ -165,7 +165,8 @@
         "value": "值",
         "perform": "执行",
         "free": "免费",
-        "customConfigurationPlaceholder": "搜索或输入自定义设置"
+        "customConfigurationPlaceholder": "搜索或输入自定义设置",
+        "default": "默认"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
