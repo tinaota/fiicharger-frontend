@@ -105,7 +105,6 @@ generate_release:
     - verify_build
   dependencies: [ ]
   before_script:
-    - npm ci --cache .npm --prefer-offline
     - |
       {
         echo "@${CI_PROJECT_ROOT_NAMESPACE}:registry=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/npm/"
