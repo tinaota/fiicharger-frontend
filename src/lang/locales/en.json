@@ -509,6 +509,7 @@
         "reserveNowFaulted": "Request to make reservation has failed",
         "reserveNowOccupied": "Reservation has not been made. All connectors or the specified connector are occupied",
         "reserveNowRejected": "Request to make reservation has been rejected by the charger",
-        "reserveNowUnavailable": "Reservation has not been made. All connectors or the specified connector are unavailable"
+        "reserveNowUnavailable": "Reservation has not been made. All connectors or the specified connector are unavailable",
+        "configurationNotSupported": "Request to change configuration has been rejected by the charger"
     }
 }

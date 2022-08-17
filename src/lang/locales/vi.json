@@ -509,6 +509,7 @@
         "ReserveNowFaulted": "Yêu cầu đặt chỗ không thành công",
         "reserveNowOccupied": "Đặt chỗ chưa được thực hiện. Tất cả các đầu nối hoặc đầu nối được chỉ định đều bị chiếm dụng",
         "reserveNowRejected": "Yêu cầu đặt chỗ đã bị bộ sạc từ chối",
-        "reserveNowUnavailable": "Đặt chỗ chưa được thực hiện. Tất cả các đầu nối hoặc trình kết nối được chỉ định đều không khả dụng"
+        "reserveNowUnavailable": "Đặt chỗ chưa được thực hiện. Tất cả các đầu nối hoặc trình kết nối được chỉ định đều không khả dụng",
+        "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối"
     }
 }

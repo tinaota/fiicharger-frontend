@@ -85,7 +85,7 @@ export default {
                 $HTTP_getConfiguration(params)
                     .then((res) => {
                         if (res.length > 0) {
-                            this.configurations = this.sortByKey(res);;
+                            this.configurations = this.sortByKey(res);
                             this.isLoading = false;
                             this.forceRerender();
                             this.runScrollFunction();
@@ -94,7 +94,8 @@ export default {
                             if (
                                 this.filter.selectedConfiguration.length === 0
                             ) {
-                                this.configurationSearchList.data = this.sortByKey(res);
+                                this.configurationSearchList.data =
+                                    this.sortByKey(res);
                             }
                         } else {
                             this.configurations = [];
@@ -132,6 +133,12 @@ export default {
             $HTTP_updateConfiguration(params)
                 .then((res) => {
                     if (res === "Accepted") {
+                        this.getConfiguration(this.chargePointId);
+                    } else if (res === "NotSupported") {
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("actions.configurationNotSupported")
+                        });
                         this.getConfiguration(this.chargePointId);
                     }
                 })

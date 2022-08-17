@@ -509,6 +509,7 @@
         "reserveNowFaulted": "Se ha producido un error en la solicitud de reserva",
         "reserveNowOccupied": "No se ha realizado la reserva. Todos los conectores o el conector especificado están ocupados",
         "reserveNowRejected": "La solicitud de reserva ha sido rechazada por el cargador",
-        "reserveNowUnavailable": "No se ha realizado la reserva. Todos los conectores o el conector especificado no están disponibles"
+        "reserveNowUnavailable": "No se ha realizado la reserva. Todos los conectores o el conector especificado no están disponibles",
+        "configurationNotSupported": "El cargador ha rechazado la solicitud de cambio de configuración"
     }
 }

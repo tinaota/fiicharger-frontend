@@ -509,6 +509,7 @@
         "reserveNowFaulted": "预订请求失败",
         "reserveNowOccupied": "预订尚未完成。所有充电枪或指定充电枪已被占用",
         "reserveNowRejected": "预订请求已被充电桩拒绝",
-        "reserveNowUnavailable": "预订尚未完成。所有充电枪或指定充电枪目前暂停服务。"
+        "reserveNowUnavailable": "预订尚未完成。所有充电枪或指定充电枪目前暂停服务。",
+        "configurationNotSupported": "更改充电桩配置请求失败"
     }
 }
