@@ -40,7 +40,7 @@ export default {
             const that = this;
             let params = {
                 chargePointId: that.data.chargePointId,
-                connectorId: that.data.connectorId
+                connectorId: that.data.connectorId ?? 0
             };
             if (that.data.reservationId) {
                 params.reservationId = that.data.reservationId;
