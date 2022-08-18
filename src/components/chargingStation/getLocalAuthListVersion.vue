@@ -5,7 +5,7 @@
         @close="closeDialog()">
         <hr/>
         <div class="result-content" v-loading="isLoading">
-            <p>{{ $t('sendLocalList.localAuthListVersion') }}: <span v-if="versionData">{{ versionData }}</span></p>
+            <p>{{ $t('sendLocalList.localAuthListVersion') }}: <span>{{ versionData }}</span></p>
         </div>
     </el-dialog>
 </template>
