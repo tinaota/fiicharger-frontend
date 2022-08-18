@@ -15,7 +15,7 @@
             :picker-options="pickerOptions"
             :clearable="true">
         </el-date-picker>
-        <el-button type="primary" class="actionFunction" @click="getDiagnosticsHandler" :disabled="btnDisabled">{{ $t('general.get') }}</el-button>
+        <el-button type="primary" class="actionFunction" @click="getDiagnosticsHandler">{{ $t('general.get') }}</el-button>
     </div>
     <p v-if="currentFile.fileName !== '' && currentFile.fileName !== null ">
         {{currentFile.fileName}}
@@ -106,7 +106,6 @@ export default {
             visible: false,
             isLoading: false,
             logTimeRange: [],
-            btnDisabled: false,
             page: 1,
             limit: $GLOBAL_PAGE_LIMIT,
             total: 0,
@@ -170,7 +169,6 @@ export default {
                 return false;
             }
             const that = this;
-            this.btnDisabled = true;
             const param = {
                 chargePointId: this.$props.chargePointId,
                 param: {
@@ -195,7 +193,6 @@ export default {
                 })
                 .catch( err => {
                     that.isLoading = false;
-                    that.btnDisabled = false;
                     that.$message({ type: "warning", message: i18n.t("diagnostic.err_catch") });
                 });
         },
@@ -230,7 +227,6 @@ export default {
         },
         stopLooping(time){
             clearInterval(time);
-            this.btnDisabled = false;
         },
         checkChargePointStatus(id){
             const that = this;
@@ -246,18 +242,12 @@ export default {
                     that.currentFile.downloadStatus = data.diagnosticsStatus;
                     that.currentFile.fileName = data.lastDiagnosticsFileName;
                     if(data.diagnosticsStatus === "Uploading" || data.diagnosticsStatus === "Waiting") {
-                        that.btnDisabled = true;
                         that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
                         setTimeout(function(){  // Stop Loop for 0.5 hour
                             that.currentFile.downloadStatus = "UploadFailed";
                             that.stopLooping(that.loopingStatus);
                         }, 1800000)
-                    }else{
-                        that.btnDisabled = false;
                     }
-                })
-                .catch( err => {
-                    that.btnDisabled = false;
                 });
         },
         downloadHandler(data){
@@ -300,7 +290,6 @@ export default {
             // }
             this.currentFile.fileName = '';
             this.currentFile.downloadStatus = '';
-            this.btnDisabled = false;
         },
         getTriggerMsg(){
             const that = this;
@@ -315,7 +304,6 @@ export default {
                             this.$message({ type: "success", message: i18n.t(`actions.triggerMessageAccepted`, {message: that.msgTriggerType}) });
                             that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
                             that.currentFile.downloadStatus = "Waiting";
-                            this.btnDisabled = true;
                             break;
                         case "Rejected":
                             this.$message.error(i18n.t(`actions.triggerMessageRejected`, {message: that.msgTriggerType}));
