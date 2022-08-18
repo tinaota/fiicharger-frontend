@@ -287,7 +287,7 @@ export const $HTTP_sendTriggerMessage = params => { return post(`${base_charger}
 export const $HTTP_getIdtagList = params => { return fetch(`${base_charger}/api/ocpp/local-auth-list/idtag-list`, {}) }
 
 //get local auth list version
-export const $HTTP_getLocalAuthListVersion = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list-version`, {}) }
+export const $HTTP_getLocalAuthListVersion = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list/version`, {}) }
 
 //send auth local list to charger
 export const $HTTP_sendAuthLocalList = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param)}
