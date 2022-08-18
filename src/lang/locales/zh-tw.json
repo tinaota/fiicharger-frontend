@@ -166,7 +166,12 @@
         "perform": "執行",
         "free": "免費",
         "customConfigurationPlaceholder": "搜索或輸入自定義設置",
-        "default": "未指定"
+        "default": "未指定",
+        "get": "取得",
+        "send": "發送",
+        "install": "安裝",
+        "select": "選擇",
+        "upload": "上傳"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -333,7 +338,9 @@
             "5Mins": "5分鐘",
             "10Mins": "10分鐘",
             "30Mins": "30分鐘"
-        }
+        },
+        "getLocalAuthListVersion": "獲取本地列表版本",
+        "sendLocalAuthList": "發送本地列表"
     },
     "userAccount": {
         "memberName": "會員名稱",
@@ -516,5 +523,20 @@
         "cancelReservationRejected": "取消預訂的請求已被充電器拒絕",
         "cancelReservationNoAction": "未找到有效預訂",
         "configurationNotSupported": "更改配置的請求已被充電器拒絕"
+    },
+    "sendLocalList": {
+        "listVersion": "列表版本號",
+        "updateType": "更新類別",
+        "clearListBtn": "清除列表",
+        "clearListMsg": "請確定是否刪除充電樁的列表",
+        "localAuthListVersion": "當前列表版本",
+        "addUpdateList": "新增/更新清單",
+        "deleteList": "刪除清單",
+        "accepted": "本地授權列表更新成功",
+        "failed": "更新本地授權列表失敗。",
+        "notSupported": "不支持更新本地授權列表",
+        "versionMismatch": "版本號小於或等於當前列表的版本號",
+        "clearListSuccessMsg": "刪除列表成功",
+        "getIdtagFiledMsg": "取得ID標籤列表失敗"
     }
 }

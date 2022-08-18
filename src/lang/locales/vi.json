@@ -166,7 +166,12 @@
         "perform": "Trình diễn",
         "free": "Tự do",
         "customConfigurationPlaceholder": "Tìm kiếm hoặc Nhập cài đặt tùy chỉnh",
-        "default": "Không xác định"
+        "default": "Không xác định",
+        "get": "Lấy",
+        "send": "Gửi",
+        "install": "Cài đặt",
+        "select": "Xin vui lòng chọn",
+        "upload": "Tải lên"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -333,7 +338,9 @@
             "5Mins": "5 phút",
             "10Mins": "10 phút",
             "30Mins": "30 phút"
-        }
+        },
+        "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
+        "sendLocalAuthList": "Gửi danh sách địa phương"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -516,5 +523,20 @@
         "cancelReservationRejected": "Yêu cầu hủy đặt chỗ đã bị bộ sạc từ chối",
         "cancelReservationNoAction": "Không tìm thấy đặt chỗ đang hoạt động",
         "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối"
+    },
+    "sendLocalList": {
+        "listVersion": "Liệt kê số phiên bản",
+        "updateType": "Cập nhật loại",
+        "clearListBtn": "Danh sách rõ ràng",
+        "clearListMsg": "Vui lòng xác nhận xem có xóa danh sách điểm sạc không",
+        "localAuthListVersion": "Phiên bản danh sách hiện tại",
+        "addUpdateList": "Thêm / cập nhật danh sách",
+        "deleteList": "Xóa danh sách",
+        "accepted": "Đã cập nhật thành công Danh sách ủy quyền cục bộ",
+        "failed": "Không cập nhật được Danh sách ủy quyền cục bộ",
+        "notSupported": "Cập nhật Danh sách Ủy quyền Địa phương không được hỗ trợ",
+        "versionMismatch": "Số phiên bản trong yêu cầu cập nhật khác biệt nhỏ hơn hoặc bằng số phiên bản của danh sách hiện tại",
+        "clearListSuccessMsg": "Xóa danh sách thành công",
+        "getIdtagFiledMsg": "Không lấy được danh sách các thẻ id."
     }
 }

@@ -166,7 +166,12 @@
         "perform": "Llevar a cabo",
         "free": "Libre",
         "customConfigurationPlaceholder": "Buscar o ingresar una configuración personalizada",
-        "default": "sin especificar"
+        "default": "sin especificar",
+        "get": "Obtener",
+        "send": "Enviar",
+        "install": "Instalar",
+        "select": "Seleccione",
+        "upload": "Subir"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -333,7 +338,9 @@
             "5Mins": "5 minutos",
             "10Mins": "10 minutos",
             "30Mins": "30 minutos"
-        }
+        },
+        "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
+        "sendLocalAuthList": "Gửi danh sách địa phương"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -516,5 +523,20 @@
         "cancelReservationRejected": "El cargador ha rechazado la solicitud de cancelación de la reserva",
         "cancelReservationNoAction": "No se encontró ninguna reserva activa",
         "configurationNotSupported": "El cargador ha rechazado la solicitud de cambio de configuración"
+    },
+    "sendLocalList": {
+        "listVersion": "Número de versión de la lista",
+        "updateType": "Tipo de actualización",
+        "clearListBtn": "Limpiar lista",
+        "clearListMsg": "Confirme si desea eliminar la lista de puntos de recarga",
+        "localAuthListVersion": "Versión de lista actual",
+        "addUpdateList": "Agregar/actualizar lista",
+        "deleteList": "Eliminar lista",
+        "accepted": "Lista de autorizaciones locales actualizada con éxito.",
+        "failed": "No se pudo actualizar la lista de autorizaciones locales.",
+        "notSupported": "La actualización de la lista de autorizaciones locales no es compatible con Charge Point.",
+        "versionMismatch": "El número de versión en la solicitud de una actualización diferencial es menor o igual que el número de versión de la lista actual.",
+        "clearListSuccessMsg": "Eliminación de lista exitosa",
+        "getIdtagFiledMsg": "Error al obtener la lista de etiquetas de identificación."
     }
 }

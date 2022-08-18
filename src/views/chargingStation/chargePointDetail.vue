@@ -123,6 +123,14 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="runAction(null, 'reserveNow')">{{ $t('general.start') }}</el-button>
                             </li>
+                            <li>
+                                <span>{{ $t('chargingStation.getLocalAuthListVersion') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction( null, 'getLocalAuthListVersion')">{{ $t('general.get') }}</el-button>
+                            </li>
+                            <li>
+                                <span>{{ $t('chargingStation.sendLocalAuthList') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction( null, 'sendLocalAuthList')">{{ $t('general.send') }}</el-button>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-8 rank-area thirdCol table-result">
@@ -236,6 +244,8 @@
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData ="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
                 <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
+                <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
+                <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
             </div>
         </div>
     </div>
@@ -260,6 +270,8 @@ import UpdateConnectorType from "@/components/chargingStation/updateConnectorTyp
 import Configuration from "@/views/setting/configuration";
 import CommonPopup from "@/components/commonPopup";
 import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
+import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthListVersion";
+import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
 import { $GLOBAL_REFRESH } from "@/utils/global";
 
 export default {
@@ -272,7 +284,9 @@ export default {
         Reservation,
         ReserveNow,
         CancelReservation,
-        RemoteTrigger
+        RemoteTrigger,
+        GetLocalAuthListVersion,
+        SendLocalAutList
     },
     data() {
         return {
@@ -327,6 +341,14 @@ export default {
             connectorStatuses: {
                 data: [],
                 isLoading: false
+            },
+            getAuthVersionDialog: {
+                chargePointId: '',
+                visible: false
+            },
+            sendAutDialog: {
+                chargePointId: '',
+                visible: false
             }
         };
     },
@@ -396,6 +418,14 @@ export default {
                     name: this.chargePointById[0].name
                 };
                 this.remoteTrigger.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "getLocalAuthListVersion") {
+                this.getAuthVersionDialog.chargePointId = this.chargePointById[0].id;
+                this.getAuthVersionDialog.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "sendLocalAuthList") {
+                this.sendAutDialog.chargePointId = this.chargePointById[0].id;
+                this.sendAutDialog.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
@@ -507,6 +537,12 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "remoteTrigger") {
                 this.remoteTrigger.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "getAuthVersionDialog") {
+                this.getAuthVersionDialog.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "sendAutDialog") {
+                this.sendAutDialog.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();

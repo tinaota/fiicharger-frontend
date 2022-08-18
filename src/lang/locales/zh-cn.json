@@ -166,7 +166,12 @@
         "perform": "执行",
         "free": "免费",
         "customConfigurationPlaceholder": "搜索或输入自定义设置",
-        "default": "未指定"
+        "default": "未指定",
+        "get": "获得",
+        "send": "发送",
+        "install": "安装",
+        "select": "选择",
+        "upload": "上传"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -333,7 +338,9 @@
             "5Mins": "5分钟",
             "10Mins": "10分钟",
             "30Mins": "30分钟"
-        }
+        },
+        "getLocalAuthListVersion": "获取本地列表版本",
+        "sendLocalAuthList": "发送本地列表"
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -516,5 +523,20 @@
         "cancelReservationRejected": "取消预订的请求已被充电器拒绝",
         "cancelReservationNoAction": "未找到有效预订",
         "configurationNotSupported": "更改充电桩配置请求失败"
+    },
+    "sendLocalList": {
+        "listVersion": "列表版本号 ",
+        "updateType": "更新类型",
+        "clearListBtn": "清除列表",
+        "clearListMsg": "请确认是否删除充电桩列表",
+        "localAuthListVersion": "当前列表版本",
+        "addUpdateList": "添加/更新列表",
+        "deleteList": "删除清单",
+        "accepted": "本地授权列表更新成功",
+        "failed": "更新本地授权列表失败。",
+        "notSupported": "不支持更新本地授权列表",
+        "versionMismatch": "版本号小于或等于当前列表的版本号",
+        "clearListSuccessMsg": "删除列表成功",
+        "getIdtagFiledMsg": "取得ID标签列表失败"
     }
 }

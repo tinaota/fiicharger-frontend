@@ -166,7 +166,12 @@
         "perform": "Perform",
         "free": "Free",
         "customConfigurationPlaceholder": "Search or Enter Custom Setting",
-        "default": "Unspecified"
+        "default": "Unspecified",
+        "get": "Get",
+        "send": "Send",
+        "install": "Install",
+        "select": "Select",
+        "upload": "Upload"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -333,7 +338,9 @@
             "5Mins": "5 mins",
             "10Mins": "10 mins",
             "30Mins": "30 mins"
-        }
+        },
+        "getLocalAuthListVersion": "Get Local List Version",
+        "sendLocalAuthList": "Send Local List"
     },
     "userAccount": {
         "memberName": "Member Name",
@@ -516,5 +523,20 @@
         "cancelReservationRejected":"Request to cancel reservation has been rejected by charger",
         "cancelReservationNoAction":"No active reservation found",
         "configurationNotSupported": "Request to change configuration has been rejected by the charger"
+    },
+    "sendLocalList": {
+        "listVersion": "List Version",
+        "updateType": "Update Type",
+        "clearListBtn": "Clear List",
+        "clearListMsg": "Please confirm whether to delete the list of charging point",
+        "localAuthListVersion": "Current List Version",
+        "addUpdateList": "Add/update List",
+        "deleteList": "Delete List",
+        "accepted": "Local Authorization List successfully updated.",
+        "failed": "Failed to update the Local Authorization List.",
+        "notSupported": "Update of Local Authorization List is not supported by Charge Point.",
+        "versionMismatch": "Version number in the request for a differential update is less or equal then version number of current list.",
+        "clearListSuccessMsg": "List deleted successfully",
+        "getIdtagFiledMsg": "Failed to get list of id tags."
     }
 }
