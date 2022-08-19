@@ -6,9 +6,8 @@
                 <el-breadcrumb-item :to="{ path: '/chargePoint' }">{{ $t('menu.chargePoint') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.chargeBoxId }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div class="card-8">
                 <div class="charge-point-info" v-loading="isLoading" v-if="chargePointById.length>=1">
-                    <div class="upperBody rank-area firstCol">
+                    <div class="card-8 rank-area">
                         <div class="item title">
                             <div class="label">{{ $t('chargingStation.charger') }}</div>
                             <div class="content">{{ chargePointById[0].name }}</div>
@@ -68,7 +67,7 @@
                             <Connector :dataObj="connectorStatuses.data" :chargerStatus="chargePointById[0].connectionStatus" :isBreak="true"></Connector>
                         </div>
                     </div>
-                    <div class="card-8 rank-area secondCol">
+                    <div class="card-8 rank-area">
                         <el-button size="medium" type="primary" @click="openDialog(chargePointById[0].id, 'configuration')"> {{ $t('general.settings') }}</el-button>
                         <div class="header">
                             <div class="title">{{ $t('general.action') }}</div>
@@ -130,7 +129,8 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-8 rank-area thirdCol table-result">
+
+                    <div class="card-8 connector-area">
                         <div class="header">
                             <div class="title">{{ $t('chargingStation.connectors') }}</div>
                         </div>
@@ -225,7 +225,8 @@
                         </el-table>
                     </div>
                 </div>
-                <div class="tabs-contain">
+
+                <div class=" card-8 tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleClick">
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
@@ -238,17 +239,15 @@
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
-                <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData ="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
+                <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
                 <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
                 <UpdateFirmware :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
                 <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
                 <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
-                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
                 <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -591,9 +590,10 @@ export default {
         font-size: 1.5rem;
         font-weight: bold;
     }
-    .charge-point-info {
+
+}
+ .charge-point-info {
         display: flex;
-        flex-wrap: wrap;
         .item {
             margin-bottom: 12px;
             .label {
@@ -643,28 +643,14 @@ export default {
             }
         }
     }
-
-    .firstCol {
-        width: calc(26.05% - 32px) !important;
-    }
-
-    .secondCol {
-        width: calc(20.05% - 32px) !important;
-        padding: 0px 28px;
-    }
-
-    .thirdCol {
-        width: calc(40.05% - 32px) !important;
-        padding: 0px 28px;
-    }
-
     .rank-area {
+        width: calc(26.05% - 32px)!important;
         margin-right: 12px;
         height: auto;
         position: relative;
         vertical-align: top;
         &:nth-child(4n + 1) {
-            margin-right: 0px;
+            margin-right: 12px;
         }
         .title {
             font-size: 20px;
@@ -697,7 +683,11 @@ export default {
             }
         }
     }
-}
+
+    .connector-area {
+       width: calc(44.05% - 32px)!important;
+        height: auto;
+    }
 
 .connectors_chargers {
     color: #409eff;
@@ -710,17 +700,19 @@ export default {
     cursor: pointer;
 }
 @media screen and (max-width: 1500px) {
-    .firstCol {
-        flex: 60%;
-    }
-    .secondCol {
-        flex: 30%;
-    }
-    .thirdCol {
-        flex: 75%;
-    }
-    .card-8 .thirdCol {
-        padding: 28px 0px;
-    }
+.charge-point-info{
+   flex-wrap:wrap;
 }
+.rank-area{
+   flex:25%;
+}
+.connector-area{
+    flex:50%;
+}
+}
+ @media screen and (max-width: 800px) {
+ .rank-area{
+   flex:50%;
+}
+ }
 </style>

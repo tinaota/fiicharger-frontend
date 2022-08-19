@@ -6,142 +6,133 @@
                 <el-breadcrumb-item :to="{ path: '/station' }">{{ $t('menu.station') }}</el-breadcrumb-item>
                 <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div class="card-8">
-                <div class="header">{{ $t('chargingStation.stationInfo') }}</div>
-                <el-table :data="[stationInfo]" v-loading="isLoading" class="center">
-                    <el-table-column prop="stationId" :label="$t('chargingStation.stationID')" :min-width="2"></el-table-column>
-                    <el-table-column prop="stationName" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
-                    <el-table-column prop="zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('general.address')" :min-width="5">
-                        <template slot-scope="scope">
-                            {{ scope.row.address }}
-                            <el-tooltip :content="scope.row.loc.lon+','+scope.row.loc.lat" placement="bottom" effect="light" popper-class="custom">
-                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.businessHours')" :min-width="5">
-                        <template slot-scope="scope">
-                            {{ scope.row.serviceStartTime + '-' + scope.row.serviceEndTime }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.telephone')" :min-width="5">
-                        <template slot-scope="scope">
-                            {{ scope.row.phone }}
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
 
-            <div class="card-8 rank-area">
-                <div class="header">
-                    <div class="title">{{ $t('menu.summary') }} ({{ $t('chargingStation.lastThirtyDays') }})</div>
+            <div class="card-alt">
+                <div class="card-8 rank-area">
+                    <div class="header">
+                        <div class="title">{{ $t('chargingStation.stationInfo') }} </div>
+                    </div>
+                    <ul class="rank">
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.stationID') }}</span>
+                                <span class="num">{{ stationInfo.stationId }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.stationName') }}</span>
+                                <span class="num">{{ stationInfo.stationName }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('general.address') }}</span>
+                                <span class="num">{{ stationInfo.address }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('general.zipCode') }}</span>
+                                <span class="num">{{ stationInfo.zipCode }}</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <ul class="rank">
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.powerConsumption') }}</span>
-                            <span class="num">{{ transactionSummary.totalEnergyKwh }} KWH</span>
-                        </div>
-                    </li>
-                    <!-- <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.totalRevenue') }}</span>
-                            <span class="num">$654.37</span>
-                        </div>
-                    </li>  -->
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                            <span class="num">{{ transactionSummary.transactionCount }}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.nChargers') }}(AC)</span>
-                            <span class="num">{{ chargerCount.acCount }}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.nChargers') }}(DC)</span>
-                            <span class="num">{{ chargerCount.dcCount }}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-8 rank-area">
-                <div class="header">
-                    <div class="title">{{ $t('general.action') }}</div>
-                </div>
-                <ul class="rank">
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.updateChargers') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'run')">{{ $t('general.run') }}</el-button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
-                            <el-button type="primary" class="actionFunction " @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'add')">{{ $t('general.add') }}</el-button>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="label">
-                            <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">{{ $t('general.clear') }}</el-button>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="card-8 rank-area">
-                <div class="header">
-                    <div class="title">{{ $t('chargingStation.connectors') }}</div>
-                    <div class="title-value">{{ getTotal(connectorSummary) }}</div>
-                </div>
-                <ul class="rank">
-                    <li>
-                        <div class="connectors">
-                            <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color1"></span>
-                            </el-tooltip>
-                            <span class="name">{{ connectorSummary.available }} {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="connectors">
-                            <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color8"></span>
-                            </el-tooltip>
-                            <span class="name">{{ connectorSummary.inUse }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="connectors">
-                            <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color4"></span>
-                            </el-tooltip>
-                            <span class="name">{{ connectorSummary.unavailable }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="connectors">
-                            <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color10"></span>
-                            </el-tooltip>
-                            <span class="name">{{ connectorSummary.offline }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
 
+                <div class="card-8 rank-area">
+                    <div class="header">
+                        <div class="title">{{ $t('general.action') }}</div>
+                    </div>
+                    <ul class="rank">
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.updateChargers') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'run')">{{ $t('general.run') }}</el-button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
+                                <el-button type="primary" class="actionFunction " @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'add')">{{ $t('general.add') }}</el-button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">{{ $t('general.clear') }}</el-button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-8 rank-area">
+                    <div class="header">
+                        <div class="title">{{ $t('chargingStation.connectors') }}</div>
+                        <div class="title-value">{{ getTotal(connectorSummary) }}</div>
+                    </div>
+                    <ul class="rank">
+                        <li>
+                            <div class="connectors">
+                                <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                    <span class="circle-status color1"></span>
+                                </el-tooltip>
+                                <span class="name">{{ connectorSummary.available }} {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="connectors">
+                                <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
+                                    <span class="circle-status color8"></span>
+                                </el-tooltip>
+                                <span class="name">{{ connectorSummary.inUse }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="connectors">
+                                <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
+                                    <span class="circle-status color4"></span>
+                                </el-tooltip>
+                                <span class="name">{{ connectorSummary.unavailable }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="connectors">
+                                <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
+                                    <span class="circle-status color10"></span>
+                                </el-tooltip>
+                                <span class="name">{{ connectorSummary.offline }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="graph_time">
+                {{ $t('menu.statistics') }}
+            </div>
+            <div class="card-alt">
+                <div class="card-8 stats_area">
+
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.powerConsumption') }}</span>
+                    <div class="num_stats"> <span class="num">{{ transactionSummary.totalEnergyKwh }} KWH</span></div>
+                </div>
+                <div class="card-8 stats_area">
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalTransaction') }}</span>
+                    <div class="num_stats"> <span class="num">{{ transactionSummary.transactionCount }}</span></div>
+                </div>
+                <div class="card-8 stats_area">
+                </div>
+                <div class="card-8 stats_area">
+                </div>
+                <div class="card-8 stats_area">
+                </div>
+            </div>
+            <div class="card-8"></div>
             <div class="card-8 table-result">
                 <div class="header">{{ $t('menu.chargePoint') }}</div>
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
@@ -659,7 +650,9 @@ export default {
         }
     }
 }
-
+.graph_time {
+    padding: 0px 0px 19px;
+}
 .action_chargers_stations {
     background-color: transparent;
     border-color: #409eff;
@@ -667,16 +660,31 @@ export default {
     color: #409eff;
     font-weight: 600;
 }
-
+.stats_area {
+    width: calc(20% - 32px);
+    margin-right: 12px;
+    height: 47px;
+    position: relative;
+    vertical-align: top;
+    padding-bottom: 48px;
+}
+.num_stats {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+.card-alt {
+    display: flex;
+    width: 100%;
+}
 .rank-area {
-    width: calc(33.05% - 32px);
+    width: calc(33% - 32px);
     margin-right: 12px;
     height: 255px;
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
     &:nth-child(4n + 1) {
-        margin-right: 0px;
+        margin-right: 12px;
     }
     ul.rank {
         margin-top: 24px;
@@ -719,6 +727,7 @@ export default {
         }
     }
 }
+
 .actionFunction {
     margin-left: 10px;
 }
@@ -747,5 +756,18 @@ export default {
 .el-link:hover {
     text-decoration: none;
     color: #0056ff;
+}
+
+@media screen and (max-width: 800px) {
+    .card-alt {
+        flex-wrap: wrap;
+    }
+
+    .rank-area {
+        flex: 100%;
+    }
+    .stats_area {
+        flex: 25%;
+    }
 }
 </style>
