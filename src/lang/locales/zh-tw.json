@@ -525,17 +525,17 @@
         "configurationNotSupported": "更改配置的請求已被充電器拒絕"
     },
     "sendLocalList": {
-        "listVersion": "列表版本號",
+        "listVersion": "列表版號",
         "updateType": "更新類別",
         "clearListBtn": "清除列表",
-        "clearListMsg": "請確定是否刪除充電樁的列表",
+        "clearListMsg": "你確定要清除充電樁本地列表碼",
         "localAuthListVersion": "當前列表版本",
         "addUpdateList": "新增/更新清單",
         "deleteList": "刪除清單",
-        "accepted": "本地授權列表更新成功",
-        "failed": "更新本地授權列表失敗。",
-        "notSupported": "不支持更新本地授權列表",
-        "versionMismatch": "版本號小於或等於當前列表的版本號",
+        "accepted": "本地列表更新成功",
+        "failed": "更新本地列表失敗。",
+        "notSupported": "不支持更新本地列表",
+        "versionMismatch": "版本號小於或等於當前列表的版號",
         "clearListSuccessMsg": "刪除列表成功",
         "getIdtagFiledMsg": "取得ID標籤列表失敗"
     }

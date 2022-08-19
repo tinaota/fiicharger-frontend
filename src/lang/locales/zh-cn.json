@@ -525,16 +525,16 @@
         "configurationNotSupported": "更改充电桩配置请求失败"
     },
     "sendLocalList": {
-        "listVersion": "列表版本号 ",
+        "listVersion": "列表版本号",
         "updateType": "更新类型",
         "clearListBtn": "清除列表",
-        "clearListMsg": "请确认是否删除充电桩列表",
+        "clearListMsg": "您确定要清除充电桩本地列表吗？",
         "localAuthListVersion": "当前列表版本",
         "addUpdateList": "添加/更新列表",
         "deleteList": "删除清单",
-        "accepted": "本地授权列表更新成功",
-        "failed": "更新本地授权列表失败。",
-        "notSupported": "不支持更新本地授权列表",
+        "accepted": "本地列表更新成功",
+        "failed": "更新本地列表失败。",
+        "notSupported": "不支持更新本地列表",
         "versionMismatch": "版本号小于或等于当前列表的版本号",
         "clearListSuccessMsg": "删除列表成功",
         "getIdtagFiledMsg": "取得ID标签列表失败"
