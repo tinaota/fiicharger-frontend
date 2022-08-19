@@ -40,23 +40,10 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="small" type="danger" @click="confirmVisible = true">{{ $t('sendLocalList.clearListBtn') }}</el-button>
+            <el-button class="btn-left" size="small" type="danger" @click="clearListHandler()">{{ $t('sendLocalList.clearListBtn') }}</el-button>
             <el-button size="small" @click="closeDialog">{{ $t('general.cancel') }}</el-button>
             <el-button size="small" type="primary" @click="sendAuthLocalListHandler">{{ $t('general.ok') }}</el-button>
         </div>
-        <el-dialog
-            width="30%"
-            :visible.sync="confirmVisible"
-            append-to-body>
-            <h4 style="color: red;">
-                <i class="el-icon-warning"></i>
-                {{ $t('sendLocalList.clearListMsg') }}
-            </h4>
-            <div slot="footer" class="dialog-footer">
-                <el-button size="small" @click="confirmVisible = false">{{ $t('general.cancel') }}</el-button>
-                <el-button size="small" type="primary" @click="clearListHandler">{{ $t('general.ok') }}</el-button>
-        </div>
-        </el-dialog>
     </el-dialog>
 </template>
 
@@ -186,26 +173,32 @@ export default {
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 })
         },
-        clearListHandler(){
-            this.confirmVisible = false;
-            this.isLoading = true;
-            const param = {
-                chargePointId: this.$props.chargePointId
-            };
-            $HTTP_deleteAuthLocalList(param)
-                .then( res => {
-                    this.isLoading = false;
-                    this.$message({ type: "success", message: i18n.t("sendLocalList.clearListSuccessMsg") });
-                    this.closeDialog();
-                })
-                .catch( err => {
-                    this.isLoading = false;
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                })
-        },
         closeDialog() {
             this.initData();
             this.$emit('close', false);
+        },
+        clearListHandler(){
+            this.$confirm(i18n.t("sendLocalList.clearListMsg"), i18n.t("sendLocalList.clearListBtn"), {
+                showClose: false,
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
+            })
+            .then(() => {
+                this.confirmVisible = false;
+                this.isLoading = true;
+                const param = {
+                    chargePointId: this.$props.chargePointId
+                };
+                $HTTP_deleteAuthLocalList(param)
+                    .then( res => {
+                        this.isLoading = false;
+                        this.$message({ type: "success", message: i18n.t("sendLocalList.clearListSuccessMsg") });
+                        this.closeDialog();
+                    })
+                    .catch( err => {
+                        this.isLoading = false;
+                        this.$message({ type: "warning", message: i18n.t("error_network") });
+                    })
+            })
         }
     }
 }
@@ -216,5 +209,11 @@ export default {
     }
     .el-select{
         width: 100%;
+    }
+    .dialog-footer{
+        clear: both;
+        .btn-left{
+            float: left;
+        }
     }
 </style>
