@@ -268,7 +268,7 @@ export default {
                     let _link = document.createElement("a");
                     document.body.appendChild(_link);
                     _link.href = _href;
-                    _link.download = data.fileName;
+                    _link.download = (!!data.fileName)? data.fileName:this.currentFile.fileName;
                     _link.click();
                     document.body.removeChild(_link);
                     URL.revokeObjectURL(_href);
@@ -335,7 +335,7 @@ export default {
 }
 .dia_message{
  display: block;
- margin: 5px 0px;   
+ margin: 5px 0px;
 }
 .result-content{
     height: 400px;
