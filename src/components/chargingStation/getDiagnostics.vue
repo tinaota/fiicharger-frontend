@@ -15,29 +15,31 @@
             :picker-options="pickerOptions"
             :clearable="true">
         </el-date-picker>
-        <el-button type="primary" class="actionFunction" @click="getDiagnosticsHandler">{{ $t('general.get') }}</el-button>
+        <el-button  style="margin-left:20px;" type="primary" class="actionFunction" @click="getDiagnosticsHandler">{{ $t('general.get') }}</el-button>
     </div>
-    <p v-if="currentFile.fileName !== '' && currentFile.fileName !== null ">
+    <div class="info_message" v-if="currentFile.fileName !== '' && currentFile.fileName !== null ">
         {{currentFile.fileName}}
-        <el-button v-if="currentFile.downloadStatus == 'Waiting'" icon="el-icon-loading" disabled>
+        <el-button  style="margin-left:27px;" v-if="currentFile.downloadStatus == 'Waiting'" icon="el-icon-loading" disabled>
             {{ $t('diagnostic.waitingBtn') }}
         </el-button>
-        <el-button v-else-if="currentFile.downloadStatus == 'Uploading'" icon="el-icon-loading" disabled>
+        <el-button style="margin-left:27px;" v-else-if="currentFile.downloadStatus == 'Uploading'" icon="el-icon-loading" disabled>
             {{ $t('diagnostic.uploadingBtn') }}
         </el-button>
-        <span v-else-if="currentFile.downloadStatus == 'Uploaded'">
-            <el-button type="success" icon="el-icon-download" @click="downloadHandler"></el-button><br/>
-            <span style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</span>
-        </span>
-        <span v-else-if="currentFile.downloadStatus == 'Idle'">
-            <el-button type="success" icon="el-icon-download" @click="downloadHandler"></el-button><br/>
-            <span style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</span>
-        </span>
-        <span v-else-if="currentFile.downloadStatus == 'UploadFailed'">
-            <el-button type="danger" icon="el-icon-close"></el-button><br/>
-            <span style="color: red;">{{ $t('diagnostic.uploadFailedMsg') }}</span>
-        </span>
-    </p>
+
+        <div class="info_stat" v-else-if="currentFile.downloadStatus == 'Uploaded'">
+            <el-button style="margin-left:27px;" type="success" icon="el-icon-download" @click="downloadHandler"></el-button>
+            <div class="dia_message" style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</div>
+        </div>
+
+        <div class="info_stat" v-else-if="currentFile.downloadStatus == 'Idle'">
+            <el-button style="margin-left:27px;" type="success" icon="el-icon-download" @click="downloadHandler"></el-button>
+            <div class="dia_message"style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</div>
+        </div>
+        <div class="info_stat" v-else-if="currentFile.downloadStatus == 'UploadFailed'">
+            <el-button style="margin-left:27px;" type="danger" icon="el-icon-close"></el-button>
+            <div class="dia_message" style="color: red;">{{ $t('diagnostic.uploadFailedMsg') }}</div>
+        </div>
+    </div>
 
     <hr/>
     <div class="content-warp" v-loading="isLoading">
@@ -324,6 +326,16 @@ export default {
 <style lang = "scss" scoped>
 .el-dialog{
     width: 600px;
+}
+.info_message{
+    margin: 16px 0px;
+}
+.info_stat{
+    display: inline;
+}
+.dia_message{
+ display: block;
+ margin: 5px 0px;   
 }
 .result-content{
     height: 400px;
