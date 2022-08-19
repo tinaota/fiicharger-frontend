@@ -34,7 +34,7 @@
             <span style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</span>
         </span>
         <span v-else-if="currentFile.downloadStatus == 'UploadFailed'">
-            <el-button type="danger" icon="el-icon-close" @click="clearDownloadFile"></el-button><br/>
+            <el-button type="danger" icon="el-icon-close"></el-button><br/>
             <span style="color: red;">{{ $t('diagnostic.uploadFailedMsg') }}</span>
         </span>
     </p>
@@ -158,6 +158,7 @@ export default {
                 .then( res => {
                     that.isLoading = false;
                     that.diagnosticsFileListData = res.data;
+                    that.total = res.metadata.totalRows;
                 })
                 .catch( err => {
                     that.isLoading = false;
@@ -165,7 +166,7 @@ export default {
                 })
         },
         getDiagnosticsHandler() {
-            if(this.$props.chargePointId === ''){
+            if(this.$props.chargePointId === '' || this.logTimeRange.length == 0){
                 return false;
             }
             const that = this;
@@ -256,7 +257,7 @@ export default {
             const params = {
                 category: this.diagnosticsFileParam.category,
                 chargePointId : this.$props.chargePointId,
-                filename: data.fileName
+                filename: (!!data.fileName)? data.fileName:this.currentFile.fileName
             }
             $HTTP_getDownloadFile(params)
                 .then( res => {
@@ -284,12 +285,8 @@ export default {
             clearInterval(this.loopingStatus);
             this.$emit('close', 'diagnosticsDialog');
         },
-        clearDownloadFile(){
-            // if(this.currentFile.downloadStatus === "Uploaded"){
-            //     this.getDiagnosticsList();
-            // }
-            this.currentFile.fileName = '';
-            this.currentFile.downloadStatus = '';
+        changePage(page) {
+            this.page = page;
         },
         getTriggerMsg(){
             const that = this;
@@ -329,7 +326,7 @@ export default {
     width: 600px;
 }
 .result-content{
-    height: 450px;
+    height: 400px;
     overflow-y: auto;
 }
 .content-warp{
