@@ -13,9 +13,9 @@
             :start-placeholder="$t('general.startDate')"
             :end-placeholder="$t('general.endDate')"
             :picker-options="pickerOptions"
-            :clearable="true">
+            :clearable="false">
         </el-date-picker>
-        <el-button  style="margin-left:20px;" type="primary" class="actionFunction" @click="getDiagnosticsHandler">{{ $t('general.get') }}</el-button>
+        <el-button style="margin-left:20px;" type="primary" class="actionFunction" @click="getDiagnosticsHandler" :disabled="logTimeRange.length===0">{{ $t('general.get') }}</el-button>
     </div>
     <div class="info_message" v-if="currentFile.fileName !== '' && currentFile.fileName !== null ">
         {{currentFile.fileName}}
