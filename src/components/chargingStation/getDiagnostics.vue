@@ -13,6 +13,7 @@
             :start-placeholder="$t('general.startDate')"
             :end-placeholder="$t('general.endDate')"
             :picker-options="pickerOptions"
+            :default-time="['00:00:00', '23:59:59']"
             :clearable="false">
         </el-date-picker>
         <el-button style="margin-left:20px;" type="primary" class="actionFunction" @click="getDiagnosticsHandler" :disabled="logTimeRange.length===0">{{ $t('general.get') }}</el-button>
