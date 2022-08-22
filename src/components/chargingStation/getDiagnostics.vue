@@ -6,9 +6,9 @@
     <div>
         <el-date-picker
             v-model="logTimeRange"
-            type="daterange"
-            value-format="yyyy-MM-dd"
-            format="yyyy-MM-dd"
+            type="datetimerange"
+            value-format="yyyy-MM-dd HH:mm"
+            format="yyyy-MM-dd HH:mm"
             range-separator="-"
             :start-placeholder="$t('general.startDate')"
             :end-placeholder="$t('general.endDate')"
@@ -33,7 +33,7 @@
 
         <div class="info_stat" v-else-if="currentFile.downloadStatus == 'Idle'">
             <el-button style="margin-left:27px;" type="success" icon="el-icon-download" @click="downloadHandler"></el-button>
-            <div class="dia_message"style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</div>
+            <div class="dia_message" style="color: blue;">{{ $t('diagnostic.uploadedMsg') }}</div>
         </div>
         <div class="info_stat" v-else-if="currentFile.downloadStatus == 'UploadFailed'">
             <el-button style="margin-left:27px;" type="danger" icon="el-icon-close"></el-button>
@@ -168,6 +168,7 @@ export default {
                 })
         },
         getDiagnosticsHandler() {
+
             if(this.$props.chargePointId === '' || this.logTimeRange.length == 0){
                 return false;
             }
@@ -175,8 +176,8 @@ export default {
             const param = {
                 chargePointId: this.$props.chargePointId,
                 param: {
-                    startTime: moment(this.logTimeRange[0]).startOf('day').format(),
-                    stopTime: moment(this.logTimeRange[1]).endOf('day').format()
+                    startTime: moment(this.logTimeRange[0]).format(),
+                    stopTime: moment(this.logTimeRange[1]).format()
                 }
             };
             $HTTP_postDiagnostics(param)
@@ -285,7 +286,7 @@ export default {
         closeDialog() {
             this.initData();
             clearInterval(this.loopingStatus);
-            this.$emit('close', 'diagnosticsDialog');
+            this.$emit('close', false);
         },
         changePage(page) {
             this.page = page;
@@ -334,8 +335,8 @@ export default {
     display: inline;
 }
 .dia_message{
- display: block;
- margin: 5px 0px;
+    display: block;
+    margin: 5px 0px;
 }
 .result-content{
     height: 400px;

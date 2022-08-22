@@ -244,7 +244,7 @@
                 <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
                 <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
-                <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog"></GetDiagnostics>
+                <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
             </div>
         </div>
     </div>
@@ -554,7 +554,7 @@ export default {
                 this.sendAutDialog.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "diagnosticsDialog") {
-                this[type].visible = false;
+                this.diagnosticsDialog.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();
