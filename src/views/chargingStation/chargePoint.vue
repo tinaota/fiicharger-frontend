@@ -138,7 +138,7 @@
                                         <span>
                                             {{ $t('chargingStation.diagnostics') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">{{ $t('general.start') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'getDiagnostics')">{{ $t('general.start') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -189,6 +189,7 @@
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="(e)=>closeDialog(e,'map')"></ShowPostion>
             <ModifyChargeBoxPrice v-if="chargeBoxPriceDialog.visible" :show="chargeBoxPriceDialog.visible" :data="chargeBoxPriceDialog.data" @close="(e)=>closeDialog(e, 'modifyChargeBoxPrice')"></ModifyChargeBoxPrice>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
+            <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="(e)=>closeDialog(e, 'diagnosticsDialog')"></GetDiagnostics>
         </div>
     </div>
 </template>
@@ -218,13 +219,16 @@ import {
 import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
 import CommonPopup from "@/components/commonPopup";
+import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
+
 export default {
     components: {
         EditChargeBox,
         ShowPostion,
         Connector,
         ModifyChargeBoxPrice,
-        CommonPopup
+        CommonPopup,
+        GetDiagnostics
     },
     data() {
         return {
@@ -301,7 +305,11 @@ export default {
                 chargePointId: null,
                 action: ""
             },
-            timeOut: null
+            timeOut: null,
+            diagnosticsDialog: {
+                visible: false,
+                chargePointId: ''
+            }
         };
     },
     computed: {
@@ -331,11 +339,14 @@ export default {
     },
     methods: {
         runAction(data, action) {
-            console.log(data, action);
             if (action === "edit") {
                 this.openDialog(1, data);
             } else if (action === "delete") {
                 this.deleteCheckBox(data.id);
+            } else if (action === "getDiagnostics") {
+                this.diagnosticsDialog.visible = true;
+                this.diagnosticsDialog.chargePointId = data.id;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
         openActionDialog(row, type, action = "") {
@@ -584,6 +595,8 @@ export default {
                 this.dialogVisible = false;
             } else if (dialog === "modifyChargeBoxPrice") {
                 this.chargeBoxPriceDialog.visible = false;
+            } else if (dialog === "diagnosticsDialog"){
+                this.diagnosticsDialog.visible = false;
             }
             this.fetchData();
 
