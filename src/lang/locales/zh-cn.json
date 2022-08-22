@@ -172,8 +172,8 @@
         "install": "安装",
         "select": "选择",
         "upload": "上传",
-        "full": "满的",
-        "differential": "微分"
+        "full": "完整更新",
+        "differential": "差异更新"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -320,7 +320,7 @@
         "addChargingProfile": "新增充电配置",
         "clearChargingProfile": "清除充电配置",
         "lastStatus": "状态（上一次）",
-        "changeConnector": "选择一个连接器来替换：",
+        "changeConnector": "选择一个充电枪来替换：",
         "lastThirtyDays": "过去 30 天",
         "reservation": "预约",
         "reserveNow": "立即预约",
@@ -522,7 +522,7 @@
         "reserveNowUnavailable": "预订尚未完成。所有充电枪或指定充电枪目前暂停服务。",
         "cancelReservation": "您确定要取消预订吗？",
         "cancelReservationAccepted": "取消预订请求成功",
-        "cancelReservationRejected": "取消预订的请求已被充电器拒绝",
+        "cancelReservationRejected": "取消预订的请求已被充电桩拒绝",
         "cancelReservationNoAction": "未找到有效预订",
         "configurationNotSupported": "更改充电桩配置请求失败",
         "clearListQuestion": "您确定要清除充电桩本地列表吗？",

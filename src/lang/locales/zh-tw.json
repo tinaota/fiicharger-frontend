@@ -172,8 +172,8 @@
         "install": "安裝",
         "select": "選擇",
         "upload": "上傳",
-        "full": "滿的",
-        "differential": "微分"
+        "full": "完整更新",
+        "differential": "差異更新"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -292,7 +292,7 @@
         "totalTransaction": "交易總額",
         "nChargers": "充電樁數量",
         "nConnectors": "充電槍數量",
-        "updateChargers": "更新充電器",
+        "updateChargers": "更新充電樁",
         "diagnostics": "獲取診斷",
         "updates": "更新韌體",
         "clearCache": "清除緩存",
@@ -320,7 +320,7 @@
         "addChargingProfile": "新增充電配置",
         "clearChargingProfile": "清除充電配置",
         "lastStatus": "狀態 （上一次）",
-        "changeConnector": "選擇一個連接器來替換：",
+        "changeConnector": "選擇一個充電槍來替換：",
         "lastThirtyDays": "過去 30 天",
         "reservation": "預約",
         "reserveNow": "立即預約",
@@ -522,10 +522,10 @@
         "reserveNowUnavailable": "預約尚未完成。所有充電槍或指定充電槍目前暫停服務。",
         "cancelReservation": "你確定要取消預定嗎?",
         "cancelReservationAccepted": "取消預訂請求成功",
-        "cancelReservationRejected": "取消預訂的請求已被充電器拒絕",
+        "cancelReservationRejected": "取消預訂的請求已被充電樁拒絕",
         "cancelReservationNoAction": "未找到有效預訂",
-        "configurationNotSupported": "更改配置的請求已被充電器拒絕",
-        "clearListQuestion": "你確定要清除充電樁本地列表碼?",
+        "configurationNotSupported": "更改配置的請求已被充電樁拒絕",
+        "clearListQuestion": "你確定要清除充電樁本地列表嗎?",
         "clearList": "清除列表"
     },
     "sendLocalList": {
