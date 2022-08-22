@@ -171,7 +171,9 @@
         "send": "发送",
         "install": "安装",
         "select": "选择",
-        "upload": "上传"
+        "upload": "上传",
+        "full": "满的",
+        "differential": "微分"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

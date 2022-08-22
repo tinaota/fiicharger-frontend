@@ -171,7 +171,9 @@
         "send": "Gửi",
         "install": "Cài đặt",
         "select": "Xin vui lòng chọn",
-        "upload": "Tải lên"
+        "upload": "Tải lên",
+        "full": "Đầy",
+        "differential": "Khác biệt"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

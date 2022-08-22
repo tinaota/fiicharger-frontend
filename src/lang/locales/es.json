@@ -171,7 +171,9 @@
         "send": "Enviar",
         "install": "Instalar",
         "select": "Seleccione",
-        "upload": "Subir"
+        "upload": "Subir",
+        "full": "Completo",
+        "differential": "Diferencial"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

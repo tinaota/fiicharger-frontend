@@ -14,7 +14,7 @@
             <el-form-item>
                 <div class="label">{{ $t('sendLocalList.updateType') }}</div>
                 <el-radio-group v-model="sendListData.updateType" size="medium">
-                    <el-radio v-for="item in updateTypeList.data" :label="item.value" :key="item.value">{{item.name}}</el-radio>
+                    <el-radio v-for="item in updateTypeList.data" :label="item.value" :key="item.value">{{ item.name }}</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item v-show="sendListData.updateType === '0'">
@@ -53,6 +53,7 @@ import {
     $HTTP_sendAuthLocalList,
     $HTTP_deleteAuthLocalList
 } from "@/api/api";
+import i18n from '../../lang/lang';
 export default {
     props: {
         chargePointId: String,
@@ -81,11 +82,11 @@ export default {
                 data: [
                     {
                         value: "1",
-                        name: "Full"
+                        name: i18n.t("general.full")
                     },
                     {
                         value: "0",
-                        name: "Differential"
+                        name: i18n.t("general.differential")
                     }
                 ]
             },
