@@ -524,13 +524,13 @@
         "cancelReservationAccepted": "Yêu cầu hủy đặt chỗ đã thành công",
         "cancelReservationRejected": "Yêu cầu hủy đặt chỗ đã bị bộ sạc từ chối",
         "cancelReservationNoAction": "Không tìm thấy đặt chỗ đang hoạt động",
-        "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối"
+        "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối",
+        "clearListQuestion": "Vui lòng xác nhận xem có xóa danh sách điểm sạc không?",
+        "clearList": "Danh sách rõ ràng"
     },
     "sendLocalList": {
         "listVersion": "Liệt kê số phiên bản",
         "updateType": "Cập nhật loại",
-        "clearListBtn": "Danh sách rõ ràng",
-        "clearListMsg": "Vui lòng xác nhận xem có xóa danh sách điểm sạc không",
         "localAuthListVersion": "Phiên bản danh sách hiện tại",
         "addUpdateList": "Thêm / cập nhật danh sách",
         "deleteList": "Xóa danh sách",

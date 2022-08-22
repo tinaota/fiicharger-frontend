@@ -524,12 +524,13 @@
         "cancelReservationAccepted": "Solicitud de cancelación de reserva exitosa",
         "cancelReservationRejected": "El cargador ha rechazado la solicitud de cancelación de la reserva",
         "cancelReservationNoAction": "No se encontró ninguna reserva activa",
-        "configurationNotSupported": "El cargador ha rechazado la solicitud de cambio de configuración"
+        "configurationNotSupported": "El cargador ha rechazado la solicitud de cambio de configuración",
+        "clearListQuestion": "Confirme si desea eliminar la lista de puntos de recarga?",
+        "clearList": "Limpiar lista"
     },
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",
         "updateType": "Tipo de actualización",
-        "clearListBtn": "Limpiar lista",
         "clearListMsg": "Confirme si desea eliminar la lista de puntos de recarga",
         "localAuthListVersion": "Versión de lista actual",
         "addUpdateList": "Agregar/actualizar lista",

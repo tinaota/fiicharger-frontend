@@ -524,13 +524,13 @@
         "cancelReservationAccepted": "Request to cancel reservation succeeded",
         "cancelReservationRejected": "Request to cancel reservation has been rejected by charger",
         "cancelReservationNoAction": "No active reservation found",
-        "configurationNotSupported": "Request to change configuration has been rejected by the charger"
+        "configurationNotSupported": "Request to change configuration has been rejected by the charger",
+        "clearListQuestion": "Are you sure you wish to clear the local list of the charger?",
+        "clearList": "Clear List"
     },
     "sendLocalList": {
         "listVersion": "List Version",
         "updateType": "Update Type",
-        "clearListBtn": "Clear List",
-        "clearListMsg": "Are you sure you wish to clear the local list of the charger?",
         "localAuthListVersion": "Current List Version",
         "addUpdateList": "Add/Update List",
         "deleteList": "Delete List",

@@ -1,4 +1,5 @@
 <template>
+<div>
     <el-dialog
     :title="$t('chargingStation.sendLocalAuthList')"
     :visible.sync="visible"
@@ -40,21 +41,23 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button class="btn-left" size="small" type="danger" @click="clearListHandler()">{{ $t('sendLocalList.clearListBtn') }}</el-button>
+            <el-button class="btn-left" size="small" type="danger" @click="clearListHandler('clearList')">{{ $t('actions.clearList') }}</el-button>
             <el-button size="small" @click="closeDialog">{{ $t('general.cancel') }}</el-button>
             <el-button size="small" type="primary" @click="sendAuthLocalListHandler">{{ $t('general.ok') }}</el-button>
         </div>
     </el-dialog>
+    <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeCommonPopup()"></CommonPopup>
+    </div>
 </template>
 
 <script>
-import {
-    $HTTP_getIdTagsList,
-    $HTTP_sendAuthLocalList,
-    $HTTP_deleteAuthLocalList
-} from "@/api/api";
+import {$HTTP_getIdTagsList,$HTTP_sendAuthLocalList} from "@/api/api";
 import i18n from '../../lang/lang';
+import CommonPopup from "@/components/commonPopup";
 export default {
+    components: {
+        CommonPopup
+    },
     props: {
         chargePointId: String,
         show: Boolean
@@ -91,7 +94,12 @@ export default {
                 ]
             },
             idtagList: [],
-            confirmVisible: false
+            confirmVisible: false,
+            commonpopup: {
+                show: false,
+                chargePointId: null,
+                action: ""
+            }
         }
     },
     watch: {
@@ -106,7 +114,7 @@ export default {
                 }
             }
         },
-        chargePointId: function(newVal, oldVal){
+        chargePointId: function(newVal){
             if(newVal == ''){
                 return false;
             };
@@ -134,7 +142,7 @@ export default {
                 .then(res =>{
                     this.idtagList = res.data;
                 })
-                .catch(err => {
+                .catch(() => {
                     this.$message({ type: "warning", message: i18n.t("sendLocalList.getIdtagFiledMsg") });
                 });
         },
@@ -169,7 +177,7 @@ export default {
                             break;
                     }
                 })
-                .catch( err => {
+                .catch( () => {
                     that.isLoading = false;
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 })
@@ -178,28 +186,15 @@ export default {
             this.initData();
             this.$emit('close', false);
         },
-        clearListHandler(){
-            this.$confirm(i18n.t("sendLocalList.clearListMsg"), i18n.t("sendLocalList.clearListBtn"), {
-                showClose: false,
-                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`,
-            })
-            .then(() => {
-                this.confirmVisible = false;
-                this.isLoading = true;
-                const param = {
-                    chargePointId: this.$props.chargePointId
-                };
-                $HTTP_deleteAuthLocalList(param)
-                    .then( res => {
-                        this.isLoading = false;
-                        this.$message({ type: "success", message: i18n.t("sendLocalList.clearListSuccessMsg") });
-                        this.closeDialog();
-                    })
-                    .catch( err => {
-                        this.isLoading = false;
-                        this.$message({ type: "warning", message: i18n.t("error_network") });
-                    })
-            })
+        closeCommonPopup() {
+            this.commonpopup.show = false;
+            this.commonpopup.chargePointId = null;
+            this.commonpopup.action = "";
+        },
+        clearListHandler(action) {
+            this.commonpopup.show = true;
+            this.commonpopup.chargePointId = this.$props.chargePointId;
+            this.commonpopup.action = action;
         }
     }
 }

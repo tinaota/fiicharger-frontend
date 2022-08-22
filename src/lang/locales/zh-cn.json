@@ -524,13 +524,13 @@
         "cancelReservationAccepted": "取消预订请求成功",
         "cancelReservationRejected": "取消预订的请求已被充电器拒绝",
         "cancelReservationNoAction": "未找到有效预订",
-        "configurationNotSupported": "更改充电桩配置请求失败"
+        "configurationNotSupported": "更改充电桩配置请求失败",
+        "clearListQuestion": "您确定要清除充电桩本地列表吗？",
+        "clearList": "清除列表"
     },
     "sendLocalList": {
         "listVersion": "列表版本号",
         "updateType": "更新类型",
-        "clearListBtn": "清除列表",
-        "clearListMsg": "您确定要清除充电桩本地列表吗？",
         "localAuthListVersion": "当前列表版本",
         "addUpdateList": "添加/更新列表",
         "deleteList": "删除清单",

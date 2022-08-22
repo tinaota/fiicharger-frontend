@@ -2,7 +2,7 @@
     <el-dialog :title="$t(`actions.${action}`)" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <!-- choose connector if row data is present else charger id -->
-            <p>{{ $t(`actions.${action}Question`,{item:rowData.id!==undefined? rowData.id: chargePointId}) }}</p>
+            <p>{{ $t(`actions.${action}Question`,{item:rowData!==undefined && rowData.id!==undefined? rowData.id: chargePointId}) }}</p>
             <!-- only show id tag list for start/stop transaction -->
             <div class="item" v-if="action==='startConnectorTransaction'">
                 <div class="label">{{ $t('menu.idTag') }}</div>
@@ -29,7 +29,8 @@ import {
     $HTTP_updateOccpAvailability,
     $HTTP_unlockConnector,
     $HTTP_startConnectorTransaction,
-    $HTTP_stopConnectorTransaction
+    $HTTP_stopConnectorTransaction,
+    $HTTP_deleteAuthLocalList
 } from "@/api/api";
 import IdTagList from "@/components/idTagList.vue";
 export default {
@@ -88,6 +89,8 @@ export default {
         } else if (this.action === "stopConnectorTransaction") {
             this.params.connectorId = this.rowData.id;
             this.$API = $HTTP_stopConnectorTransaction;
+        } else if (this.action === "clearList") {
+            this.$API = $HTTP_deleteAuthLocalList;
         }
         console.log(this.action, this.rowData);
     },
@@ -125,6 +128,13 @@ export default {
                     this.$message({
                         type: "warning",
                         message: i18n.t("actions.unlockConnectorNotSupported")
+                    });
+                }
+            } else if (this.action === "clearList") {
+                if (res) {
+                    this.$message({
+                        type: "success",
+                        message: i18n.t("sendLocalList.clearListSuccessMsg")
                     });
                 }
             } else {

@@ -524,13 +524,13 @@
         "cancelReservationAccepted": "取消預訂請求成功",
         "cancelReservationRejected": "取消預訂的請求已被充電器拒絕",
         "cancelReservationNoAction": "未找到有效預訂",
-        "configurationNotSupported": "更改配置的請求已被充電器拒絕"
+        "configurationNotSupported": "更改配置的請求已被充電器拒絕",
+        "clearListQuestion": "你確定要清除充電樁本地列表碼?",
+        "clearList": "清除列表"
     },
     "sendLocalList": {
         "listVersion": "列表版號",
         "updateType": "更新類別",
-        "clearListBtn": "清除列表",
-        "clearListMsg": "你確定要清除充電樁本地列表碼",
         "localAuthListVersion": "當前列表版本",
         "addUpdateList": "新增/更新清單",
         "deleteList": "刪除清單",
