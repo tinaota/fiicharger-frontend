@@ -747,7 +747,7 @@ export default {
     vertical-align: top;
     padding-bottom: 48px;
 }
-.stats_area:nth-child(5){
+.stats_area:nth-child(5) {
     margin-right: 0px;
 }
 .num_stats {
@@ -756,13 +756,19 @@ export default {
     font-size: 1.25rem;
     .num {
         font-weight: bold;
+        margin: 10px 0px 5px;
     }
     .num_trend {
+        font-size: 1rem;
         &.positive {
             color: #33c85a;
         }
         &.negative {
             color: #fc2e56;
+        }
+        /* using webstroke to make the icon thinner  */
+        .fa {
+            -webkit-text-stroke: 1.5px #e6eef8;
         }
     }
 }
@@ -821,7 +827,7 @@ export default {
         }
     }
 }
-.rank-area:nth-child(3){
+.rank-area:nth-child(3) {
     margin-right: 0px;
 }
 
