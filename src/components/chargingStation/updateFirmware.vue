@@ -9,14 +9,14 @@
             <span v-if="currentVersion"> {{ currentVersion }} </span>
         </h3> -->
         <p v-show="lastFirmwareFileName">
-            <span class="title">{{ $t('chargingStation.updates') }}: </span>
+            <span class="title">{{ $t('chargingStation.fileName') }}: </span>
             {{ lastFirmwareFileName }}
         </p>
         <p v-show="lastFirmwareFileName != '' && updateStatus">
             <span class="title">{{ $t('general.status') }}: </span>
-            <span v-if="updateStatus == 'Downloading' || updateStatus == 'Installing' || updateStatus == 'Downloaded'" class="updateWaiting"><i class="el-icon-loading"></i>{{ updateStatus }}</span>
-            <span v-else-if="updateStatus == 'Installed'" class="updateSuccess"><i class="el-icon-check"></i>{{ updateStatus }}</span>
-            <span v-else-if="updateStatus == 'DownloadFailed' || updateStatus == 'Idle' || updateStatus == 'InstallationFailed'" class="updateFailed"><i class="el-icon-close"></i>{{ updateStatus }}</span>
+            <span v-if="updateStatus == 'Downloading' || updateStatus == 'Installing' || updateStatus == 'Downloaded' || updateStatus == 'Waiting'" class="updateWaiting"><i class="el-icon-loading"></i>{{ updateStatus }}</span>
+            <span v-else-if="updateStatus == 'Installed' || updateStatus == 'Idle' " class="updateSuccess"><i class="el-icon-check"></i>{{ updateStatus }}</span>
+            <span v-else-if="updateStatus == 'DownloadFailed' || updateStatus == 'InstallationFailed'" class="updateFailed"><i class="el-icon-close"></i>{{ updateStatus }}</span>
         </p>
         <br/>
         <div class="content-warp" v-loading="isLoading">
@@ -40,7 +40,7 @@
                     <el-table-column
                         :label="$t('general.action')">
                         <template slot-scope="scope">
-                            <el-button type="primary" class="actionFunction" :disabled="btnBlock" @click="installHandler(scope.row)">{{ $t('general.install') }}</el-button>
+                            <el-button type="primary" class="actionFunction" @click="installHandler(scope.row)">{{ $t('general.install') }}</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,7 +81,6 @@ export default {
         return {
             visible: false,
             isLoading: true,
-            btnBlock: false,
             currentVersion: '',
             lastFirmwareFileName: '',
             updateStatus: '',
@@ -154,14 +153,12 @@ export default {
                     that.lastFirmwareFileName = (!!res.lastFirmwareFileName)? res.lastFirmwareFileName: "";
                     that.updateStatus = res.firmwareStatus;
                     if(res.firmwareStatus == "Downloaded" || res.firmwareStatus == "Downloading" || res.firmwareStatus == "Installing"){
-                        console.log("HTTP_postUpdateFirmware: ", that.btnBlock)
-                        that.btnBlock = true;
                         that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
                         setTimeout(function(){  // Stop Loop for 0.5 hour
                             that.updateStatus = "Idle";
                             that.stopLooping(that.loopingStatus);
                         }, 1800000);
-                    };
+                    }
                 })
                 .catch( err => {
                     that.$message({ type: "warning", message: i18n.t("error_network") });
@@ -170,7 +167,6 @@ export default {
         installHandler(data){
             const that = this;
             this.isLoading = true;
-            this.btnBlock = true;
             const param = {
                 chargePointId: this.$props.chargePointId,
                 param: {
@@ -182,21 +178,16 @@ export default {
                 .then( res => {
                     that.isLoading = false;
                     if(res === "Accepted"){
-                        that.btnBlock = true;
                         that.updateStatus = "Waiting";
                         that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
                         setTimeout(function(){  // Stop Loop for 0.5 hour
                             that.updateStatus = "Idle";
                             that.stopLooping(that.loopingStatus);
                         }, 1800000);
-                    }else{
-                        that.btnBlock = false;
-                    };
+                    }
                 })
                 .catch( err => {
                     that.isLoading = false;
-                    that.btnBlock = false;
-                    that.updateStatus = '';
                     that.$message({ type: "warning", message: i18n.t("error_network") });
                 })
         },
@@ -235,7 +226,6 @@ export default {
         },
         stopLooping(time){
             clearInterval(time);
-            this.btnBlock = false;
         },
         changePage(page) {
             this.page = page;
