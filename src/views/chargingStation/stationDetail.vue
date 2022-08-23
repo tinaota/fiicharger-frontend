@@ -747,6 +747,9 @@ export default {
     vertical-align: top;
     padding-bottom: 48px;
 }
+.stats_area:nth-child(5){
+    margin-right: 0px;
+}
 .num_stats {
     display: flex;
     flex-direction: column;
@@ -817,6 +820,9 @@ export default {
             }
         }
     }
+}
+.rank-area:nth-child(3){
+    margin-right: 0px;
 }
 
 .actionFunction {
