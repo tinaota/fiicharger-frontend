@@ -344,7 +344,16 @@
             "30Mins": "30 mins"
         },
         "getLocalAuthListVersion": "Get Local List Version",
-        "sendLocalAuthList": "Send Local List"
+        "sendLocalAuthList": "Send Local List",
+        "fileName": "File Name",
+        "diagnosticsUploadingBtn": "Uploading",
+        "diagnosticsUploadedBtn": "Uploaded",
+        "diagnosticsUploadFailedBtn": "Upload File",
+        "diagnosticsUploadedMsg": "The diagnostic upload is successful, please click the button to download the file.",
+        "diagnosticsUploadFailedMsg": "Diagnostic upload failed, please click the button to clear the file and try again.",
+        "currentFirmwareVersion": "Current Firmware Version",
+        "uploadFirmware": "Upload firmware",
+        "fileSize": "Size"
     },
     "userAccount": {
         "memberName": "Member Name",

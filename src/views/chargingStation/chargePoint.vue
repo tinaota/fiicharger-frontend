@@ -190,6 +190,7 @@
             <ModifyChargeBoxPrice v-if="chargeBoxPriceDialog.visible" :show="chargeBoxPriceDialog.visible" :data="chargeBoxPriceDialog.data" @close="(e)=>closeDialog(e, 'modifyChargeBoxPrice')"></ModifyChargeBoxPrice>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="(e)=>closeDialog(e, 'diagnosticsDialog')"></GetDiagnostics>
+            <UpdateFirmware :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="(e)=>closeDialog(e,'updateDialog')"></UpdateFirmware>
         </div>
     </div>
 </template>
@@ -221,6 +222,7 @@ import unknown from "imgs/help_icon.svg";
 import CommonPopup from "@/components/commonPopup";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 
+import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 export default {
     components: {
         EditChargeBox,
@@ -228,7 +230,8 @@ export default {
         Connector,
         ModifyChargeBoxPrice,
         CommonPopup,
-        GetDiagnostics
+        GetDiagnostics,
+        UpdateFirmware
     },
     data() {
         return {
@@ -297,6 +300,10 @@ export default {
                 isLoading: false,
                 data: {}
             },
+            updateDialog: {
+                chargePointId: '',
+                visible: false
+            },
             connectorList: [],
             chargeBoxStatusList: [],
             polling: null,
@@ -346,6 +353,11 @@ export default {
             } else if (action === "getDiagnostics") {
                 this.diagnosticsDialog.visible = true;
                 this.diagnosticsDialog.chargePointId = data.id;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "run") {
+                console.log("runAction run", data.id);
+                this.updateDialog.visible = true;
+                this.updateDialog.chargePointId = data.id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
@@ -597,6 +609,9 @@ export default {
                 this.chargeBoxPriceDialog.visible = false;
             } else if (dialog === "diagnosticsDialog"){
                 this.diagnosticsDialog.visible = false;
+            } else if (dialog === "updateDialog") {
+                this[dialog].visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.fetchData();
 

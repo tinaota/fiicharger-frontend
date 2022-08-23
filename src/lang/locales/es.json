@@ -173,7 +173,8 @@
         "select": "Seleccione",
         "upload": "Subir",
         "full": "Completo",
-        "differential": "Diferencial"
+        "differential": "Diferencial",
+        "upload": "Subir"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -344,7 +345,9 @@
             "30Mins": "30 minutos"
         },
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
-        "sendLocalAuthList": "Gửi danh sách địa phương"
+        "sendLocalAuthList": "Gửi danh sách địa phương",
+        "uploadFirmware": "Subir firmware",
+        "fileSize": "Tamaño del archivo"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

@@ -88,7 +88,7 @@
                             </li>
                             <li>
                                 <span>{{ $t('chargingStation.updates') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('updatesFirmware')">{{ $t('general.run') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'updatesFirmware')">{{ $t('general.run') }}</el-button>
                             </li>
                             <li>
                                 <span>
@@ -241,6 +241,7 @@
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData ="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
                 <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
+                <UpdateFirmware :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
                 <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
                 <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
@@ -263,12 +264,14 @@ import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
 import {
     $HTTP_getAllChargeBoxList,
-    $HTTP_getConnectorStatusesById
+    $HTTP_getConnectorStatusesById,
+    $HTTP_getFirmwareUploadUrl
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import CommonPopup from "@/components/commonPopup";
 import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
+import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthListVersion";
 import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
 import { $GLOBAL_REFRESH } from "@/utils/global";
@@ -285,6 +288,7 @@ export default {
         ReserveNow,
         CancelReservation,
         RemoteTrigger,
+        UpdateFirmware,
         GetLocalAuthListVersion,
         SendLocalAutList,
         GetDiagnostics
@@ -354,6 +358,10 @@ export default {
             diagnosticsDialog: {
                 chargePointId: '',
                 visible: false
+            },
+            updateDialog: {
+                chargePointId: '',
+                visible: false
             }
         };
     },
@@ -416,6 +424,10 @@ export default {
                     connectorId: params.id
                 };
                 this.cancelReservation.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "updatesFirmware") {
+                this.updateDialog.visible = true;
+                this.updateDialog.chargePointId = this.chargePointById[0].id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "remoteTrigger") {
                 this.remoteTrigger.data = {
@@ -546,6 +558,9 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "remoteTrigger") {
                 this.remoteTrigger.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "updateDialog") {
+                this[type].visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "getAuthVersionDialog") {
                 this.getAuthVersionDialog.visible = false;

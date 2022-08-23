@@ -263,9 +263,6 @@ export const $HTTP_getConnectionSummary = (params) => {
     );
 }
 
-// get charge point by id
-export const $HTTP_getChargePointById = (params) => { return fetch(`${base_charger}/api/reports/charge-points/${params.chargePointId}`, {})}
-
 /**
  * @description reserve now
  */
@@ -304,8 +301,20 @@ export const $HTTP_postDiagnostics = params => { return post(`${base_charger}/ap
 // polling get diagnostics status
 export const $HTTP_getDiagnosticsStatus = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/diagnostics-status`, {})}
 
-//get diagnostics file list
+//get diagnostics/firmware file list
 export const $HTTP_getFileList = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.param) }
 
 //get Diagnostics Download File
 export const $HTTP_getDownloadFile = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}/${params.filename}`) }
+
+// get charge point by id
+export const $HTTP_getChargePointById = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}`) }
+
+//charge Point update firmware
+export const $HTTP_postUpdateFirmware = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/update-firmware`, params.param) }
+
+//charge Point get update firmware status
+export const $HTTP_getUpdateFirmwareStatus = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/firmware-status`) }
+
+//get charge point upload firmware file url
+export const $HTTP_getFirmwareUploadUrl = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/upload-firmware`) }

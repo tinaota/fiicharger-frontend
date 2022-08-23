@@ -343,8 +343,17 @@
             "10Mins": "10 phút",
             "30Mins": "30 phút"
         },
+        "fileName": "Tên tệp",
+        "diagnosticsUploadingBtn": "Đang tải lên",
+        "diagnosticsUploadedBtn": "Uploaded",
+        "diagnosticsUploadFileBtn": "Đã tải lên",
+        "diagnosticsUploadedMsg": "Tải lên chẩn đoán thành công, vui lòng nhấp vào nút để tải tệp xuống.",
+        "diagnosticsUploadFailedMsg": "Tải lên chẩn đoán không thành công, vui lòng nhấp vào nút để xóa tệp và thử lại.",
+        "currentFirmwareVersion": "Phiên bản phần mềm hiện tại",
+        "uploadFirmware": "Tải lên chương trình cơ sở",
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
-        "sendLocalAuthList": "Gửi danh sách địa phương"
+        "sendLocalAuthList": "Gửi danh sách địa phương",
+        "fileSize": "Kích thước tập tin"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

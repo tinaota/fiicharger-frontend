@@ -344,7 +344,16 @@
             "30Mins": "30分鐘"
         },
         "getLocalAuthListVersion": "獲取本地列表版本",
-        "sendLocalAuthList": "發送本地列表"
+        "sendLocalAuthList": "發送本地列表",
+        "fileName": "檔案名稱",
+        "diagnosticsUploadingBtn": "上傳中",
+        "diagnosticsUploadedBtn": "已上傳",
+        "diagnosticsUploadFailedBtn": "上傳失敗",
+        "diagnosticsUploadedMsg": "診斷上傳成功，請點擊按鈕下載文件。",
+        "diagnosticsUploadFailedMsg": "診斷上傳失敗，請點擊按鈕清除文件，然後重試。",
+        "currentFirmwareVersion": "當前韌體版本",
+        "uploadFirmware": "上傳韌體",
+        "fileSize": "大小"
     },
     "userAccount": {
         "memberName": "會員名稱",
