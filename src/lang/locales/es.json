@@ -173,8 +173,7 @@
         "select": "Seleccione",
         "upload": "Subir",
         "full": "Completo",
-        "differential": "Diferencial",
-        "upload": "Subir"
+        "differential": "Diferencial"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -346,8 +345,7 @@
         },
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
         "sendLocalAuthList": "Gửi danh sách địa phương",
-        "uploadFirmware": "Subir firmware",
-        "fileSize": "Tamaño del archivo"
+        "currentFirmwareVersion": "Versión actual del firmware"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -536,7 +534,6 @@
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",
         "updateType": "Tipo de actualización",
-        "clearListMsg": "Confirme si desea eliminar la lista de puntos de recarga",
         "localAuthListVersion": "Versión de lista actual",
         "addUpdateList": "Agregar/actualizar lista",
         "deleteList": "Eliminar lista",
@@ -550,6 +547,8 @@
     "diagnostic": {
         "uploadingBtn": "Cargando",
         "waitingBtn": "Esperando",
+        "uploadedBtn": "Subido",
+        "uploadFailedBtn": "Subida fallida",
         "err_catch": "La solicitud para obtener el diagnóstico falló.",
         "emptyFileName": "No hay información de diagnóstico disponible.",
         "uploadIdleMsg": "Tarea no ejecutada, haga clic en el botón para reiniciar.",

@@ -345,15 +345,7 @@
         },
         "getLocalAuthListVersion": "获取本地列表版本",
         "sendLocalAuthList": "发送本地列表",
-        "fileName": "文件名",
-        "diagnosticsUploadingBtn": "上传中",
-        "diagnosticsUploadedBtn": "已上传",
-        "diagnosticsUploadFileBtn": "上传失败",
-        "diagnosticsUploadedMsg": "诊断上传成功，请点击按钮下载文件。",
-        "diagnosticsUploadFailedMsg": "诊断上传失败，请点击按钮清除文件，然后重试。",
-        "currentFirmwareVersion": "当前固件版本",
-        "uploadFirmware": "上传固件",
-        "fileSize": "大小"
+        "currentFirmwareVersion": "当前固件版本"
     },
     "userAccount": {
         "memberName": "会员名称",

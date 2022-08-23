@@ -343,17 +343,9 @@
             "10Mins": "10 phút",
             "30Mins": "30 phút"
         },
-        "fileName": "Tên tệp",
-        "diagnosticsUploadingBtn": "Đang tải lên",
-        "diagnosticsUploadedBtn": "Uploaded",
-        "diagnosticsUploadFileBtn": "Đã tải lên",
-        "diagnosticsUploadedMsg": "Tải lên chẩn đoán thành công, vui lòng nhấp vào nút để tải tệp xuống.",
-        "diagnosticsUploadFailedMsg": "Tải lên chẩn đoán không thành công, vui lòng nhấp vào nút để xóa tệp và thử lại.",
-        "currentFirmwareVersion": "Phiên bản phần mềm hiện tại",
-        "uploadFirmware": "Tải lên chương trình cơ sở",
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
         "sendLocalAuthList": "Gửi danh sách địa phương",
-        "fileSize": "Kích thước tập tin"
+        "currentFirmwareVersion": "Phiên bản phần mềm hiện tại"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -555,6 +547,8 @@
     "diagnostic": {
         "uploadingBtn": "Đang tải lên",
         "waitingBtn": "Đang chờ đợi",
+        "uploadedBtn": "Đã tải lên",
+        "uploadFailedBtn": "Tải lên không thành công",
         "err_catch": "Yêu cầu nhận chẩn đoán không thành công.",
         "emptyFileName": "Không có thông tin chẩn đoán nào có sẵn.",
         "uploadIdleMsg": "Tác vụ không được thực hiện, vui lòng nhấp vào nút để khởi động lại.",

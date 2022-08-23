@@ -345,15 +345,7 @@
         },
         "getLocalAuthListVersion": "Get Local List Version",
         "sendLocalAuthList": "Send Local List",
-        "fileName": "File Name",
-        "diagnosticsUploadingBtn": "Uploading",
-        "diagnosticsUploadedBtn": "Uploaded",
-        "diagnosticsUploadFailedBtn": "Upload File",
-        "diagnosticsUploadedMsg": "The diagnostic upload is successful, please click the button to download the file.",
-        "diagnosticsUploadFailedMsg": "Diagnostic upload failed, please click the button to clear the file and try again.",
-        "currentFirmwareVersion": "Current Firmware Version",
-        "uploadFirmware": "Upload firmware",
-        "fileSize": "Size"
+        "currentFirmwareVersion": "Current Firmware Version"
     },
     "userAccount": {
         "memberName": "Member Name",
@@ -555,6 +547,8 @@
     "diagnostic": {
         "uploadingBtn": "Uploading",
         "waitingBtn": "Waiting",
+        "uploadedBtn": "Uploaded",
+        "uploadFailedBtn": "Upload Failed",
         "err_catch": "Request to get diagnostic failed.",
         "emptyFileName": "No diagnostic information is available.",
         "uploadIdleMsg": "Task not executed, please click the button to restart.",
