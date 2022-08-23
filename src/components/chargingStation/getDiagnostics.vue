@@ -115,7 +115,8 @@ export default {
             loopingStatus: '',
             pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime() > Date.now();
+                    let today = moment().endOf('day').format('x')
+                    return time.getTime() > today;
                 }
             },
             diagnosticsFileListData: [],
