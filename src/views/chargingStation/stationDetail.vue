@@ -760,6 +760,7 @@ export default {
     }
     .num_trend {
         font-size: 1rem;
+        font-weight: 700;
         &.positive {
             color: #33c85a;
         }
