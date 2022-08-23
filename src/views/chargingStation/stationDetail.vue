@@ -122,23 +122,58 @@
             <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.powerConsumption') }}(KWH)</span>
-                    <div class="num_stats"> <span class="num">{{ statistics.data.totalEnergy ? statistics.data.totalEnergy.value : '-' }}</span></div>
+                    <div class="num_stats" v-if="statistics.data.totalEnergy">
+                        <span class="num">{{ statistics.data.totalEnergy.value }}</span>
+                        <span v-if="statistics.data.totalEnergy.trend!==0" :class="statistics.data.totalEnergy.trend>0?'positive num_trend':'negative num_trend'">
+                            <i v-if="statistics.data.totalEnergy.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                            {{ Math.abs(statistics.data.totalEnergy.trend.toFixed(2)) }} %
+                        </span>
+                    </div>
                 </div>
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                    <div class="num_stats"> <span class="num">{{ statistics.data.transactions ? statistics.data.transactions.value:'-' }}</span></div>
+                    <div class="num_stats" v-if="statistics.data.transactions">
+                        <span class="num">{{ statistics.data.transactions.value }}</span>
+                        <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
+                            <i v-if="statistics.data.transactions.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                            {{ Math.abs(statistics.data.transactions.trend.toFixed(2)) }} %
+                        </span>
+                    </div>
                 </div>
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalUsers') }}</span>
-                    <div class="num_stats"> <span class="num">{{ statistics.data.users ?statistics.data.users.value : '-' }}</span></div>
+                    <div class="num_stats" v-if="statistics.data.users">
+                        <span class="num">{{ statistics.data.users.value }}</span>
+                        <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
+                            <i v-if="statistics.data.users.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                            {{ Math.abs(statistics.data.users.trend.toFixed(2)) }}%
+                        </span>
+                    </div>
                 </div>
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.newUsers') }}</span>
-                    <div class="num_stats"> <span class="num">{{ statistics.data.newUsers ?statistics.data.newUsers.value : '-' }}</span></div>
+                    <div class="num_stats" v-if="statistics.data.newUsers">
+                        <span class="num">{{ statistics.data.newUsers.value }}</span>
+                        <span v-if="statistics.data.newUsers.trend!==0" :class="statistics.data.newUsers.trend>0?'positive num_trend':'negative num_trend'">
+                            <i v-if="statistics.data.newUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                            {{ Math.abs( statistics.data.newUsers.trend.toFixed(2)) }}%
+                        </span>
+                    </div>
                 </div>
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
-                    <div class="num_stats"> <span class="num">{{ statistics.data.users && statistics.data.newUsers ?statistics.data.users.value - statistics.data.newUsers.value : '-' }}</span></div>
+                    <div class="num_stats" v-if="statistics.data.repeatUsers">
+                        <span class="num">{{ statistics.data.repeatUsers.value }}</span>
+                        <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
+                            <i v-if="statistics.data.repeatUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                            {{ Math.abs(statistics.data.repeatUsers.trend.toFixed(2)) }}%
+                        </span>
+                    </div>
                 </div>
             </div>
             <div class="card-8"></div>
@@ -713,8 +748,20 @@ export default {
     padding-bottom: 48px;
 }
 .num_stats {
+    display: flex;
+    flex-direction: column;
     font-size: 1.25rem;
-    font-weight: bold;
+    .num {
+        font-weight: bold;
+    }
+    .num_trend {
+        &.positive {
+            color: #33c85a;
+        }
+        &.negative {
+            color: #fc2e56;
+        }
+    }
 }
 .card-alt {
     display: flex;
