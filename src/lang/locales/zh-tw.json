@@ -345,7 +345,10 @@
         },
         "getLocalAuthListVersion": "獲取本地列表版本",
         "sendLocalAuthList": "發送本地列表",
-        "currentFirmwareVersion": "當前韌體版本"
+        "currentFirmwareVersion": "當前韌體版本",
+        "totalUsers": "總用戶",
+        "newUsers": "新用戶",
+        "repeatedUsers": "重複用戶"
     },
     "userAccount": {
         "memberName": "會員名稱",

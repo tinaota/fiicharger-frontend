@@ -345,7 +345,10 @@
         },
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
         "sendLocalAuthList": "Gửi danh sách địa phương",
-        "currentFirmwareVersion": "Versión actual del firmware"
+        "currentFirmwareVersion": "Versión actual del firmware",
+        "totalUsers": "Usuarios totales",
+        "newUsers": "Usuarios nuevos",
+        "repeatedUsers": "Usuarios repetidos"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

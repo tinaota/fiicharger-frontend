@@ -345,7 +345,10 @@
         },
         "getLocalAuthListVersion": "获取本地列表版本",
         "sendLocalAuthList": "发送本地列表",
-        "currentFirmwareVersion": "当前固件版本"
+        "currentFirmwareVersion": "当前固件版本",
+        "totalUsers": "总用户",
+        "newUsers": "新用户",
+        "repeatedUsers": "重复用户"
     },
     "userAccount": {
         "memberName": "会员名称",

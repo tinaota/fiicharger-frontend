@@ -345,7 +345,10 @@
         },
         "getLocalAuthListVersion": "Get Local List Version",
         "sendLocalAuthList": "Send Local List",
-        "currentFirmwareVersion": "Current Firmware Version"
+        "currentFirmwareVersion": "Current Firmware Version",
+        "totalUsers": "Total Users",
+        "newUsers": "New Users",
+        "repeatedUsers": "Repeated Users"
     },
     "userAccount": {
         "memberName": "Member Name",

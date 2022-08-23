@@ -114,22 +114,31 @@
             </div>
             <div class="graph_time">
                 {{ $t('menu.statistics') }}
+                <span>
+                    <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="MMM dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="false" @change="getDataUsingDatepicker" class="stationDatePicker">
+                    </el-date-picker>
+                </span>
             </div>
-            <div class="card-alt">
+            <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
                 <div class="card-8 stats_area">
-
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.powerConsumption') }}</span>
-                    <div class="num_stats"> <span class="num">{{ transactionSummary.totalEnergyKwh }} KWH</span></div>
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.powerConsumption') }}(KWH)</span>
+                    <div class="num_stats"> <span class="num">{{ statistics.data.totalEnergy ? statistics.data.totalEnergy.value : '-' }}</span></div>
                 </div>
                 <div class="card-8 stats_area">
                     <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                    <div class="num_stats"> <span class="num">{{ transactionSummary.transactionCount }}</span></div>
+                    <div class="num_stats"> <span class="num">{{ statistics.data.transactions ? statistics.data.transactions.value:'-' }}</span></div>
                 </div>
                 <div class="card-8 stats_area">
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalUsers') }}</span>
+                    <div class="num_stats"> <span class="num">{{ statistics.data.users ?statistics.data.users.value : '-' }}</span></div>
                 </div>
                 <div class="card-8 stats_area">
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.newUsers') }}</span>
+                    <div class="num_stats"> <span class="num">{{ statistics.data.newUsers ?statistics.data.newUsers.value : '-' }}</span></div>
                 </div>
                 <div class="card-8 stats_area">
+                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
+                    <div class="num_stats"> <span class="num">{{ statistics.data.users && statistics.data.newUsers ?statistics.data.users.value - statistics.data.newUsers.value : '-' }}</span></div>
                 </div>
             </div>
             <div class="card-8"></div>
@@ -252,14 +261,14 @@ import {
     $HTTP_getAllChargeBoxList,
     $HTTP_deleteChargeBox,
     $HTTP_getConnectorSummary,
-    $HTTP_getTransactionSummary
+    $HTTP_getTransactionsStatistics
 } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
-
+import moment from "moment";
 export default {
     components: {
         ShowPostion,
@@ -333,13 +342,23 @@ export default {
                 isVisible: false
             },
             connectorSummary: [],
-            transactionSummary: [],
+            statistics: {
+                data: [],
+                isLoading: false
+            },
             commonpopup: {
                 show: false,
                 chargePointId: null,
                 action: ""
             },
-            timeOut: null
+            timeOut: null,
+            dateRange: [],
+            pickerOptions: {
+                disabledDate(time) {
+                    let today = moment().endOf("day").format("x");
+                    return time.getTime() > today;
+                }
+            }
         };
     },
     computed: {
@@ -372,6 +391,12 @@ export default {
     },
     mounted() {
         setScrollBar(".scroll", this);
+
+        // add dates
+        const startOfDay = moment().startOf("day");
+        const endOfDay = moment().endOf("day");
+        this.dateRange = [new Date(startOfDay), new Date(endOfDay)];
+
         this.fetchStationDetail();
         let params = {};
         if (this.curRouteParam.stationId) {
@@ -379,7 +404,7 @@ export default {
         }
         this.getChargersList(params);
         this.getConnectorsSummary(this.curRouteParam.stationId);
-        this.getTransactionSummary(this.curRouteParam.stationId);
+        this.getStatistics(this.curRouteParam.stationId);
     },
     beforeDestroy() {
         clearTimeout(this.timeOut);
@@ -405,17 +430,21 @@ export default {
                     });
                 });
         },
-        getTransactionSummary(id) {
+        getStatistics(id) {
             let params = {};
             params.StationId = id;
-            $HTTP_getTransactionSummary(params)
+            params.StartedAfter = this.dateRange[0];
+            params.StartedBefore = this.dateRange[1];
+            this.statistics.isLoading = true;
+            $HTTP_getTransactionsStatistics(params)
                 .then((res) => {
                     if (res) {
-                        this.transactionSummary = res;
+                        this.statistics.data = res;
+                        this.statistics.isLoading = false;
                     }
                 })
                 .catch((err) => {
-                    this.transactionSummary = [];
+                    this.statistics.data = [];
                     console.log(err);
                     this.$message({
                         type: "warning",
@@ -423,8 +452,7 @@ export default {
                     });
                 });
         },
-        closeDialog(e, dialog) {
-            console.log(e, dialog);
+        closeDialog() {
             this.dialog.isVisible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
@@ -618,6 +646,9 @@ export default {
                         }
                     });
             });
+        },
+        getDataUsingDatepicker() {
+            this.getStatistics(this.curRouteParam.stationId);
         }
     }
 };
@@ -652,7 +683,20 @@ export default {
 }
 .graph_time {
     padding: 0px 0px 19px;
+    display: flex;
+    span {
+        margin-left: auto;
+        .stationDatePicker {
+            background: transparent;
+            border: 1px solid #525e69;
+            display: flex;
+            justify-content: space-evenly;
+            width: 220px;
+            padding: 0;
+        }
+    }
 }
+
 .action_chargers_stations {
     background-color: transparent;
     border-color: #409eff;

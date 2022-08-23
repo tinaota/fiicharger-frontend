@@ -255,6 +255,11 @@ export const $HTTP_getTransactionSummary = (params) => {
         params
     );
 }
+
+export const $HTTP_getTransactionsStatistics = (params) => {
+    return fetch (`${base_charger}/api/reports/transactions/statistics`,params)
+}
+
 //get connection Summary
 export const $HTTP_getConnectionSummary = (params) => {
     return fetch(

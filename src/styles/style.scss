@@ -263,8 +263,8 @@
             font-weight: bold;
         }
     }
-    .el-link{
-     font-size:16px;
+    .el-link {
+        font-size: 16px;
     }
     .card-8 {
         display: inline-block;
@@ -313,12 +313,12 @@
                     vertical-align: middle;
                 }
             }
-            .autoresizeselect{
+            .autoresizeselect {
                 height: auto;
-                .el-input{
+                .el-input {
                     height: auto;
                     margin-bottom: 0;
-                    input{
+                    input {
                         height: auto;
                     }
                 }
@@ -1324,15 +1324,39 @@ input[type="number"] {
 //default scrollbar height and width and color
 //Width of scroll bar
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+    width: 6px;
+    height: 6px;
 }
 //Slider for scroll bar
 ::-webkit-scrollbar-thumb {
-  background-color: #0d74de;
-  border-radius: 3px;
+    background-color: #0d74de;
+    border-radius: 3px;
 }
 
 .notNow .el-picker-panel__footer .el-button--text.el-picker-panel__link-btn {
     display: none;
+}
+
+// update datepicker styling for station detail page only
+.stationDatePicker {
+    .el-range__icon {
+        color: black !important;
+    }
+    .el-range-input {
+        background: transparent;
+        width: 15% !important;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    .el-range-separator {
+        display: flex !important;
+        align-items: center;
+    }
+    .el-range__close-icon{
+        display: none !important;
+    }
+    &:hover {
+        cursor: pointer;
+    }
 }
