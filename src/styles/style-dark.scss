@@ -76,6 +76,7 @@ $dark-background-color: #2d3855;
         }
 
         .mainctrl {
+            color: $dark-font-color !important;
             .el-table {
                 tr {
                     td .cell,
@@ -92,14 +93,19 @@ $dark-background-color: #2d3855;
             .card-8 {
                 background: $dark-background-color;
                 box-shadow: 0 1px 4px 0 $dark-background-color;
-                .header,.rank li .label span,
+                .header,
+                .rank li .label span,
                 .rank li .connectors span:nth-child(2),
-                .s-contain .item .label {
+                .s-contain .item .label,
+                .name {
                     background: inherit !important;
                     color: $dark-font-color !important;
                 }
                 .alertPageComment {
                     color: $dark-font-color !important;
+                }
+                .num_stats .num_trend .fa {
+                    -webkit-text-stroke: 1.5px $dark-background-color;
                 }
                 .carDetail,
                 .charge-point-info {
@@ -110,6 +116,13 @@ $dark-background-color: #2d3855;
                         .content {
                             color: $dark-font-color !important;
                         }
+                    }
+                }
+                .item {
+                    .label,
+                    .info,
+                    .content {
+                        color: $dark-font-color !important;
                     }
                 }
             }
@@ -125,6 +138,15 @@ $dark-background-color: #2d3855;
                     background: none !important;
                 }
             }
+        }
+    }
+    // update datepicker styling for station detail page only
+    .stationDatePicker {
+        .el-range__icon {
+            color: #ffffff !important;
+        }
+        .el-range-input {
+            color: #ffffff !important;
         }
     }
 }
