@@ -121,7 +121,7 @@
             </div>
             <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
                 <div class="card-8 stats_area">
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.powerConsumption') }}(KWH)</span>
+                    <span class="name">{{ $t('chargingStation.powerConsumption') }} (kWh)</span>
                     <div class="num_stats" v-if="statistics.data.totalEnergy">
                         <span class="num">{{ statistics.data.totalEnergy.value }}</span>
                         <span v-if="statistics.data.totalEnergy.trend!==0" :class="statistics.data.totalEnergy.trend>0?'positive num_trend':'negative num_trend'">
@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalTransaction') }}</span>
+                    <span  class="name">{{ $t('chargingStation.totalTransaction') }}</span>
                     <div class="num_stats" v-if="statistics.data.transactions">
                         <span class="num">{{ statistics.data.transactions.value }}</span>
                         <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.totalUsers') }}</span>
+                    <span  class="name">{{ $t('chargingStation.totalUsers') }}</span>
                     <div class="num_stats" v-if="statistics.data.users">
                         <span class="num">{{ statistics.data.users.value }}</span>
                         <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
@@ -154,7 +154,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.newUsers') }}</span>
+                    <span class="name">{{ $t('chargingStation.newUsers') }}</span>
                     <div class="num_stats" v-if="statistics.data.newUsers">
                         <span class="num">{{ statistics.data.newUsers.value }}</span>
                         <span v-if="statistics.data.newUsers.trend!==0" :class="statistics.data.newUsers.trend>0?'positive num_trend':'negative num_trend'">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span style="color:#525e69;" class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
+                    <span  class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
                     <div class="num_stats" v-if="statistics.data.repeatUsers">
                         <span class="num">{{ statistics.data.repeatUsers.value }}</span>
                         <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
@@ -695,7 +695,7 @@ export default {
         font-size: 1.25rem;
         display: flex;
         .title-value {
-            margin-left: 200px;
+            margin-left: auto;
             color: #0056ff;
         }
     }
@@ -746,6 +746,9 @@ export default {
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
+    .name{
+    color:#525e69;
+    }
 }
 .stats_area:nth-child(5) {
     margin-right: 0px;
@@ -795,6 +798,7 @@ export default {
             height: 26px;
             list-style: none;
             margin-bottom: 28px;
+                color: #525e69;
             &:last-child {
                 margin-bottom: 0;
             }
@@ -805,6 +809,7 @@ export default {
                 display: flex;
                 justify-content: space-between;
                 min-width: 65px;
+                align-items: center;
                 .name {
                     display: inline-block;
                     color: #525e69;
@@ -821,9 +826,9 @@ export default {
             .connectors {
                 display: flex;
                 text-align: center;
-                span {
-                    margin-right: 2px;
-                }
+                    justify-content: space-between;
+                   flex-direction: row;
+                   align-items: center;
             }
         }
     }
@@ -834,6 +839,8 @@ export default {
 
 .actionFunction {
     margin-left: 10px;
+      -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12);
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12); 
 }
 .actions {
     padding: 10px 0px;
@@ -846,11 +853,7 @@ export default {
     }
 }
 
-@media (max-width: 1680px) {
-    .rank-area {
-        width: calc(33.05% - 36px);
-    }
-}
+
 
 .el-link {
     text-decoration: underline;
@@ -862,16 +865,39 @@ export default {
     color: #0056ff;
 }
 
-@media screen and (max-width: 800px) {
-    .card-alt {
+@media (max-width: 1300px) {
+   .card-alt {
         flex-wrap: wrap;
     }
-
-    .rank-area {
-        flex: 100%;
-    }
-    .stats_area {
+     .stats_area {
         flex: 25%;
     }
+    .rank-area {
+        width: calc(32.8% - 32px);
+    }
+    .stats_area:nth-child(3){
+        margin-right: 0px;
+    }
+
+
+}
+
+@media screen and (max-width: 800px) {
+ 
+   .rank-area {
+        flex: 100%;
+    }
+       .stats_area:nth-child(3){
+        margin-right: 12px;
+    }
+    .rank-area:nth-child(3) {
+    margin-right: 12px;
+}
+.graph_time{
+    padding: 0px 12px 19px;
+}
+.stats_area:nth-child(5) {
+    margin-right: 12px;
+}
 }
 </style>

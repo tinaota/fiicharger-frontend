@@ -699,6 +699,11 @@ export default {
 .fa-pencil:hover {
     cursor: pointer;
 }
+.actionFunction{
+  -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12);
+        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12);   
+}
+
 @media screen and (max-width: 1500px) {
 .charge-point-info{
    flex-wrap:wrap;
