@@ -357,7 +357,8 @@
         "totalUsers": "總用戶",
         "newUsers": "新用戶",
         "repeatedUsers": "重複用戶",
-        "uploadFirmware": "上傳韌體"
+        "uploadFirmware": "上傳韌體",
+        "getCompositeSchedule": "獲取綜合時間表"
     },
     "userAccount": {
         "memberName": "會員名稱",
@@ -547,7 +548,8 @@
         "addChargingProfileAccepted": "請求添加充電配置文件成功",
         "addChargingProfileRejected": "請求添加充電配置文件失敗",
         "clearChargingProfileAccepted": "請求清除充電配置文件成功",
-        "clearChargingProfileRejected": "請求清除充電配置文件失敗"
+        "clearChargingProfileRejected": "請求清除充電配置文件失敗",
+        "getCompositeScheduleFaulted": "獲取綜合時間表的請求失敗"
     },
     "chargingProfile": {
         "delChargingProfile": "刪除充電配置",

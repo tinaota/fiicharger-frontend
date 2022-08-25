@@ -1,0 +1,113 @@
+<template>
+    <el-dialog :title="$t('chargingStation.getCompositeSchedule')" width="50%" :visible.sync="visible" custom-class="inner" :show-close="false" @close="closeDialog()" append-to-body>
+        <div class="dialogForm compositeSchedule">
+            <div class="item">
+                <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
+                <div class="info">{{ data.name }}</div>
+            </div>
+            <div class="item">
+                <div class="label">{{ $t('chargingStation.chargerId') }}</div>
+                <div class="info">{{ data.chargePointId }}</div>
+            </div>
+            <div class="item" v-if="startSchedule">
+                <div class="label">{{ $t('chargingProfile.startSchedule') }}</div>
+                <div class="info">{{ startSchedule }}</div>
+            </div>
+        </div>
+        <GetPeriod :show="true" :editable="false" :data="periodData"></GetPeriod>
+    </el-dialog>
+</template>
+
+<script>
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import GetPeriod from "@/components/setting/getPeriod";
+import moment from "moment";
+const DEFAULT_MAXSECONDS = 24 * 60 * 60;
+export default {
+    props: {
+        show: Boolean,
+        data: Object
+    },
+    components: {
+        GetPeriod
+    },
+    data() {
+        return {
+            visible: false,
+            pickerOptions: {
+                start: "00:00",
+                step: "00:30",
+                end: "24:00",
+                minTime: "",
+                maxTime: "24:00"
+            },
+            startSchedule: "",
+            periodData: {}
+        };
+    },
+    watch: {
+        show: {
+            handler() {
+                const that = this;
+                this.visible = this.show;
+                if (this.visible) {
+                    this.startSchedule = this.data.chargingSchedule?.startSchedule? transformUtcToLocTime(this.data.chargingSchedule?.startSchedule, "YYYY-MM-DD HH:mm"): "";
+                    this.periodData = this.data.chargingSchedule.chargingSchedulePeriod ? this.prepareData(this.data.chargingSchedule.chargingSchedulePeriod) : {};
+                }
+                that.$jQuery(".compositeSchedule").length > 0 && that.$jQuery(".compositeSchedule").mCustomScrollbar("destroy");
+                that.$nextTick(() => {
+                    setScrollBar(".compositeSchedule", that);
+                });
+            }
+        },
+    },
+    computed: {
+        getTime() {
+            return (second, format) => {
+                const millisecond = second * 1000;
+                const hours = moment.duration(millisecond).hours();
+                const minutes =  moment.duration(millisecond).minutes();
+                const seconds =  moment.duration(millisecond).seconds();
+                return moment().set({ "hour": hours, "minute": minutes, "second": seconds }).format(format)
+            };
+        },
+    },
+    methods: {
+        prepareData(data) {
+            const periodLength = data.length;
+            return data.map((item, idx) => {
+                        item.id = idx +1;
+                        item.powerLimit = item.limit / 1000 || 0;
+                        item.startPeriodInSeconds = item.startPeriod;
+                        item.time = this.getTime(item.startPeriodInSeconds, "HH:mm");
+                        if (periodLength === idx+1) {
+                            item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
+                            item.endTime = "23:59:59";
+                        } else {
+                            item.endPeriodInSeconds = data[idx+1].startPeriod-1;
+                            item.endTime = this.getTime(item.endPeriodInSeconds, "HH:mm:ss");
+                        }
+                        item.duration = item.endPeriodInSeconds - item.startPeriodInSeconds;
+                        return item;
+                    });
+        },
+        closeDialog() {
+            this.startSchedule = "";
+            this.$emit("close");
+        }
+    }
+};
+</script>
+
+<style lang = "scss" scoped>
+.el-button {
+    background: #0263ff;
+    color: #fff;
+    border: unset;
+    font-size: 1rem;
+    width: 130px;
+    height: 50px;
+    border-radius: 6px;
+    text-align: center;
+}
+</style>

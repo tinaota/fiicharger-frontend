@@ -355,3 +355,6 @@ export const $HTTP_clearChargingProfile = params => { return post(`${base_charge
 //post charge point upload firmware file
 export const $HTTP_uploadFirmwareFile = params => { return post(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.formData)
 }
+
+//Get Composite Schedule
+export const $HTTP_getCompositeSchedule = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/get-compositeschedule`, params) }

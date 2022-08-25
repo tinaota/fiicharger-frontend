@@ -357,7 +357,8 @@
         "totalUsers": "Usuarios totales",
         "newUsers": "Usuarios nuevos",
         "repeatedUsers": "Usuarios repetidos",
-        "uploadFirmware": "Subir firmware"
+        "uploadFirmware": "Subir firmware",
+        "getCompositeSchedule": "Obtener horario compuesto"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -547,7 +548,8 @@
         "addChargingProfileAccepted": "Solicitud para agregar perfil de carga exitosa",
         "addChargingProfileRejected": "El cargador rechazó la solicitud para agregar un perfil de carga",
         "clearChargingProfileAccepted": "La solicitud para clara el perfil de carga tuvo éxito",
-        "clearChargingProfileRejected": "El cargador ha rechazado la solicitud para clara el perfil de carga"
+        "clearChargingProfileRejected": "El cargador ha rechazado la solicitud para clara el perfil de carga",
+        "getCompositeScheduleFaulted": "La solicitud para obtener el horario compuesto ha fallado"
     },
     "chargingProfile": {
         "delChargingProfile": "Eliminar configuración de carga",

@@ -357,7 +357,8 @@
         "totalUsers": "Total Users",
         "newUsers": "New Users",
         "repeatedUsers": "Repeated Users",
-        "uploadFirmware": "Upload Firmware"
+        "uploadFirmware": "Upload Firmware",
+        "getCompositeSchedule": "Get Composite Schedule"
     },
     "userAccount": {
         "memberName": "Member Name",
@@ -547,7 +548,8 @@
         "addChargingProfileAccepted": "Request to add charging profile succeeded",
         "addChargingProfileRejected": "Request to add charging profile has been rejected by charger",
         "clearChargingProfileAccepted": "Request to clear charging profile succeeded",
-        "clearChargingProfileRejected": "Request to clear charging profile has been rejected by charger"
+        "clearChargingProfileRejected": "Request to clear charging profile has been rejected by charger",
+        "getCompositeScheduleFaulted": "Request to get composite schedule has failed"
     },
     "chargingProfile": {
         "delChargingProfile": "Delete Charging Profile",

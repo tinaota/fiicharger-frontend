@@ -357,7 +357,8 @@
         "totalUsers": "Tổng số người dùng",
         "newUsers": "Những người dùng mới",
         "repeatedUsers": "Người dùng lặp lại",
-        "uploadFirmware": "Tải lên chương trình cơ sở"
+        "uploadFirmware": "Tải lên chương trình cơ sở",
+        "getCompositeSchedule": "Nhận lịch biểu tổng hợp"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -547,7 +548,8 @@
         "addChargingProfileAccepted": "Yêu cầu thêm hồ sơ tính phí đã thành công",
         "addChargingProfileRejected": "Yêu cầu thêm cấu hình sạc đã bị bộ sạc từ chối",
         "clearChargingProfileAccepted": "Yêu cầu xóa hồ sơ tính phí đã thành công",
-        "clearChargingProfileRejected": "Yêu cầu xóa hồ sơ sạc đã bị bộ sạc từ chối"
+        "clearChargingProfileRejected": "Yêu cầu xóa hồ sơ sạc đã bị bộ sạc từ chối",
+        "getCompositeScheduleFaulted": "Yêu cầu nhận lịch trình tổng hợp không thành công"
     },
     "chargingProfile": {
         "delChargingProfile": "Xóa cấu hình sạc",

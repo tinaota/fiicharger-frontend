@@ -357,7 +357,8 @@
         "totalUsers": "总用户",
         "newUsers": "新用户",
         "repeatedUsers": "重复用户",
-        "uploadFirmware": "上传固件"
+        "uploadFirmware": "上传固件",
+        "getCompositeSchedule": "获取综合时间表"
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -547,7 +548,8 @@
         "addChargingProfileAccepted": "请求添加充电配置文件成功",
         "addChargingProfileRejected": "请求添加充电配置文件失败",
         "clearChargingProfileAccepted": "请求清除充电配置文件成功",
-        "clearChargingProfileRejected": "请求清除充电配置文件失败"
+        "clearChargingProfileRejected": "请求清除充电配置文件失败",
+        "getCompositeScheduleFaulted": "获取综合时间表的请求失败"
     },
     "chargingProfile": {
         "delChargingProfile": "删除充电配置",

@@ -133,6 +133,11 @@
                                 </span>
                                 <el-button type="primary" class="actionFunction" @click="runAction(null, 'uploadFirmware')">{{ $t('general.upload') }}</el-button>
                             </li>
+
+                            <li>
+                                <span>{{ $t('chargingStation.getCompositeSchedule') }}</span>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'getCompositeSchedule')">{{ $t('general.run') }}</el-button>
+                            </li>
                         </ul>
                     </div>
 
@@ -335,6 +340,7 @@
                 <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
                 <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="isUpdate => { closeDialog('clearChargingProfile', isUpdate) }"></ClearChargingProfile>
                 <UploadFirmware :chargePointId="uploadFirmwareDialog.chargePointId" :show="uploadFirmwareDialog.visible" @close="closeDialog('uploadFirmwareDialog')"></UploadFirmware>
+                <GetCompositeSchedule :show="getCompositeSchedule.visible" :data="getCompositeSchedule.data" @close="closeDialog('remoteTrigger')"></GetCompositeSchedule>
             </div>
         </div>
 </template>
@@ -370,6 +376,7 @@ import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from 'moment'
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
 import UploadFirmware from "@/components/chargingStation/uploadFirmware";
+import GetCompositeSchedule from "@/components/chargingStation/getCompositeSchedule";
 
 export default {
     components: {
@@ -390,7 +397,8 @@ export default {
         ChargingProfile,
         AddChargingProfile,
         ClearChargingProfile,
-        UploadFirmware
+        UploadFirmware,
+        GetCompositeSchedule
     },
     data() {
         return {
@@ -526,6 +534,10 @@ export default {
             uploadFirmwareDialog:  {
                 chargePointId: '',
                 visible: false
+            },
+            getCompositeSchedule: {
+                visible: false,
+                data: {}
             }
         };
     },
@@ -634,6 +646,12 @@ export default {
             } else if (action === "uploadFirmware"){
                 this.uploadFirmwareDialog.visible = true;
                 this.uploadFirmwareDialog.chargePointId = this.chargePointById[0].id;
+            } else if (action === "getCompositeSchedule") {
+                this.getCompositeSchedule.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    name: this.chargePointById[0].name
+                }
+                this.getCompositeSchedule.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
@@ -767,6 +785,8 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "uploadFirmwareDialog") {
                 this.uploadFirmwareDialog.visible = false;
+            } else if (type === "getCompositeSchedule") {
+                this.getCompositeSchedule.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();
