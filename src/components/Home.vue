@@ -92,7 +92,7 @@ import fiics_logo_dark from "imgs/darkVersion/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
 import redirect from "../router/redirect";
 import { app } from "../main";
-
+import moment from 'moment'
 export default {
     data() {
         return {
@@ -257,6 +257,8 @@ export default {
             this.lang=lang
             if (app && app.$i18n) {
                 app.$i18n.locale = lang;
+                // change moment with respect to language
+                moment.locale(lang)
             }
         },
         handleMenuSelect(index, indexPath) {
