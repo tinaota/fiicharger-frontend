@@ -31,6 +31,11 @@ export const transformUtcToLocTime = function (date, format = "YYYY-MM-DD HH:mm:
     return moment(utcDate).local().format(format);
 }
 
+export const transformUtcToLocTimeForGraphs = function (date, format = "MMM DD HH:mm") {
+    var utcDate = moment.utc(date).toDate();
+    return moment(utcDate).local().format(format);
+}
+
 export const transformToSymbols = function (name) {
     let symbol;
     switch (name) {

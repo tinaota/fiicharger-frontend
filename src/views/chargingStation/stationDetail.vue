@@ -132,7 +132,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span  class="name">{{ $t('chargingStation.totalTransaction') }}</span>
+                    <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
                     <div class="num_stats" v-if="statistics.data.transactions">
                         <span class="num">{{ statistics.data.transactions.value }}</span>
                         <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
@@ -143,7 +143,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span  class="name">{{ $t('chargingStation.totalUsers') }}</span>
+                    <span class="name">{{ $t('chargingStation.totalUsers') }}</span>
                     <div class="num_stats" v-if="statistics.data.users">
                         <span class="num">{{ statistics.data.users.value }}</span>
                         <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
@@ -165,7 +165,7 @@
                     </div>
                 </div>
                 <div class="card-8 stats_area">
-                    <span  class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
+                    <span class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
                     <div class="num_stats" v-if="statistics.data.repeatUsers">
                         <span class="num">{{ statistics.data.repeatUsers.value }}</span>
                         <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
@@ -176,7 +176,17 @@
                     </div>
                 </div>
             </div>
-            <div class="card-8"></div>
+            <div class="card-8">
+                <div class="header">
+                    <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')" @change="updateGraphSelection">
+                        <el-option v-for="item in graphList" :label="$t(`graphs.${item}`)" :key="item" :value="item"></el-option>
+                    </el-select>
+                </div>
+                <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
+                    <TransactionTraffic :dateRange="dateRange" :stationId="curRouteParam.stationId"></TransactionTraffic>
+                </div>
+
+            </div>
             <div class="card-8 table-result">
                 <div class="header">{{ $t('menu.chargePoint') }}</div>
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
@@ -304,12 +314,14 @@ import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
 import moment from "moment";
+import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
 export default {
     components: {
         ShowPostion,
         EditChargeBox,
         Connector,
-        CommonPopup
+        CommonPopup,
+        TransactionTraffic
     },
     data() {
         return {
@@ -393,7 +405,9 @@ export default {
                     let today = moment().endOf("day").format("x");
                     return time.getTime() > today;
                 }
-            }
+            },
+            graphSelected: "transactionAndTraffic",
+            graphList: ["transactionAndTraffic"]
         };
     },
     computed: {
@@ -684,13 +698,17 @@ export default {
         },
         getDataUsingDatepicker() {
             this.getStatistics(this.curRouteParam.stationId);
+        },
+        updateGraphSelection() {
+            console.log("get graph data");
         }
     }
 };
 </script>
 <style lang = "scss" scoped>
 .card-8 {
-    .header {
+    .header,
+    .graph {
         color: #151e25;
         font-size: 1.25rem;
         display: flex;
@@ -698,6 +716,9 @@ export default {
             margin-left: auto;
             color: #0056ff;
         }
+    }
+    .graph {
+        height: 350px;
     }
     .chargePoint {
         margin-top: 16px;
@@ -726,7 +747,7 @@ export default {
             border: 1px solid #525e69;
             display: flex;
             justify-content: space-evenly;
-            width: 220px;
+            width: 260px;
             padding: 0;
         }
     }
@@ -746,8 +767,8 @@ export default {
     position: relative;
     vertical-align: top;
     padding-bottom: 48px;
-    .name{
-    color:#525e69;
+    .name {
+        color: #525e69;
     }
 }
 .stats_area:nth-child(5) {
@@ -798,7 +819,7 @@ export default {
             height: 26px;
             list-style: none;
             margin-bottom: 28px;
-                color: #525e69;
+            color: #525e69;
             &:last-child {
                 margin-bottom: 0;
             }
@@ -826,9 +847,9 @@ export default {
             .connectors {
                 display: flex;
                 text-align: center;
-                    justify-content: space-between;
-                   flex-direction: row;
-                   align-items: center;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: center;
             }
         }
     }
@@ -839,8 +860,8 @@ export default {
 
 .actionFunction {
     margin-left: 10px;
-      -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12);
-        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.12); 
+    -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
 }
 .actions {
     padding: 10px 0px;
@@ -853,8 +874,6 @@ export default {
     }
 }
 
-
-
 .el-link {
     text-decoration: underline;
     color: #0056ff;
@@ -866,38 +885,35 @@ export default {
 }
 
 @media (max-width: 1300px) {
-   .card-alt {
+    .card-alt {
         flex-wrap: wrap;
     }
-     .stats_area {
+    .stats_area {
         flex: 25%;
     }
     .rank-area {
         width: calc(32.8% - 32px);
     }
-    .stats_area:nth-child(3){
+    .stats_area:nth-child(3) {
         margin-right: 0px;
     }
-
-
 }
 
 @media screen and (max-width: 800px) {
- 
-   .rank-area {
+    .rank-area {
         flex: 100%;
     }
-       .stats_area:nth-child(3){
+    .stats_area:nth-child(3) {
         margin-right: 12px;
     }
     .rank-area:nth-child(3) {
-    margin-right: 12px;
-}
-.graph_time{
-    padding: 0px 12px 19px;
-}
-.stats_area:nth-child(5) {
-    margin-right: 12px;
-}
+        margin-right: 12px;
+    }
+    .graph_time {
+        padding: 0px 12px 19px;
+    }
+    .stats_area:nth-child(5) {
+        margin-right: 12px;
+    }
 }
 </style>

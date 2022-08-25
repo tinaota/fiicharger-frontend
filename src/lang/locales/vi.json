@@ -560,5 +560,12 @@
         "downloadFileSuccess": "Tệp tải xuống hoàn tất.",
         "downloadFileFiled": "Tải xuống tệp không thành công.",
         "fileListErrorMsg": "Không tải được danh sách tệp."
+    },
+    "graphs": {
+        "transactionAndTraffic": "Giao dịch & Lưu lượng truy cập",
+        "transactions": "Giao dịch",
+        "repeatUsers": "Người dùng lặp lại",
+        "newUsers": "Những người dùng mới",
+        "totalUsers": "Tổng số người dùng"
     }
 }

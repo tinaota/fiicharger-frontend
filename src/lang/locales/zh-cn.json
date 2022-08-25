@@ -560,5 +560,12 @@
         "downloadFileSuccess": "档案下载完成",
         "downloadFileFiled": "档案下载失败",
         "fileListErrorMsg": "档案列表加载失败"
+    },
+    "graphs": {
+        "transactionAndTraffic": "交易与流量",
+        "transactions": "交易",
+        "repeatUsers": "重复用户",
+        "newUsers": "新用户",
+        "totalUsers": "总用户"
     }
 }

@@ -178,6 +178,7 @@ export default {
         let language = transformLangCookieToSymbol(languageCookie);
         this.lang = language;
         this.isActiveLang = language;
+        moment.locale(language)
 
         this.$router.options.routes
             .filter((item) => item.ename == "Home")[0]

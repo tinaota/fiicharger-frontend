@@ -560,5 +560,12 @@
         "downloadFileSuccess": "File download complete.",
         "downloadFileFiled": "File download failed.",
         "fileListErrorMsg": "File list failed to load."
+    },
+    "graphs": {
+        "transactionAndTraffic": "Transactions & Traffic",
+        "transactions": "Transactions",
+        "repeatUsers": "Repeated Users",
+        "newUsers": "New Users",
+        "totalUsers": "Total Users"
     }
 }

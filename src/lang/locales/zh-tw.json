@@ -560,5 +560,12 @@
         "downloadFileSuccess": "檔案下載完成",
         "downloadFileFiled": "檔案下載失敗",
         "fileListErrorMsg": "檔案列表加載失敗"
+    },
+    "graphs": {
+        "transactionAndTraffic": "交易與流量",
+        "transactions": "交易",
+        "repeatUsers": "重複用戶",
+        "newUsers": "新用戶",
+        "totalUsers": "總用戶"
     }
 }

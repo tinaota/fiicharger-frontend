@@ -270,12 +270,30 @@
         display: inline-block;
         width: calc(100% - 28px);
         background: #e6eef8;
-        -webkit-box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.06);
-        box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.06);
+        -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06);
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06);
         border-radius: 8px;
         border-radius: 8px;
         margin-bottom: 24px;
         padding: 14px;
+        // add a custom style for dropdown
+        .header {
+            .customSelect {
+                background: transparent;
+                input {
+                    border: none;
+                    background: inherit;
+                    color: #0056ff;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                }
+                .el-icon-arrow-up {
+                    color: #0056ff;
+                    font-size: 1.25rem;
+                    font-weight: 700;
+                }
+            }
+        }
         .filter {
             margin-bottom: 12px;
             width: 100%;
@@ -1354,7 +1372,7 @@ input[type="number"] {
         display: flex !important;
         align-items: center;
     }
-    .el-range__close-icon{
+    .el-range__close-icon {
         display: none !important;
     }
     &:hover {

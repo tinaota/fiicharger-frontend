@@ -560,5 +560,12 @@
         "downloadFileSuccess": "Descarga de archivos completa.",
         "downloadFileFiled": "La descarga del archivo falló.",
         "fileListErrorMsg": "No se pudo cargar la lista de archivos."
+    },
+    "graphs": {
+        "transactionAndTraffic": "Transacciones y Tráfico",
+        "transactions": "Actas",
+        "repeatUsers": "Usuarios repetidos",
+        "newUsers": "Usuarios nuevos",
+        "totalUsers": "Usuarios totales"
     }
 }

@@ -289,7 +289,7 @@ export const $HTTP_cancelReservation = params => { return post(`${base_charger}/
 export const $HTTP_sendTriggerMessage = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/trigger-message`, params) }
 
 //get id tag list
-export const $HTTP_getIdtagList = params => { return fetch(`${base_charger}/api/ocpp/local-auth-list/idtag-list`, {}) }
+export const $HTTP_getIdtagList = () => { return fetch(`${base_charger}/api/ocpp/local-auth-list/idtag-list`) }
 
 //get local auth list version
 export const $HTTP_getLocalAuthListVersion = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list/version`, {}) }
@@ -323,3 +323,6 @@ export const $HTTP_getUpdateFirmwareStatus = params => { return fetch(`${base_ch
 
 //get charge point upload firmware file url
 export const $HTTP_getFirmwareUploadUrl = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/upload-firmware`) }
+
+// graph apis
+export const $HTTP_getTransactionTrafficGraphData = params => { return fetch(`${base_charger}/api/reports/transactions/graphs/traffic`,params) }
