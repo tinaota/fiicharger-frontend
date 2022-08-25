@@ -183,7 +183,7 @@
                     </el-select>
                 </div>
                 <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
-                    <TransactionTraffic :dateRange="dateRange" :stationId="curRouteParam.stationId"></TransactionTraffic>
+                    <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></TransactionTraffic>
                 </div>
 
             </div>

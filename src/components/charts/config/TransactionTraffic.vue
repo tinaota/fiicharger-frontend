@@ -16,7 +16,8 @@ export default {
     },
     props: {
         dateRange: Array,
-        stationId: Number
+        id: Number,
+        type: String
     },
     data() {
         return {
@@ -29,22 +30,23 @@ export default {
         dateRange: function () {
             // check the length of the dates to verify
             // it has both start/end dates
-            this.fetchTransactionTrafficGraphData(
-                this.dateRange,
-                this.stationId
-            );
+            this.fetchTransactionTrafficGraphData(this.dateRange, this.id);
         }
     },
     mounted() {
-        this.fetchTransactionTrafficGraphData(this.dateRange, this.stationId);
+        this.fetchTransactionTrafficGraphData(this.dateRange, this.id);
     },
     beforeDestroy() {},
     methods: {
-        fetchTransactionTrafficGraphData(dateRange, stationId) {
+        fetchTransactionTrafficGraphData(dateRange, id) {
             let params = {};
             params.StartedAfter = dateRange[0];
             params.StartedBefore = dateRange[1];
-            params.ChargeStationId = stationId;
+            if (this.type === "station") {
+                params.ChargeStationId = id;
+            } else if (this.type === "charger") {
+                params.ChargePointId = id;
+            }
             $HTTP_getTransactionTrafficGraphData(params)
                 .then((res) => {
                     if (res.length > 0) {
