@@ -51,7 +51,8 @@ export default {
     },
     props: {
         chargerId: String,
-        isUpdateData: Boolean
+        isUpdateData: Boolean,
+        dateRange: Array
     },
     emits: ["updated"],
     data() {
@@ -92,7 +93,9 @@ export default {
                 limit: this.limit,
                 ChargePointId: this.chargerId,
                 IsDescending: true,
-                OrderBy: 'created'
+                OrderBy: 'created',
+                CreatedAfter: this.dateRange[0],
+                CreatedBefore: this.dateRange[1]
             };
             this.isLoading = true;
             $HTTP_getReservation(params)
@@ -104,10 +107,6 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("emptyMessage")
-                        });
                     }
                     this.$emit("updated");
                 })

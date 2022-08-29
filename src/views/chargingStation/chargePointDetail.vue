@@ -310,8 +310,8 @@
                             <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
                         </div>
                     </div>
-                    <Transaction v-if="active==='transaction'" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId"></Transaction>
-                    <Reservation v-else-if="active==='reservation'" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
+                    <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId"></Transaction>
+                    <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
@@ -740,6 +740,7 @@ export default {
                 });
         },
         getDataUsingDatepicker() {
+            this.isUpDateReservationData = true
             this.getStatistics(this.curRouteParam.chargeBoxId);
         },
         updateGraphSelection() {

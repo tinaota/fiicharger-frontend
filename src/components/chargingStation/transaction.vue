@@ -53,7 +53,8 @@ import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 
 export default {
     props: {
-        chargerId: String
+        chargerId: String,
+        dateRange: Array
     },
     data() {
         return {
@@ -76,6 +77,11 @@ export default {
             return (item) => transformUtcToLocTime(item);
         }
     },
+    watch: {
+        dateRange: function () {
+            this.getAllTransactions();
+        }
+    },
     mounted() {
         this.getAllTransactions();
         this.getTransactionsReasonList();
@@ -87,13 +93,13 @@ export default {
                 page: this.page,
                 limit: this.limit,
                 IsDescending: true,
-                OrderBy: "startTimestamp"
+                OrderBy: "startTimestamp",
+                ChargePointId: this.chargerId,
+                StartedAfter: this.dateRange[0],
+                StartedBefore: this.dateRange[1]
             };
             if (this.filter.stopReason) {
                 params.StopReason = this.filter.stopReason;
-            }
-            if (this.chargerId) {
-                params.ChargePointId = this.chargerId;
             }
             if (type === "filter") {
                 this.page = 1;
