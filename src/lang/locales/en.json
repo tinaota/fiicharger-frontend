@@ -342,7 +342,12 @@
             "1Min": "1 min",
             "5Mins": "5 mins",
             "10Mins": "10 mins",
-            "30Mins": "30 mins"
+            "30Mins": "30 mins",
+            "7days": "Last 7 days",
+            "30days": "Last 30 days",
+            "90days": "Last 90 days",
+            "6months": "Last 6 months",
+            "1year": "Last 1 year"
         },
         "getLocalAuthListVersion": "Get Local List Version",
         "sendLocalAuthList": "Send Local List",

@@ -342,7 +342,12 @@
             "1Min": "1 phút",
             "5Mins": "5 phút",
             "10Mins": "10 phút",
-            "30Mins": "30 phút"
+            "30Mins": "30 phút",
+            "7days": "7 ngày qua",
+            "30 days": "30 ngày trước",
+            "90days": "90 ngày qua",
+            "6months": "6 tháng qua",
+            "1year": "1 năm qua"
         },
         "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
         "sendLocalAuthList": "Gửi danh sách địa phương",

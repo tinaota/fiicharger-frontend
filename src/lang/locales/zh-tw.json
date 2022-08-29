@@ -342,7 +342,12 @@
             "1Min": "1分鐘",
             "5Mins": "5分鐘",
             "10Mins": "10分鐘",
-            "30Mins": "30分鐘"
+            "30Mins": "30分鐘",
+            "7days": "過去 7 天",
+            "30 days": "過去 30 天",
+            "90days": "過去 90 天",
+            "6months": "過去 6 個月",
+            "1year": "過去 1 年"
         },
         "getLocalAuthListVersion": "獲取本地列表版本",
         "sendLocalAuthList": "發送本地列表",

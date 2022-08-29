@@ -397,7 +397,54 @@ export default {
                 disabledDate(time) {
                     let today = moment().endOf("day").format("x");
                     return time.getTime() > today;
+                },
+                shortcuts:[{
+                    text: i18n.t('chargingStation.timeOpt.7days'),
+                    onClick(picker) {
+                        // 7 days including today
+                        const startOfDay = moment().subtract(6,'days').startOf("day");
+                        const endOfDay = moment().endOf("day");
+                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
+                        picker.$emit('pick', _dateRange);
+                    }
+                },
+                {
+                    text: i18n.t('chargingStation.timeOpt.30days'),
+                    onClick(picker) {
+                        const startOfDay = moment().subtract(29,'days').startOf("day");
+                        const endOfDay = moment().endOf("day");
+                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
+                        picker.$emit('pick', _dateRange);
+                    }
+                },
+                             {
+                    text: i18n.t('chargingStation.timeOpt.90days'),
+                    onClick(picker) {
+                        const startOfDay = moment().subtract(89,'days').startOf("day");
+                        const endOfDay = moment().endOf("day");
+                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
+                        picker.$emit('pick', _dateRange);
+                    }
+                },
+                             {
+                    text: i18n.t('chargingStation.timeOpt.6months'),
+                    onClick(picker) {
+                        const startOfDay = moment().subtract(6,'months').startOf("day");
+                        const endOfDay = moment().endOf("day");
+                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
+                        picker.$emit('pick', _dateRange);
+                    }
+                },
+                             {
+                    text: i18n.t('chargingStation.timeOpt.1year'),
+                    onClick(picker) {
+                        const startOfDay = moment().subtract(1,'years').startOf("day");
+                        const endOfDay = moment().endOf("day");
+                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
+                        picker.$emit('pick', _dateRange);
+                    }
                 }
+                ]
             },
             permissionShowAlertAble: this.$store.state.permissionEditable,
             curRouteParam: {
@@ -477,7 +524,7 @@ export default {
     },
     mounted() {
         // add dates
-        const startOfDay = moment().startOf("day");
+        const startOfDay = moment().subtract(6,'days').startOf("day");
         const endOfDay = moment().endOf("day");
         this.dateRange = [new Date(startOfDay), new Date(endOfDay)];
 
