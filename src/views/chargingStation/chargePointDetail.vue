@@ -226,6 +226,71 @@
                     </div>
                 </div>
 
+                <div class="graph_time">
+                    {{ $t('menu.statistics') }}
+                    <span>
+                        <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="MMM dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="false" @change="getDataUsingDatepicker" class="customDatepicker">
+                        </el-date-picker>
+                    </span>
+                </div>
+                <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
+                    <div class="card-8 stats_area">
+                        <span class="name">{{ $t('chargingStation.powerConsumption') }} (kWh)</span>
+                        <div class="num_stats" v-if="statistics.data.totalEnergy">
+                            <span class="num">{{ statistics.data.totalEnergy.value }}</span>
+                            <span v-if="statistics.data.totalEnergy.trend!==0" :class="statistics.data.totalEnergy.trend>0?'positive num_trend':'negative num_trend'">
+                                <i v-if="statistics.data.totalEnergy.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                                <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                                {{ Math.abs(statistics.data.totalEnergy.trend.toFixed(2)) }} %
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-8 stats_area">
+                        <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
+                        <div class="num_stats" v-if="statistics.data.transactions">
+                            <span class="num">{{ statistics.data.transactions.value }}</span>
+                            <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
+                                <i v-if="statistics.data.transactions.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                                <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                                {{ Math.abs(statistics.data.transactions.trend.toFixed(2)) }} %
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-8 stats_area">
+                        <span class="name">{{ $t('chargingStation.totalUsers') }}</span>
+                        <div class="num_stats" v-if="statistics.data.users">
+                            <span class="num">{{ statistics.data.users.value }}</span>
+                            <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
+                                <i v-if="statistics.data.users.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                                <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                                {{ Math.abs(statistics.data.users.trend.toFixed(2)) }}%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-8 stats_area">
+                        <span class="name">{{ $t('chargingStation.newUsers') }}</span>
+                        <div class="num_stats" v-if="statistics.data.newUsers">
+                            <span class="num">{{ statistics.data.newUsers.value }}</span>
+                            <span v-if="statistics.data.newUsers.trend!==0" :class="statistics.data.newUsers.trend>0?'positive num_trend':'negative num_trend'">
+                                <i v-if="statistics.data.newUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                                <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                                {{ Math.abs( statistics.data.newUsers.trend.toFixed(2)) }}%
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-8 stats_area">
+                        <span class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
+                        <div class="num_stats" v-if="statistics.data.repeatUsers">
+                            <span class="num">{{ statistics.data.repeatUsers.value }}</span>
+                            <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
+                                <i v-if="statistics.data.repeatUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
+                                <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
+                                {{ Math.abs(statistics.data.repeatUsers.trend.toFixed(2)) }}%
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class=" card-8 tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleClick">
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
@@ -264,7 +329,7 @@ import CancelReservation from "@/components/chargingStation/cancelReservation";
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getConnectorStatusesById,
-    $HTTP_getFirmwareUploadUrl
+    $HTTP_getTransactionsStatistics
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
@@ -275,7 +340,7 @@ import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthLi
 import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
 import { $GLOBAL_REFRESH } from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
-
+import moment from 'moment'
 export default {
     components: {
         Connector,
@@ -312,12 +377,11 @@ export default {
                 action: "",
                 rowData: {}
             },
-            filter: {
-                dateRange: []
-            },
+            dateRange: [],
             pickerOptions: {
                 disabledDate(time) {
-                    return time.getTime() > Date.now();
+                    let today = moment().endOf("day").format("x");
+                    return time.getTime() > today;
                 }
             },
             permissionShowAlertAble: this.$store.state.permissionEditable,
@@ -361,6 +425,10 @@ export default {
             updateDialog: {
                 chargePointId: '',
                 visible: false
+            },
+            statistics:{
+                isLoading: false,
+                data: []
             }
         };
     },
@@ -391,9 +459,15 @@ export default {
         }
     },
     mounted() {
+        // add dates
+        const startOfDay = moment().startOf("day");
+        const endOfDay = moment().endOf("day");
+        this.dateRange = [new Date(startOfDay), new Date(endOfDay)];
+
         this.getChargePointsById(this.curRouteParam.chargeBoxId);
 
         this.getConnectorStatusesById(this.curRouteParam.chargeBoxId);
+        this.getStatistics(this.curRouteParam.chargeBoxId);
 
         // update connector statuses in certain interval
         this.connectorTimer = setInterval(()=>{
@@ -578,7 +652,32 @@ export default {
         },
         handleClick() {
             window.sessionStorage.setItem("fiics-activeTab", this.active);
-        }
+        },
+        getStatistics(id) {
+            let params = {};
+            params.chargePointId = id;
+            params.StartedAfter = this.dateRange[0];
+            params.StartedBefore = this.dateRange[1];
+            this.statistics.isLoading = true;
+            $HTTP_getTransactionsStatistics(params)
+                .then((res) => {
+                    if (res) {
+                        this.statistics.data = res;
+                        this.statistics.isLoading = false;
+                    }
+                })
+                .catch((err) => {
+                    this.statistics.data = [];
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
+        getDataUsingDatepicker() {
+            this.getStatistics(this.curRouteParam.chargeBoxId);
+        },
     }
 };
 </script>
@@ -591,6 +690,63 @@ export default {
         font-weight: bold;
     }
 
+}
+.graph_time {
+    padding: 0px 0px 19px;
+    display: flex;
+    span {
+        margin-left: auto;
+        .customDatepicker {
+            background: transparent;
+            border: 1px solid #525e69;
+            display: flex;
+            justify-content: space-evenly;
+            width: 260px;
+            padding: 0;
+        }
+    }
+}
+.card-alt {
+    display: flex;
+    width: 100%;
+    .stats_area{
+        width: calc(20% - 32px);
+        margin-right: 12px;
+        height: 47px;
+        position: relative;
+        vertical-align: top;
+        padding-bottom: 48px;
+        .name {
+            color: #525e69;
+        }
+        .num_stats {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.25rem;
+            .num {
+                font-weight: bold;
+                margin: 10px 0px 5px;
+            }
+            .num_trend {
+                font-size: 1rem;
+                font-weight: 700;
+                &.positive {
+                    color: #33c85a;
+                }
+                &.negative {
+                    color: #fc2e56;
+                }
+                /* using webstroke to make the icon thinner  */
+                .fa {
+                    -webkit-text-stroke: 1.5px #e6eef8;
+                }
+            }
+}
+    }
+
+    .stats_area:nth-child(5) {
+        margin-right: 0px;
+        }
 }
  .charge-point-info {
         display: flex;
@@ -707,8 +863,11 @@ export default {
 }
 
 @media screen and (max-width: 1500px) {
-.charge-point-info{
+.charge-point-info, .card-alt{
    flex-wrap:wrap;
+       .stats_area {
+            flex: 25%;
+    }
 }
 .rank-area{
    flex:25%;
@@ -721,5 +880,14 @@ export default {
  .rank-area{
    flex:50%;
 }
+    .graph_time {
+        padding: 0px 12px 19px;
+    }
+        .stats_area:nth-child(3) {
+        margin-right: 12px;
+    }
+        .stats_area:nth-child(5) {
+        margin-right: 12px;
+    }
  }
 </style>

@@ -115,7 +115,7 @@
             <div class="graph_time">
                 {{ $t('menu.statistics') }}
                 <span>
-                    <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="MMM dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="false" @change="getDataUsingDatepicker" class="stationDatePicker">
+                    <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="MMM dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="false" @change="getDataUsingDatepicker" class="customDatepicker">
                     </el-date-picker>
                 </span>
             </div>
@@ -742,7 +742,7 @@ export default {
     display: flex;
     span {
         margin-left: auto;
-        .stationDatePicker {
+        .customDatepicker {
             background: transparent;
             border: 1px solid #525e69;
             display: flex;
