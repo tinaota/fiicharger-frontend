@@ -43,7 +43,8 @@
         "contact": "Contacto",
         "price": "El Precio",
         "idTag": "Etiqueta",
-        "transaction": "Transacción"
+        "transaction": "Transacción",
+        "analysis": "Análisis"
     },
     "login": {
         "login": "Acceso",

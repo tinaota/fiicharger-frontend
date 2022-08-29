@@ -43,7 +43,8 @@
         "contact": "tiếp xúc",
         "price": "Giá",
         "idTag": "Nhãn ID",
-        "transaction": "Giao dịch"
+        "transaction": "Giao dịch",
+        "analysis": "Phân tích"
     },
     "login": {
         "login": "Đăng nhập",

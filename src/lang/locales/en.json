@@ -43,7 +43,8 @@
         "contact": "Contact",
         "price": "Price",
         "idTag": "ID Tag",
-        "transaction": "Transaction"
+        "transaction": "Transaction",
+        "analysis": "Analysis"
     },
     "login": {
         "login": "Login",

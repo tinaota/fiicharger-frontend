@@ -293,13 +293,25 @@
 
                 <div class=" card-8 tabs-contain">
                     <el-tabs v-model="active" @tab-click="handleClick">
+                        <el-tab-pane :label="$t('menu.analysis')" name="analysis">
+                        </el-tab-pane>
                         <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                         </el-tab-pane>
                         <el-tab-pane :label="$t('chargingStation.reservation')" name="reservation">
                         </el-tab-pane>
                     </el-tabs>
-                    <Transaction v-if="active==='transaction'" :chargerId="curRouteParam.chargeBoxId"></Transaction>
-                    <Reservation v-else-if="active==='reservation'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
+                    <div v-if="active==='analysis'">
+                        <div class="header">
+                            <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')" @change="updateGraphSelection">
+                                <el-option v-for="item in graphList" :label="$t(`graphs.${item}`)" :key="item" :value="item"></el-option>
+                            </el-select>
+                        </div>
+                        <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.chargeBoxId">
+                            <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
+                        </div>
+                    </div>
+                    <Transaction v-if="active==='transaction'" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId"></Transaction>
+                    <Reservation v-else-if="active==='reservation'" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
@@ -341,6 +353,8 @@ import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
 import { $GLOBAL_REFRESH } from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from 'moment'
+import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+
 export default {
     components: {
         Connector,
@@ -355,7 +369,8 @@ export default {
         UpdateFirmware,
         GetLocalAuthListVersion,
         SendLocalAutList,
-        GetDiagnostics
+        GetDiagnostics,
+        TransactionTraffic
     },
     data() {
         return {
@@ -389,7 +404,7 @@ export default {
                 chargeBoxId: null
             },
             isLoading: false,
-            active: "transaction",
+            active: "analysis",
             timeOut: null,
             connectorTimer:null,
             chargePointById: [],
@@ -429,7 +444,9 @@ export default {
             statistics:{
                 isLoading: false,
                 data: []
-            }
+            },
+            graphSelected: "transactionAndTraffic",
+            graphList: ["transactionAndTraffic"]
         };
     },
     computed: {
@@ -678,6 +695,9 @@ export default {
         getDataUsingDatepicker() {
             this.getStatistics(this.curRouteParam.chargeBoxId);
         },
+        updateGraphSelection() {
+            console.log("get graph data");
+        }
     }
 };
 </script>
@@ -689,7 +709,9 @@ export default {
         font-size: 1.5rem;
         font-weight: bold;
     }
-
+    .graph{
+        height: 350px;
+    }
 }
 .graph_time {
     padding: 0px 0px 19px;

@@ -16,7 +16,8 @@ export default {
     },
     props: {
         dateRange: Array,
-        id: Number,
+        // props can be both number and string
+        id: [Number, String],
         type: String
     },
     data() {

@@ -43,7 +43,8 @@
         "contact": "联系方式",
         "price": "价格",
         "idTag": "ID 标签",
-        "transaction": "交易"
+        "transaction": "交易",
+        "analysis": "分析"
     },
     "login": {
         "login": "登入",
