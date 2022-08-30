@@ -148,6 +148,7 @@
         "changeRoles": "Thay đổi vai trò thành:",
         "deleteThis": "Bạn có chắc chắn muốn xóa cái này không",
         "updateThis": "Bạn có chắc chắn muốn cập nhật cái này không",
+        "clearThis": "Bạn có chắc chắn muốn xóa điều này không",
         "user": "Người dùng",
         "run": "Chạy",
         "start": "Bắt đầu",
@@ -397,10 +398,12 @@
         "emailValidation": "Vui lòng nhập một địa chỉ email hợp lệ",
         "emptyValidation": "Trường không được để trống",
         "numberValidation": "Vui lòng nhập một số hợp lệ",
+        "nonZeroNumberValidation": "Vui lòng nhập một số khác 0",
         "urlValidation": "Vui lòng nhập một url hợp lệ",
         "emptyTriggerMsgValidation": "Thông báo kích hoạt không được để trống",
         "emptyIdTagValidation": "Thẻ ID không được để trống",
-        "emptyExpiryDateValidation": "Ngày hết hạn không được để trống"
+        "emptyExpiryDateValidation": "Ngày hết hạn không được để trống",
+        "emptyProfileValidation": "Hồ sơ sạc không được để trống"
     },
     "cars": {
         "maker": "Dấu",
@@ -538,7 +541,26 @@
         "cancelReservationNoAction": "Không tìm thấy đặt chỗ đang hoạt động",
         "configurationNotSupported": "Yêu cầu thay đổi cấu hình đã bị bộ sạc từ chối",
         "clearListQuestion": "Vui lòng xác nhận xem có xóa danh sách điểm sạc không?",
-        "clearList": "Danh sách rõ ràng"
+        "clearList": "Danh sách rõ ràng",
+        "addChargingProfileAccepted": "Yêu cầu thêm hồ sơ tính phí đã thành công",
+        "addChargingProfileRejected": "Yêu cầu thêm cấu hình sạc đã bị bộ sạc từ chối",
+        "clearChargingProfileAccepted": "Yêu cầu xóa hồ sơ tính phí đã thành công",
+        "clearChargingProfileRejected": "Yêu cầu xóa hồ sơ sạc đã bị bộ sạc từ chối"
+    },
+    "chargingProfile": {
+        "delChargingProfile": "Xóa cấu hình sạc",
+        "id": "ID hồ sơ sạc",
+        "name": "Tên hồ sơ sạc",
+        "validFrom": "Ngày bắt đầu hợp lệ",
+        "validTo": "Ngày kết thúc hợp lệ",
+        "createProfile": "Tạo hồ sơ",
+        "modifyProfile": "Sửa đổi hồ sơ",
+        "startPeriodInSeconds": "Từ",
+        "maxPower": "Công suất tối đa (kW)",
+        "daily": "Hằng ngày",
+        "chargingProfilePurpose": "Tính phí Hồ sơ Mục đích",
+        "chargingProfileKind": "Loại hồ sơ sạc",
+        "startSchedule": "Bắt đầu lịch trình"
     },
     "sendLocalList": {
         "listVersion": "Liệt kê số phiên bản",

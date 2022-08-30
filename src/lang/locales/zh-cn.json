@@ -148,6 +148,7 @@
         "changeRoles": "将角色更改为：",
         "deleteThis": "你确定要删除这个吗",
         "updateThis": "你确定要更新这个吗",
+        "clearThis": "你确定要清除这个",
         "user": "用户",
         "run": "执行",
         "start": "开始",
@@ -397,10 +398,12 @@
         "emailValidation": "请输入有效的电子邮件地址。",
         "emptyValidation": "该字段不能为空。",
         "numberValidation": "请输入一个有效的数字。",
+        "nonZeroNumberValidation": "请输入一个有效的非零数字。",
         "urlValidation": "请输入有效的网址。",
         "emptyTriggerMsgValidation": "触发信息不能为空",
         "emptyIdTagValidation": "ID 标签不能为空",
-        "emptyExpiryDateValidation": "到期日不能为空"
+        "emptyExpiryDateValidation": "到期日不能为空",
+        "emptyProfileValidation": "充电配置文件不能为空"
     },
     "cars": {
         "maker": "制造商",
@@ -538,7 +541,26 @@
         "cancelReservationNoAction": "未找到有效预订",
         "configurationNotSupported": "更改充电桩配置请求失败",
         "clearListQuestion": "您确定要清除充电桩本地列表吗？",
-        "clearList": "清除列表"
+        "clearList": "清除列表",
+        "addChargingProfileAccepted": "请求添加充电配置文件成功",
+        "addChargingProfileRejected": "请求添加充电配置文件失败",
+        "clearChargingProfileAccepted": "请求清除充电配置文件成功",
+        "clearChargingProfileRejected": "请求清除充电配置文件失败"
+    },
+    "chargingProfile": {
+        "delChargingProfile": "删除充电配置",
+        "id": "充电配置文件ID",
+        "name": "充电配置文件名称",
+        "validFrom": "有效开始日期",
+        "validTo": "有效结束日期",
+        "createProfile": "创建配置文件",
+        "modifyProfile": "修改配置文件",
+        "startPeriodInSeconds": "开始时间",
+        "maxPower": "最大功率(kW)",
+        "daily": "每日",
+        "chargingProfilePurpose": "充电配置文件用途",
+        "chargingProfileKind": "充电配置文件种类",
+        "startSchedule": "开始时间表"
     },
     "sendLocalList": {
         "listVersion": "列表版本号",

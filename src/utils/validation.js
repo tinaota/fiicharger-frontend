@@ -34,3 +34,39 @@ export const validatePassword = (rule, value, callback) => {
         callback();
     }
 };
+export const validateInt = (rule, value, callback) => {
+    if (isNaN(parseInt(value))) {
+        callback(new Error(i18n.t('validation.numberValidation')));
+    } else {
+        callback();
+    }
+};
+export const validatePositiveInt = (rule, value, callback) => {
+    if (isNaN(parseInt(value))) {
+        callback(new Error(i18n.t('validation.numberValidation')));
+    } else if (value === 0) {
+        callback(new Error(i18n.t('validation.nonZeroNumberValidation')));
+    } else {
+        callback();
+    }
+};
+export const validateFloat = (rule, value, callback) => {
+    if (value === undefined) {
+        callback();
+    } else if (isNaN(parseFloat(value))) {
+        callback(new Error(i18n.t('validation.numberValidation')));
+    } else {
+        callback();
+    }
+};
+export const validatePositiveFloat = (rule, value, callback) => {
+    if (value === undefined) {
+        callback();
+    } else if (isNaN(parseFloat(value))) {
+        callback(new Error(i18n.t('validation.numberValidation')));
+    } else if (value === 0) {
+        callback(new Error(i18n.t('validation.nonZeroNumberValidation')));
+    } else {
+        callback();
+    }
+};

@@ -148,6 +148,7 @@
         "changeRoles": "Cambiar roles a:",
         "deleteThis": "Estás seguro que quieres eliminar esto ",
         "updateThis": "¿Estás seguro de que quieres actualizar esto?",
+        "clearThis": "Estas segura que quieres borrar esto ",
         "user": "Usuario",
         "run": "Correr",
         "start": "Comienzo",
@@ -397,10 +398,12 @@
         "emailValidation": "Por favor introduzca una dirección de correo electrónico válida Dirección",
         "emptyValidation": "El campo no puede estar vacío",
         "numberValidation": "por favor ingrese un número valido",
+        "nonZeroNumberValidation": "Por favor, introduzca un número distinto de cero",
         "urlValidation": "Por favor introduzca un URL válido",
         "emptyTriggerMsgValidation": "El mensaje de activación no puede estar vacío",
         "emptyIdTagValidation": "La etiqueta de identificación no puede estar vacía",
-        "emptyExpiryDateValidation": "La fecha de caducidad no puede estar vacía"
+        "emptyExpiryDateValidation": "La fecha de caducidad no puede estar vacía",
+        "emptyProfileValidation": "El perfil de carga no puede estar vacío"
     },
     "cars": {
         "maker": "Fabricante",
@@ -538,7 +541,26 @@
         "cancelReservationNoAction": "No se encontró ninguna reserva activa",
         "configurationNotSupported": "El cargador ha rechazado la solicitud de cambio de configuración",
         "clearListQuestion": "Confirme si desea eliminar la lista de puntos de recarga?",
-        "clearList": "Limpiar lista"
+        "clearList": "Limpiar lista",
+        "addChargingProfileAccepted": "Solicitud para agregar perfil de carga exitosa",
+        "addChargingProfileRejected": "El cargador rechazó la solicitud para agregar un perfil de carga",
+        "clearChargingProfileAccepted": "La solicitud para clara el perfil de carga tuvo éxito",
+        "clearChargingProfileRejected": "El cargador ha rechazado la solicitud para clara el perfil de carga"
+    },
+    "chargingProfile": {
+        "delChargingProfile": "Eliminar configuración de carga",
+        "id": "Identificación del perfil de carga",
+        "name": "Nombre del perfil de carga",
+        "validFrom": "Fecha de inicio válida",
+        "validTo": "Fecha de finalización válida",
+        "createProfile": "Crear perfil",
+        "modifyProfile": "Modificar perfil",
+        "startPeriodInSeconds": "De",
+        "maxPower": "Potencia máxima (kW)",
+        "daily": "Diariamente",
+        "chargingProfilePurpose": "Propósito del perfil de carga",
+        "chargingProfileKind": "Tipo de perfil de carga",
+        "startSchedule": "Calendario de inicio"
     },
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",

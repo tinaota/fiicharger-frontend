@@ -148,6 +148,7 @@
         "changeRoles": "Change roles to : ",
         "deleteThis": "Are you sure you want to delete this ",
         "updateThis": "Are you sure you want to update this",
+        "clearThis": "Are you sure you want to clear this",
         "user": "User",
         "run": "Run",
         "start": "Start",
@@ -397,10 +398,12 @@
         "emailValidation": "Please enter a valid email address",
         "emptyValidation": "The field cannot be empty",
         "numberValidation": "Please enter a valid number",
+        "nonZeroNumberValidation": "Please enter a non-zero number",
         "urlValidation": "Please enter a valid url",
         "emptyTriggerMsgValidation": "Trigger message cannot be empty",
         "emptyIdTagValidation": "ID Tag cannot be empty",
-        "emptyExpiryDateValidation": "Expiry Date cannot be empty"
+        "emptyExpiryDateValidation": "Expiry Date cannot be empty",
+        "emptyProfileValidation": "Charging profile cannot be empty"
     },
     "cars": {
         "maker": "Maker",
@@ -538,7 +541,26 @@
         "cancelReservationNoAction": "No active reservation found",
         "configurationNotSupported": "Request to change configuration has been rejected by the charger",
         "clearListQuestion": "Are you sure you wish to clear the local list of the charger?",
-        "clearList": "Clear List"
+        "clearList": "Clear List",
+        "addChargingProfileAccepted": "Request to add charging profile succeeded",
+        "addChargingProfileRejected": "Request to add charging profile has been rejected by charger",
+        "clearChargingProfileAccepted": "Request to clear charging profile succeeded",
+        "clearChargingProfileRejected": "Request to clear charging profile has been rejected by charger"
+    },
+    "chargingProfile": {
+        "delChargingProfile": "Delete Charging Profile",
+        "id": "Charging Profile ID",
+        "name": "Charging Profile Name",
+        "validFrom": "Valid From",
+        "validTo": "Valid To",
+        "createProfile": "Create Profile",
+        "modifyProfile": "Modify Profile",
+        "startPeriodInSeconds": "From",
+        "maxPower": "Max Power (kW)",
+        "daily": "Daily",
+        "chargingProfilePurpose": "Profile Purpose",
+        "chargingProfileKind": "Profile Kind",
+        "startSchedule": "Start Schedule"
     },
     "sendLocalList": {
         "listVersion": "List Version",

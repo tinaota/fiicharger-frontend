@@ -155,3 +155,12 @@
         }
     }
 }
+
+.el-dialog .el-table {
+    background-color: #f5faff;
+    border-radius: 8px;
+    border: 1px solid #d4dcea;
+    th.el-table__cell.is-leaf {
+        border-color: #d4dcea;
+    }
+}

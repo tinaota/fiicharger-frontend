@@ -124,15 +124,15 @@
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
+                                            {{ $t('chargingStation.addChargingProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
+                                            {{ $t('chargingStation.clearChargingProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -191,6 +191,8 @@
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="(e)=>closeDialog(e, 'diagnosticsDialog')"></GetDiagnostics>
             <UpdateFirmware :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="(e)=>closeDialog(e,'updateDialog')"></UpdateFirmware>
+            <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="closeActionDialog('addChargingProfile')"></AddChargingProfile>
+            <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="closeActionDialog('clearChargingProfile')"></ClearChargingProfile>
         </div>
     </div>
 </template>
@@ -221,8 +223,9 @@ import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
 import CommonPopup from "@/components/commonPopup";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
-
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
+import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
+import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
 export default {
     components: {
         EditChargeBox,
@@ -231,7 +234,9 @@ export default {
         ModifyChargeBoxPrice,
         CommonPopup,
         GetDiagnostics,
-        UpdateFirmware
+        UpdateFirmware,
+        AddChargingProfile,
+        ClearChargingProfile
     },
     data() {
         return {
@@ -316,6 +321,14 @@ export default {
             diagnosticsDialog: {
                 visible: false,
                 chargePointId: ''
+            },
+            addChargingProfile: {
+                visible: false,
+                data: {}
+            },
+            clearChargingProfile: {
+                visible: false,
+                data: {}
             }
         };
     },
@@ -366,6 +379,20 @@ export default {
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = row;
                 this.commonpopup.action = action;
+            } else if (type === "addChargingProfile") {
+                this.addChargingProfile.data = {
+                    chargePointId: row.id,
+                    name: row.name
+                };
+                this.addChargingProfile.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (type === "clearChargingProfile") {
+                this.clearChargingProfile.data = {
+                    chargePointId: row.id,
+                    name: row.name
+                };
+                this.clearChargingProfile.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
         closeActionDialog(type) {
@@ -373,6 +400,12 @@ export default {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
+            } else if (type === "addChargingProfile") {
+                this.addChargingProfile.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "clearChargingProfile") {
+                this.clearChargingProfile.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();
         },

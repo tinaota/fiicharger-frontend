@@ -75,11 +75,11 @@
                         <ul class="rank actions">
                             <li>
                                 <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('add')">{{ $t('general.add') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
                             </li>
                             <li>
                                 <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction('clear')">{{ $t('general.clear') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
                             </li>
                             <li>
                                 <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
@@ -299,6 +299,8 @@
                         </el-tab-pane>
                         <el-tab-pane :label="$t('chargingStation.reservation')" name="reservation">
                         </el-tab-pane>
+                        <el-tab-pane :label="$t('chargingStation.chargingProfile')" name="chargingProfile">
+                        </el-tab-pane>
                     </el-tabs>
                     <div v-if="active==='analysis'">
                         <div class="header">
@@ -311,7 +313,8 @@
                         </div>
                     </div>
                     <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId"></Transaction>
-                    <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateReservationData()"></Reservation>
+                    <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateData('reservation')"></Reservation>
+                    <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
@@ -323,6 +326,8 @@
                 <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
                 <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
                 <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
+                <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
+                <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="isUpdate => { closeDialog('clearChargingProfile', isUpdate) }"></ClearChargingProfile>
             </div>
         </div>
 </template>
@@ -338,6 +343,9 @@ import Transaction from "@/components/chargingStation/transaction";
 import Reservation from "@/components/chargingStation/reservation";
 import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
+import ChargingProfile from "@/components/chargingStation/chargingProfile";
+import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
+import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getConnectorStatusesById,
@@ -370,7 +378,10 @@ export default {
         GetLocalAuthListVersion,
         SendLocalAutList,
         GetDiagnostics,
-        TransactionTraffic
+        TransactionTraffic,
+        ChargingProfile,
+        AddChargingProfile,
+        ClearChargingProfile
     },
     data() {
         return {
@@ -493,7 +504,16 @@ export default {
                 data: []
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic"]
+            graphList: ["transactionAndTraffic"],
+            isUpDateChargingProfileData: true,
+            addChargingProfile: {
+                visible: false,
+                data: {}
+            },
+            clearChargingProfile: {
+                visible: false,
+                data: {}
+            }
         };
     },
     computed: {
@@ -572,6 +592,19 @@ export default {
                     name: this.chargePointById[0].name
                 };
                 this.remoteTrigger.visible = true;
+            } else if (action === "addChargingProfile") {
+                this.addChargingProfile.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    name: this.chargePointById[0].name
+                };
+                this.addChargingProfile.visible = true;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "clearChargingProfile") {
+                this.clearChargingProfile.data = {
+                    chargePointId: this.chargePointById[0].id,
+                    name: this.chargePointById[0].name
+                };
+                this.clearChargingProfile.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "getLocalAuthListVersion") {
                 this.getAuthVersionDialog.chargePointId = this.chargePointById[0].id;
@@ -695,6 +728,13 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "remoteTrigger") {
                 this.remoteTrigger.visible = false;
+            } else if (type === "addChargingProfile") {
+                this.addChargingProfile.visible = false;
+                this.isUpDateChargingProfileData = data;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "clearChargingProfile") {
+                this.clearChargingProfile.visible = false;
+                this.isUpDateChargingProfileData = data;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "updateDialog") {
                 this[type].visible = false;
@@ -711,8 +751,12 @@ export default {
             }
             this.setTimerApiCall();
         },
-        aleadyUpdateReservationData() {
-            this.isUpDateReservationData = false;
+        aleadyUpdateData(type) {
+            if (type === "reservation") {
+                this.isUpDateReservationData = false;
+            } else if (type === "chargingProfile") {
+                this.isUpDateChargingProfileData = false;
+            }
         },
         handleClick() {
             window.sessionStorage.setItem("fiics-activeTab", this.active);

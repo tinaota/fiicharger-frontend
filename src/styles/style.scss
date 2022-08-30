@@ -846,7 +846,8 @@ button:disabled {
         }
     }
 }
-.mainctrl .el-dialog {
+.mainctrl .el-dialog,
+.el-dialog.inner {
     background: #e6eef8;
     .el-dialog__header {
         padding: 3.5vh 2vw 1vh 2vw;
@@ -974,6 +975,14 @@ button:disabled {
                 font-size: 1rem;
                 color: #151e25;
             }
+        }
+        .el-textarea .el-textarea__inner {
+            background: #f5faff;
+            border: 1px solid #d4dcea;
+            border-radius: 8px;
+            color: #151e25;
+            letter-spacing: 0;
+            font-size: 1rem;
         }
     }
     .hint {

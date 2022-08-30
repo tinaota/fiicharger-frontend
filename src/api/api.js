@@ -326,3 +326,49 @@ export const $HTTP_getFirmwareUploadUrl = params => { return fetch(`${base_charg
 
 // graph apis
 export const $HTTP_getTransactionTrafficGraphData = params => { return fetch(`${base_charger}/api/reports/transactions/graphs/traffic`,params) }
+
+//get charging profile kind
+export const $HTTP_getChargingProfilekind = () => { return fetch(`${base_charger}/api/ocpp/chargingprofilekind-type-list`) }
+
+//get charging profile purpose
+export const $HTTP_getChargingProfilPurpose = () => { return fetch(`${base_charger}/api/ocpp/chargingprofilepurpose-type-list`) }
+
+//get charging rate uni
+export const $HTTP_getChargingRateUnit = () => { return fetch(`${base_charger}/api/ocpp/chargingrateunit-type-list`) }
+
+//get recurrency kind
+export const $HTTP_getRecurrencyKind = () => { return fetch(`${base_charger}/api/ocpp/recurrencykind-type-list`) }
+
+//get charging profiles
+export const $HTTP_getChargingProfiles = params => { return fetch(`${base_charger}/api/reports/charging-profiles`, params) }
+
+//get spec charging profiles
+export const $HTTP_getSpeChargingProfiles = params => { return fetch(`${base_charger}/api/reports/charging-profiles/connector-chargingprofile-list`, params) }
+
+//add charging profile
+export const $HTTP_addChargingProfile = params => { return post(`${base_charger}/charging-profile`, params) }
+
+//update charging profile
+export const $HTTP_updateChargingProfile = params => { return put(`${base_charger}/charging-profile/${params.chargingProfileId}`, params) }
+
+//delete charging profile
+export const $HTTP_delChargingProfile = params => { return del(`${base_charger}/charging-profile/${params.chargingProfileId}`) }
+
+//get charging profile periods
+export const $HTTP_getChargingProfilePeriods = params => { return fetch(`${base_charger}/charging-profile/${params.chargingProfileId}/chargingSchedulePeriods`) }
+
+//add charging profile periods
+export const $HTTP_addChargingProfilePeriods = params => { return post(`${base_charger}/charging-schedule-period`, params) }
+
+//update charging profile periods
+export const $HTTP_updateChargingProfilePeriods = params => { return put(`${base_charger}/charging-schedule-period/${params.chargingSchedulePeriodId}`, params) }
+
+//delete charging profile periods
+export const $HTTP_delChargingProfilePeriods = params => { return del(`${base_charger}/charging-schedule-period/${params.chargingSchedulePeriodId}`) }
+
+//set charging profile
+export const $HTTP_setChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profile`, params) }
+
+//clear charging profile
+export const $HTTP_clearChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/clearchargingprofile`, params) }
+
