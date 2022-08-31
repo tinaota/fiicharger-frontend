@@ -1,13 +1,13 @@
 <template>
     <el-dialog :title="$t('chargingStation.clearChargingProfile')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
-            <p>{{$t('general.clearThis')}} {{$t('chargingStation.chargingProfile')}}?</p>
+            <p>{{ $t('general.clearThis') }} {{ $t('chargingStation.chargingProfile') }}?</p>
         </div>
         <div class="dialogForm">
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargingProfile') }}</div>
                 <el-select class="select-small info" v-model="param.chargingProfileId" filterable v-loading="chargingProfileList.isLoading">
-                    <el-option v-for="(item, key) in chargingProfileList.data" :label="key" :key="key" :value="key"></el-option>
+                    <el-option v-for="(item, key) in chargingProfileList.data" :label="item.name" :key="key" :value="item.id"></el-option>
                 </el-select>
             </div>
         </div>
@@ -20,7 +20,7 @@
 
 <script>
 import {
-    $HTTP_getSpeChargingProfiles,
+    $HTTP_getChargingProfilesRecord,
     $HTTP_clearChargingProfile
 } from "@/api/api";
 
@@ -62,17 +62,17 @@ export default {
     methods: {
         fetchSpecProfileData() {
             const params = {
-                chargePointId: this.data.chargePointId
+                ChargePointId: this.data.chargePointId,
+                IsActive: true
             }
             this.chargingProfileList.isLoading = true;
-            $HTTP_getSpeChargingProfiles(params)
+            $HTTP_getChargingProfilesRecord(params)
                 .then((res) => {
+                    console.log(res)
                     this.chargingProfileList.isLoading = false;
-                    if (res?.length > 0) {
-                        res.forEach(item => {
-                            this.chargingProfileList.data[item.chargingProfileId] = item;
-                        });
-                        this.chargingProfileList.total = res?.length;
+                    if (res?.data.length > 0) {
+                            this.chargingProfileList.data = res.data;
+                        this.chargingProfileList.total = res?.data?.length;
                     } else {
                         this.chargingProfileList.data = {};
                         this.chargingProfileList.total = 0;
@@ -93,10 +93,9 @@ export default {
                 const that = this;
                 let params = {
                     chargePointId: that.data.chargePointId,
-                    chargingProfileId: parseInt(that.param.chargingProfileId),
-                    id: this.chargingProfileList.data[that.param.chargingProfileId].id,
-                    connectorId: 0
+                    id: this.param.chargingProfileId,
                 };
+                console.log(params)
                 that.isLoading = true;
                 $HTTP_clearChargingProfile(params)
                     .then((res) => {

@@ -18,10 +18,24 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargingProfile') }}</div>
-                <el-select class="select-small info" v-model="param.chargingProfileId" filterable>
-                    <el-option v-for="item in chargingProfileList.data" :label="item.chargingProfileId" :key="item.chargingProfileId" :value="item.chargingProfileId"></el-option>
+                <!-- {{ chargingProfileList }} -->
+                <el-select class="select-small info" v-model="param.chargingProfileTemplateId" filterable>
+                    <el-option v-for="item in chargingProfileList.data" :label="item.name" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
+            <div class="item">
+                <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
+                <el-select class="select-small info" v-model="param.chargingProfilePurpose" filterable>
+                    <el-option v-for="item in chargingProfilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
+                </el-select>
+            </div>
+
+            <div class="item">
+                <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
+                <el-input-number class="info" v-model="stackLevel" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+            </div>
+
+
         </div>
         <p style="text-align:center;">
             <el-button size="small" type="primary" @click="setChargingProfile">{{ $t('general.perform') }}</el-button>
@@ -31,7 +45,7 @@
 
 <script>
 import {
-    $HTTP_getChargingProfiles,
+    $HTTP_getChargingProfilesTemplate,
     $HTTP_getConnectorStatusesById,
     $HTTP_setChargingProfile
 } from "@/api/api";
@@ -47,7 +61,7 @@ export default {
             isLoading: false,
             isUpdate: false,
             param: {
-                chargingProfileId: "",
+                chargingProfileTemplateId: null,
                 connectorId: 0
             },
             chargingProfileList: {
@@ -58,7 +72,12 @@ export default {
             connectorData: {
                 isLoading: false,
                 data: []
-            }
+            },
+            chargingProfilePurposeList:{
+                data: ['ChargePointMaxProfile', 'TxDefaultProfile']
+            },
+            chargingProfilePurpose: "TxDefaultProfile",
+            stackLevel: null
         };
     },
     watch: {
@@ -103,7 +122,7 @@ export default {
         },
         fetchProfileData() {
             this.chargingProfileList.isLoading = true;
-            $HTTP_getChargingProfiles()
+            $HTTP_getChargingProfilesTemplate()
                 .then((res) => {
                     this.chargingProfileList.isLoading = false;
                     if (res?.data?.length > 0) {
@@ -118,15 +137,20 @@ export default {
                 });
         },
         setChargingProfile() {
-            if (this.param.chargingProfileId === '') {
+            if (this.param.chargingProfileTemplateId === null) {
                 this.$message.error(i18n.t("validation.emptyProfileValidation"));
             } else {
                 const that = this;
                 let params = {
                     chargePointId: that.data.chargePointId,
-                    chargingProfileId: parseInt(that.param.chargingProfileId),
-                    connectorId: parseInt(that.param.connectorId)
+                    connectorId: parseInt(that.param.connectorId),
+                    transactionId: null,
+                    templateId:  this.param.chargingProfileTemplateId,
+                    chargingProfilePurpose: this.chargingProfilePurpose,
+                    stackLevel: this.stackLevel
                 };
+
+                console.log(params)
                 that.isLoading = true;
                 $HTTP_setChargingProfile(params)
                     .then((res) => {
@@ -163,7 +187,7 @@ export default {
         },
         closeDialog() {
             this.param = {
-                chargingProfileId: "",
+                chargingProfileTemplateId: null,
                 connectorId: 0
             };
             this.$emit("close", this.isUpdate);

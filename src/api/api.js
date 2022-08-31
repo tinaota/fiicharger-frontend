@@ -337,9 +337,6 @@ export const $HTTP_getRecurrencyKind = () => { return fetch(`${base_charger}/api
 export const $HTTP_getChargingProfilesTemplate = params => { return fetch(`${base_charger}/api/reports/charging-profiles/templates`, params) }
 export const $HTTP_getChargingProfilesRecord = params => { return fetch(`${base_charger}/api/reports/charging-profiles/records`, params) }
 
-//get spec charging profiles
-export const $HTTP_getSpeChargingProfiles = params => { return fetch(`${base_charger}/api/reports/charging-profiles/connector-chargingprofile-list`, params) }
-
 //add charging profile
 export const $HTTP_addChargingProfile = params => { return post(`${base_charger}/api/charging-profiles/templates`, params) }
 
@@ -350,8 +347,8 @@ export const $HTTP_updateChargingProfile = params => { return put(`${base_charge
 export const $HTTP_delChargingProfile = params => { return del(`${base_charger}/api/charging-profiles/templates/${params.chargingProfileId}`) }
 
 //set charging profile
-export const $HTTP_setChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profile`, params) }
+export const $HTTP_setChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profiles`, params) }
 
 //clear charging profile
-export const $HTTP_clearChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/clearchargingprofile`, params) }
+export const $HTTP_clearChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profiles/clear`, params) }
 

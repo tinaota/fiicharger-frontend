@@ -567,7 +567,8 @@
         "numberPhases": "Number Phases",
         "startPeriod": "Start Period",
         "scheduleDuration": "Duration(s)",
-        "chargingRateUnit": "Charging Rate Unit"
+        "chargingRateUnit": "Charging Rate Unit",
+        "stackLevel": "Stack Level"
     },
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",
