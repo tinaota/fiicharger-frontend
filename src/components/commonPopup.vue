@@ -10,6 +10,26 @@
                     <IdTagList @idTag="getIdTag"></IdTagList>
                 </div>
             </div>
+            <div class="item" v-if="action==='startConnectorTransaction'">
+                <div class="label">{{ $t('chargingStation.chargingProfile') }}</div>
+                <div class="info">
+                    <ChargingProfileList @chargingProfile="getChargingProfile"></ChargingProfileList>
+                </div>
+            </div>
+            <div class="item" v-if="action==='startConnectorTransaction'">
+                <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
+                <div class="info">
+                    <el-select class="select-small " v-model="chargingProfilePurpose" filterable>
+                        <el-option v-for="item in chargingProfilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="item" v-if="action==='startConnectorTransaction'">
+                <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
+                <div class="info">
+                    <el-input-number style="width:182px" v-model="stackLevel" :step="1" :min="0" @change="updateStackLevel"></el-input-number>
+                </div>
+            </div>
         </div>
         <!-- show a different footer in the model depending on the action -->
         <span slot="footer" class="dialog-footer" v-if="action!=='startConnectorTransaction'">
@@ -33,9 +53,12 @@ import {
     $HTTP_deleteAuthLocalList
 } from "@/api/api";
 import IdTagList from "@/components/idTagList.vue";
+import ChargingProfileList from "@/components/chargingProfileList.vue";
+
 export default {
     components: {
-        IdTagList
+        IdTagList,
+        ChargingProfileList
     },
     props: {
         show: Boolean,
@@ -50,12 +73,21 @@ export default {
             isUpdate: false,
             $API: null,
             idTag: null,
+            chargingProfile: null,
+            stackLevel: null,
             params: {
                 chargePointId: "",
                 type: "",
                 connectorId: null,
-                idTag: null
-            }
+                idTag: null,
+                templateId: null,
+                stackLevel: null,
+                chargingProfilePurpose: null
+            },
+            chargingProfilePurposeList: {
+                data: ["ChargePointMaxProfile", "TxDefaultProfile", "TxProfile"]
+            },
+            chargingProfilePurpose: "TxDefaultProfile"
         };
     },
     mounted() {
@@ -85,6 +117,9 @@ export default {
         } else if (this.action === "startConnectorTransaction") {
             this.params.connectorId = this.rowData.id;
             this.params.idTag = this.idTag;
+            this.params.templateId = this.chargingProfile;
+            this.params.chargingProfilePurpose = this.chargingProfilePurpose;
+            this.params.stackLevel = this.stackLevel;
             this.$API = $HTTP_startConnectorTransaction;
         } else if (this.action === "stopConnectorTransaction") {
             this.params.connectorId = this.rowData.id;
@@ -166,6 +201,14 @@ export default {
             // set id tag as a parameter directly
             this.idTag = idTag;
             this.params.idTag = idTag;
+        },
+        getChargingProfile(chargingProfile) {
+            this.chargingProfile = chargingProfile;
+            this.params.templateId = chargingProfile;
+        },
+        updateStackLevel(stackLevel) {
+            this.stackLevel = stackLevel;
+            this.params.stackLevel = stackLevel;
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);

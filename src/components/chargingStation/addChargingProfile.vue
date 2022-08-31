@@ -36,7 +36,7 @@
 
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
-                <el-input-number class="info" v-model="stackLevel" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+                <el-input-number class="info" v-model="stackLevel" :step="1" :min="0" controls-position="right"></el-input-number>
             </div>
         </div>
         <p style="text-align:center;">
