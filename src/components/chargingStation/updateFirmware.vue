@@ -179,6 +179,7 @@ export default {
                     that.isLoading = false;
                     if(res === "Accepted"){
                         that.updateStatus = "Waiting";
+                        that.lastFirmwareFileName = data.fileName;
                         that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
                         setTimeout(function(){  // Stop Loop for 0.5 hour
                             that.updateStatus = "Idle";
