@@ -36,10 +36,16 @@
                     {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                 </template>
             </el-table-column>
+            <el-table-column :label="$t('chargingStation.chargingProfile')" :min-width="2">
+                <template slot-scope="scope">
+                    <el-button type="primary" class="actionFunction" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
+        <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
     </div>
 </template>
 
@@ -50,8 +56,12 @@ import {
     $HTTP_getAllTransactions
 } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 
 export default {
+    components:{
+        AddChargingProfile
+    },
     props: {
         chargerId: String,
         dateRange: Array
@@ -69,7 +79,12 @@ export default {
             },
             total: 0,
             limit: $GLOBAL_PAGE_LIMIT,
-            page: 1
+            page: 1,
+            isUpDateChargingProfileData: true,
+            addChargingProfile: {
+                visible: false,
+                data: {}
+            },
         };
     },
     computed: {
@@ -87,6 +102,16 @@ export default {
         this.getTransactionsReasonList();
     },
     methods: {
+        openDialog(action,data){
+            if (action === "addChargingProfile") {
+                this.addChargingProfile.data = {
+                    chargePointId:data.chargePointId,
+                    transactionId: data.id
+            };
+            this.addChargingProfile.visible = true;
+
+            }
+        },
         getAllTransactions(type) {
             this.isLoading = true;
             let params = {
@@ -147,7 +172,14 @@ export default {
         changePage(page) {
             this.page = page;
             this.getAllTransactions();
+        },
+        closeDialog(type, data) {
+             if (type === "addChargingProfile") {
+                this.addChargingProfile.visible = false;
+                this.isUpDateChargingProfileData = data;
+            }
         }
+
     }
 };
 </script>

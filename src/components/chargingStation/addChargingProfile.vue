@@ -1,9 +1,13 @@
 <template>
     <el-dialog :title="$t('chargingStation.addChargingProfile')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="dialogForm">
-            <div class="item">
+            <div class="item" v-if="data.name">
                 <div class="label">{{ $t('chargingStation.chargePointName') }}</div>
                 <div class="info">{{ data.name }}</div>
+            </div>
+            <div class="item" v-if="data.transactionId">
+                <div class="label">{{ $t('chargingStation.transactionId') }}</div>
+                <div class="info">{{ data.transactionId }}</div>
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargerId') }}</div>
@@ -34,8 +38,6 @@
                 <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
                 <el-input-number class="info" v-model="stackLevel" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
             </div>
-
-
         </div>
         <p style="text-align:center;">
             <el-button size="small" type="primary" @click="setChargingProfile">{{ $t('general.perform') }}</el-button>
@@ -86,6 +88,11 @@ export default {
                 const that = this;
                 this.visible = this.show;
                 if (this.visible) {
+                    // update chargingprofile purpose/ list if transactions
+                    if(this.data.transactionId){
+                        this.chargingProfilePurposeList.data = ['TxProfile']
+                        this.chargingProfilePurpose= 'TxProfile'
+                    }
                     this.isUpdate = false;
                     this.$nextTick(()=>{
                         that.fetchConnectorStatus(that.data.chargePointId);
@@ -144,13 +151,12 @@ export default {
                 let params = {
                     chargePointId: that.data.chargePointId,
                     connectorId: parseInt(that.param.connectorId),
-                    transactionId: null,
+                    transactionId: this.data.transactionId? this.data.transactionId:null,
                     templateId:  this.param.chargingProfileTemplateId,
                     chargingProfilePurpose: this.chargingProfilePurpose,
                     stackLevel: this.stackLevel
                 };
 
-                console.log(params)
                 that.isLoading = true;
                 $HTTP_setChargingProfile(params)
                     .then((res) => {
