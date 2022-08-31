@@ -1,15 +1,23 @@
 <template>
     <div>
-        <el-table :data="tableData.slice((page - 1) * limit, page * limit)" class="moreCol enable-row-click" v-loading="isLoading">
-            <el-table-column prop="chargingProfileId" :label="$t('chargingProfile.id')" :min-width="2"></el-table-column>
-            <el-table-column prop="chargingProfileInfo.chargingProfileName" :label="$t('chargingProfile.name')" :min-width="2"></el-table-column>
+        <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
+            <el-table-column prop="id" :label="$t('chargingProfile.id')" :min-width="2"></el-table-column>
+            <el-table-column prop="name" :label="$t('chargingProfile.name')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.connectorId === 0 ? $t('general.all'): scope.row.connectorId }}
                 </template>
             </el-table-column>
-            <el-table-column prop="chargingProfileInfo.maxPower" :label="$t('chargingProfile.maxPower')" :min-width="2"></el-table-column>
-            <el-table-column :label="$t('chargingProfile.validFrom')" :min-width="3">
+            <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
+            <el-table-column prop="chargingProfilePurpose" :label="$t('chargingProfile.chargingProfilePurpose')" :min-width="2"></el-table-column>\
+            <el-table-column prop="isActive" :label="$t('general.active')" :min-width="2">
+                 <template slot-scope="scope">
+                    {{ scope.row.isActive? 'true': 'false' }}
+                </template>
+            </el-table-column>
+
+            <!-- <el-table-column prop="chargingProfileInfo.maxPower" :label="$t('chargingProfile.maxPower')" :min-width="2"></el-table-column> -->
+            <!-- <el-table-column :label="$t('chargingProfile.validFrom')" :min-width="3">
                 <template slot-scope="scope">
                     {{ scope.row.chargingProfileInfo.validFrom ? getLocTime(scope.row.chargingProfileInfo.validFrom) : '' }}
                 </template>
@@ -18,10 +26,10 @@
                 <template slot-scope="scope">
                     {{ scope.row.chargingProfileInfo.validTo ? getLocTime(scope.row.chargingProfileInfo.validTo) : '' }}
                 </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
-        <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
+      <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
     </div>
 </template>
@@ -42,7 +50,7 @@ export default {
         return {
             isLoading: false,
             tableData: [],
-            total: 1,
+            total: 0,
             page: 1,
             limit: $GLOBAL_PAGE_LIMIT
         };
@@ -73,9 +81,9 @@ export default {
             $HTTP_getChargingProfilesRecord(params)
                 .then((res) => {
                     this.isLoading = false;
-                    if (res?.length > 0) {
-                        this.tableData = res;
-                        this.total = res.length;
+                    if (res?.data.length > 0) {
+                        this.tableData = res.data;
+                        this.total = res.data.length;
                     } else {
                         this.tableData = [];
                         this.total = 0;
