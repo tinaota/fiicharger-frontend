@@ -355,7 +355,8 @@
         "currentFirmwareVersion": "當前韌體版本",
         "totalUsers": "總用戶",
         "newUsers": "新用戶",
-        "repeatedUsers": "重複用戶"
+        "repeatedUsers": "重複用戶",
+        "uploadFirmware": "上傳韌體"
     },
     "userAccount": {
         "memberName": "會員名稱",

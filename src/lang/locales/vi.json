@@ -355,7 +355,8 @@
         "currentFirmwareVersion": "Phiên bản phần mềm hiện tại",
         "totalUsers": "Tổng số người dùng",
         "newUsers": "Những người dùng mới",
-        "repeatedUsers": "Người dùng lặp lại"
+        "repeatedUsers": "Người dùng lặp lại",
+        "uploadFirmware": "Tải lên chương trình cơ sở"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

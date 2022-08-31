@@ -355,7 +355,8 @@
         "currentFirmwareVersion": "Current Firmware Version",
         "totalUsers": "Total Users",
         "newUsers": "New Users",
-        "repeatedUsers": "Repeated Users"
+        "repeatedUsers": "Repeated Users",
+        "uploadFirmware": "Upload Firmware"
     },
     "userAccount": {
         "memberName": "Member Name",

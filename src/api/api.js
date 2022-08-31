@@ -352,3 +352,6 @@ export const $HTTP_setChargingProfile = params => { return post(`${base_charger}
 //clear charging profile
 export const $HTTP_clearChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profiles/clear`, params) }
 
+//post charge point upload firmware file
+export const $HTTP_uploadFirmwareFile = params => { return post(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.formData)
+}

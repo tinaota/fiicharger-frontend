@@ -355,7 +355,8 @@
         "currentFirmwareVersion": "当前固件版本",
         "totalUsers": "总用户",
         "newUsers": "新用户",
-        "repeatedUsers": "重复用户"
+        "repeatedUsers": "重复用户",
+        "uploadFirmware": "上传固件"
     },
     "userAccount": {
         "memberName": "会员名称",

@@ -127,6 +127,12 @@
                                 <span>{{ $t('chargingStation.sendLocalAuthList') }}</span>
                                 <el-button type="primary" class="actionFunction" @click="runAction( null, 'sendLocalAuthList')">{{ $t('general.send') }}</el-button>
                             </li>
+                            <li>
+                                <span>
+                                    {{ $t('chargingStation.uploadFirmware') }}
+                                </span>
+                                <el-button type="primary" class="actionFunction" @click="runAction(null, 'uploadFirmware')">{{ $t('general.upload') }}</el-button>
+                            </li>
                         </ul>
                     </div>
 
@@ -328,6 +334,7 @@
                 <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
                 <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
                 <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="isUpdate => { closeDialog('clearChargingProfile', isUpdate) }"></ClearChargingProfile>
+                <UploadFirmware :chargePointId="uploadFirmwareDialog.chargePointId" :show="uploadFirmwareDialog.visible" @close="closeDialog('uploadFirmwareDialog')"></UploadFirmware>
             </div>
         </div>
 </template>
@@ -362,6 +369,7 @@ import { $GLOBAL_REFRESH } from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from 'moment'
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+import UploadFirmware from "@/components/chargingStation/uploadFirmware";
 
 export default {
     components: {
@@ -381,7 +389,8 @@ export default {
         TransactionTraffic,
         ChargingProfile,
         AddChargingProfile,
-        ClearChargingProfile
+        ClearChargingProfile,
+        UploadFirmware
     },
     data() {
         return {
@@ -428,7 +437,7 @@ export default {
                         picker.$emit('pick', _dateRange);
                     }
                 },
-                             {
+                {
                     text: i18n.t('chargingStation.timeOpt.90days'),
                     onClick(picker) {
                         const startOfDay = moment().subtract(89,'days').startOf("day");
@@ -437,7 +446,7 @@ export default {
                         picker.$emit('pick', _dateRange);
                     }
                 },
-                             {
+                {
                     text: i18n.t('chargingStation.timeOpt.6months'),
                     onClick(picker) {
                         const startOfDay = moment().subtract(6,'months').startOf("day");
@@ -446,7 +455,7 @@ export default {
                         picker.$emit('pick', _dateRange);
                     }
                 },
-                             {
+                {
                     text: i18n.t('chargingStation.timeOpt.1year'),
                     onClick(picker) {
                         const startOfDay = moment().subtract(1,'years').startOf("day");
@@ -513,6 +522,10 @@ export default {
             clearChargingProfile: {
                 visible: false,
                 data: {}
+            },
+            uploadFirmwareDialog:  {
+                chargePointId: '',
+                visible: false
             }
         };
     },
@@ -617,6 +630,10 @@ export default {
             } else if (action === "getDiagnostics") {
                 this.diagnosticsDialog.visible = true;
                 this.diagnosticsDialog.chargePointId = this.chargePointById[0].id;
+                this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if (action === "uploadFirmware"){
+                this.uploadFirmwareDialog.visible = true;
+                this.uploadFirmwareDialog.chargePointId = this.chargePointById[0].id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
         },
@@ -747,6 +764,9 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "diagnosticsDialog") {
                 this.diagnosticsDialog.visible = false;
+                this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "uploadFirmwareDialog") {
+                this.uploadFirmwareDialog.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             }
             this.setTimerApiCall();

@@ -355,7 +355,8 @@
         "currentFirmwareVersion": "Versión actual del firmware",
         "totalUsers": "Usuarios totales",
         "newUsers": "Usuarios nuevos",
-        "repeatedUsers": "Usuarios repetidos"
+        "repeatedUsers": "Usuarios repetidos",
+        "uploadFirmware": "Subir firmware"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
