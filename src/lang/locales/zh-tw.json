@@ -560,7 +560,14 @@
         "daily": "每日",
         "chargingProfilePurpose": "充電配置文件用途",
         "chargingProfileKind": "充電配置文件種類",
-        "startSchedule": "開始時間表"
+        "startSchedule": "開始時間表",
+        "recurrencyKind": "Recurrency kind",
+        "chargingSchedulePeriods": "Charging Schedule Periods",
+        "limit": "Limit",
+        "numberPhases": "Number Phases",
+        "startPeriod": "Start Period",
+        "scheduleDuration": "Duration(s)",
+        "chargingRateUnit": "Charging Rate Unit"
     },
     "sendLocalList": {
         "listVersion": "列表版號",

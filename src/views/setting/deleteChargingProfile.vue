@@ -39,7 +39,7 @@ export default {
         delChargingProfile() {
             const that = this;
             let params = {
-                chargingProfileId: that.data.chargingProfileId,
+                chargingProfileId: that.data.id,
             };
 
             that.isLoading = true;

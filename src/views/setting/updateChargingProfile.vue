@@ -3,15 +3,9 @@
         <div class="right-form formVertical">
             <el-form ref="updateForm" :rules="rules" :model="dialog" style="width:96%">
                 <div class="form-item">
-                    <el-form-item prop="chargingProfileName">
-                        <div class="label">{{ $t('chargingProfile.name') }}</div>
-                        <el-input v-model="dialog.chargingProfileName"></el-input>
-                    </el-form-item>
-                </div>
-                <div class="form-item">
-                    <el-form-item prop="maxPower_kW">
-                        <div class="label">{{ $t('chargingProfile.maxPower') }}</div>
-                        <el-input-number v-model="dialog.maxPower_kW" :precision="1" :step="0.1" :min="0" controls-position="right"></el-input-number>
+                    <el-form-item prop="name">
+                        <div class="label">{{ $t('general.name') }}</div>
+                        <el-input v-model="dialog.name"></el-input>
                     </el-form-item>
                 </div>
                 <div class="form-item">
@@ -31,17 +25,23 @@
                     </el-form-item>
                 </div>
                 <div class="form-item">
-                    <el-form-item prop="validFrom">
-                        <div class="label">{{ $t('chargingProfile.validFrom') }}</div>
-                        <el-date-picker v-model="dialog.validFrom" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions">
-                        </el-date-picker>
+                    <el-form-item prop="scheduleDuration">
+                        <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
+                            <el-input-number v-model="dialog.scheduleDuration" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
                     </el-form-item>
                 </div>
                 <div class="form-item">
-                    <el-form-item prop="validTo">
-                        <div class="label">{{ $t('chargingProfile.validTo') }}</div>
-                        <el-date-picker v-model="dialog.validTo" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions">
-                        </el-date-picker>
+                    <el-form-item prop="minChargingRate">
+                        <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                            <el-input-number v-model="dialog.minChargingRate" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item prop="chargingRateUnit">
+                        <div class="label">{{ $t('chargingProfile.chargingRateUnit') }}</div>
+                        <el-select class="select-small" v-model="dialog.chargingRateUnit">
+                            <el-option v-for="item in chargingRateUnitList.data" :label="item.name" :key="item.label" :value="item.label"></el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
                 <div class="form-item">
@@ -51,28 +51,13 @@
                         </el-date-picker>
                     </el-form-item>
                 </div>
-                <div class="form-item">
-                    <el-form-item prop="durationInSeconds">
-                        <div class="label">{{ $t('general.startTime') }}</div>
-                        <el-time-select
-                            v-model="dialog.startTime"
-                            :picker-options="timePickerOptions"
-                            clearable>
-                        </el-time-select>
-                    </el-form-item>
-                </div>
-                <div class="form-item">
-                    <el-form-item prop="description">
-                        <div class="label">{{ $t('general.description') }}</div>
-                        <el-input type="textarea" v-model="dialog.description" :rows="2"></el-input>
-                    </el-form-item>
-                </div>
             </el-form>
             <GetPeriod
+                :startSchedule="dialog.startSchedule"
                 :show="visible"
                 :chargingProfileId="dialog.chargingProfileId"
+                :chargingSchedulePeriods="dialog.chargingSchedulePeriods"
                 :editable="true"
-                :maxPower_kW="dialog.maxPower_kW_orign"
                 :isCreate="(data.type === 'create')"
                 @handleData="handlePeriodData">
             </GetPeriod>
@@ -87,12 +72,8 @@
 <script>
 import {
     setScrollBar,
-    transformUtcToLocTime
 } from "@/utils/function";
-import {
-    validateIsEmpty,
-    validatePositiveFloat
-} from "@/utils/validation";
+import { validateIsEmpty } from "@/utils/validation";
 import {
     $HTTP_addChargingProfile,
     $HTTP_updateChargingProfile
@@ -100,14 +81,15 @@ import {
 import GetPeriod from "@/components/setting/getPeriod";
 import moment from "moment";
 export default {
+    components: {
+        GetPeriod
+    },
     props: {
         show: Boolean,
         data: Object,
         profileKindList: Object,
         profilePurposeList: Object,
-    },
-    components: {
-        GetPeriod
+        chargingRateUnitList: Object
     },
     data() {
         return {
@@ -115,23 +97,19 @@ export default {
             isUpdate: false,
             visible: false,
             dialog: {
-                chargingProfileName: "",
-                maxPower_kW: 0,
-                stackLevel: 1,
+                name: "",
                 description: "",
                 chargingProfilePurpose: "TxDefaultProfile",
                 chargingProfileKind: "Absolute",
                 recurrencyKind: "Daily",
-                validFrom: "",
-                validTo: "",
                 startSchedule: "",
                 chargingRateUnit: "W",
-                startTime: ""
+                minChargingRate: null,
+                scheduleDuration: null
             },
             profilePeriodTableVisible: false,
             rules: {
-                chargingProfileName: [{ validator: validateIsEmpty}],
-                maxPower_kW: [{ validator: validatePositiveFloat }],
+                name: [{ validator: validateIsEmpty}],
                 chargingProfilePurpose: [{ validator: validateIsEmpty }],
                 chargingProfileKind: [{ validator: validateIsEmpty }]
             },
@@ -139,12 +117,6 @@ export default {
                 disabledDate(time) {
                     return time.getTime() + 86400000 < Date.now();  /// today
                 },
-            },
-            timePickerOptions: {
-                start: "00:00",
-                step: "00:30",
-                end: "24:00",
-                maxTime: "24:00"
             }
         };
     },
@@ -157,9 +129,7 @@ export default {
                 if (that.visible) {
                     if (that.data.type !== "create") {
                         that.dialog = { ...that.data.info};
-                        that.dialog.validFrom = transformUtcToLocTime(that.dialog.validFrom);
-                        that.dialog.validTo = transformUtcToLocTime(that.dialog.validTo);
-                        that.dialog.maxPower_kW_orign = that.dialog.maxPower_kW;
+                        that.dialog.chargingProfilePurpose = "TxDefaultProfile"
                     }
                     that.$jQuery(".formVertical").length > 0 && that.$jQuery(".formVertical").mCustomScrollbar("destroy");
                     that.$nextTick(() => {
@@ -177,21 +147,7 @@ export default {
             this.$refs.updateForm.validate((valid) => {
                 if (valid) {
                     let params = { ...that.dialog };
-                    params.validFrom = (params.validFrom !== null && params.validFrom !== "") ? new Date(params.validFrom) .toISOString(): null;
-                    params.validTo = (params.validTo !== null && params.validTo !== "") ? new Date(params.validTo).toISOString() : null;
                     params.startSchedule = (params.startSchedule !== null && params.startSchedule !== "") ? new Date(params.startSchedule).toISOString() : null;
-                    params.transactionId = 0;
-                    params.maxPower = params.maxPower_kW * 1000; //kw->w
-                    delete params.maxPower_kW;
-                    if (params.startTime === null) {
-                        params.durationInSeconds = null;
-                    } else if (params.startTime) {
-                        var today = moment().format("YYYY-MM-DD ");
-                        var startTime = moment(today + "00:00");
-                        var curTime = moment(today + params.startTime);
-                        params.durationInSeconds = curTime.diff(startTime)/1000;
-                    }
-                    delete params.startTime;
                     if(that.data.type === "create") {
                         that.addProfile(params);
                     } else {
@@ -208,16 +164,16 @@ export default {
             if (this.dialog.chargingSchedulePeriods && this.dialog.chargingSchedulePeriods.length) {
                 params.chargingSchedulePeriods = this.dialog.chargingSchedulePeriods.map(item => {
                     let period = {
-                        powerLimit: item.powerLimit * 1000,
-                        numberPhases: item.numberPhases
+                        numberPhases: item.numberPhases,
+                        limit: item.limit
                     }
                     if (item.time && item.time !== "00:00") {
                         var today = moment().format("YYYY-MM-DD ");
                         var startTime = moment(today + "00:00");
                         var curTime = moment(today + item.time);
-                        period.startPeriodInSeconds = curTime.diff(startTime)/1000;
+                        period.startPeriod = curTime.diff(startTime)/1000;
                     } else {
-                        period.startPeriodInSeconds = 0;
+                        period.startPeriod = 0;
                     }
                     return period;
                 });
@@ -226,7 +182,7 @@ export default {
             $HTTP_addChargingProfile(params)
                 .then((res) => {
                     that.isLoading = false;
-                    if (res.chargingProfileId) {
+                    if (res.id) {
                         that.$message({ type: "success", message: i18n.t("general.sucAddMsg") });
                         that.isUpdate = true;
                         that.visible = false;
@@ -247,8 +203,8 @@ export default {
             $HTTP_updateChargingProfile(params)
                 .then((res) => {
                     that.isLoading = false;
-                    if (res.chargingProfileId) {
-                        that.$message({ type: "success", message: i18n.t("general.sucAddMsg") });
+                    if (res.id) {
+                        that.$message({ type: "success", message: i18n.t("general.sucUpdateMsg") });
                         that.isUpdate = true;
                         that.visible = false;
                     }
@@ -264,22 +220,18 @@ export default {
         },
         closeDialog() {
             this.dialog = {
-                chargingProfileName: "",
-                maxPower_kW: 0,
-                stackLevel: 1,
+                name: "",
                 description: "",
                 chargingProfilePurpose: "TxDefaultProfile",
                 chargingProfileKind: "Absolute",
                 recurrencyKind: "Daily",
-                validFrom: "",
-                validTo: "",
                 startSchedule: "",
                 chargingRateUnit: "W",
-                startTime: ""
+                minChargingRate: null,
+                scheduleDuration: null
             };
             this.$nextTick(() => {
-                this.$refs?.updateForm?.clearValidate("chargingProfileName");
-                this.$refs?.updateForm?.clearValidate("maxPower_kW");
+                this.$refs?.updateForm?.clearValidate("name");
                 this.$refs?.updateForm?.clearValidate("chargingProfilePurpose");
                 this.$refs?.updateForm?.clearValidate("chargingProfileKind");
             });
@@ -287,7 +239,7 @@ export default {
             this.$emit("close", this.isUpdate);
         },
         handlePeriodData(data) {
-            if (this.data.type === 'create') {
+            if (data) {
                 if (data && data.length>0) {
                     this.dialog.chargingSchedulePeriods = data.slice();
                 } else if (this.dialog.chargingSchedulePeriods) {

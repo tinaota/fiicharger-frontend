@@ -560,7 +560,14 @@
         "daily": "Hằng ngày",
         "chargingProfilePurpose": "Tính phí Hồ sơ Mục đích",
         "chargingProfileKind": "Loại hồ sơ sạc",
-        "startSchedule": "Bắt đầu lịch trình"
+        "startSchedule": "Bắt đầu lịch trình",
+        "recurrencyKind": "Recurrency kind",
+        "chargingSchedulePeriods": "Charging Schedule Periods",
+        "limit": "Limit",
+        "numberPhases": "Number Phases",
+        "startPeriod": "Start Period",
+        "scheduleDuration": "Duration(s)",
+        "chargingRateUnit": "Charging Rate Unit"
     },
     "sendLocalList": {
         "listVersion": "Liệt kê số phiên bản",

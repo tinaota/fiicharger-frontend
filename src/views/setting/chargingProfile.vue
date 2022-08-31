@@ -7,35 +7,35 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
-                    <el-date-picker
-                        v-model="filter.dateRange"
-                        type="daterange"
-                        value-format="yyyy-MM-dd"
-                        format="yyyy-MM-dd"
-                        range-separator="-"
-                        :start-placeholder="$t('general.startDate')"
-                        :end-placeholder="$t('general.endDate')"
-                        @change="fetchData('filter')"
-                        clearable>
-                    </el-date-picker>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
-                    <el-table-column prop="chargingProfileId" :label="$t('chargingProfile.id')" :min-width="2"></el-table-column>
-                    <el-table-column prop="chargingProfileName" :label="$t('chargingProfile.name')"  :min-width="2"></el-table-column>
-                    <el-table-column prop="maxPower_kW" :label="$t('chargingProfile.maxPower')"  :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingProfile.validFrom')"  :min-width="3">
+                    <el-table-column type="expand">
                         <template slot-scope="scope">
-                            {{ scope.row.validFrom ? getLocTime(scope.row.validFrom) : '' }}
+                            <el-table :data="scope.row.chargingSchedulePeriods">
+                                <el-table-column :label="$t('chargingProfile.chargingSchedulePeriods')">
+                                    <el-table-column prop="limit" :label="$t('chargingProfile.limit')" :min-width="1"></el-table-column>
+                                    <el-table-column prop="numberPhases" :label="$t('chargingProfile.numberPhases')" :min-width="1"></el-table-column>
+                                    <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" :min-width="1"></el-table-column>
+                                </el-table-column>
+                            </el-table>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingProfile.validTo')"  :min-width="3">
+                    <el-table-column prop="id" label="ID" :min-width="1"></el-table-column>
+                    <el-table-column prop="name" :label="$t('general.name')" :min-width="1"></el-table-column>
+                    <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" :min-width="2"></el-table-column>
+                    <el-table-column prop="chargingProfileKind" :label="$t('chargingProfile.chargingProfileKind')" :min-width="2"></el-table-column>
+                    <el-table-column prop="recurrencyKind" :label="$t('chargingProfile.recurrencyKind')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingProfile.validFrom')" :min-width="2">
                         <template slot-scope="scope">
-                            {{ scope.row.validTo ? getLocTime(scope.row.validTo) : '' }}
+                            {{ scope.row.startSchedule ? getLocTime(scope.row.startSchedule) : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="startTime" :label="$t('general.startTime')"  :min-width="2"></el-table-column>
-                    <el-table-column prop="description" :label="$t('general.description')" :min-width="2"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.elecRate')" :min-width="1">
+                        <template slot-scope="scope">
+                            {{ scope.row.minChargingRate ? scope.row.minChargingRate + scope.row.chargingRateUnit : '' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="100">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit',scope.row)"></el-button>
@@ -52,6 +52,7 @@
                 :data="updateDialog.data"
                 :profileKindList="profileKindList"
                 :profilePurposeList="profilePurposeList"
+                :chargingRateUnitList="chargingRateUnitList"
                 @close="(isUpdate) => closeDialog(isUpdate, 'update')">
             </UpdateChargingProfile>
             <DeleteChargingProfile :show="deleteDialog.visible" :data="deleteDialog.data" @close="(isUpdate) => closeDialog(isUpdate, 'delete')"></DeleteChargingProfile>
@@ -60,17 +61,12 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, transformLocTimeToUtc } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-import {
-    $HTTP_getChargingProfiles,
-    $HTTP_getChargingProfilekind,
-    $HTTP_getChargingProfilPurpose
-} from "@/api/api";
+import { $HTTP_getChargingProfilesTemplate } from "@/api/api";
 import UpdateChargingProfile from "@/views/setting/updateChargingProfile";
 import DeleteChargingProfile from "@/views/setting/deleteChargingProfile";
 import moment from "moment";
-const dateFormat = "YYYY-MM-DD HH:mm:ss";
 export default {
     components: {
         UpdateChargingProfile,
@@ -81,7 +77,6 @@ export default {
             permissionEditAble: this.$store.state.permissionEditable,
             filter: {
                 profilePurpose: "",
-                dateRange: []
             },
             tableData: [],
             isLoading: false,
@@ -90,11 +85,14 @@ export default {
             total: 1,
             profileKindList: {
                 isLoading: false,
-                data: []
+                data: ['Absolute','Recurring', 'Relative']
             },
             profilePurposeList: {
                 isLoading: false,
-                data: []
+                data: ['ChargePointMaxProfile','TxDefaultProfile', 'TxProfile']
+            },
+            chargingRateUnitList:{
+                data: [{name: 'Watt', label: "W"}, {name: "Ampere", label:"A"}]
             },
             updateDialog: {
                 visible: false,
@@ -122,37 +120,9 @@ export default {
     },
     mounted() {
         setScrollBar(".scroll", this);
-        this.fetchProfileKindList();
-        this.fetchProfilePurposeList();
         this.fetchData();
     },
     methods: {
-        // get charging profile kind list
-        fetchProfileKindList() {
-            this.profileKindList.isLoading = true;
-            $HTTP_getChargingProfilekind()
-                .then((res) => {
-                    this.profileKindList.isLoading = false;
-                    this.profileKindList.data = res;
-                })
-                .catch((err) => {
-                    console.log("profileKindList error", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                });
-        },
-        // get charging profile purpose list
-        fetchProfilePurposeList() {
-            this.profilePurposeList.isLoading = true;
-            $HTTP_getChargingProfilPurpose()
-                .then((res) => {
-                    this.profilePurposeList.isLoading = false;
-                    this.profilePurposeList.data = res;
-                })
-                .catch((err) => {
-                    console.log("profilePurposeList error", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                });
-        },
         // get table data
         fetchData(type) {
             let params = {
@@ -160,25 +130,16 @@ export default {
                 limit: this.limit,
             };
 
-            if (this.filter.dateRange?.length === 2) {
-                params.validFrom = transformLocTimeToUtc(this.filter.dateRange[0], dateFormat);
-                params.validTo = transformLocTimeToUtc(this.filter.dateRange[1], dateFormat);
-            }
-
             if (type === "filter") {
                 this.page = 1;
                 params.page = 1;
             }
             this.isLoading = true;
-            $HTTP_getChargingProfiles(params)
+            $HTTP_getChargingProfilesTemplate(params)
                 .then((res) => {
                     this.isLoading = false;
                     if (res?.data?.length > 0) {
-                        this.tableData = res.data.map(item => {
-                            item.maxPower_kW = parseFloat((item.maxPower/1000).toFixed(1)) || 0;
-                            item.startTime =  item.durationInSeconds === null ? "" : this.getTime(item.durationInSeconds, "HH:mm");
-                            return item;
-                        });
+                        this.tableData = res.data
                         this.total = res.metadata.totalRows;
                     } else {
                         this.tableData = [];

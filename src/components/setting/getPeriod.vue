@@ -4,10 +4,10 @@
         <div class="label">{{ $t('chargingProfile.daily') }}</div>
         <div class="time" v-if="tableSize>0"><span>00:00</span><span style="float:right">23:59</span></div>
         <BarTimeChart class="barChart" v-if="tableSize>0" :id="'profilePeriods'" :chartData="profilePeriods.data"></BarTimeChart>
-        <el-button v-if="editable && tableSize<5" class="right add" icon="el-icon-plus" style="color: #1e5eff;font-weight: bold;" @click="openPeriodDialog('create')"></el-button>
+        <el-button v-if="editable && tableSize<5" class="right add" icon="el-icon-plus" style="color: #1e5eff;font-weight: bold;" :disabled="startSchedule===''" @click="openPeriodDialog('create')"></el-button>
         <el-table v-if="tableSize>0 && !data" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
             <el-table-column v-if="!isCreate" prop="id" label="ID"></el-table-column>
-            <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column>
+            <!-- <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column> -->
             <el-table-column prop="time" :label="$t('chargingProfile.startPeriodInSeconds')"></el-table-column>
             <el-table-column v-if="editable" :label="$t('general.action')" :width="100">
                 <template slot-scope="scope">
@@ -17,6 +17,7 @@
             </el-table-column>
         </el-table>
         <UpdatePeriod
+            :startSchedule="startSchedule"
             :show="updatePeriodDialog.visible"
             :data="updatePeriodDialog.data"
             @close="(isUpdate, data) => closePeriodDialog('update', isUpdate, data)">
@@ -26,27 +27,25 @@
 </template>
 
 <script>
-import {
-    $HTTP_getChargingProfilePeriods
-} from "@/api/api";
 import BarTimeChart from "@/components/charts/barTimeChart";
 import UpdatePeriod from "@/components/setting/updatePeriod";
 import DeletePeriod from "@/components/setting/deletePeriod";
 import moment from "moment";
 const DEFAULT_MAXSECONDS = 24 * 60 * 60;
 export default {
-    props: {
-        show: Boolean,
-        chargingProfileId: Number,
-        editable: Boolean,
-        maxPower_kW: Number,
-        data: Array,
-        isCreate: Boolean
-    },
     components: {
         BarTimeChart,
         UpdatePeriod,
         DeletePeriod
+    },
+    props: {
+        show: Boolean,
+        chargingProfileId: Number,
+        editable: Boolean,
+        data: Array,
+        isCreate: Boolean,
+        startSchedule: String,
+        chargingSchedulePeriods: Array
     },
     data() {
         return {
@@ -64,6 +63,20 @@ export default {
             },
         };
     },
+    computed: {
+        getTime() {
+            return (second, format) => {
+                const millisecond = second * 1000;
+                const hours = moment.duration(millisecond).hours();
+                const minutes =  moment.duration(millisecond).minutes();
+                const seconds =  moment.duration(millisecond).seconds();
+                return moment().set({ "hour": hours, "minute": minutes, "second": seconds }).format(format)
+            };
+        },
+        tableSize() {
+            return this.profilePeriods.data.length;
+        }
+    },
     watch: {
         show: {
             handler() {
@@ -79,20 +92,6 @@ export default {
             }
         }
     },
-    computed: {
-        getTime() {
-            return (second, format) => {
-                const millisecond = second * 1000;
-                const hours = moment.duration(millisecond).hours();
-                const minutes =  moment.duration(millisecond).minutes();
-                const seconds =  moment.duration(millisecond).seconds();
-                return moment().set({ "hour": hours, "minute": minutes, "second": seconds }).format(format)
-            };
-        },
-        tableSize() {
-            return this.profilePeriods.data.length;
-        }
-    },
     mounted() {
         if (this.data && this.data.length > 0) {
             this.profilePeriods.data = this.data.slice();
@@ -104,33 +103,30 @@ export default {
     },
     methods: {
         fetchProfilePeriods() {
-            const param = {
-                chargingProfileId: this.chargingProfileId
-            }
             this.profilePeriods.isLoading = true;
             this.profilePeriods.data = [];
-            $HTTP_getChargingProfilePeriods(param)
-                .then((res) => {
-                    const periodLength = res.length;
-                    this.profilePeriods.isLoading = false;
-                    this.profilePeriods.data = res.map((item, idx) => {
-                        item.powerLimit = parseFloat((item.powerLimit/1000).toFixed(1)) || 0;
-                        item.time = this.getTime(item.startPeriodInSeconds, "HH:mm");
-                        if (periodLength === idx+1) {
-                            item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
-                            item.endTime = "23:59:59";
-                        } else {
-                            item.endPeriodInSeconds = res[idx+1].startPeriodInSeconds-1;
-                            item.endTime = this.getTime(item.endPeriodInSeconds, "HH:mm:ss");
-                        }
-                        item.duration = item.endPeriodInSeconds - item.startPeriodInSeconds;
-                        return item;
-                    });
+            let res = this.chargingSchedulePeriods
+            const periodLength = res?.length;
+            this.profilePeriods.isLoading = false;
+            if(periodLength){
+                // sort from smaller to bigger
+                res.sort((first,second)=>{
+                    return first.startPeriod - second.startPeriod
                 })
-                .catch((err) => {
-                    console.log("profilePeriod list error", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+
+                this.profilePeriods.data = res.map((item, idx) => {
+                    item.time = this.getTime(item.startPeriod, "HH:mm");
+                    if (periodLength === idx+1) {
+                        item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
+                        item.endTime = "23:59:59";
+                    } else {
+                        item.endPeriodInSeconds = res[idx+1].startPeriod-1;
+                        item.endTime = this.getTime(item.endPeriodInSeconds, "HH:mm:ss");
+                    }
+                    item.duration = item.endPeriodInSeconds - item.startPeriod;
+                    return item;
                 });
+            }
         },
         openPeriodDialog(type, data) {
             if (type === "delete") {
@@ -142,7 +138,6 @@ export default {
             } else {
                 this.updatePeriodDialog.data = {
                     type: type,
-                    maxPower_kW: this.maxPower_kW,
                     isCreate: this.isCreate
                 };
                 if (type === "create") {
@@ -169,15 +164,13 @@ export default {
                 this.updatePeriodDialog.data = {};
             }
             if (isUpdate) {
-                if (!this.isCreate) {
-                    this.fetchProfilePeriods();
-                } else if (dialog === "delete") {
+                 if (dialog === "delete") {
                     let table = this.profilePeriods.data.slice(0, -1),
                         tableLength = table.length;
                     if (tableLength) {
                         table[tableLength-1].endPeriodInSeconds = DEFAULT_MAXSECONDS;
                         table[tableLength-1].endTime = "23:59:59";
-                        table[tableLength-1].duration = table[tableLength-1].endPeriodInSeconds - table[tableLength-1].startPeriodInSeconds;
+                        table[tableLength-1].duration = table[tableLength-1].endPeriodInSeconds - table[tableLength-1].startPeriod || 86400;
                     }
                     this.profilePeriods.data = table;
                     this.$emit('handleData', this.profilePeriods.data);
@@ -185,16 +178,19 @@ export default {
                     let table = this.profilePeriods.data.slice(),
                         tableLength = table.length;
                     if (tableLength) {
-                        table[tableLength-1].endPeriodInSeconds = data.startPeriodInSeconds-1;
-                        table[tableLength-1].endTime = this.getTime(data.startPeriodInSeconds-1, "HH:mm:ss");
-                        table[tableLength-1].duration = table[tableLength-1].endPeriodInSeconds - table[tableLength-1].startPeriodInSeconds;
+                        table[tableLength-1].endPeriodInSeconds = data.startPeriod-1;
+                        table[tableLength-1].endTime = this.getTime(data.startPeriod-1, "HH:mm:ss");
+                        table[tableLength-1].duration = table[tableLength-1].endPeriodInSeconds - table[tableLength-1].startPeriod;
                     }
                     data.endPeriodInSeconds = DEFAULT_MAXSECONDS;
                     data.endTime = "23:59:59";
-                    data.duration = data.endPeriodInSeconds - data.startPeriodInSeconds;
+                    data.duration = data.endPeriodInSeconds - data.startPeriod;
                     table.push(data);
                     this.profilePeriods.data = table;
                     this.$emit('handleData', this.profilePeriods.data)
+                }else{
+                    this.fetchProfilePeriods();
+
                 }
             }
             this.$jQuery(".formVertical").mCustomScrollbar("update");

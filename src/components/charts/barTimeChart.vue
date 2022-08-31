@@ -99,7 +99,11 @@ export default {
                         let result = `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:${params.color};"></span>
                                       <b>${params.seriesName}</b><br/>
                                       <div>${i18n.t('general.time')}: ${data.time + ":00 ~ " + data.endTime} <div>
-                                      <div>${i18n.t('chargingProfile.maxPower')}: ${data.powerLimit + " kW"} <div>`;
+                                      <div>${i18n.t('chargingProfile.numberPhases')}: ${data.numberPhases} <div>
+                                      <div>${i18n.t('chargingProfile.limit')}: ${data.limit} <div>
+                                      <div>${i18n.t('chargingProfile.startPeriod')}: ${data.startPeriod} <div>
+                                      <div>${i18n.t('chargingProfile.startPeriod')}: ${data.duration} <div>
+                                      `;
                         return result;
                     },
                     padding: [12,20],

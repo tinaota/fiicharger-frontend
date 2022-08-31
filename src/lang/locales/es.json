@@ -560,7 +560,14 @@
         "daily": "Diariamente",
         "chargingProfilePurpose": "Propósito del perfil de carga",
         "chargingProfileKind": "Tipo de perfil de carga",
-        "startSchedule": "Calendario de inicio"
+        "startSchedule": "Calendario de inicio",
+        "recurrencyKind": "Recurrency kind",
+        "chargingSchedulePeriods": "Charging Schedule Periods",
+        "limit": "Limit",
+        "numberPhases": "Number Phases",
+        "startPeriod": "Start Period",
+        "scheduleDuration": "Duration(s)",
+        "chargingRateUnit": "Charging Rate Unit"
     },
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",
