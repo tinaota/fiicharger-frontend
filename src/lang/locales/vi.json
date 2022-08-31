@@ -174,6 +174,7 @@
         "install": "Cài đặt",
         "select": "Xin vui lòng chọn",
         "upload": "Tải lên",
+        "chooseFile": "Chọn tập tin",
         "full": "Đầy",
         "differential": "Khác biệt"
     },

@@ -174,6 +174,7 @@
         "install": "Instalar",
         "select": "Seleccione",
         "upload": "Subir",
+        "chooseFile": "Elija el archivo",
         "full": "Completo",
         "differential": "Diferencial"
     },

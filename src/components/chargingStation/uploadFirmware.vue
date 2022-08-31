@@ -11,19 +11,17 @@
             class="upload-demo"
             :action="apiUrl"
             :data="uploadParams"
-            accept="application/octet-stream, application/x-zip-compressed, application/x-rar-compressed, text/plain"
             :limit="1"
             :auto-upload="false"
             :on-exceed="handleExceed"
-            :before-upload="onBeforeUploadFile"
             :on-error="handleError"
             :on-change="handleFileChange"
             :file-list="fileList">
-            <el-button size="small" type="primary">{{ $t('general.upload') }}</el-button>
+            <el-button size="small" type="primary">{{ $t('general.chooseFile') }}</el-button>
         </el-upload>
         <div slot="footer" class="dialog-footer">
             <el-button @click="closeDialog()">{{ $t('general.cancel') }}</el-button>
-            <el-button type="primary" @click="uploadFileData">{{ $t('general.ok') }}</el-button>
+            <el-button type="primary" @click="uploadFileData">{{ $t('general.upload') }}</el-button>
         </div>
     </el-dialog>
 </template>
@@ -56,17 +54,6 @@ export default {
         }
     },
     methods: {
-        onBeforeUploadFile(file){
-            const fileTypes = ["rar", "zip", "txt"];
-            const fileExt = file.name.substring(file.name.lastIndexOf(".") + 1),
-                flag = fileTypes.find((fileItem) => fileItem === fileExt);
-
-            flag == undefined && this.$message.error(i18n.t("general.errFile"));
-            if (flag) {
-                this.isLoading = true;
-            }
-            return flag;
-        },
         handleExceed() {
             this.$message.warning(i18n.t("general.onlyOneFile"));
         },
