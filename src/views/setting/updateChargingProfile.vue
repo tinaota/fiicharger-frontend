@@ -8,14 +8,14 @@
                         <el-input v-model="dialog.name"></el-input>
                     </el-form-item>
                 </div>
-                <div class="form-item">
+                <!-- <div class="form-item">
                     <el-form-item prop="chargingProfilePurpose">
                         <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
                         <el-select class="select-small" v-model="dialog.chargingProfilePurpose" v-loading="profilePurposeList.isLoading">
                             <el-option v-for="item in profilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
                         </el-select>
                     </el-form-item>
-                </div>
+                </div> -->
                 <div class="form-item">
                     <el-form-item prop="chargingProfileKind">
                         <div class="label">{{ $t('chargingProfile.chargingProfileKind') }}</div>

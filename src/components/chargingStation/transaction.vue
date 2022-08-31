@@ -45,7 +45,7 @@
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
-        <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
+        <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" :connectorIdFromTransactions="addChargingProfile.connectorId" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
     </div>
 </template>
 
@@ -83,7 +83,8 @@ export default {
             isUpDateChargingProfileData: true,
             addChargingProfile: {
                 visible: false,
-                data: {}
+                data: {},
+                connectorId:null
             },
         };
     },
@@ -104,12 +105,13 @@ export default {
     methods: {
         openDialog(action,data){
             if (action === "addChargingProfile") {
+                console.log(data)
                 this.addChargingProfile.data = {
                     chargePointId:data.chargePointId,
-                    transactionId: data.id
+                    transactionId: data.id,
             };
+            this.addChargingProfile.connectorId= data.connectorId
             this.addChargingProfile.visible = true;
-
             }
         },
         getAllTransactions(type) {

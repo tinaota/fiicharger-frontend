@@ -36,7 +36,7 @@
 
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
-                <el-input-number class="info" v-model="stackLevel" :step="1" :min="0" controls-position="right"></el-input-number>
+                <el-input-number class="info" v-model="stackLevel" :step="1" :min="0"></el-input-number>
             </div>
         </div>
         <p style="text-align:center;">
@@ -55,7 +55,8 @@ import {
 export default {
     props: {
         show: Boolean,
-        data: Object
+        data: Object,
+        connectorIdFromTransactions: Number
     },
     data() {
         return {
@@ -92,6 +93,7 @@ export default {
                     if(this.data.transactionId){
                         this.chargingProfilePurposeList.data = ['TxProfile']
                         this.chargingProfilePurpose= 'TxProfile'
+                        this.param.connectorId = this.connectorIdFromTransactions
                     }
                     this.isUpdate = false;
                     this.$nextTick(()=>{
