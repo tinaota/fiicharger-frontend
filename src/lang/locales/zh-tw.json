@@ -565,14 +565,14 @@
         "chargingProfilePurpose": "充電配置文件用途",
         "chargingProfileKind": "充電配置文件種類",
         "startSchedule": "開始時間表",
-        "recurrencyKind": "Recurrency kind",
-        "chargingSchedulePeriods": "Charging Schedule Periods",
-        "limit": "Limit",
-        "numberPhases": "Number Phases",
-        "startPeriod": "Start Period",
-        "scheduleDuration": "Duration(s)",
-        "chargingRateUnit": "Charging Rate Unit",
-        "stackLevel": "Stack Level"
+        "recurrencyKind": "循環種類",
+        "chargingSchedulePeriods": "充電計劃週期",
+        "limit": "限制",
+        "numberPhases": "數字階段",
+        "startPeriod": "開始時間",
+        "scheduleDuration": "持續時間",
+        "chargingRateUnit": "充電速率單位",
+        "stackLevel": "堆棧級別"
     },
     "sendLocalList": {
         "listVersion": "列表版號",

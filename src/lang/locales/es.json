@@ -565,14 +565,14 @@
         "chargingProfilePurpose": "Propósito del perfil de carga",
         "chargingProfileKind": "Tipo de perfil de carga",
         "startSchedule": "Calendario de inicio",
-        "recurrencyKind": "Recurrency kind",
-        "chargingSchedulePeriods": "Charging Schedule Periods",
-        "limit": "Limit",
-        "numberPhases": "Number Phases",
-        "startPeriod": "Start Period",
-        "scheduleDuration": "Duration(s)",
-        "chargingRateUnit": "Charging Rate Unit",
-        "stackLevel": "Stack Level"
+        "recurrencyKind": "Tipo de recurrencia",
+        "chargingSchedulePeriods": "Períodos del programa de carga",
+        "limit": "Límite",
+        "numberPhases": "Número de fases",
+        "startPeriod": "Período de inicio",
+        "scheduleDuration": "Duración(es)",
+        "chargingRateUnit": "Unidad de tasa de carga",
+        "stackLevel": "Nivel de pila"
     },
     "sendLocalList": {
         "listVersion": "Número de versión de la lista",
