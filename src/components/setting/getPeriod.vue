@@ -8,7 +8,11 @@
         <el-table v-if="tableSize>0" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
             <el-table-column prop="limit" :label="$t('chargingProfile.limit')"></el-table-column>
             <!-- <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column> -->
-            <el-table-column prop="time" :label="$t('chargingProfile.startPeriodInSeconds')"></el-table-column>
+            <el-table-column :label="$t('chargingProfile.startPeriodInSeconds')">
+                <template slot-scope="scope">
+                    {{ scope.row.time.length === 5 ? scope.row.time + ':00' : scope.row.time }}
+                </template>
+            </el-table-column>
             <el-table-column v-if="editable" :label="$t('general.action')" :width="100">
                 <template slot-scope="scope">
                     <!-- <el-button class="no-bg edit" @click="openPeriodDialog('edit',scope.row)"></el-button> -->

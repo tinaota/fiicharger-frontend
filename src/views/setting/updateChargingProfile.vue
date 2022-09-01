@@ -27,7 +27,7 @@
                 <div class="form-item">
                     <el-form-item prop="scheduleDuration">
                         <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
-                            <el-input-number v-model="dialog.scheduleDuration" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+                            <el-input-number v-model="dialog.scheduleDuration" :step="10" :min="0" controls-position="right"></el-input-number>
                     </el-form-item>
                 </div>
                 <div class="form-item">

@@ -94,7 +94,7 @@ export default {
                 item.id = idx + 1;
                 // item.powerLimit = item.limit / 1000 || 0;
                 item.startPeriodInSeconds = item.startPeriod;
-                item.time = this.getTime(item.startPeriodInSeconds, "HH:mm");
+                item.time = this.getTime(item.startPeriodInSeconds, "HH:mm:ss");
                 if (periodLength === idx + 1) {
                     item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
                     item.endTime = "23:59:59";
