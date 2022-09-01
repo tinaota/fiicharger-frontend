@@ -10,10 +10,8 @@
                 <div class="info">{{ data.chargePointId }}</div>
             </div>
             <div class="item">
-                <div class="label">{{ $t('general.startTime') }}</div>
-                <el-time-select
-                    v-model="param.time"
-                    :picker-options="pickerOptions">
+                <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
+                <el-time-select v-model="param.time" :picker-options="pickerOptions">
                 </el-time-select>
             </div>
         </div>
@@ -25,18 +23,16 @@
 </template>
 
 <script>
-import {
-    $HTTP_getCompositeSchedule
-} from "@/api/api";
+import { $HTTP_getCompositeSchedule } from "@/api/api";
 import ShowCompositeSchedule from "@/components/chargingStation/showCompositeSchedule";
 import moment from "moment";
 export default {
+    components: {
+        ShowCompositeSchedule
+    },
     props: {
         show: Boolean,
         data: Object
-    },
-    components: {
-        ShowCompositeSchedule
     },
     data() {
         return {
@@ -47,7 +43,7 @@ export default {
             },
             pickerOptions: {
                 start: "00:00",
-                step: "00:30",
+                step: "00:01",
                 end: "24:00",
                 minTime: "",
                 maxTime: "24:00"
@@ -61,10 +57,9 @@ export default {
     watch: {
         show: {
             handler() {
-                const that = this;
                 this.visible = this.show;
             }
-        },
+        }
     },
     methods: {
         getCompositeSchedule() {
@@ -78,7 +73,7 @@ export default {
                 var today = moment().format("YYYY-MM-DD ");
                 var startTime = moment(today + "00:00");
                 var curTime = moment(today + this.param.time);
-                params.duration = curTime.diff(startTime)/1000;
+                params.duration = curTime.diff(startTime) / 1000;
             }
             that.isLoading = true;
             that.showCompositeScheduleDialog.data = {};
@@ -87,23 +82,29 @@ export default {
                     that.isLoading = false;
                     if (res.status === "Accepted") {
                         that.visible = true;
-                        that.showCompositeScheduleDialog.data = {...res};
-                        that.showCompositeScheduleDialog.data.name = that.data.name;
-                        that.showCompositeScheduleDialog.data.chargePointId = that.data.chargePointId;
+                        that.showCompositeScheduleDialog.data = { ...res };
+                        that.showCompositeScheduleDialog.data.name =
+                            that.data.name;
+                        that.showCompositeScheduleDialog.data.chargePointId =
+                            that.data.chargePointId;
                         that.showCompositeScheduleDialog.visible = true;
                     } else {
                         that.visible = false;
                         that.$message({
                             type: "warning",
-                            message: i18n.t("actions.getCompositeScheduleFaulted")
+                            message: i18n.t(
+                                "actions.getCompositeScheduleFaulted"
+                            )
                         });
                     }
                 })
                 .catch((err) => {
-                    console.log("getCompositeSchedule", err)
+                    console.log("getCompositeSchedule", err);
                     that.visible = false;
                     that.isLoading = false;
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
+                    let _errors = err?.data?.errors
+                        ? Object.values(err?.data?.errors)
+                        : err?.data;
 
                     that.$message({
                         type: "warning",

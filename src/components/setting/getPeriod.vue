@@ -5,7 +5,7 @@
         <div class="time" v-if="tableSize>0"><span>00:00</span><span style="float:right">23:59</span></div>
         <BarTimeChart class="barChart" v-if="tableSize>0" :id="'profilePeriods'" :chartData="profilePeriods.data"></BarTimeChart>
         <el-button v-if="editable && tableSize<5" class="right add" icon="el-icon-plus" style="color: #1e5eff;font-weight: bold;" :disabled="startSchedule===''" @click="openPeriodDialog('create')"></el-button>
-        <el-table v-if="tableSize>0 && !data" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
+        <el-table v-if="tableSize>0" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
             <el-table-column prop="limit" :label="$t('chargingProfile.limit')"></el-table-column>
             <!-- <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column> -->
             <el-table-column prop="time" :label="$t('chargingProfile.startPeriodInSeconds')"></el-table-column>

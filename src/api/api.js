@@ -357,4 +357,4 @@ export const $HTTP_uploadFirmwareFile = params => { return post(`${base_charger}
 }
 
 //Get Composite Schedule
-export const $HTTP_getCompositeSchedule = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/get-compositeschedule`, params) }
+export const $HTTP_getCompositeSchedule = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/composite-schedule`, params) }

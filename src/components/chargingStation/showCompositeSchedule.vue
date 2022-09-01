@@ -24,12 +24,12 @@ import GetPeriod from "@/components/setting/getPeriod";
 import moment from "moment";
 const DEFAULT_MAXSECONDS = 24 * 60 * 60;
 export default {
+    components: {
+        GetPeriod
+    },
     props: {
         show: Boolean,
         data: Object
-    },
-    components: {
-        GetPeriod
     },
     data() {
         return {
@@ -45,51 +45,70 @@ export default {
             periodData: {}
         };
     },
+    computed: {
+        getTime() {
+            return (second, format) => {
+                const millisecond = second * 1000;
+                const hours = moment.duration(millisecond).hours();
+                const minutes = moment.duration(millisecond).minutes();
+                const seconds = moment.duration(millisecond).seconds();
+                return moment()
+                    .set({ hour: hours, minute: minutes, second: seconds })
+                    .format(format);
+            };
+        }
+    },
     watch: {
         show: {
             handler() {
                 const that = this;
                 this.visible = this.show;
                 if (this.visible) {
-                    this.startSchedule = this.data.chargingSchedule?.startSchedule? transformUtcToLocTime(this.data.chargingSchedule?.startSchedule, "YYYY-MM-DD HH:mm"): "";
-                    this.periodData = this.data.chargingSchedule.chargingSchedulePeriod ? this.prepareData(this.data.chargingSchedule.chargingSchedulePeriod) : {};
+                    this.startSchedule = this.data?.scheduleStart
+                        ? transformUtcToLocTime(
+                              this.data?.scheduleStart,
+                              "YYYY-MM-DD HH:mm"
+                          )
+                        : "";
+                    this.periodData = this.data?.chargingSchedule
+                        ?.chargingSchedulePeriods
+                        ? this.prepareData(
+                              this.data.chargingSchedule.chargingSchedulePeriods
+                          )
+                        : {};
                 }
-                that.$jQuery(".compositeSchedule").length > 0 && that.$jQuery(".compositeSchedule").mCustomScrollbar("destroy");
+                that.$jQuery(".compositeSchedule").length > 0 &&
+                    that
+                        .$jQuery(".compositeSchedule")
+                        .mCustomScrollbar("destroy");
                 that.$nextTick(() => {
                     setScrollBar(".compositeSchedule", that);
                 });
             }
-        },
-    },
-    computed: {
-        getTime() {
-            return (second, format) => {
-                const millisecond = second * 1000;
-                const hours = moment.duration(millisecond).hours();
-                const minutes =  moment.duration(millisecond).minutes();
-                const seconds =  moment.duration(millisecond).seconds();
-                return moment().set({ "hour": hours, "minute": minutes, "second": seconds }).format(format)
-            };
-        },
+        }
     },
     methods: {
         prepareData(data) {
             const periodLength = data.length;
             return data.map((item, idx) => {
-                        item.id = idx +1;
-                        item.powerLimit = item.limit / 1000 || 0;
-                        item.startPeriodInSeconds = item.startPeriod;
-                        item.time = this.getTime(item.startPeriodInSeconds, "HH:mm");
-                        if (periodLength === idx+1) {
-                            item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
-                            item.endTime = "23:59:59";
-                        } else {
-                            item.endPeriodInSeconds = data[idx+1].startPeriod-1;
-                            item.endTime = this.getTime(item.endPeriodInSeconds, "HH:mm:ss");
-                        }
-                        item.duration = item.endPeriodInSeconds - item.startPeriodInSeconds;
-                        return item;
-                    });
+                item.id = idx + 1;
+                // item.powerLimit = item.limit / 1000 || 0;
+                item.startPeriodInSeconds = item.startPeriod;
+                item.time = this.getTime(item.startPeriodInSeconds, "HH:mm");
+                if (periodLength === idx + 1) {
+                    item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
+                    item.endTime = "23:59:59";
+                } else {
+                    item.endPeriodInSeconds = data[idx + 1].startPeriod - 1;
+                    item.endTime = this.getTime(
+                        item.endPeriodInSeconds,
+                        "HH:mm:ss"
+                    );
+                }
+                item.duration =
+                    item.endPeriodInSeconds - item.startPeriodInSeconds;
+                return item;
+            });
         },
         closeDialog() {
             this.startSchedule = "";

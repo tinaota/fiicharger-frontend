@@ -5,7 +5,7 @@
 import { resizeCharts } from "@/utils/function";
 const DEFAULT_MAXSECONDS = 24 * 60 * 60;
 export default {
-    name: "bar-chart",
+    name: "BarChart",
     props: {
         id: String,
         chartData: {
@@ -20,10 +20,11 @@ export default {
             seriesData: []
         };
     },
-    mounted() {
-        this.prePareData();
-        this.draw();
-        window.addEventListener("resize", this.resizeCharts, false);
+    computed: {
+        chartId: function() {
+            let chart = this.$echarts.init(this.$refs[this.id]);
+            return chart;
+        }
     },
     watch: {
         chartData: {
@@ -34,11 +35,10 @@ export default {
             }
         }
     },
-    computed: {
-        chartId: function() {
-            let chart = this.$echarts.init(this.$refs[this.id]);
-            return chart;
-        }
+    mounted() {
+        this.prePareData();
+        this.draw();
+        window.addEventListener("resize", this.resizeCharts, false);
     },
     beforeDestroy() {
         if (this.chartId) {
@@ -102,7 +102,7 @@ export default {
                                       <div>${i18n.t('chargingProfile.numberPhases')}: ${data.numberPhases} <div>
                                       <div>${i18n.t('chargingProfile.limit')}: ${data.limit} <div>
                                       <div>${i18n.t('chargingProfile.startPeriod')}: ${data.startPeriod} <div>
-                                      <div>${i18n.t('chargingProfile.startPeriod')}: ${data.duration} <div>
+                                      <div>${i18n.t('chargingProfile.scheduleDuration')}: ${data.duration} <div>
                                       `;
                         return result;
                     },
