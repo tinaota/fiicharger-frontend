@@ -18,7 +18,7 @@
         <p style="text-align:center;">
             <el-button size="small" type="primary" @click="getCompositeSchedule()">{{ $t('general.perform') }}</el-button>
         </p>
-        <ShowCompositeSchedule v-show="showCompositeScheduleDialog.visible" :show="showCompositeScheduleDialog.visible" :data="showCompositeScheduleDialog.data"></ShowCompositeSchedule>
+        <ShowCompositeSchedule v-show="showCompositeScheduleDialog.visible" :show="showCompositeScheduleDialog.visible" :data="showCompositeScheduleDialog.data" @close="changeShowCompositeScheduleStatus"></ShowCompositeSchedule>
     </el-dialog>
 </template>
 
@@ -117,6 +117,9 @@ export default {
                 time: ""
             };
             this.$emit("close");
+        },
+        changeShowCompositeScheduleStatus(){
+            this.showCompositeScheduleDialog.visible = false
         }
     }
 };

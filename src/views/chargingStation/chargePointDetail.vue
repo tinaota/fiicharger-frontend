@@ -340,7 +340,7 @@
                 <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
                 <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="isUpdate => { closeDialog('clearChargingProfile', isUpdate) }"></ClearChargingProfile>
                 <UploadFirmware :chargePointId="uploadFirmwareDialog.chargePointId" :show="uploadFirmwareDialog.visible" @close="closeDialog('uploadFirmwareDialog')"></UploadFirmware>
-                <GetCompositeSchedule :show="getCompositeSchedule.visible" :data="getCompositeSchedule.data" @close="closeDialog('remoteTrigger')"></GetCompositeSchedule>
+                <GetCompositeSchedule :show="getCompositeSchedule.visible" :data="getCompositeSchedule.data" @close="closeDialog('getCompositeSchedule')"></GetCompositeSchedule>
             </div>
         </div>
 </template>
