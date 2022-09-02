@@ -206,6 +206,7 @@
         "connector#": "Conector #",
         "parkingRate": "Tasa de ocupación",
         "elecRate": "Tasa de carga",
+        "elecRateMin": "Tasa de cargo mínima",
         "chargeType": "Escribe",
         "onPeak": "En pico",
         "offPeak": "Fuera de pico",

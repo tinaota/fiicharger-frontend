@@ -31,7 +31,7 @@
                             {{ scope.row.startSchedule ? getLocTime(scope.row.startSchedule) : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRate')" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.elecRateMin')" :min-width="1">
                         <template slot-scope="scope">
                             {{ scope.row.minChargingRate ? scope.row.minChargingRate + scope.row.chargingRateUnit : '' }}
                         </template>

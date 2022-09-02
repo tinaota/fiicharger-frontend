@@ -206,6 +206,7 @@
         "connector#": "充电枪#",
         "parkingRate": "占用费",
         "elecRate": "费率",
+        "elecRateMin": "最低收费率",
         "chargeType": "充电类型",
         "onPeak": "尖峰",
         "offPeak": "离峰",

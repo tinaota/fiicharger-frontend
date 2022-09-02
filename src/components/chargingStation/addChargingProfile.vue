@@ -29,7 +29,7 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
-                <el-select class="select-small info" v-model="param.chargingProfilePurpose" filterable>
+                <el-select class="select-small info" v-model="chargingProfilePurpose" filterable>
                     <el-option v-for="item in chargingProfilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
                 </el-select>
             </div>

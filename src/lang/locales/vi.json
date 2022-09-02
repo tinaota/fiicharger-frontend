@@ -206,6 +206,7 @@
         "connector#": "Đầu sạc",
         "parkingRate": "Loại phí",
         "elecRate": "Giá điện",
+        "elecRateMin": "Mức phí tối thiểu",
         "chargeType": "Loại",
         "onPeak": "Cao điểm",
         "offPeak": "Ngoài giờ cao điểm",

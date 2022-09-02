@@ -206,6 +206,7 @@
         "connector#": "Connector #",
         "parkingRate": "Occupancy Rate",
         "elecRate": "Charge Rate",
+        "elecRateMin":"Charge Rate Minimum",
         "chargeType": "Type",
         "onPeak": "On-Peak",
         "offPeak": "Off-Peak",

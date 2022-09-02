@@ -21,7 +21,7 @@
                 <div class="form-item">
                     <el-form-item prop="numberPhases">
                         <div class="label">{{ $t('chargingProfile.numberPhases') }}</div>
-                        <el-input-number v-model="dialog.numberPhases" :precision="1" :step="1" :min="1" controls-position="right"></el-input-number>
+                        <el-input-number v-model="dialog.numberPhases" :step="1" :min="1" controls-position="right"></el-input-number>
                     </el-form-item>
                 </div>
             </el-form>
