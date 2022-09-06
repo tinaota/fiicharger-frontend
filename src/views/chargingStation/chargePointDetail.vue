@@ -323,13 +323,13 @@
                             <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
                         </div>
                     </div>
-                    <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId"></Transaction>
-                    <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData" @updated="aleadyUpdateData('reservation')"></Reservation>
-                    <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
+                    <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateApi && active==='transaction'" @updated="aleadyUpdateData('transaction')"></Transaction>
+                    <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData && active==='reservation'" @updated="aleadyUpdateData('reservation')"></Reservation>
+                    <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData && active==='chargingProfile'" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
                 <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
-                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="closeDialog('commonpopup')"></CommonPopup>
+                <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="(isUpdate)=>closeDialog('commonpopup', isUpdate)"></CommonPopup>
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
                 <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
@@ -538,7 +538,8 @@ export default {
             getCompositeSchedule: {
                 visible: false,
                 data: {}
-            }
+            },
+            updateApi: false //use this to hit other apis in components
         };
     },
     computed: {
@@ -753,6 +754,7 @@ export default {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
+                this.updateApi = data
             } else if (type === "reserveNow") {
                 this.reserveNow.visible = false;
                 this.isUpDateReservationData = data;
@@ -796,6 +798,8 @@ export default {
                 this.isUpDateReservationData = false;
             } else if (type === "chargingProfile") {
                 this.isUpDateChargingProfileData = false;
+            }else if(type==="transaction"){
+                this.updateApi =false
             }
         },
         handleClick() {

@@ -72,8 +72,10 @@ export default {
     },
     props: {
         chargerId: String,
-        dateRange: Array
+        dateRange: Array,
+        isUpdateData: Boolean
     },
+    emits: ["updated"],
     data() {
         return {
             allTransactions: [],
@@ -110,6 +112,11 @@ export default {
     watch: {
         dateRange: function () {
             this.getAllTransactions();
+        },
+        isUpdateData: function () {
+            if (this.isUpdateData) {
+                this.getAllTransactions();
+            }
         }
     },
     mounted() {
@@ -170,11 +177,13 @@ export default {
                             });
                         }
                     }
+                    this.$emit("updated");
                 })
                 .catch((err) => {
                     this.allTransactions = [];
                     this.total = 0;
                     console.log(err);
+                    this.$emit("updated");
                     this.$message({
                         type: "warning",
                         message: i18n.t("error_network")
