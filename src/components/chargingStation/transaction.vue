@@ -38,7 +38,7 @@
             </el-table-column>
             <el-table-column :label="$t('chargingStation.chargingProfile')" :min-width="2">
                 <template slot-scope="scope">
-                    <el-button type="primary" class="actionFunction" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
+                    <el-button type="primary" class="actionFunction" :disabled="scope.row.stopTimestamp!==null" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
