@@ -214,6 +214,7 @@ export default {
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
             }
+            data && this.getAllTransactions();
         }
     }
 };

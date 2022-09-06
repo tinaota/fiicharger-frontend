@@ -91,7 +91,6 @@ export default {
             this.params.transactionId = this.rowData.id;
             this.$API = $HTTP_stopConnectorTransaction;
         }
-        console.log(this.action, this.rowData);
     },
     methods: {
         callApi() {
