@@ -3,13 +3,13 @@
         <div class="item">
             <div class="label">{{ $t('menu.idTag') }}</div>
             <div class="info">
-                <IdTagList @idTag="getIdTag"></IdTagList>
+                <CommonList placeHolder="menu.idTag" selectedLabel="id" listType="idTag" @updateData="getIdTag"></CommonList>
             </div>
         </div>
         <div class="item">
             <div class="label">{{ $t('chargingStation.chargingProfile') }}</div>
             <div class="info">
-                <ChargingProfileList @chargingProfile="getChargingProfile"></ChargingProfileList>
+                <CommonList placeHolder="chargingStation.chargingProfile" selectedLabel="name" listType="chargingProfile" @updateData="getChargingProfile"></CommonList>
             </div>
         </div>
         <div class="item">
@@ -21,18 +21,16 @@
     </div>
 </template>
 <script>
-import IdTagList from "@/components/idTagList.vue";
-import ChargingProfileList from "@/components/chargingProfileList.vue";
+import CommonList from "@/components/commonList.vue";
 export default {
     components: {
-        IdTagList,
-        ChargingProfileList
+        CommonList
     },
     data() {
         return {
             idTag: null,
             templateId: null,
-            stackLevel: null,
+            stackLevel: null
         };
     },
     methods: {
@@ -56,7 +54,7 @@ export default {
                 templateId: this.templateId,
                 idTag: this.idTag
             };
-            this.$emit("update", combinedParams)
+            this.$emit("update", combinedParams);
         }
     }
 };
