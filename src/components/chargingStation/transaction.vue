@@ -38,7 +38,12 @@
             </el-table-column>
             <el-table-column :label="$t('chargingStation.chargingProfile')" :min-width="2">
                 <template slot-scope="scope">
-                    <el-button type="primary" class="actionFunction" :disabled="scope.row.stopTimestamp!==null" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
+                    <el-button type="primary" class="actionFunction" v-if="scope.row.stopTimestamp===null" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column :label="$t('menu.transaction')" :min-width="2">
+                <template slot-scope="scope">
+                    <el-button type="primary" class="actionFunction" v-if="scope.row.stopTimestamp===null" @click="openDialog('stopTransactionWithTransactionId', scope.row)">{{ $t('general.stop') }}</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -46,6 +51,7 @@
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
         <AddChargingProfile :show="addChargingProfile.visible" :data="addChargingProfile.data" :connectorIdFromTransactions="addChargingProfile.connectorId" @close="isUpdate => { closeDialog('addChargingProfile', isUpdate) }"></AddChargingProfile>
+        <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :rowData="commonpopup.rowData" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="isUpdate => closeDialog('stopTransactionWithTransactionId', isUpdate)"></CommonPopup>
     </div>
 </template>
 
@@ -57,10 +63,12 @@ import {
 } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
+import CommonPopup from "@/components/commonPopup";
 
 export default {
-    components:{
-        AddChargingProfile
+    components: {
+        AddChargingProfile,
+        CommonPopup
     },
     props: {
         chargerId: String,
@@ -84,8 +92,14 @@ export default {
             addChargingProfile: {
                 visible: false,
                 data: {},
-                connectorId:null
+                connectorId: null
             },
+            commonpopup: {
+                show: false,
+                chargePointId: null,
+                action: "",
+                rowData: {}
+            }
         };
     },
     computed: {
@@ -103,15 +117,22 @@ export default {
         this.getTransactionsReasonList();
     },
     methods: {
-        openDialog(action,data){
+        openDialog(action, data) {
             if (action === "addChargingProfile") {
-                console.log(data)
                 this.addChargingProfile.data = {
-                    chargePointId:data.chargePointId,
-                    transactionId: data.id,
-            };
-            this.addChargingProfile.connectorId= data.connectorId
-            this.addChargingProfile.visible = true;
+                    chargePointId: data.chargePointId,
+                    transactionId: data.id
+                };
+                this.addChargingProfile.connectorId = data.connectorId;
+                this.addChargingProfile.visible = true;
+            } else if (action === "stopTransactionWithTransactionId") {
+                console.log(action, data);
+                this.commonpopup.show = true;
+                this.commonpopup.chargePointId = data.chargePointId;
+                this.commonpopup.action = action;
+                if (data) {
+                    this.commonpopup.rowData = data;
+                }
             }
         },
         getAllTransactions(type) {
@@ -176,12 +197,15 @@ export default {
             this.getAllTransactions();
         },
         closeDialog(type, data) {
-             if (type === "addChargingProfile") {
+            if (type === "addChargingProfile") {
                 this.addChargingProfile.visible = false;
                 this.isUpDateChargingProfileData = data;
+            } else if (type === "stopTransactionWithTransactionId") {
+                this.commonpopup.show = false;
+                this.commonpopup.chargePointId = null;
+                this.commonpopup.action = "";
             }
         }
-
     }
 };
 </script>

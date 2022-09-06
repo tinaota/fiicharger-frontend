@@ -50,7 +50,8 @@ export default {
             params: {
                 chargePointId: "",
                 type: "",
-                connectorId: null
+                connectorId: null,
+                transactionId: null
             }
         };
     },
@@ -86,6 +87,9 @@ export default {
             this.$API = $HTTP_stopConnectorTransaction;
         } else if (this.action === "clearList") {
             this.$API = $HTTP_deleteAuthLocalList;
+        } else if (this.action === "stopTransactionWithTransactionId") {
+            this.params.transactionId = this.rowData.id;
+            this.$API = $HTTP_stopConnectorTransaction;
         }
         console.log(this.action, this.rowData);
     },
