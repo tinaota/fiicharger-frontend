@@ -102,10 +102,10 @@ export default {
                 chargingProfilePurpose: "TxDefaultProfile",
                 chargingProfileKind: "Absolute",
                 recurrencyKind: "Daily",
-                startSchedule: "",
+                startSchedule: moment().startOf('day').format('YYYY-MM-DD HH:mm'),
                 chargingRateUnit: "W",
                 minChargingRate: null,
-                scheduleDuration: null
+                scheduleDuration: 86400
             },
             profilePeriodTableVisible: false,
             rules: {
