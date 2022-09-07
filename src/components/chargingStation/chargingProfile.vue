@@ -11,7 +11,7 @@
             <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
             <el-table-column prop="chargingProfilePurpose" :label="$t('chargingProfile.chargingProfilePurpose')" :min-width="2"></el-table-column>\
             <el-table-column prop="isActive" :label="$t('general.active')" :min-width="2">
-                 <template slot-scope="scope">
+                <template slot-scope="scope">
                     {{ scope.row.isActive? 'true': 'false' }}
                 </template>
             </el-table-column>
@@ -29,7 +29,7 @@
             </el-table-column> -->
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
-      <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
+        <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
     </div>
 </template>
@@ -37,9 +37,7 @@
 <script>
 import { transformUtcToLocTime } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-import {
-    $HTTP_getChargingProfilesRecord
-} from "@/api/api";
+import { $HTTP_getChargingProfilesRecord } from "@/api/api";
 export default {
     props: {
         chargerId: String,
@@ -58,13 +56,16 @@ export default {
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item, "YYYY-MM-DD HH:mm");
-        },
+        }
     },
     watch: {
         isUpdateData: {
             handler() {
                 if (this.isUpdateData) {
-                    this.fetchSpecProfileData();
+                    // delay for 5 seconds before fetching
+                    setTimeout(() => {
+                        this.fetchSpecProfileData();
+                    }, 5000);
                 }
             }
         }
@@ -96,13 +97,16 @@ export default {
                     this.total = 0;
                     this.$emit("updated");
                     console.log("ChargingProfiles Err", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
                 });
         },
         changePage(page) {
             this.page = page;
         }
-    },
+    }
 };
 </script>
 <style lang = "scss" scoped>

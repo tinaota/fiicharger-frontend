@@ -78,7 +78,10 @@ export default {
         isUpdateData: {
             handler() {
                 if (this.isUpdateData) {
-                    this.fetchReservations();
+                    // delay for 5 seconds before fetching
+                    setTimeout(() => {
+                        this.fetchReservations();
+                    }, 5000);
                 }
             }
         }
@@ -93,7 +96,7 @@ export default {
                 limit: this.limit,
                 ChargePointId: this.chargerId,
                 IsDescending: true,
-                OrderBy: 'created',
+                OrderBy: "created",
                 CreatedAfter: this.dateRange[0],
                 CreatedBefore: this.dateRange[1]
             };
@@ -143,7 +146,7 @@ export default {
                 isUpdate && this.fetchReservations();
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
+        }
     }
 };
 </script>

@@ -115,7 +115,10 @@ export default {
         },
         isUpdateData: function () {
             if (this.isUpdateData) {
-                this.getAllTransactions();
+                // delay for 5 seconds before fetching
+                setTimeout(() => {
+                    this.getAllTransactions();
+                }, 5000);
             }
         }
     },
