@@ -172,7 +172,7 @@ export default {
                             that.isUpdate = true;
                         } else {
                             that.visible = false;
-                            that.isUpdate = false;
+                            that.isUpdate = true;
                             that.$message({
                                 type: "warning",
                                 message: i18n.t("actions.addChargingProfileRejected")
@@ -183,7 +183,7 @@ export default {
                         console.log("setChargingProfile", err)
                         that.visible = false;
                         that.isLoading = false;
-                        that.isUpdate = false;
+                        that.isUpdate = true;
                         let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
 
                         that.$message({
