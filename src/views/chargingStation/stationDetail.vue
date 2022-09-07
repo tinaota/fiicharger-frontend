@@ -528,7 +528,7 @@ export default {
         },
         getStatistics(id) {
             let params = {};
-            params.StationId = id;
+            params.ChargeStationId = id;
             params.StartedAfter = this.dateRange[0];
             params.StartedBefore = this.dateRange[1];
             this.statistics.isLoading = true;

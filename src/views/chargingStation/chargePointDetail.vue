@@ -807,7 +807,7 @@ export default {
         },
         getStatistics(id) {
             let params = {};
-            params.chargePointId = id;
+            params.ChargePointId = id;
             params.StartedAfter = this.dateRange[0];
             params.StartedBefore = this.dateRange[1];
             this.statistics.isLoading = true;
