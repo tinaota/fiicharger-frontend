@@ -7,6 +7,12 @@
             <div v-if="action==='startConnectorTransaction'">
                 <StartTransactionPopup @update="updateParams"></StartTransactionPopup>
             </div>
+            <div v-if="action==='stopConnectorTransaction'" class="item">
+                <div class="label">{{ $t('chargingStation.transactionId') }}</div>
+                <div class="info">
+                    <CommonList placeHolder="chargingStation.transactionId" selectedLabel="name" listType="transaction" :data="{connectorId: rowData.id, chargePointId: chargePointId}" @updateData="getTransactionId"></CommonList>
+                </div>
+            </div>
         </div>
         <!-- show a different footer in the model depending on the action -->
         <span slot="footer" class="dialog-footer" v-if="action!=='startConnectorTransaction'">
@@ -30,9 +36,11 @@ import {
     $HTTP_deleteAuthLocalList
 } from "@/api/api";
 import StartTransactionPopup from "@/components/popup/startTransactionPopup";
+import CommonList from "@/components/commonList.vue";
 export default {
     components: {
-        StartTransactionPopup
+        StartTransactionPopup,
+        CommonList
     },
     props: {
         show: Boolean,
@@ -167,6 +175,9 @@ export default {
             this.idTag = combinedParams.idTag;
             // update the parameters
             this.params = { ...this.params, ...combinedParams };
+        },
+        getTransactionId(id) {
+            this.params = { ...this.params, transactionId: id };
         }
     }
 };
@@ -179,7 +190,7 @@ export default {
         min-height: 50px;
     }
     p {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
     }
     .item {
         display: flex;
