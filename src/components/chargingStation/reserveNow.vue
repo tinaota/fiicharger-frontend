@@ -159,6 +159,7 @@ export default {
                             });
                         } else {
                             that.visible = false;
+                            this.isUpdateReservation = true;
                             this.$message({
                                 type: "warning",
                                 message: i18n.t(`actions.reserveNow${res}`)
