@@ -2,6 +2,13 @@
     <el-dialog :title="$t('chargingStation.cancelReservation')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <p>{{ $t("actions.cancelReservation") }}</p>
+            <!-- only show the active reservation list at the actions menu -->
+            <div class="item" v-if="!data.reservationId">
+                <div class="label">{{ $t('chargingStation.reservationId') }}</div>
+                <div class="info">
+                    <CommonList placeHolder="chargingStation.reservationId" selectedLabel="id" listType="reservation" :data="data" @updateData="getReservationId"></CommonList>
+                </div>
+            </div>
         </div>
         <span slot="footer" class="dialog-footer">
             <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
@@ -12,7 +19,11 @@
 
 <script>
 import { $HTTP_cancelReservation } from "@/api/api";
+import CommonList from "@/components/commonList.vue";
 export default {
+    components: {
+        CommonList
+    },
     props: {
         show: Boolean,
         data: Object
@@ -21,7 +32,8 @@ export default {
         return {
             visible: false,
             isLoading: false,
-            isUpdate: false
+            isUpdate: false,
+            reservationId: null
         };
     },
     watch: {
@@ -42,8 +54,11 @@ export default {
                 chargePointId: that.data.chargePointId,
                 connectorId: that.data.connectorId ?? 0
             };
-            if (that.data.reservationId) {
-                params.reservationId = that.data.reservationId;
+            // first condition for  reservation cancellation from table
+            // second condition for the dropdown in cancel reservation
+            if (that.data.reservationId || that.reservationId) {
+                params.reservationId =
+                    that.data.reservationId || that.reservationId;
             }
             that.isLoading = true;
             $HTTP_cancelReservation(params)
@@ -81,6 +96,9 @@ export default {
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);
+        },
+        getReservationId(reservationId) {
+            this.reservationId = reservationId;
         }
     }
 };
@@ -92,7 +110,15 @@ export default {
         min-height: 50px;
     }
     p {
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .item {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        justify-content: space-between;
+        margin-top: 5px;
     }
 }
 </style>
