@@ -76,7 +76,9 @@ export default {
     methods: {
         fetchSpecProfileData() {
             let params = {
-                ChargePointId: this.chargerId
+                ChargePointId: this.chargerId,
+                page: this.page,
+                limit: this.limit
             };
             this.isLoading = true;
             $HTTP_getChargingProfilesRecord(params)
@@ -84,7 +86,7 @@ export default {
                     this.isLoading = false;
                     if (res?.data.length > 0) {
                         this.tableData = res.data;
-                        this.total = res.data.length;
+                        this.total = res.metadata.totalRows;
                     } else {
                         this.tableData = [];
                         this.total = 0;
@@ -105,6 +107,7 @@ export default {
         },
         changePage(page) {
             this.page = page;
+            this.fetchSpecProfileData();
         }
     }
 };
