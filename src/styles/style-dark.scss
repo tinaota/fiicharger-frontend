@@ -67,6 +67,19 @@ $dark-background-color: #2d3855;
                     color: $dark-font-color !important;
                 }
             }
+            .el-dialog__body {
+                .table-result {
+                    .el-table {
+                        tr {
+                            background: #323d5d !important;
+                            td .cell,
+                            th .cell {
+                                color: $dark-font-color !important;
+                            }
+                        }
+                    }
+                }
+            }
         }
         .dashboard-statistics {
             ::placeholder,

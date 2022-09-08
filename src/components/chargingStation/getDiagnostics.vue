@@ -44,7 +44,7 @@
 
     <hr/>
     <div class="content-warp" v-loading="isLoading">
-        <div class="result-content">
+        <div class="result-content table-result">
             <el-table
                 :data="diagnosticsFileListData"
                 style="width: 100%">
