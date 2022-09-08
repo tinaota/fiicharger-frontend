@@ -1,6 +1,7 @@
 import { $GLOBAL_AUTH, $GLOBAL_CLIENT_ID, $GLOBAL_REDIRECT_URL } from "@/utils/global";
 import axios from 'axios';
 import qs from 'qs';
+import router from '../router/index';
 import store from '../store/store';
 import * as types from '../store/types';
 axios.defaults.withCredentials = true
@@ -120,9 +121,13 @@ axios.interceptors.response.use(
 
         }
         else {
-            if (error?.response?.data?.error === 'invalid_grant' && error?.response?.status === 400) {
+            // route user to login screen if they get invalid grant or unauthorized
+            if ((error?.response?.data?.error === 'invalid_grant' && error?.response?.status === 400) || (error?.response?.status === 401 && error?.response?.statusText === 'Unauthorized')) {
                 store.commit(types.LOGOUT, JSON.stringify({}));
-                router.replace({ path: '/login' });
+                // route to login page after showing an error
+                setTimeout(() => {
+                    router.push('/login');
+                }, 1000)
             }
             return Promise.reject(error.response)
 
