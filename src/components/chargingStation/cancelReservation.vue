@@ -95,6 +95,8 @@ export default {
                 });
         },
         closeDialog() {
+            // empty all data when closing popup
+            this.reservationId = null;
             this.$emit("close", this.isUpdate);
         },
         getReservationId(reservationId) {

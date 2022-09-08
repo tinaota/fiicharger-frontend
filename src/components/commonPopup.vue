@@ -168,6 +168,15 @@ export default {
             }
         },
         closeDialog() {
+            // empty all data when closing popup
+            this.$API = null;
+            this.idTag = null;
+            this.params = {
+                chargePointId: "",
+                type: "",
+                connectorId: null,
+                transactionId: null
+            };
             this.$emit("close", this.isUpdate);
         },
         updateParams(combinedParams) {
