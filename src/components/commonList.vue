@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <el-select v-if="selectedLabel==='id'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
+    <div style="width:100%">
+        <el-select style="width:100%" v-if="selectedLabel==='id'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
             <el-option v-for="item in list.data" :label="item.id" :key="item.id" :value="item.id"></el-option>
         </el-select>
-        <el-select v-if="selectedLabel==='name'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
+        <el-select style="width:100%" v-if="selectedLabel==='name'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
             <el-option v-for="item in list.data" :label="item.name" :key="item.id" :value="item.id"></el-option>
         </el-select>
     </div>
@@ -75,6 +75,17 @@ export default {
                     this.list.isLoading = false;
                     if (res?.data?.length > 0) {
                         this.list.data = res.data;
+                        // set selected to highest id if present
+                        let highestId;
+                        if (this.selectedLabel === "id") {
+                            highestId = Math.max(
+                                ...res.data.map((item) => item.id)
+                            );
+                            if (highestId) {
+                                this.selected = highestId;
+                                this.$emit("updateData", this.selected);
+                            }
+                        }
                     }
                 })
                 .catch((err) => {
