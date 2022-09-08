@@ -15,7 +15,7 @@
         <div class="item">
             <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
             <div class="info">
-                <el-input-number style="width:182px" v-model="stackLevel" :step="1" :min="0" @change="updateStackLevel"></el-input-number>
+                <el-input-number style="width:100%" v-model="stackLevel" :step="1" :min="0" @change="updateStackLevel"></el-input-number>
             </div>
         </div>
     </div>
@@ -69,6 +69,9 @@ export default {
         height: 40px;
         justify-content: space-between;
         margin-top: 5px;
+        .info{
+            width: 180px;
+        }
     }
 }
 </style>
