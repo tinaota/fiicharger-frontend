@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="table-result">
         <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
             <el-table-column prop="id" :label="$t('chargingProfile.id')" :min-width="2"></el-table-column>
             <el-table-column prop="name" :label="$t('chargingProfile.name')" :min-width="2"></el-table-column>

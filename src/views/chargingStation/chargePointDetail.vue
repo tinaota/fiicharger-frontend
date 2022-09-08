@@ -68,7 +68,12 @@
                         </div>
                     </div>
                     <div class="card-8 rank-area">
-                        <el-button size="medium" type="primary" @click="openDialog(chargePointById[0].id, 'configuration')"> {{ $t('general.settings') }}</el-button>
+                        <div class="settings">
+                            <el-button size="medium" type="primary" @click="openDialog(chargePointById[0].id, 'configuration', 'getAllSettings')"> {{ $t('general.settings') }}</el-button>
+                            <el-input class="settingsInput" :placeholder="$t('general.key')" v-model="settingsInput"></el-input>
+                            <el-button size="mini" type="primary" style="padding:8px" @click="openDialog(chargePointById[0].id, 'configuration', null)" :disabled="settingsInput.length===0"> {{ $t('general.get') }}</el-button>
+                            <el-button size="mini" type="primary" style="padding:8px" @click="openDialog(chargePointById[0].id, 'setConfiguration', null)" :disabled="settingsInput.length===0"> {{ $t('general.modify') }}</el-button>
+                        </div>
                         <div class="header">
                             <div class="title">{{ $t('general.action') }}</div>
                         </div>
@@ -141,7 +146,7 @@
                         </ul>
                     </div>
 
-                    <div class="card-8 connector-area">
+                    <div class="card-8 connector-area table-result">
                         <div class="header">
                             <div class="title">{{ $t('chargingStation.connectors') }}</div>
                         </div>
@@ -328,7 +333,8 @@
                     <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData && active==='chargingProfile'" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
                 </div>
                 <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
-                <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" @close="closeDialog('configuration')" />
+                <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" :selectedKey="configuration.selectedKey" @close="closeDialog('configuration')" />
+                <SetConfiguration :show="setConfiguration.show" v-if="setConfiguration.show" :chargePointId="setConfiguration.chargePointId" :selectedKey="setConfiguration.selectedKey" @close="closeDialog('setConfiguration')"></SetConfiguration>
                 <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="(isUpdate)=>closeDialog('commonpopup', isUpdate)"></CommonPopup>
                 <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
                 <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
@@ -363,9 +369,10 @@ import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getConnectorStatusesById,
     $HTTP_getTransactionsStatistics
-} from "@/api/api";
+    } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
+import SetConfiguration from "@/views/setting/setConfigurationDialog"
 import CommonPopup from "@/components/commonPopup";
 import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
@@ -384,6 +391,7 @@ export default {
         Transaction,
         UpdateConnectorType,
         Configuration,
+        SetConfiguration,
         CommonPopup,
         Reservation,
         ReserveNow,
@@ -412,7 +420,13 @@ export default {
             },
             configuration: {
                 show: false,
-                chargePointId: null
+                chargePointId: null,
+                selectedKey: null
+            },
+            setConfiguration: {
+                show: false,
+                chargePointId: null,
+                selectedKey: null
             },
             commonpopup: {
                 show: false,
@@ -539,7 +553,8 @@ export default {
                 visible: false,
                 data: {}
             },
-            updateApi: false //use this to hit other apis in components
+            updateApi: false, //use this to hit other apis in components
+            settingsInput: ""
         };
     },
     computed: {
@@ -732,7 +747,17 @@ export default {
             } else if (type === "configuration") {
                 this.configuration.show = true;
                 this.configuration.chargePointId = this.chargePointById[0].id;
-            } else if (type === "commonpopup") {
+                if(action==='getAllSettings'){
+                    this.configuration.selectedKey = null
+                }else{
+                    this.configuration.selectedKey = this.settingsInput
+                }
+            } else if(type==="setConfiguration"){
+                this.setConfiguration.show = true;
+                this.setConfiguration.chargePointId = this.chargePointById[0].id;
+                this.setConfiguration.selectedKey = this.settingsInput
+            }
+            else if (type === "commonpopup") {
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = this.chargePointById[0].id;
                 this.commonpopup.action = action;
@@ -749,7 +774,10 @@ export default {
                 this.changeConnectorType.connectorType = null;
             } else if (type === "configuration") {
                 this.configuration.show = false;
-                this.commonpopup.chargePointId = null;
+                this.configuration.chargePointId = null;
+            }else if (type==="setConfiguration"){
+                this.setConfiguration.show = false;
+                this.setConfiguration.chargePointId = null;
             } else if (type === "commonpopup") {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
@@ -1000,6 +1028,14 @@ export default {
         .actionFunction {
             -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
             box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
+        }
+    }
+        .settings{
+            display: flex;
+            .settingsInput{
+                margin: 0 5px;
+                display: flex;
+                align-items: center;
         }
     }
     }

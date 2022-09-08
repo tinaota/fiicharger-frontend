@@ -2,7 +2,7 @@
     <el-dialog :title="$t('general.settings')" width="80%" style="margin-top:-6vh" :visible.sync="visible" custom-class="configurationDialog" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="configuration table-result">
             <el-button class="cross" size="small" @click="isUpdate = false; visible = false;">X</el-button>
-            <div class="filter">
+            <div class="filter" v-if="!selectedKey">
                 <el-select class="autoresizeselect configurationSelect" v-model="filter.selectedConfiguration" :placeholder="$t('general.customConfigurationPlaceholder')" v-loading="configurationSearchList.isLoading" @change="getConfiguration(chargePointId)" clearable multiple filterable allow-create default-first-option>
                     <el-option v-for="item in configurationSearchList.data" :label="item.key" :key="item.key" :value="item.key"></el-option>
                 </el-select>
@@ -46,7 +46,8 @@ export default {
     },
     props: {
         show: Boolean,
-        chargePointId: String
+        chargePointId: String,
+        selectedKey: String
     },
     data() {
         return {
@@ -69,6 +70,11 @@ export default {
         const that = this;
         that.visible = that.show;
         that.defaultChargePointId = that.chargePointId;
+        if (this.selectedKey) {
+            this.filter.selectedConfiguration = this.selectedKey;
+        } else {
+            this.filter.selectedConfiguration = [];
+        }
         this.getConfiguration(that.chargePointId);
     },
     methods: {
@@ -133,6 +139,10 @@ export default {
             $HTTP_updateConfiguration(params)
                 .then((res) => {
                     if (res === "Accepted") {
+                        this.$message({
+                            type: "success",
+                            message: i18n.t("actions.configurationAccepted")
+                        });
                         this.getConfiguration(this.chargePointId);
                     } else if (res === "NotSupported") {
                         this.$message({
@@ -154,6 +164,7 @@ export default {
             this.componentKey += 1;
         },
         closeDialog() {
+            this.filter.selectedConfiguration = [];
             this.$emit("close", this.isUpdate);
         },
         runScrollFunction() {

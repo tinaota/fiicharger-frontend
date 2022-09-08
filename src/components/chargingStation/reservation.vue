@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="table-result">
         <el-table :data="tableData" v-loading="isLoading">
             <el-table-column prop="id" :label="$t('chargingStation.reservationId')" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2"></el-table-column>
