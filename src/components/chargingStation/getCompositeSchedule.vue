@@ -11,8 +11,9 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
-                <el-time-select v-model="param.time" :picker-options="pickerOptions">
-                </el-time-select>
+                <div class="info">
+                    <el-input-number style="width:100%" v-model="param.duration" :step="10" :min="0" controls-position="right"></el-input-number>
+                </div>
             </div>
         </div>
         <p style="text-align:center;">
@@ -25,7 +26,6 @@
 <script>
 import { $HTTP_getCompositeSchedule } from "@/api/api";
 import ShowCompositeSchedule from "@/components/chargingStation/showCompositeSchedule";
-import moment from "moment";
 export default {
     components: {
         ShowCompositeSchedule
@@ -39,14 +39,7 @@ export default {
             visible: false,
             isLoading: false,
             param: {
-                time: ""
-            },
-            pickerOptions: {
-                start: "00:00",
-                step: "00:01",
-                end: "24:00",
-                minTime: "",
-                maxTime: "24:00"
+                duration: 86400
             },
             showCompositeScheduleDialog: {
                 visible: false,
@@ -69,11 +62,8 @@ export default {
                 connectorId: 0,
                 duration: 0
             };
-            if (this.param.time && this.param.time !== "00:00") {
-                var today = moment().format("YYYY-MM-DD ");
-                var startTime = moment(today + "00:00");
-                var curTime = moment(today + this.param.time);
-                params.duration = curTime.diff(startTime) / 1000;
+            if (this.param.duration) {
+                params.duration = this.param.duration;
             }
             that.isLoading = true;
             that.showCompositeScheduleDialog.data = {};
@@ -114,12 +104,12 @@ export default {
         },
         closeDialog() {
             this.param = {
-                time: ""
+                duration: 86400
             };
             this.$emit("close");
         },
-        changeShowCompositeScheduleStatus(){
-            this.showCompositeScheduleDialog.visible = false
+        changeShowCompositeScheduleStatus() {
+            this.showCompositeScheduleDialog.visible = false;
         }
     }
 };
@@ -135,5 +125,18 @@ export default {
     height: 50px;
     border-radius: 6px;
     text-align: center;
+}
+
+.dialogForm {
+    .item {
+        display: flex;
+        width: 100%;
+        height: 40px;
+        justify-content: space-between;
+        margin-top: 5px;
+        .info {
+            width: 180px;
+        }
+    }
 }
 </style>
