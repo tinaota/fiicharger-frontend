@@ -44,7 +44,9 @@
         "price": "价格",
         "idTag": "ID 标签",
         "transaction": "交易",
-        "analysis": "分析"
+        "analysis": "分析",
+        "analytics": "分析",
+        "overview": "概述"
     },
     "login": {
         "login": "登入",

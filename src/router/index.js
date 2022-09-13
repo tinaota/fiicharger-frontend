@@ -60,6 +60,16 @@ let routes = [
                     { path: '/chargingProfile', component: () => import('@/views/setting/chargingProfile.vue'), name: 'chargingStation.chargingProfile', hidden: false }
                 ]
             },
+            {
+                path: '/analyticsInfo',
+                iconCls: 'ic_analytics_o',
+                name: 'menu.analytics',
+                hasChild: true,
+                component: () => import('@/components/data.vue'),
+                children: [
+                    { path: '/analytics', component: () => import('@/views/analytics/overview.vue'), name: 'menu.overview', hidden: false },
+                ]
+            },
             // {
             //     path: '/billing',
             //     iconCls: 'ic_billing_o',

@@ -44,7 +44,9 @@
         "price": "El Precio",
         "idTag": "Etiqueta",
         "transaction": "Transacción",
-        "analysis": "Análisis"
+        "analysis": "Análisis",
+        "analytics": "Analítica",
+        "overview": "Visión general"
     },
     "login": {
         "login": "Acceso",

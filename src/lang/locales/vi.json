@@ -44,7 +44,9 @@
         "price": "Giá",
         "idTag": "Nhãn ID",
         "transaction": "Giao dịch",
-        "analysis": "Phân tích"
+        "analysis": "Phân tích",
+        "analytics": "Phân tích",
+        "overview": "Tổng quát"
     },
     "login": {
         "login": "Đăng nhập",

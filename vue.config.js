@@ -34,6 +34,9 @@ module.exports = {
             "/cosmos": {
                 "target": "http://10.20.23.12"
             },
+            "/ai-dashboard": {
+                "target": "http://10.20.23.12"
+            },
 
         }
     }

@@ -44,7 +44,9 @@
         "price": "Price",
         "idTag": "ID Tag",
         "transaction": "Transaction",
-        "analysis": "Analysis"
+        "analysis": "Analysis",
+        "analytics": "Analytics",
+        "overview": "Overview"
     },
     "login": {
         "login": "Login",
