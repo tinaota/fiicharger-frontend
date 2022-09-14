@@ -9,7 +9,6 @@ import store from './store/store'
 import axios from './http/http'
 import i18n from './lang/lang'
 import $ from 'jquery'
-import VuePapaParse from 'vue-papa-parse'
 import 'jquery-mousewheel'
 import 'element-ui/lib/theme-chalk/index.css';
 import 'font-awesome/css/font-awesome.min.css'
@@ -27,7 +26,6 @@ Vue.prototype.$echarts = Echarts
 Vue.prototype.$jQuery = $
 
 Vue.use(ElementUI, { size: 'mini' });
-Vue.use(VuePapaParse)
 export const app = new Vue({
     router,
     store,
