@@ -222,6 +222,7 @@ export default {
             },
             globalAuth: $GLOBAL_AUTH,
             globalBaseUrl: $GLOBAL_BASE_URL,
+            imageUpdatedId: null
         };
     },
     computed: {
@@ -436,6 +437,7 @@ export default {
                                     return $HTTP_updateImage(params)
                                         .then((res) => {
                                             if (res.succeeded) {
+                                                this.imageUpdatedId = params.id;
                                                 that.$message({
                                                     type: "success",
                                                     message: i18n.t("general.sucUpdateMsg"),
@@ -462,8 +464,7 @@ export default {
                                 // get user info if it is updated(shown in the main tab)
                                 let fiicsUser = this.$store.state.userInfo;
                                 let userId = fiicsUser.id;
-
-                                if (this.dialog.info.id === userId) {
+                                if (this.imageUpdatedId === userId) {
                                     $HTTP_getUserInfo()
                                         .then((res) => {
                                             let data = res;
