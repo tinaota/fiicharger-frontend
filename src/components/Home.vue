@@ -84,7 +84,7 @@
 <script>
 import * as types from "../store/types";
 import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL } from "@/utils/global";
-import { $HTTP_logout } from "@/api/api";
+import { $HTTP_logout, $HTTP_getUserInfo } from "@/api/api";
 import { $GLOBAL_CLIENT_ID } from "@/utils/global";
 import { setScrollBar, updateLangCookie, transformLangCookieToSymbol } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
@@ -157,18 +157,11 @@ export default {
         },
     },
     created() {
+        // get user info on every refresh
+        this.getUserInfo()
         if (this.$store.state.userInfo) {
             const userData = this.$store.state.userInfo;
-            // set role(highest one)
-            if (userData?.roles?.indexOf("Super") != -1) {
-                this.roleNameObj = "Super";
-            } else if (userData?.roles?.indexOf("Admin") != -1) {
-                this.roleNameObj = "Admin";
-            } else if (userData?.roles?.indexOf("Owner") != -1) {
-                this.roleNameObj = "Owner";
-            } else {
-                this.roleNameObj = "Member";
-            }
+            this.setRoles(userData)
         } else {
             this.$store.commit(types.LOGOUT, JSON.stringify({}));
             this.$router.push("/login");
@@ -238,6 +231,30 @@ export default {
         setScrollBar(".home-menu", this);
     },
     methods: {
+        setRoles(userData){
+            // set role(highest one)
+            if (userData?.roles?.indexOf("Super") != -1) {
+                this.roleNameObj = "Super";
+            } else if (userData?.roles?.indexOf("Admin") != -1) {
+                this.roleNameObj = "Admin";
+            } else if (userData?.roles?.indexOf("Owner") != -1) {
+                this.roleNameObj = "Owner";
+            } else {
+                this.roleNameObj = "Member";
+            }
+        },
+        getUserInfo(){
+            $HTTP_getUserInfo()
+                .then((res) => {
+                    // do not update user info if it is same
+                    if(JSON.stringify(res)!==JSON.stringify(this.$store.state.userInfo)){
+                        this.$store.dispatch("setUser", res);
+                        const userData = res
+                        this.setRoles(userData)
+                    }
+                })
+                .catch((e) => console.log(e));
+        },
         menuShowCtrl: function (child) {
             if (
                 (this.roleNameObj === "Admin" || this.roleNameObj === "Super" || this.roleNameObj === "Owner") &&
