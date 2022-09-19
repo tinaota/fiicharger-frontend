@@ -179,7 +179,14 @@
         "upload": "上傳",
         "chooseFile": "選擇文件",
         "full": "完整更新",
-        "differential": "差異更新"
+        "differential": "差異更新",
+        "boundToStation": "開往車站",
+        "descending": "降序",
+        "generate": "產生",
+        "firmwareStatus": "固件狀態",
+        "diagnosticsStatus": "診斷狀態",
+        "downloadCSV": "下載 CSV",
+        "downloadPDF": "下載PDF"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -362,7 +369,13 @@
         "newUsers": "新用戶",
         "repeatedUsers": "重複用戶",
         "uploadFirmware": "上傳韌體",
-        "getCompositeSchedule": "獲取綜合時間表"
+        "getCompositeSchedule": "獲取綜合時間表",
+        "uptime": "正常運行時間",
+        "chargeEvents": "收費事件",
+        "uniqueVehicles": "獨特的車輛",
+        "averageChargeTime": "平均充電時間",
+        "averagePower": "平均功率",
+        "totalPower": "總功率"
     },
     "userAccount": {
         "memberName": "會員名稱",
@@ -617,5 +630,19 @@
         "repeatUsers": "重複用戶",
         "newUsers": "新用戶",
         "totalUsers": "總用戶"
+    },
+    "reports": {
+        "chargePoints": "充電點",
+        "chargePointsConnectorSummary": "充電點連接器摘要",
+        "chargePointsTransactionSummary": "充電點交易摘要",
+        "chargePointUsage": "充電點使用",
+        "chargeStations": "充電站",
+        "chargeStationSummary": "充電站摘要",
+        "chargeStationOverallSummary": "充電站總體摘要",
+        "chargingProfileTemplates": "充電配置文件模板",
+        "chargingProfiles": "充電配置文件",
+        "idTags": "身份標籤",
+        "reservations": "預訂",
+        "transactions": "交易"
     }
 }

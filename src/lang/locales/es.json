@@ -179,7 +179,14 @@
         "upload": "Subir",
         "chooseFile": "Elija el archivo",
         "full": "Completo",
-        "differential": "Diferencial"
+        "differential": "Diferencial",
+        "boundToStation": "Vinculado a la estación",
+        "descending": "Descendente",
+        "generate": "Generar",
+        "firmwareStatus": "Estado del firmware",
+        "diagnosticsStatus": "Estado de diagnóstico",
+        "downloadCSV": "Descargar CSV",
+        "downloadPDF": "Descargar PDF"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -362,7 +369,13 @@
         "newUsers": "Usuarios nuevos",
         "repeatedUsers": "Usuarios repetidos",
         "uploadFirmware": "Subir firmware",
-        "getCompositeSchedule": "Obtener horario compuesto"
+        "getCompositeSchedule": "Obtener horario compuesto",
+        "uptime": "Tiempo de actividad",
+        "chargeEvents": "Eventos de carga",
+        "uniqueVehicles": "Vehículos únicos",
+        "averageChargeTime": "Tiempo de carga promedio",
+        "averagePower": "Energía promedio",
+        "totalPower": "Poder total"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",
@@ -617,5 +630,19 @@
         "repeatUsers": "Usuarios repetidos",
         "newUsers": "Usuarios nuevos",
         "totalUsers": "Usuarios totales"
+    },
+    "reports": {
+        "chargePoints": "Puntos de recarga",
+        "chargePointsConnectorSummary": "Resumen del conector del punto de recarga",
+        "chargePointsTransactionSummary": "Resumen de transacciones de puntos de recarga",
+        "chargePointUsage": "Uso del punto de recarga",
+        "chargeStations": "Estaciones de carga",
+        "chargeStationSummary": "Resumen de la estación de carga",
+        "chargeStationOverallSummary": "Resumen general de la estación de carga",
+        "chargingProfileTemplates": "Plantillas de perfil de carga",
+        "chargingProfiles": "Perfiles de carga",
+        "idTags": "Etiquetas de identificación",
+        "reservations": "Reservas",
+        "transactions": "Actas"
     }
 }

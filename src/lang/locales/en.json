@@ -179,7 +179,14 @@
         "upload": "Upload",
         "chooseFile": "Choose File",
         "full": "Full",
-        "differential": "Differential"
+        "differential": "Differential",
+        "boundToStation": "Bound to Station",
+        "descending": "Descending",
+        "generate": "Generate",
+        "firmwareStatus": "Firmware status",
+        "diagnosticsStatus": "Diagnostics status",
+        "downloadCSV": "Download CSV",
+        "downloadPDF": "Download PDF"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -362,7 +369,13 @@
         "newUsers": "New Users",
         "repeatedUsers": "Repeated Users",
         "uploadFirmware": "Upload Firmware",
-        "getCompositeSchedule": "Get Composite Schedule"
+        "getCompositeSchedule": "Get Composite Schedule",
+        "uptime": "Uptime",
+        "chargeEvents": "Charge Events",
+        "uniqueVehicles": "Unique Vehicles",
+        "averageChargeTime": "Average Charge Time",
+        "averagePower": "Average Power",
+        "totalPower": "Total Power"
     },
     "userAccount": {
         "memberName": "Member Name",
@@ -617,5 +630,19 @@
         "repeatUsers": "Repeated Users",
         "newUsers": "New Users",
         "totalUsers": "Total Users"
+    },
+    "reports": {
+        "chargePoints": "Charge Points",
+        "chargePointsConnectorSummary": "Charge Point Connector Summary",
+        "chargePointsTransactionSummary": "Charge Point Transaction Summary",
+        "chargePointUsage": "Charge Point Usage",
+        "chargeStations": "Charge Stations",
+        "chargeStationSummary": "Charge Station Summary",
+        "chargeStationOverallSummary": "Charge Station Overall Summary",
+        "chargingProfileTemplates": "Charging Profile Templates",
+        "chargingProfiles": "Charging Profiles",
+        "idTags": "ID Tags",
+        "reservations": "Reservations",
+        "transactions": "Transactions"
     }
 }

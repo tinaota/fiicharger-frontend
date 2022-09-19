@@ -179,7 +179,14 @@
         "upload": "上传",
         "chooseFile": "选择文档",
         "full": "完整更新",
-        "differential": "差异更新"
+        "differential": "差异更新",
+        "boundToStation": "开往车站",
+        "descending": "降序",
+        "generate": "产生",
+        "firmwareStatus": "固件状态",
+        "diagnosticsStatus": "诊断状态",
+        "downloadCSV": "下载 CSV",
+        "downloadPDF": "下载PDF"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -362,7 +369,13 @@
         "newUsers": "新用户",
         "repeatedUsers": "重复用户",
         "uploadFirmware": "上传固件",
-        "getCompositeSchedule": "获取综合时间表"
+        "getCompositeSchedule": "获取综合时间表",
+        "uptime": "正常运行时间",
+        "chargeEvents": "收费事件",
+        "uniqueVehicles": "独特的车辆",
+        "averageChargeTime": "平均充电时间",
+        "averagePower": "平均功率",
+        "totalPower": "总功率"
     },
     "userAccount": {
         "memberName": "会员名称",
@@ -582,7 +595,7 @@
         "startPeriod": "开始时间",
         "scheduleDuration": "持续时间",
         "chargingRateUnit": "充电速率单位",
-        "stackLevel":"堆栈级别"
+        "stackLevel": "堆栈级别"
     },
     "sendLocalList": {
         "listVersion": "列表版本号",
@@ -617,5 +630,19 @@
         "repeatUsers": "重复用户",
         "newUsers": "新用户",
         "totalUsers": "总用户"
+    },
+    "reports": {
+        "chargePoints": "充电点",
+        "chargePointsConnectorSummary": "充电点连接器摘要",
+        "chargePointsTransactionSummary": "充电点交易摘要",
+        "chargePointUsage": "充电点使用",
+        "chargeStations": "充电站",
+        "chargeStationSummary": "充电站摘要",
+        "chargeStationOverallSummary": "充电站总体摘要",
+        "chargingProfileTemplates": "充电配置文件模板",
+        "chargingProfiles": "充电配置文件",
+        "idTags": "身份标签",
+        "reservations": "预订",
+        "transactions": "交易"
     }
 }

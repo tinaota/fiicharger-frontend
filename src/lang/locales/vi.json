@@ -179,7 +179,14 @@
         "upload": "Tải lên",
         "chooseFile": "Chọn tập tin",
         "full": "Đầy",
-        "differential": "Khác biệt"
+        "differential": "Khác biệt",
+        "boundToStation": "Ràng buộc đến ga",
+        "descending": "Giảm dần",
+        "generate": "Phát ra",
+        "firmwareStatus": "Tình trạng chương trình cơ sở",
+        "diagnosticsStatus": "Trạng thái chẩn đoán",
+        "downloadCSV": "Tải xuống CSV",
+        "downloadPDF": "Tải PDF"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -362,7 +369,13 @@
         "newUsers": "Những người dùng mới",
         "repeatedUsers": "Người dùng lặp lại",
         "uploadFirmware": "Tải lên chương trình cơ sở",
-        "getCompositeSchedule": "Nhận lịch biểu tổng hợp"
+        "getCompositeSchedule": "Nhận lịch biểu tổng hợp",
+        "uptime": "Thời gian hoạt động",
+        "chargeEvents": "Sự kiện tính phí",
+        "uniqueVehicles": "Phương tiện độc đáo",
+        "averageChargeTime": "Thời gian sạc trung bình",
+        "averagePower": "Công suất trung bình",
+        "totalPower": "Tổng công suất"
     },
     "userAccount": {
         "memberName": "Tên thành viên",
@@ -617,5 +630,19 @@
         "repeatUsers": "Người dùng lặp lại",
         "newUsers": "Những người dùng mới",
         "totalUsers": "Tổng số người dùng"
+    },
+    "reports": {
+        "chargePoints": "Điểm tính phí",
+        "chargePointsConnectorSummary": "Tóm tắt về trình kết nối điểm sạc",
+        "chargePointsTransactionSummary": "Tóm tắt giao dịch điểm tính phí",
+        "chargePointUsage": "Sử dụng điểm sạc",
+        "chargeStations": "Trạm tính phí",
+        "chargeStationSummary": "Tóm tắt về trạm thu phí",
+        "chargeStationOverallSummary": "Tóm tắt tổng thể về trạm thu phí",
+        "chargingProfileTemplates": "Sạc mẫu hồ sơ",
+        "chargingProfiles": "Cấu hình sạc",
+        "idTags": "Thẻ ID",
+        "reservations": "Đặt trước",
+        "transactions": "Giao dịch"
     }
 }
