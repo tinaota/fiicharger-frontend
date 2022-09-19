@@ -1388,3 +1388,12 @@ input[type="number"] {
         cursor: pointer;
     }
 }
+
+// custom pdf table header
+.pdfTableHeader {
+    color: #000000 !important;
+    font-weight: 600;
+    .cell {
+        word-break: break-word !important;
+    }
+}

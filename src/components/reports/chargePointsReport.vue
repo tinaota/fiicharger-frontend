@@ -1,13 +1,11 @@
 <template>
     <div class="table-result">
+        <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading">
             <el-table-column prop="id" :label="$t('chargingStation.chargerId')" :min-width="3">
             </el-table-column>
             <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-            <el-table-column :label="$t('chargingStation.power')" :min-width="1">
-                <template slot-scope="scope">
-                    {{ scope.row.powerKw + "kW" }}
-                </template>
+            <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" :min-width="1">
             </el-table-column>
             <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                 <template slot-scope="scope">
@@ -19,31 +17,34 @@
                     {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="diagnosticsStatus" :label="$t('general.diagnosticsStatus')" :min-width="3"></el-table-column>
-            <el-table-column prop="firmwareStatus" :label="$t('general.firmwareStatus')" :min-width="3"></el-table-column>
+            <el-table-column :label="$t('userAccount.createdDate')" :min-width="2">
+                <template slot-scope="scope">
+                    {{ scope.row.created!==null? getLocTime(scope.row.created):'' }}
+                </template>
+            </el-table-column>
+            <el-table-column :label="$t('general.latestModification')" :min-width="2">
+                <template slot-scope="scope">
+                    {{ scope.row.modified!==null? getLocTime(scope.row.modified):'' }}
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
-        <div v-if="tableData.length>0" class="downloads" style="display:flex">
-            <DownloadCSV :filterParams="filterParams" :dropdownSelected="dropdownSelected" :total="total"></DownloadCSV>
-            <DownloadPDF></DownloadPDF>
-        </div>
     </div>
 </template>
 <script>
 import { $HTTP_getAllChargeBoxList } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { transformUtcToLocTime } from "@/utils/function";
-import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
-import DownloadPDF from "@/components/reports/downloads/DownloadPDF.vue";
 
 export default {
-    components: { DownloadCSV, DownloadPDF },
     props: {
         filterParams: Object,
-        dropdownSelected: String
+        dropdownSelected: String,
+        downloadClicked: Boolean
     },
+    emits: ["emitFetchedData"],
     data() {
         return {
             tableData: [],
@@ -59,12 +60,14 @@ export default {
         }
     },
     watch: {
-        filterParams: function () {
-            this.fetchData();
+        downloadClicked: function () {
+            if (this.downloadClicked) {
+                this.fetchData();
+            }
         }
     },
     mounted() {
-        this.fetchData();
+        // this.fetchData();
     },
     methods: {
         fetchData() {
@@ -82,6 +85,10 @@ export default {
                     if (res?.data?.length > 0) {
                         this.tableData = res.data;
                         this.total = res.metadata.totalRows;
+                        this.$emit("emitFetchedData", {
+                            total: res.metadata.totalRows,
+                            complete: true
+                        });
                     } else {
                         this.tableData = [];
                         this.total = 0;
@@ -116,5 +123,18 @@ export default {
     font-size: 1rem;
     color: #5a607f;
     letter-spacing: 0;
+}
+
+.el-button {
+    background: #0263ff !important;
+    color: #fff;
+    border: unset;
+    font-size: 1rem;
+    width: 130px !important;
+    height: 40px;
+    border-radius: 6px;
+    text-align: center;
+    margin-left: 5px;
+    margin-bottom: 5px;
 }
 </style>
