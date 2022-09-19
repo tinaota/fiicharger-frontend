@@ -92,6 +92,16 @@ let routes = [
             //     ]
             // },
             {
+                path: '/reportInfo',
+                iconCls: 'ic_report_o',
+                name: 'menu.report',
+                hasChild: true,
+                component: () => import('@/components/data.vue'),
+                children: [
+                    { path: '/reports', component: () => import('@/views/reports/overview.vue'), name: 'menu.overview', hidden: false },
+                ]
+            },
+            {
                 path: '/account',
                 iconCls: 'ic_user_o',
                 name: 'menu.account',
