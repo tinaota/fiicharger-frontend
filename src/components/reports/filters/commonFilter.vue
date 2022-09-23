@@ -24,9 +24,6 @@
         <el-select v-if="isBoundToStationFilter" class="select-small" v-model="filter.isBoundToStation" :placeholder="$t('general.boundToStation')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
-        <!-- <el-select v-if="isDescendingFilter" class="select-small" v-model="filter.isDescending" :placeholder="$t('general.descending')" @change="updateParams" clearable>
-            <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
-        </el-select> -->
         <el-select v-if="connectionStatusFilter" class="select-small" v-model="filter.connectionStatus" :placeholder="$t('chargingStation.connectionStatus')" @change="updateParams" clearable>
             <el-option v-for="item in filter.connectionStatusList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
@@ -71,7 +68,6 @@ export default {
                     // "transactions"
                 ],
                 isBoundToStation: null,
-                isDescending: null,
                 chargePointName: "",
                 chargePointId: "",
                 stationName: "",
@@ -142,13 +138,6 @@ export default {
                 this.filter.dropdownSelected === "chargePointUsage"
             );
         },
-        isDescendingFilter() {
-            return (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage" ||
-                this.filter.dropdownSelected === "chargeStationSummary"
-            );
-        },
         connectionStatusFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
@@ -208,7 +197,6 @@ export default {
             this.filter = {
                 ...this.filter,
                 isBoundToStation: null,
-                isDescending: null,
                 chargePointName: "",
                 chargePointId: "",
                 stationName: "",
@@ -236,9 +224,6 @@ export default {
             if (this.filter.isBoundToStation) {
                 params.IsBoundToStation =
                     this.filter.isBoundToStation === "true";
-            }
-            if (this.filter.isDescending) {
-                params.IsDescending = this.filter.isDescending === "true";
             }
             if (this.filter.chargePointName) {
                 params.Name = this.filter.chargePointName;

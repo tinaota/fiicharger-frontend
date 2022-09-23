@@ -17,7 +17,8 @@ export default {
         filterParams: Object,
         dropdownSelected: String,
         total: Number,
-        fetchDataComplete: Boolean
+        fetchDataComplete: Boolean,
+        sortingParams: Object
     },
     emits: ["downloadCSVClicked"],
     data() {
@@ -40,6 +41,9 @@ export default {
         },
         downloadCSV() {
             let params = { limit: this.total, ...this.filterParams };
+            if (this.sortingParams) {
+                params = { ...params, ...this.sortingParams };
+            }
             let $API = null;
             if (this.dropdownSelected === "chargePoints") {
                 $API = $HTTP_getAllChargeBoxList;

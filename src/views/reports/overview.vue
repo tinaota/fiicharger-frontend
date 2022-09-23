@@ -9,7 +9,7 @@
                 <CommonFilter @updateDropdown="updateDropdownSelected" @updateParams="updateParams"></CommonFilter>
             </div>
             <div v-if="dropdownSelected ==='chargePoints'">
-                <ChargePointsReport :filterParams="filterParams" dropdownSelected="chargePoints" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargePointsReport>
+                <ChargePointsReport :filterParams="filterParams" dropdownSelected="chargePoints" :sortingParams="sortingParams" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" @tableSorting="updateSortingParams"></ChargePointsReport>
             </div>
             <div v-if="dropdownSelected ==='chargePointUsage'">
                 <ChargePointsUsageReport :filterParams="filterParams" dropdownSelected="chargePointUsage" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargePointsUsageReport>
@@ -24,8 +24,8 @@
 
             <!-- add downloads option -->
             <div class="downloads" style="display:flex">
-                <DownloadCSV :filterParams="filterParams" :dropdownSelected="dropdownSelected" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadCSVClicked="updateDownloadCSVClicked"></DownloadCSV>
-                <DownloadPDF :filterParams="filterParams" :dropdownSelected="dropdownSelected" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadPDFClicked="updateDownloadPDFClicked"></DownloadPDF>
+                <DownloadCSV :filterParams="filterParams" :dropdownSelected="dropdownSelected" :sortingParams="sortingParams" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadCSVClicked="updateDownloadCSVClicked"></DownloadCSV>
+                <DownloadPDF :filterParams="filterParams" :dropdownSelected="dropdownSelected" :sortingParams="sortingParams" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadPDFClicked="updateDownloadPDFClicked"></DownloadPDF>
             </div>
         </div>
     </div>
@@ -57,7 +57,8 @@ export default {
             tableDataLength: null,
             downloadCSVClicked: false,
             fetchDataComplete: false,
-            downloadPDFClicked: false
+            downloadPDFClicked: false,
+            sortingParams: {}
         };
     },
     mounted() {},
@@ -81,6 +82,9 @@ export default {
             // update only when downloads is clicked
             this.tableDataLength = total;
             this.fetchDataComplete = complete;
+        },
+        updateSortingParams(data) {
+            this.sortingParams = { ...data };
         }
     }
 };
