@@ -5,7 +5,10 @@
 </template>
 
 <script>
-import { $HTTP_getAllChargeBoxList } from "@/api/api";
+import {
+    $HTTP_getAllChargeBoxList,
+    $HTTP_getChargePointsUsage
+} from "@/api/api";
 import Papa from "papaparse";
 export default {
     props: {
@@ -38,6 +41,8 @@ export default {
             let $API = null;
             if (this.dropdownSelected === "chargePoints") {
                 $API = $HTTP_getAllChargeBoxList;
+            } else if (this.dropdownSelected === "chargePointUsage") {
+                $API = $HTTP_getChargePointsUsage;
             }
             $API(params)
                 .then((res) => {

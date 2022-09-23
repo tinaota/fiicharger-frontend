@@ -37,7 +37,7 @@ export const $HTTP_updateOccpAvailability = (params) => {
 
 //get configurations of each chargepoint
 export const $HTTP_getConfiguration = (params) => {
-    return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`,{keys: params.keys})
+    return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/configuration`, { keys: params.keys })
 }
 
 //update configurations of each chargepoint
@@ -64,7 +64,7 @@ export const $HTTP_resetChargers = (params) => {
 
 export const $HTTP_unlockConnector = (params) => {
     return post(
-        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/unlock`,params
+        `${base_charger}/api/ocpp/charge-points/${params.chargePointId}/unlock`, params
     );
 };
 
@@ -78,11 +78,11 @@ export const $HTTP_getAllTransactions = (params) => {
 }
 
 export const $HTTP_startConnectorTransaction = (params) => {
-    return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions`,params);
+    return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions`, params);
 }
 
 export const $HTTP_stopConnectorTransaction = (params) => {
-        return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions/stop`,params);
+    return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions/stop`, params);
 }
 
 // Id Tag apis
@@ -239,7 +239,7 @@ export const $HTTP_updateConnectorType = (params) => {
 //get connector summary
 export const $HTTP_getConnectorSummary = (params) => {
     return fetch(
-        `${base_charger}/api/reports/charge-points/connector-summary`,params
+        `${base_charger}/api/reports/charge-points/connector-summary`, params
     );
 }
 
@@ -257,7 +257,7 @@ export const $HTTP_getTransactionSummary = (params) => {
 }
 
 export const $HTTP_getTransactionsStatistics = (params) => {
-    return fetch (`${base_charger}/api/reports/transactions/statistics`,params)
+    return fetch(`${base_charger}/api/reports/transactions/statistics`, params)
 }
 
 //get connection Summary
@@ -295,16 +295,16 @@ export const $HTTP_getIdtagList = () => { return fetch(`${base_charger}/api/ocpp
 export const $HTTP_getLocalAuthListVersion = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list/version`, {}) }
 
 //send auth local list to charger
-export const $HTTP_sendAuthLocalList = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param)}
+export const $HTTP_sendAuthLocalList = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param) }
 
 //clear auth local list
-export const $HTTP_deleteAuthLocalList = params => { return del(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param)}
+export const $HTTP_deleteAuthLocalList = params => { return del(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/local-list`, params.param) }
 
 //get diagnostics
 export const $HTTP_postDiagnostics = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/get-diagnostics`, params.param) }
 
 // polling get diagnostics status
-export const $HTTP_getDiagnosticsStatus = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/diagnostics-status`, {})}
+export const $HTTP_getDiagnosticsStatus = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/diagnostics-status`, {}) }
 
 //get diagnostics/firmware file list
 export const $HTTP_getFileList = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.param) }
@@ -325,7 +325,7 @@ export const $HTTP_getUpdateFirmwareStatus = params => { return fetch(`${base_ch
 export const $HTTP_getFirmwareUploadUrl = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/upload-firmware`) }
 
 // graph apis
-export const $HTTP_getTransactionTrafficGraphData = params => { return fetch(`${base_charger}/api/reports/transactions/graphs/traffic`,params) }
+export const $HTTP_getTransactionTrafficGraphData = params => { return fetch(`${base_charger}/api/reports/transactions/graphs/traffic`, params) }
 
 //get charging rate uni
 export const $HTTP_getChargingRateUnit = () => { return fetch(`${base_charger}/api/ocpp/chargingrateunit-type-list`) }
@@ -353,8 +353,12 @@ export const $HTTP_setChargingProfile = params => { return post(`${base_charger}
 export const $HTTP_clearChargingProfile = params => { return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/charging-profiles/clear`, params) }
 
 //post charge point upload firmware file
-export const $HTTP_uploadFirmwareFile = params => { return post(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.formData)
+export const $HTTP_uploadFirmwareFile = params => {
+    return post(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.formData)
 }
 
 //Get Composite Schedule
 export const $HTTP_getCompositeSchedule = params => { return fetch(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/composite-schedule`, params) }
+
+// get usage of charge points
+export const $HTTP_getChargePointsUsage = params => { return fetch(`${base_charger}/api/reports/charge-points/usage`, params) }
