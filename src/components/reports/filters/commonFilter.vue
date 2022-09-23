@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             filter: {
-                dropdownSelected: "chargeStationSummary",
+                dropdownSelected: "chargePoints",
                 dropdownList: [
                     "chargePoints",
                     // "chargePointsConnectorSummary",
@@ -99,13 +99,17 @@ export default {
     },
     computed: {
         addressFilter() {
-            return this.filter.dropdownSelected === "chargeStationSummary";
+            return (
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
+            );
         },
         zipCodeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage" ||
-                this.filter.dropdownSelected === "chargeStationSummary"
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
         },
         chargePointIdFilter() {
@@ -121,7 +125,10 @@ export default {
             );
         },
         stationNameFilter() {
-            return this.filter.dropdownSelected === "chargeStationSummary";
+            return (
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
+            );
         },
         stationIdFilter() {
             return (
@@ -149,25 +156,36 @@ export default {
             );
         },
         stationStatusFilter() {
-            return this.filter.dropdownSelected === "chargeStationSummary";
+            return (
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
+            );
         },
         currentTypeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage" ||
-                this.filter.dropdownSelected === "chargeStationSummary"
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
         },
         connectorTypeFilter() {
-            return this.filter.dropdownSelected === "chargeStationSummary";
+            return (
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
+            );
         },
         keyWordFilter() {
-            return this.filter.dropdownSelected === "chargeStationSummary";
+            return (
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
+            );
         },
         dateRangeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePointUsage" ||
-                this.filter.dropdownSelected === "chargeStationSummary"
+                this.filter.dropdownSelected === "chargeStationSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
         }
     },
@@ -206,6 +224,8 @@ export default {
             // set default dates
             this.mountDefaultDateRange();
             this.$emit("updateDropdown", this.filter.dropdownSelected);
+            // update all default params after mounting new component
+            this.updateParams();
         },
         updateParams() {
             // send params to the overview page when button is clicked
@@ -227,7 +247,11 @@ export default {
                 params.Id = this.filter.chargePointId;
             }
             if (this.filter.stationName) {
-                if (this.filter.dropdownSelected === "chargeStationSummary") {
+                if (
+                    this.filter.dropdownSelected === "chargeStationSummary" ||
+                    this.filter.dropdownSelected ===
+                        "chargeStationOverallSummary"
+                ) {
                     params.Name = this.filter.stationName;
                 }
             }
@@ -255,7 +279,9 @@ export default {
             if (this.filter.dateRange) {
                 if (
                     this.filter.dropdownSelected === "chargePointUsage" ||
-                    this.filter.dropdownSelected === "chargeStationSummary"
+                    this.filter.dropdownSelected === "chargeStationSummary" ||
+                    this.filter.dropdownSelected ===
+                        "chargeStationOverallSummary"
                 ) {
                     params.Before = this.filter.dateRange[1];
                     params.After = this.filter.dateRange[0];

@@ -8,7 +8,8 @@
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getChargePointsUsage,
-    $HTTP_getChargeStationsSummary
+    $HTTP_getChargeStationsSummary,
+    $HTTP_getChargeStationsOverallSummary
 } from "@/api/api";
 import Papa from "papaparse";
 export default {
@@ -46,10 +47,23 @@ export default {
                 $API = $HTTP_getChargePointsUsage;
             } else if (this.dropdownSelected === "chargeStationSummary") {
                 $API = $HTTP_getChargeStationsSummary;
+            } else if (
+                this.dropdownSelected === "chargeStationOverallSummary"
+            ) {
+                $API = $HTTP_getChargeStationsOverallSummary;
             }
             $API(params)
                 .then((res) => {
-                    let response = res.data;
+                    let response;
+                    // check this since the response is an object in this api
+                    // other apis returns array of objects
+                    if (
+                        this.dropdownSelected === "chargeStationOverallSummary"
+                    ) {
+                        response = [res];
+                    } else {
+                        response = res.data;
+                    }
                     // get fields
                     // can localize fields from here
                     let fields = Object.keys(response[0]).map((item) => item);

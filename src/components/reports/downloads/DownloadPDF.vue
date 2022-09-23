@@ -11,6 +11,9 @@
         <div class="" v-if="dropdownSelected==='chargeStationSummary' && isDataDownloadComplete">
             <ChargeStationsSummaryPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryPDFTemplate>
         </div>
+        <div class="" v-if="dropdownSelected==='chargeStationOverallSummary' && isDataDownloadComplete">
+            <ChargeStationsSummaryOverallPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryOverallPDFTemplate>
+        </div>
     </div>
 </template>
 
@@ -19,16 +22,20 @@
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getChargePointsUsage,
-    $HTTP_getChargeStationsSummary
+    $HTTP_getChargeStationsSummary,
+    $HTTP_getChargeStationsOverallSummary
 } from "@/api/api";
 import ChargePointsPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointPDFTemplate.vue";
 import ChargePointsUsagePDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointsUsagePDFTemplate.vue";
 import ChargeStationsSummaryPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryPDFTemplate.vue";
+import ChargeStationsSummaryOverallPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryOverallPDFTemplate.vue";
+
 export default {
     components: {
         ChargePointsPDFTemplate,
         ChargePointsUsagePDFTemplate,
-        ChargeStationsSummaryPDFTemplate
+        ChargeStationsSummaryPDFTemplate,
+        ChargeStationsSummaryOverallPDFTemplate
     },
     props: {
         filterParams: Object,
@@ -72,10 +79,22 @@ export default {
                 $API = $HTTP_getChargePointsUsage;
             } else if (this.dropdownSelected === "chargeStationSummary") {
                 $API = $HTTP_getChargeStationsSummary;
+            } else if (
+                this.dropdownSelected === "chargeStationOverallSummary"
+            ) {
+                $API = $HTTP_getChargeStationsOverallSummary;
             }
             $API(params)
                 .then((res) => {
-                    this.tableData = res.data;
+                    // check this since the response is an object in this api
+                    // other apis returns array of objects
+                    if (
+                        this.dropdownSelected === "chargeStationOverallSummary"
+                    ) {
+                        this.tableData = [res];
+                    } else {
+                        this.tableData = res.data;
+                    }
                     this.isDataDownloadComplete = true;
                 })
                 .then(() => {
