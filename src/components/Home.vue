@@ -1,13 +1,46 @@
 
 <template>
     <div :class="isDark? 'dark-theme':'light-theme'">
-        <el-row class="header">
-            <el-col :sm="24" :lg="8" class="sys">
+
+   <section class="main_class_header">
+    <div class="main-nav-fii">
+        <div class="main_logo_img">
                 <div>
                     <img :src="systemLogo">
                 </div>
-            </el-col>
-            <el-col :sm="24" :lg="16" class="header-info">
+           </div>
+         <div class="main-nav">
+
+            <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect" :collapse="isCollapse">
+                    <template v-for="item in $router.options.routes">
+                        <template v-if="!item.hidden && item.ename ==='Home'">
+                            <template v-for="child in item.children">
+                                <template v-if="menuShowCtrl(child)">
+                                    <el-menu-item v-if="!child.hasChild" :key="child.path" :index="child.path">
+                                        <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
+                                    </el-menu-item>
+                                    <el-submenu v-else :key="child.path" :index="child.path">
+                                        <template slot="title">
+                                            <div style="margin-right:6px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
+                                            <span>{{ $t(child.name) }}</span>
+                                        </template>
+                                        <template v-for="subChild in child.children">
+                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}">{{ $t(subChild.name) }}</el-menu-item>
+                                        </template>
+                                    </el-submenu>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                </el-menu>
+                
+           </div>    
+    </div>
+
+    <div class="body_section">
+
+      <div class="header_section">
+                    <el-col class="header-info">
                 <div class="img-container">
                     <img :src="userAvatar" />
                 </div>
@@ -42,8 +75,25 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
-        </el-row>
-        <section class="container">
+        </div>
+
+        
+     <div class="body_right_section">
+
+        <section class="right-container">
+                <transition name="fade" mode="out-in">
+                    <transition name="fade" mode="out-in">
+                        <router-view></router-view>
+                    </transition>
+                </transition>
+        </section> 
+        </div>  
+    </div>     
+    </section>
+
+    
+
+         <!--<section class="container">
             <aside class="left-container">
                 <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect">
                     <template v-for="item in $router.options.routes">
@@ -76,7 +126,8 @@
                     </transition>
                 </transition>
             </section>
-        </section>
+        </section> -->
+
     </div>
 </template>
 
@@ -96,6 +147,7 @@ export default {
     data() {
         return {
             version: $GLOBAL_VERSION,
+            isCollapse:false,
             menuList: {},
             routerParent: "",
             routerName: "",
@@ -341,14 +393,13 @@ export default {
         color: #303133;
     }
 }
-.header {
-    height: 68px;
-    padding: 16px;
-    background: #d5e0ef;
     .header-info {
         height: 100%;
         text-align: right;
-        padding-right: 12px;
+        padding: 18px;
+        background: rgba(228, 230, 234, 0.4);
+        height: auto;
+           box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
         .el-divider {
             background-color: #979797;
             margin: 0 24px;
@@ -393,7 +444,57 @@ export default {
             }
         }
     }
+
+.main_class_header{
+   display: flex;
+    flex-direction: row;
+    height: 100%;
+    overflow: hidden;
+    width: 100%; 
 }
+
+.main_logo_img{
+ padding: 16px;
+ background:#F5F7FA ;  
+}
+.main-nav-fii{
+    display: flex;
+    flex-direction: column;
+    max-width: 15rem;
+    min-width: 12rem;
+    overflow: hidden;
+    background:rgba(228, 230, 234, .4);
+    height: auto;
+    min-height: 100vh;
+    max-height: auto; 
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
+}
+
+.main-nav{
+    height: 100%;
+    display: flex;
+    overflow: auto;
+    position: relative;
+    z-index: 100;
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    justify-content: space-between;
+         .el-menu {
+            overflow: hidden;
+            background:transparent;
+            border-right: none;
+        }  
+}
+
+.body_section{
+   display: flex;
+    flex-direction: column;
+        flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+}
+
 .container {
     width: 100%;
     height: calc(100vh - 68px);
