@@ -18,7 +18,7 @@
             </el-table-column>
             <el-table-column prop="chargeEvents" :label="$t('chargingStation.chargeEvents')" :min-width="1">
             </el-table-column>
-            <el-table-column prop="uniqueVehicles" :label="$t('chargingStation.uniqueVehicles')" :min-width="1">
+            <el-table-column prop="uniqueUsers" :label="$t('chargingStation.uniqueUsers')" :min-width="1">
             </el-table-column>
             <el-table-column :label="$t('chargingStation.averageChargeTime') + ' (min)'" :min-width="1">
                 <template slot-scope="scope">
@@ -30,9 +30,9 @@
                     {{ scope.row.averagePower.toFixed(2) }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.totalPower') +' (kW)'" :min-width="1">
+            <el-table-column :label="$t('chargingStation.totalEnergy') +' (kWh)'" :min-width="1">
                 <template slot-scope="scope">
-                    {{ scope.row.totalPower.toFixed(2) }}
+                    {{ scope.row.totalEnergy.toFixed(2) }}
                 </template>
             </el-table-column>
         </el-table>

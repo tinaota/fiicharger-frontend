@@ -372,10 +372,10 @@
         "getCompositeSchedule": "獲取綜合時間表",
         "uptime": "正常運行時間",
         "chargeEvents": "收費事件",
-        "uniqueVehicles": "獨特的車輛",
+        "uniqueUsers": "唯一用戶",
         "averageChargeTime": "平均充電時間",
         "averagePower": "平均功率",
-        "totalPower": "總功率"
+        "totalEnergy": "總能量"
     },
     "userAccount": {
         "memberName": "會員名稱",

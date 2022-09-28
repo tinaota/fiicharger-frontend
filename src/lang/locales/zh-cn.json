@@ -372,10 +372,10 @@
         "getCompositeSchedule": "获取综合时间表",
         "uptime": "正常运行时间",
         "chargeEvents": "收费事件",
-        "uniqueVehicles": "独特的车辆",
+        "uniqueUsers": "唯一用户",
         "averageChargeTime": "平均充电时间",
         "averagePower": "平均功率",
-        "totalPower": "总功率"
+        "totalEnergy": "总能量"
     },
     "userAccount": {
         "memberName": "会员名称",

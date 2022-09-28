@@ -372,10 +372,10 @@
         "getCompositeSchedule": "Nhận lịch biểu tổng hợp",
         "uptime": "Thời gian hoạt động",
         "chargeEvents": "Sự kiện tính phí",
-        "uniqueVehicles": "Phương tiện độc đáo",
+        "uniqueUsers": "Người dùng duy nhất",
         "averageChargeTime": "Thời gian sạc trung bình",
         "averagePower": "Công suất trung bình",
-        "totalPower": "Tổng công suất"
+        "totalEnergy": "Tổng năng lượng"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

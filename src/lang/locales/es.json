@@ -372,10 +372,10 @@
         "getCompositeSchedule": "Obtener horario compuesto",
         "uptime": "Tiempo de actividad",
         "chargeEvents": "Eventos de carga",
-        "uniqueVehicles": "Vehículos únicos",
+        "uniqueUsers": "Usuarios únicos",
         "averageChargeTime": "Tiempo de carga promedio",
         "averagePower": "Energía promedio",
-        "totalPower": "Poder total"
+        "totalEnergy": "Energía total"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

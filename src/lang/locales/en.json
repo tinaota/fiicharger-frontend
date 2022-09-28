@@ -372,10 +372,10 @@
         "getCompositeSchedule": "Get Composite Schedule",
         "uptime": "Uptime",
         "chargeEvents": "Charge Events",
-        "uniqueVehicles": "Unique Vehicles",
+        "uniqueUsers": "Unique Users",
         "averageChargeTime": "Average Charge Time",
         "averagePower": "Average Power",
-        "totalPower": "Total Power"
+        "totalEnergy": "Total Energy"
     },
     "userAccount": {
         "memberName": "Member Name",
