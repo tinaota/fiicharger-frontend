@@ -186,7 +186,10 @@
         "firmwareStatus": "Tình trạng chương trình cơ sở",
         "diagnosticsStatus": "Trạng thái chẩn đoán",
         "downloadCSV": "Tải xuống CSV",
-        "downloadPDF": "Tải PDF"
+        "downloadPDF": "Tải PDF",
+        "keyWord": "Từ khóa",
+        "currentType": "Loại hiện tại",
+        "connectorType": "loại trình kết nối"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -375,7 +378,11 @@
         "uniqueUsers": "Người dùng duy nhất",
         "averageChargeTime": "Thời gian sạc trung bình",
         "averagePower": "Công suất trung bình",
-        "totalEnergy": "Tổng năng lượng"
+        "totalEnergy": "Tổng năng lượng",
+        "dcFastChargers": "Bộ sạc DC",
+        "weeklyUtilization": "Số phiên mỗi tuần",
+        "averageSessionPower": "Công suất phiên trung bình",
+        "averageHoursPerSession": "Số giờ trung bình mỗi phiên"
     },
     "userAccount": {
         "memberName": "Tên thành viên",

@@ -7,7 +7,8 @@
 <script>
 import {
     $HTTP_getAllChargeBoxList,
-    $HTTP_getChargePointsUsage
+    $HTTP_getChargePointsUsage,
+    $HTTP_getChargeStationsSummary
 } from "@/api/api";
 import Papa from "papaparse";
 export default {
@@ -43,6 +44,8 @@ export default {
                 $API = $HTTP_getAllChargeBoxList;
             } else if (this.dropdownSelected === "chargePointUsage") {
                 $API = $HTTP_getChargePointsUsage;
+            } else if (this.dropdownSelected === "chargeStationSummary") {
+                $API = $HTTP_getChargeStationsSummary;
             }
             $API(params)
                 .then((res) => {

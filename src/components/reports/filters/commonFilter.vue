@@ -3,13 +3,19 @@
         <el-select class="select-small compnentSelectDropdown" v-model="filter.dropdownSelected" :placeholder="$t('general.select')" @change="updateDropdownSelected">
             <el-option v-for="item in filter.dropdownList" :label="$t(`reports.${item}`)" :key="item" :value="item"></el-option>
         </el-select>
-        <el-input v-if="zipCodeFilter" :placeholder="$t('general.location')" v-model="filter.zipCode" @change="updateParams" clearable>
+        <el-input v-if="addressFilter" :placeholder="$t('general.address')" v-model="filter.address" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="zipCodeFilter" :placeholder="$t('general.zipCode')" v-model="filter.zipCode" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <el-input v-if="chargePointIdFilter" :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.chargePointId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <el-input v-if="chargePointNameFilter" :placeholder="$t('chargingStation.chargePointName')" v-model="filter.chargePointName" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="stationNameFilter" :placeholder="$t('chargingStation.stationName')" v-model="filter.stationName" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <el-input v-if="stationIdFilter" :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="updateParams" clearable>
@@ -24,9 +30,18 @@
         <el-select v-if="connectionStatusFilter" class="select-small" v-model="filter.connectionStatus" :placeholder="$t('chargingStation.connectionStatus')" @change="updateParams" clearable>
             <el-option v-for="item in filter.connectionStatusList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
-        <el-select v-if="currentTypeFilter" class="select-small" v-model="filter.currentType" :placeholder="$t('general.type')" @change="updateParams" clearable>
+        <el-select v-if="stationStatusFilter" class="select-small" v-model="filter.stationStatus" :placeholder="$t('chargingStation.stationStatus')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.stationStatusList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
+        <el-select v-if="currentTypeFilter" class="select-small" v-model="filter.currentType" :placeholder="$t('general.currentType')" @change="updateParams" clearable>
             <el-option v-for="item in filter.currentTypeList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
+        <el-input v-if="connectorTypeFilter" :placeholder="$t('general.connectorType')" v-model="filter.connectorType" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="keyWordFilter" :placeholder="$t('general.keyWord')" v-model="filter.keyWord" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
         <el-date-picker v-if="dateRangeFilter" :default-time="['00:00:00', '23:59:59']" v-model="filter.dateRange" type="daterange" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="filter.pickerOptions" :clearable="false" class="" @change="updateParams">
         </el-date-picker>
     </div>
@@ -40,15 +55,15 @@ export default {
     data() {
         return {
             filter: {
-                dropdownSelected: "chargePointUsage",
+                dropdownSelected: "chargeStationSummary",
                 dropdownList: [
                     "chargePoints",
                     // "chargePointsConnectorSummary",
                     // "chargePointsTransactionSummary",
-                    "chargePointUsage"
+                    "chargePointUsage",
                     // "chargeStations",
-                    // "chargeStationSummary",
-                    // "chargeStationOverallSummary",
+                    "chargeStationSummary",
+                    "chargeStationOverallSummary"
                     // "chargingProfileTemplates",
                     // "chargingProfiles",
                     // "idTags",
@@ -59,8 +74,12 @@ export default {
                 isDescending: null,
                 chargePointName: "",
                 chargePointId: "",
+                stationName: "",
                 stationId: "",
                 zipCode: "",
+                keyWord: "",
+                connectorType: "",
+                address: "",
                 booleanList: ["true", "false"],
                 dateRange: [],
                 pickerOptions: {
@@ -71,16 +90,22 @@ export default {
                 },
                 connectionStatus: "",
                 connectionStatusList: ["Connected", "Disconnected"],
+                stationStatus: "",
+                stationStatusList: ["Enabled", "Disabled"],
                 currentType: "",
                 currentTypeList: ["AC", "DC"]
             }
         };
     },
     computed: {
+        addressFilter() {
+            return this.filter.dropdownSelected === "chargeStationSummary";
+        },
         zipCodeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
+                this.filter.dropdownSelected === "chargePointUsage" ||
+                this.filter.dropdownSelected === "chargeStationSummary"
             );
         },
         chargePointIdFilter() {
@@ -94,6 +119,9 @@ export default {
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage"
             );
+        },
+        stationNameFilter() {
+            return this.filter.dropdownSelected === "chargeStationSummary";
         },
         stationIdFilter() {
             return (
@@ -110,7 +138,8 @@ export default {
         isDescendingFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
+                this.filter.dropdownSelected === "chargePointUsage" ||
+                this.filter.dropdownSelected === "chargeStationSummary"
             );
         },
         connectionStatusFilter() {
@@ -119,14 +148,27 @@ export default {
                 this.filter.dropdownSelected === "chargePointUsage"
             );
         },
+        stationStatusFilter() {
+            return this.filter.dropdownSelected === "chargeStationSummary";
+        },
         currentTypeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
+                this.filter.dropdownSelected === "chargePointUsage" ||
+                this.filter.dropdownSelected === "chargeStationSummary"
             );
         },
+        connectorTypeFilter() {
+            return this.filter.dropdownSelected === "chargeStationSummary";
+        },
+        keyWordFilter() {
+            return this.filter.dropdownSelected === "chargeStationSummary";
+        },
         dateRangeFilter() {
-            return this.filter.dropdownSelected === "chargePointUsage";
+            return (
+                this.filter.dropdownSelected === "chargePointUsage" ||
+                this.filter.dropdownSelected === "chargeStationSummary"
+            );
         }
     },
     mounted() {
@@ -151,10 +193,15 @@ export default {
                 isDescending: null,
                 chargePointName: "",
                 chargePointId: "",
+                stationName: "",
                 stationId: "",
                 zipCode: "",
+                keyWord: "",
+                connectorType: "",
+                address: "",
                 connectionStatus: "",
-                currentType: ""
+                currentType: "",
+                stationStatus: ""
             };
             // set default dates
             this.mountDefaultDateRange();
@@ -163,6 +210,9 @@ export default {
         updateParams() {
             // send params to the overview page when button is clicked
             let params = {};
+            if (this.filter.address) {
+                params.Address = this.filter.address;
+            }
             if (this.filter.isBoundToStation) {
                 params.IsBoundToStation =
                     this.filter.isBoundToStation === "true";
@@ -176,11 +226,19 @@ export default {
             if (this.filter.chargePointId) {
                 params.Id = this.filter.chargePointId;
             }
+            if (this.filter.stationName) {
+                if (this.filter.dropdownSelected === "chargeStationSummary") {
+                    params.Name = this.filter.stationName;
+                }
+            }
             if (this.filter.stationId) {
                 params.StationId = this.filter.stationId;
             }
             if (this.filter.zipCode) {
                 params.ZipCode = this.filter.zipCode;
+            }
+            if (this.filter.stationStatus) {
+                params.Status = this.filter.stationStatus;
             }
             if (this.filter.connectionStatus) {
                 params.Status = this.filter.connectionStatus;
@@ -188,8 +246,17 @@ export default {
             if (this.filter.currentType) {
                 params.CurrentType = this.filter.currentType;
             }
+            if (this.filter.connectorType) {
+                params.ConnectorType = this.filter.connectorType;
+            }
+            if (this.filter.keyWord) {
+                params.Keyword = this.filter.keyWord;
+            }
             if (this.filter.dateRange) {
-                if (this.filter.dropdownSelected === "chargePointUsage") {
+                if (
+                    this.filter.dropdownSelected === "chargePointUsage" ||
+                    this.filter.dropdownSelected === "chargeStationSummary"
+                ) {
                     params.Before = this.filter.dateRange[1];
                     params.After = this.filter.dateRange[0];
                 }

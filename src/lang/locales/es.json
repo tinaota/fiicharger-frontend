@@ -186,7 +186,10 @@
         "firmwareStatus": "Estado del firmware",
         "diagnosticsStatus": "Estado de diagnóstico",
         "downloadCSV": "Descargar CSV",
-        "downloadPDF": "Descargar PDF"
+        "downloadPDF": "Descargar PDF",
+        "keyWord": "Palabra clave",
+        "currentType": "Tipo actual",
+        "connectorType": "Tipo de conector"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -375,7 +378,11 @@
         "uniqueUsers": "Usuarios únicos",
         "averageChargeTime": "Tiempo de carga promedio",
         "averagePower": "Energía promedio",
-        "totalEnergy": "Energía total"
+        "totalEnergy": "Energía total",
+        "dcFastChargers": "Cargadores de CC",
+        "weeklyUtilization": "Sessions Per Week",
+        "averageSessionPower": "Potencia media de sesión",
+        "averageHoursPerSession": "Promedio de horas por sesión"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

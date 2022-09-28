@@ -8,6 +8,9 @@
         <div class="" v-if="dropdownSelected==='chargePointUsage' && isDataDownloadComplete">
             <ChargePointsUsagePDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargePointsUsagePDFTemplate>
         </div>
+        <div class="" v-if="dropdownSelected==='chargeStationSummary' && isDataDownloadComplete">
+            <ChargeStationsSummaryPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryPDFTemplate>
+        </div>
     </div>
 </template>
 
@@ -15,14 +18,17 @@
 <script>
 import {
     $HTTP_getAllChargeBoxList,
-    $HTTP_getChargePointsUsage
+    $HTTP_getChargePointsUsage,
+    $HTTP_getChargeStationsSummary
 } from "@/api/api";
 import ChargePointsPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointPDFTemplate.vue";
 import ChargePointsUsagePDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointsUsagePDFTemplate.vue";
+import ChargeStationsSummaryPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryPDFTemplate.vue";
 export default {
     components: {
         ChargePointsPDFTemplate,
-        ChargePointsUsagePDFTemplate
+        ChargePointsUsagePDFTemplate,
+        ChargeStationsSummaryPDFTemplate
     },
     props: {
         filterParams: Object,
@@ -64,6 +70,8 @@ export default {
                 $API = $HTTP_getAllChargeBoxList;
             } else if (this.dropdownSelected === "chargePointUsage") {
                 $API = $HTTP_getChargePointsUsage;
+            } else if (this.dropdownSelected === "chargeStationSummary") {
+                $API = $HTTP_getChargeStationsSummary;
             }
             $API(params)
                 .then((res) => {

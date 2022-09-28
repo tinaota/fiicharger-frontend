@@ -186,7 +186,10 @@
         "firmwareStatus": "固件狀態",
         "diagnosticsStatus": "診斷狀態",
         "downloadCSV": "下載 CSV",
-        "downloadPDF": "下載PDF"
+        "downloadPDF": "下載PDF",
+        "keyWord": "關鍵詞",
+        "currentType": "當前類型",
+        "connectorType": "連接器類型"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -375,7 +378,11 @@
         "uniqueUsers": "唯一用戶",
         "averageChargeTime": "平均充電時間",
         "averagePower": "平均功率",
-        "totalEnergy": "總能量"
+        "totalEnergy": "總能量",
+        "dcFastChargers": "直流充電器",
+        "weeklyUtilization": "每週會議",
+        "averageSessionPower": "平均會話功率",
+        "averageHoursPerSession": "每個會話的平均小時數"
     },
     "userAccount": {
         "memberName": "會員名稱",

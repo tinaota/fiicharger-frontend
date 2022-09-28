@@ -186,7 +186,10 @@
         "firmwareStatus": "Firmware status",
         "diagnosticsStatus": "Diagnostics status",
         "downloadCSV": "Download CSV",
-        "downloadPDF": "Download PDF"
+        "downloadPDF": "Download PDF",
+        "keyWord": "Key Word",
+        "currentType": "Current Type",
+        "connectorType": "Connector Type"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -375,7 +378,12 @@
         "uniqueUsers": "Unique Users",
         "averageChargeTime": "Average Charge Time",
         "averagePower": "Average Power",
-        "totalEnergy": "Total Energy"
+        "totalEnergy": "Total Energy",
+        "dcFastChargers": "DC Chargers",
+        "weeklyUtilization": "Sessions Per Week",
+        "averageSessionPower": "Average Session Power",
+        "averageHoursPerSession": "Average Hours Per Session",
+        "stationStatus": "Station Status"
     },
     "userAccount": {
         "memberName": "Member Name",

@@ -362,3 +362,9 @@ export const $HTTP_getCompositeSchedule = params => { return fetch(`${base_charg
 
 // get usage of charge points
 export const $HTTP_getChargePointsUsage = params => { return fetch(`${base_charger}/api/reports/charge-points/usage`, params) }
+
+// get charge stations summary
+export const $HTTP_getChargeStationsSummary = params => { return fetch(`${base_charger}/api/reports/charge-stations/summary`, params) }
+
+// get charge stations overall summary
+export const $HTTP_getChargeStationsOverallSummary = params => { return fetch(`${base_charger}/api/reports/charge-stations/overall-summary`, params) }

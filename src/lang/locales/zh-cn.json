@@ -186,7 +186,10 @@
         "firmwareStatus": "固件状态",
         "diagnosticsStatus": "诊断状态",
         "downloadCSV": "下载 CSV",
-        "downloadPDF": "下载PDF"
+        "downloadPDF": "下载PDF",
+        "keyWord": "关键词",
+        "currentType": "当前类型",
+        "connectorType": "连接器类型"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -375,7 +378,11 @@
         "uniqueUsers": "唯一用户",
         "averageChargeTime": "平均充电时间",
         "averagePower": "平均功率",
-        "totalEnergy": "总能量"
+        "totalEnergy": "总能量",
+        "dcFastChargers": "直流充电器",
+        "weeklyUtilization": "每周会议",
+        "averageSessionPower": "平均会话功率",
+        "averageHoursPerSession": "每个会话的平均小时数"
     },
     "userAccount": {
         "memberName": "会员名称",

@@ -14,6 +14,12 @@
             <div v-if="dropdownSelected ==='chargePointUsage'">
                 <ChargePointsUsageReport :filterParams="filterParams" dropdownSelected="chargePointUsage" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargePointsUsageReport>
             </div>
+            <div v-if="dropdownSelected ==='chargeStationSummary'">
+                <ChargeStationsSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargeStationsSummaryReport>
+            </div>
+            <div v-if="dropdownSelected ==='chargeStationOverallSummary'">
+                <ChargeStationsOverallSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationOverallSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargeStationsOverallSummaryReport>
+            </div>
             <!-- add remaining reports -->
 
             <!-- add downloads option -->
@@ -28,6 +34,9 @@
 <script>
 import ChargePointsReport from "@/components/reports/chargePointsReport.vue";
 import ChargePointsUsageReport from "@/components/reports/chargePointsUsageReport.vue";
+import ChargeStationsSummaryReport from "@/components/reports/chargeStationsSummaryReport.vue";
+import ChargeStationsOverallSummaryReport from "@/components/reports/chargeStationsOverallSummaryReport.vue";
+
 import CommonFilter from "@/components/reports/filters/commonFilter.vue";
 import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
 import DownloadPDF from "@/components/reports/downloads/DownloadPDF.vue";
@@ -35,6 +44,8 @@ export default {
     components: {
         ChargePointsReport,
         ChargePointsUsageReport,
+        ChargeStationsSummaryReport,
+        ChargeStationsOverallSummaryReport,
         CommonFilter,
         DownloadCSV,
         DownloadPDF
