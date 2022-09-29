@@ -9,6 +9,9 @@
         <div class="main_logo_img">
                 <div>
                     <img :src="systemLogo">
+                             <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = false">
+                {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
+            </button>
                 </div>
            </div>
          <div class="main-nav">
@@ -45,7 +48,7 @@
       <div class="header_section">
                     
                    <el-col class="header-info">
-              <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = !chargeBoxDrawer.isOpen">
+              <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = true">
                 {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
             </button>
        
@@ -464,7 +467,7 @@ height:calc(100vh);
 }
 .chargeBox-drawer {
        position: fixed;
-        top: 68px;
+        top: 0px;
         left: -8px;
         padding: 8px;
         border-radius: 8px 0 0 8px;
