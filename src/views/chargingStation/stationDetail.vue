@@ -48,25 +48,25 @@
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.updateChargers') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'run')">{{ $t('general.run') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'run')" :disabled="true">{{ $t('general.run') }}</el-button>
                             </div>
                         </li>
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
-                                <el-button type="primary" class="actionFunction " @click="runAction( 'start')">{{ $t('general.start') }}</el-button>
+                                <el-button type="primary" class="actionFunction " @click="runAction( 'start')" :disabled="true">{{ $t('general.start') }}</el-button>
                             </div>
                         </li>
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'add')">{{ $t('general.add') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'add')" :disabled="true">{{ $t('general.add') }}</el-button>
                             </div>
                         </li>
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'clear')">{{ $t('general.clear') }}</el-button>
+                                <el-button type="primary" class="actionFunction" @click="runAction( 'clear')" :disabled="true">{{ $t('general.clear') }}</el-button>
                             </div>
                         </li>
                     </ul>

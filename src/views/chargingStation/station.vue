@@ -65,7 +65,7 @@
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
-                                    <el-dropdown-item>
+                                    <!-- <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.chargingProfile') }}
                                         </span>
@@ -88,7 +88,7 @@
                                             {{ $t('chargingStation.updates') }}
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
-                                    </el-dropdown-item>
+                                    </el-dropdown-item> -->
                                     <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.bindCharger') }}
@@ -999,7 +999,7 @@ export default {
 }
 ul {
     min-width: 200px;
-    min-height: 200px;
+    min-height: auto;
 }
 
 .el-link {
