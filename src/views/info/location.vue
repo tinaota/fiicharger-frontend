@@ -520,14 +520,14 @@ export default {
     }
 }
 .google-map {
-    width: calc(100vw - 208px);
-    height: calc(100vh - 68px);
+width: 105%;
+    height: 100vh;
     background: #a1c1fb;
-    border-top-left-radius: 20px;
     z-index: 0;
     margin-top: -2.4vh;
     margin-left: -1.6vw;
 }
+
 .hint-bar {
     position: absolute;
     /* bottom: calc(2.4vh + 2vh); */

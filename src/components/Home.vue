@@ -3,6 +3,8 @@
     <div :class="isDark? 'dark-theme':'light-theme'">
 
    <section class="main_class_header">
+
+    <div v-show="chargeBoxDrawer.isOpen" class="chargeBox-drawer">  
     <div class="main-nav-fii">
         <div class="main_logo_img">
                 <div>
@@ -10,7 +12,6 @@
                 </div>
            </div>
          <div class="main-nav">
-
             <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect" :collapse="isCollapse">
                     <template v-for="item in $router.options.routes">
                         <template v-if="!item.hidden && item.ename ==='Home'">
@@ -33,14 +34,21 @@
                         </template>
                     </template>
                 </el-menu>
-                
-           </div>    
+                  
+           </div>
+            <div class="version">{{ `${$t('version')}${version}(${roleNameObj})` }}</div>  
     </div>
-
+    </div>
+    
     <div class="body_section">
 
       <div class="header_section">
-                    <el-col class="header-info">
+                    
+                   <el-col class="header-info">
+              <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = !chargeBoxDrawer.isOpen">
+                {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
+            </button>
+       
                 <div class="img-container">
                     <img :src="userAvatar" />
                 </div>
@@ -75,11 +83,12 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </el-col>
+              
         </div>
+     
 
         
      <div class="body_right_section">
-
         <section class="right-container">
                 <transition name="fade" mode="out-in">
                     <transition name="fade" mode="out-in">
@@ -90,43 +99,6 @@
         </div>  
     </div>     
     </section>
-
-    
-
-         <!--<section class="container">
-            <aside class="left-container">
-                <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect">
-                    <template v-for="item in $router.options.routes">
-                        <template v-if="!item.hidden && item.ename ==='Home'">
-                            <template v-for="child in item.children">
-                                <template v-if="menuShowCtrl(child)">
-                                    <el-menu-item v-if="!child.hasChild" :key="child.path" :index="child.path">
-                                        <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
-                                    </el-menu-item>
-                                    <el-submenu v-else :key="child.path" :index="child.path">
-                                        <template slot="title">
-                                            <div style="margin-right:6px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
-                                            <span>{{ $t(child.name) }}</span>
-                                        </template>
-                                        <template v-for="subChild in child.children">
-                                            <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}">{{ $t(subChild.name) }}</el-menu-item>
-                                        </template>
-                                    </el-submenu>
-                                </template>
-                            </template>
-                        </template>
-                    </template>
-                </el-menu>
-                <div class="version">{{ `${$t('version')}${version}(${roleNameObj})` }}</div>
-            </aside>
-            <section class="right-container">
-                <transition name="fade" mode="out-in">
-                    <transition name="fade" mode="out-in">
-                        <router-view></router-view>
-                    </transition>
-                </transition>
-            </section>
-        </section> -->
 
     </div>
 </template>
@@ -155,6 +127,13 @@ export default {
                 account: "",
                 name: "",
             },
+                  chargeBoxDrawer: {
+                visible: false,
+                isLoading: false,
+                isOpen: false,
+                data: [],
+                frequence: 5000 * 1.5
+            },
             lang: "",
             langList: $GLOBAL_LANG,
             appLogo: app_icon,
@@ -166,6 +145,7 @@ export default {
             isDark: false,
             isActiveLang: "",
         };
+        
     },
     computed: {
         userName() {
@@ -444,6 +424,11 @@ export default {
             }
         }
     }
+.hidden{
+   float:left;
+   content:"/f0c9" 
+}
+
 
 .main_class_header{
    display: flex;
@@ -453,6 +438,14 @@ export default {
     width: 100%; 
 }
 
+.body_right_section{
+width: 100%;
+height:calc(100vh);
+}
+.right-container{
+   height: 100%;
+   width: 100%; 
+}
 .main_logo_img{
  padding: 16px;
  background:#F5F7FA ;  
@@ -469,6 +462,20 @@ export default {
     max-height: auto; 
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
 }
+.chargeBox-drawer {
+       position: fixed;
+        top: 68px;
+        left: -8px;
+        padding: 8px;
+        border-radius: 8px 0 0 8px;
+        border: none;
+        font-size: 20px;
+        z-index: 1000;
+        &.open {
+            right: 335px;
+    }
+}
+
 
 .main-nav{
     height: 100%;
@@ -477,8 +484,6 @@ export default {
     position: relative;
     z-index: 100;
     flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
     justify-content: space-between;
          .el-menu {
             overflow: hidden;
@@ -486,15 +491,18 @@ export default {
             border-right: none;
         }  
 }
-
 .body_section{
    display: flex;
     flex-direction: column;
         flex: 1 1 auto;
-    min-height: 0;
-    min-width: 0;
 }
-
+    .version {
+            color: #525e69;
+            font-size: 1rem;
+            padding-left: 12px;
+                position: relative;
+                bottom:100px
+        }
 .container {
     width: 100%;
     height: calc(100vh - 68px);
