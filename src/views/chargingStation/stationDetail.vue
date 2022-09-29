@@ -40,7 +40,7 @@
                     </ul>
                 </div>
 
-                <div class="card-8 rank-area">
+                <!-- <div class="card-8 rank-area">
                     <div class="header">
                         <div class="title">{{ $t('general.action') }}</div>
                     </div>
@@ -70,7 +70,7 @@
                             </div>
                         </li>
                     </ul>
-                </div>
+                </div> -->
                 <div class="card-8 rank-area">
                     <div class="header">
                         <div class="title">{{ $t('chargingStation.connectors') }}</div>
@@ -235,26 +235,26 @@
                                         <span>
                                             {{ $t('chargingStation.chargingProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.chargingProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.diagnostics') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">{{ $t('general.start') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'getDiagnostics')">{{ $t('general.start') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
                                             {{ $t('chargingStation.updates') }}
 
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id, null,'updatesFirmware')">{{ $t('general.run') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -295,7 +295,10 @@
             <EditChargeBox name="chargeBox" :show="dialog.isVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
-
+            <UpdateFirmware :chargePointId="updatesFirmwareDialog.chargePointId" :show="updatesFirmwareDialog.show" @close="closeActionDialog('updatesFirmware')"></UpdateFirmware>
+            <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.show" @close="closeActionDialog('getDiagnostics')"></GetDiagnostics>
+            <AddChargingProfile :show="addChargingProfileDialog.show" :data="addChargingProfileDialog.data" @close="closeActionDialog('addChargingProfile')"></AddChargingProfile>
+            <ClearChargingProfile :show="clearChargingProfileDialog.show" :data="clearChargingProfileDialog.data" @close="closeActionDialog('clearChargingProfile')"></ClearChargingProfile>
         </div>
     </div>
 </template>
@@ -315,13 +318,22 @@ import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+import UpdateFirmware from "@/components/chargingStation/updateFirmware";
+import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
+import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
+import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
+
 export default {
     components: {
         ShowPostion,
         EditChargeBox,
         Connector,
         CommonPopup,
-        TransactionTraffic
+        TransactionTraffic,
+        UpdateFirmware,
+        GetDiagnostics,
+        AddChargingProfile,
+        ClearChargingProfile
     },
     data() {
         return {
@@ -398,6 +410,22 @@ export default {
                 chargePointId: null,
                 action: ""
             },
+            updatesFirmwareDialog: {
+                show: false,
+                chargePointId: null
+            },
+            diagnosticsDialog: {
+                show: false,
+                chargePointId: null
+            },
+            addChargingProfileDialog: {
+                show: false,
+                data: {}
+            },
+            clearChargingProfileDialog: {
+                show: false,
+                data: {}
+            },
             timeOut: null,
             dateRange: [],
             pickerOptions: {
@@ -405,52 +433,78 @@ export default {
                     let today = moment().endOf("day").format("x");
                     return time.getTime() > today;
                 },
-                shortcuts:[{
-                    text: i18n.t('chargingStation.timeOpt.7days'),
-                    onClick(picker) {
-                        // 7 days including today
-                        const startOfDay = moment().subtract(6,'days').startOf("day");
-                        const endOfDay = moment().endOf("day");
-                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
-                        picker.$emit('pick', _dateRange);
+                shortcuts: [
+                    {
+                        text: i18n.t("chargingStation.timeOpt.7days"),
+                        onClick(picker) {
+                            // 7 days including today
+                            const startOfDay = moment()
+                                .subtract(6, "days")
+                                .startOf("day");
+                            const endOfDay = moment().endOf("day");
+                            let _dateRange = [
+                                new Date(startOfDay),
+                                new Date(endOfDay)
+                            ];
+                            picker.$emit("pick", _dateRange);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.30days"),
+                        onClick(picker) {
+                            const startOfDay = moment()
+                                .subtract(29, "days")
+                                .startOf("day");
+                            const endOfDay = moment().endOf("day");
+                            let _dateRange = [
+                                new Date(startOfDay),
+                                new Date(endOfDay)
+                            ];
+                            picker.$emit("pick", _dateRange);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.90days"),
+                        onClick(picker) {
+                            const startOfDay = moment()
+                                .subtract(89, "days")
+                                .startOf("day");
+                            const endOfDay = moment().endOf("day");
+                            let _dateRange = [
+                                new Date(startOfDay),
+                                new Date(endOfDay)
+                            ];
+                            picker.$emit("pick", _dateRange);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.6months"),
+                        onClick(picker) {
+                            const startOfDay = moment()
+                                .subtract(6, "months")
+                                .startOf("day");
+                            const endOfDay = moment().endOf("day");
+                            let _dateRange = [
+                                new Date(startOfDay),
+                                new Date(endOfDay)
+                            ];
+                            picker.$emit("pick", _dateRange);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.1year"),
+                        onClick(picker) {
+                            const startOfDay = moment()
+                                .subtract(1, "years")
+                                .startOf("day");
+                            const endOfDay = moment().endOf("day");
+                            let _dateRange = [
+                                new Date(startOfDay),
+                                new Date(endOfDay)
+                            ];
+                            picker.$emit("pick", _dateRange);
+                        }
                     }
-                },
-                {
-                    text: i18n.t('chargingStation.timeOpt.30days'),
-                    onClick(picker) {
-                        const startOfDay = moment().subtract(29,'days').startOf("day");
-                        const endOfDay = moment().endOf("day");
-                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
-                        picker.$emit('pick', _dateRange);
-                    }
-                },
-                             {
-                    text: i18n.t('chargingStation.timeOpt.90days'),
-                    onClick(picker) {
-                        const startOfDay = moment().subtract(89,'days').startOf("day");
-                        const endOfDay = moment().endOf("day");
-                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
-                        picker.$emit('pick', _dateRange);
-                    }
-                },
-                             {
-                    text: i18n.t('chargingStation.timeOpt.6months'),
-                    onClick(picker) {
-                        const startOfDay = moment().subtract(6,'months').startOf("day");
-                        const endOfDay = moment().endOf("day");
-                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
-                        picker.$emit('pick', _dateRange);
-                    }
-                },
-                             {
-                    text: i18n.t('chargingStation.timeOpt.1year'),
-                    onClick(picker) {
-                        const startOfDay = moment().subtract(1,'years').startOf("day");
-                        const endOfDay = moment().endOf("day");
-                        let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
-                        picker.$emit('pick', _dateRange);
-                    }
-                }
                 ]
             },
             graphSelected: "transactionAndTraffic",
@@ -489,7 +543,7 @@ export default {
         setScrollBar(".scroll", this);
 
         // add dates
-        const startOfDay = moment().subtract(6,'days').startOf("day");
+        const startOfDay = moment().subtract(6, "days").startOf("day");
         const endOfDay = moment().endOf("day");
         this.dateRange = [new Date(startOfDay), new Date(endOfDay)];
 
@@ -679,6 +733,26 @@ export default {
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = row;
                 this.commonpopup.action = action;
+            } else {
+                if (action === "updatesFirmware") {
+                    this.updatesFirmwareDialog.show = true;
+                    this.updatesFirmwareDialog.chargePointId = row;
+                } else if (action === "getDiagnostics") {
+                    this.diagnosticsDialog.show = true;
+                    this.diagnosticsDialog.chargePointId = row;
+                } else if (action === "addChargingProfile") {
+                    this.addChargingProfileDialog.show = true;
+                    this.addChargingProfileDialog.data = {
+                        chargePointId: row,
+                        name: this.stationInfo.stationName
+                    };
+                } else if (action === "clearChargingProfile") {
+                    this.clearChargingProfileDialog.show = true;
+                    this.clearChargingProfileDialog.data = {
+                        chargePointId: row,
+                        name: this.stationInfo.stationName
+                    };
+                }
             }
             this.setTimerApiCall();
         },
@@ -697,6 +771,18 @@ export default {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
+            } else if (type === "updatesFirmware") {
+                this.updatesFirmwareDialog.show = false;
+                this.updatesFirmwareDialog.chargePointId = null;
+            } else if (type === "getDiagnostics") {
+                this.diagnosticsDialog.show = false;
+                this.updatesFirmwareDialog.chargePointId = null;
+            } else if (type === "addChargingProfile") {
+                this.addChargingProfileDialog.show = false;
+                this.addChargingProfileDialog.data = {};
+            } else if (type === "clearChargingProfile") {
+                this.clearChargingProfileDialog.show = false;
+                this.clearChargingProfileDialog.data = {};
             }
         },
         deleteChargers(id) {
@@ -849,8 +935,7 @@ export default {
     width: 100%;
 }
 .rank-area {
-    width: calc(33% - 32px);
-    margin-right: 12px;
+    width: calc(50% - 32px);
     height: 255px;
     position: relative;
     vertical-align: top;

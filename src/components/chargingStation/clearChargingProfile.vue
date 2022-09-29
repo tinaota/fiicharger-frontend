@@ -68,7 +68,6 @@ export default {
             this.chargingProfileList.isLoading = true;
             $HTTP_getChargingProfilesRecord(params)
                 .then((res) => {
-                    console.log(res)
                     this.chargingProfileList.isLoading = false;
                     if (res?.data.length > 0) {
                             this.chargingProfileList.data = res.data;
@@ -95,7 +94,6 @@ export default {
                     chargePointId: that.data.chargePointId,
                     id: this.param.chargingProfileId,
                 };
-                console.log(params)
                 that.isLoading = true;
                 $HTTP_clearChargingProfile(params)
                     .then((res) => {
