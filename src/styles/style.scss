@@ -1438,3 +1438,23 @@ input[type="number"] {
         background-color: #ffffff;
     }
 }
+
+.price {
+    .customPriceName {
+        .customPriceNameItem {
+            width: 100%;
+            margin-bottom: 0;
+            .el-form-item__content {
+                display: flex;
+                width: 100%;
+                .info {
+                    width: 180px;
+                    margin-left: auto;
+                }
+                .el-form-item__error {
+                    margin-top: -5px;
+                }
+            }
+        }
+    }
+}

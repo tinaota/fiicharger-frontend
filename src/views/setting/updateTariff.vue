@@ -3,55 +3,59 @@
         <div class="right-form formVertical">
             <div class="price">
                 <h3>{{ $t('menu.price') }}</h3>
-                <div class="customPriceName">
-                    <div class="label">{{ $t('general.customPriceName') }}<span style="color:red"><strong>* </strong></span></div>
-                    <div class="info">
-                        <el-input style="width:100%" v-model="customPriceName"></el-input>
+                <el-form ref="tariffForm" :rules="rules" :model="formData">
+                    <div class="customPriceName">
+                        <el-form-item prop="customPriceName" class="customPriceNameItem">
+                            <div class="label">{{ $t('general.customPriceName') }}<span style="color:red"><strong>* </strong></span></div>
+                            <div class="info">
+                                <el-input style="width:100%" v-model="formData.customPriceName"></el-input>
+                            </div>
+                        </el-form-item>
                     </div>
-                </div>
-                <div class="priceType">
-                    <div class="label">{{ $t('general.priceType') }}</div>
-                    <div class="info">
-                        <el-radio-group v-model="priceType">
-                            <el-radio-button v-for="item in priceTypeList" :label="item.value" :key="item.value">{{ $t(`general.${item.name}`) }}</el-radio-button>
-                        </el-radio-group>
+                    <div class="priceType">
+                        <div class="label">{{ $t('general.priceType') }}</div>
+                        <div class="info">
+                            <el-radio-group v-model="formData.priceType">
+                                <el-radio-button v-for="item in priceTypeList" :label="item.value" :key="item.value">{{ $t(`general.${item.name}`) }}</el-radio-button>
+                            </el-radio-group>
+                        </div>
                     </div>
-                </div>
-                <div class="otherItems">
-                    <div class="minMaxPrice">
-                        <div class="excludingVAT">
-                            <div class="minPrice">
-                                <div class="label">{{ $t('general.minPriceNoVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
-                                <div class="info">
-                                    <el-input-number v-model="minPrice.excludingVat" :controls="false"> </el-input-number>
+                    <div class="otherItems">
+                        <div class="minMaxPrice">
+                            <div class="excludingVAT">
+                                <div class="minPrice">
+                                    <div class="label">{{ $t('general.minPriceNoVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
+                                    <div class="info">
+                                        <el-input-number v-model="formData.minPrice.excludingVat" :controls="false"> </el-input-number>
+                                    </div>
+                                </div>
+                                <div class="maxPrice">
+                                    <div class="label">{{ $t('general.maxPriceNoVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
+                                    <div class="info">
+                                        <el-input-number v-model="formData.maxPrice.excludingVat" :controls="false"></el-input-number>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="maxPrice">
-                                <div class="label">{{ $t('general.maxPriceNoVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
-                                <div class="info">
-                                    <el-input-number v-model="maxPrice.excludingVat" :controls="false"></el-input-number>
+                            <div class="includingVAT">
+                                <div class="minPrice">
+                                    <div class="label">{{ $t('general.minPriceWithVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
+                                    <div class="info">
+                                        <el-input-number v-model="formData.minPrice.includingVat" :controls="false"></el-input-number>
+                                    </div>
+                                </div>
+                                <div class="maxPrice">
+                                    <div class="label">{{ $t('general.maxPriceWithVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
+                                    <div class="info">
+                                        <el-input-number v-model="formData.maxPrice.includingVat" :controls="false"></el-input-number>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="includingVAT">
-                            <div class="minPrice">
-                                <div class="label">{{ $t('general.minPriceWithVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
-                                <div class="info">
-                                    <el-input-number v-model="minPrice.includingVat" :controls="false"></el-input-number>
-                                </div>
-                            </div>
-                            <div class="maxPrice">
-                                <div class="label">{{ $t('general.maxPriceWithVat') }}<span v-if="priceSpecified" style="color:red"><strong>* </strong></span></div>
-                                <div class="info">
-                                    <el-input-number v-model="maxPrice.includingVat" :controls="false"></el-input-number>
-                                </div>
-                            </div>
+                        <div class="dateTimePicker">
+                            <el-date-picker class="tariff-date-time-picker" v-model="formData.dateTimeRange" type="datetimerange" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :default-time="['00:00:00', '23:59:59']" :clearable="false"></el-date-picker>
                         </div>
                     </div>
-                    <div class="dateTimePicker">
-                        <el-date-picker class="tariff-date-time-picker" v-model="dateTimeRange" type="datetimerange" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :default-time="['00:00:00', '23:59:59']" :clearable="false"></el-date-picker>
-                    </div>
-                </div>
+                </el-form>
             </div>
             <hr />
             <div class="pricingSections">
@@ -69,6 +73,8 @@ import { setScrollBar } from "@/utils/function";
 import { $HTTP_addTariffs, $HTTP_updateTariffs } from "@/api/api";
 // import moment from "moment";
 import PricingSectionsMain from "@/components/tariff/pricingSectionsMain.vue";
+import { validateIsEmpty } from "@/utils/validation";
+
 export default {
     components: { PricingSectionsMain },
     props: { show: Boolean, dialogType: String, data: Object },
@@ -79,15 +85,18 @@ export default {
             isLoading: false,
             isUpdate: false,
             $API: null,
-            customPriceName: "",
-            priceType: "REGULAR",
-            minPrice: {
-                excludingVat: null,
-                includingVat: null
-            },
-            maxPrice: {
-                excludingVat: null,
-                includingVat: null
+            formData: {
+                customPriceName: "",
+                priceType: "REGULAR",
+                minPrice: {
+                    excludingVat: null,
+                    includingVat: null
+                },
+                maxPrice: {
+                    excludingVat: null,
+                    includingVat: null
+                },
+                dateTimeRange: []
             },
             priceTypeList: [
                 { name: "regular", value: "REGULAR" },
@@ -98,16 +107,19 @@ export default {
             ],
             dateTimeRange: [],
             pickerOptions: {},
-            pricingSectionData: []
+            pricingSectionData: [],
+            rules: {
+                customPriceName: [{ validator: validateIsEmpty }]
+            }
         };
     },
     computed: {
         priceSpecified() {
             return (
-                this.minPrice.excludingVat > 0 ||
-                this.minPrice.includingVat > 0 ||
-                this.maxPrice.excludingVat > 0 ||
-                this.maxPrice.includingVat > 0
+                this.formData.minPrice.excludingVat > 0 ||
+                this.formData.minPrice.includingVat > 0 ||
+                this.formData.maxPrice.excludingVat > 0 ||
+                this.formData.maxPrice.includingVat > 0
             );
         }
     },
@@ -132,16 +144,16 @@ export default {
         },
         updateTariff() {
             let params = {
-                name: this.customPriceName,
-                type: this.priceType,
+                name: this.formData.customPriceName,
+                type: this.formData.priceType,
                 elements: this.pricingSectionData,
                 minPrice: {
-                    excludingVat: this.minPrice.excludingVat,
-                    includingVat: this.minPrice.includingVat
+                    excludingVat: this.formData.minPrice.excludingVat,
+                    includingVat: this.formData.minPrice.includingVat
                 },
                 maxPrice: {
-                    excludingVat: this.maxPrice.excludingVat,
-                    includingVat: this.maxPrice.includingVat
+                    excludingVat: this.formData.maxPrice.excludingVat,
+                    includingVat: this.formData.maxPrice.includingVat
                 },
                 startDateTime:
                     this.dateTimeRange.length > 1
@@ -152,29 +164,39 @@ export default {
                         ? new Date(this.dateTimeRange[1]).toISOString()
                         : null
             };
-            this.$API(params)
-                .then((res) => {
-                    if (res) {
-                        this.$message({
-                            type: "success",
-                            message:
-                                this.dialogType === "create"
-                                    ? i18n.t("general.sucAddMsg")
-                                    : i18n.t("general.sucUpdateMsg")
+            this.$refs.tariffForm.validate((valid) => {
+                if (valid) {
+                    this.$API(params)
+                        .then((res) => {
+                            if (res) {
+                                this.$message({
+                                    type: "success",
+                                    message:
+                                        this.dialogType === "create"
+                                            ? i18n.t("general.sucAddMsg")
+                                            : i18n.t("general.sucUpdateMsg")
+                                });
+                                this.isUpdate = true;
+                                this.visible = false;
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         });
-                        this.isUpdate = true;
-                        this.visible = false;
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
-                });
+                } else {
+                    console.log("error submit!!");
+                    return false;
+                }
+            });
         },
         closeDialog() {
+            this.$nextTick(() => {
+                this.$refs?.tariffForm?.clearValidate("customPriceName");
+            });
             this.$emit("close", this.isUpdate);
         }
     }
@@ -204,11 +226,6 @@ export default {
             display: flex;
             width: 100%;
             height: 40px;
-            justify-content: space-between;
-            align-items: center;
-            .info {
-                width: 180px;
-            }
         }
         .priceType {
             display: flex;
