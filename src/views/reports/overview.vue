@@ -9,10 +9,10 @@
                 <CommonFilter @updateDropdown="updateDropdownSelected" @updateParams="updateParams"></CommonFilter>
             </div>
             <div v-if="dropdownSelected ==='chargePoints'">
-                <ChargePointsReport :filterParams="filterParams" dropdownSelected="chargePoints" :sortingParams="sortingParams" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" @tableSorting="updateSortingParams"></ChargePointsReport>
+                <ChargePointsReport :filterParams="filterParams" dropdownSelected="chargePoints" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargePointsReport>
             </div>
             <div v-if="dropdownSelected ==='chargePointUsage'">
-                <ChargePointsUsageReport :filterParams="filterParams" dropdownSelected="chargePointUsage" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargePointsUsageReport>
+                <ChargePointsUsageReport :filterParams="filterParams" dropdownSelected="chargePointUsage" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargePointsUsageReport>
             </div>
             <div v-if="dropdownSelected ==='chargeStationSummary'">
                 <ChargeStationsSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargeStationsSummaryReport>
