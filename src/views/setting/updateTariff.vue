@@ -59,7 +59,7 @@
             </div>
             <hr />
             <div class="pricingSections">
-                <PricingSectionsMain @emitPricingSectionDataFromMain="getPricingSectionData"></PricingSectionsMain>
+                <PricingSectionsMain :elements="elements" @emitPricingSectionDataFromMain="getPricingSectionData"></PricingSectionsMain>
             </div>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -69,15 +69,15 @@
     </el-dialog>
 </template>
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import { $HTTP_addTariffs, $HTTP_updateTariffs } from "@/api/api";
-// import moment from "moment";
 import PricingSectionsMain from "@/components/tariff/pricingSectionsMain.vue";
 import { validateIsEmpty } from "@/utils/validation";
 
 export default {
     components: { PricingSectionsMain },
     props: { show: Boolean, dialogType: String, data: Object },
+    emits: ["close"],
     data() {
         return {
             // default these values on dialog close
@@ -98,6 +98,7 @@ export default {
                 },
                 dateTimeRange: []
             },
+            guid: "",
             priceTypeList: [
                 { name: "regular", value: "REGULAR" },
                 { name: "adHocPayment", value: "AD_HOC_PAYMENT" },
@@ -105,12 +106,12 @@ export default {
                 { name: "profileFast", value: "PROFILE_FAST" },
                 { name: "profileGreen", value: "PROFILE_GREEN" }
             ],
-            dateTimeRange: [],
             pickerOptions: {},
             pricingSectionData: [],
             rules: {
                 customPriceName: [{ validator: validateIsEmpty }]
-            }
+            },
+            elements: []
         };
     },
     computed: {
@@ -126,11 +127,34 @@ export default {
     mounted() {
         this.visible = this.show;
         this.isUpdate = false;
-        console.log(this.dialogType);
         if (this.dialogType === "create") {
             this.$API = $HTTP_addTariffs;
         } else if (this.dialogType === "edit") {
             this.$API = $HTTP_updateTariffs;
+            this.formData = {
+                customPriceName: this.data.name,
+                priceType: this.data.type,
+                minPrice: {
+                    excludingVat: this.data.minPrice.excludingVat,
+                    includingVat: this.data.minPrice.includingVat
+                },
+                maxPrice: {
+                    excludingVat: this.data.maxPrice.excludingVat,
+                    includingVat: this.data.maxPrice.includingVat
+                }
+            };
+
+            if (this.data.startDateTime && this.data.endDateTime) {
+                this.formData = {
+                    ...this.formData,
+                    dateTimeRange: [
+                        transformUtcToLocTime(this.data.startDateTime),
+                        transformUtcToLocTime(this.data.endDateTime)
+                    ]
+                };
+            }
+            this.guid = this.data.guid;
+            this.elements = this.data.elements;
         }
         this.$jQuery(".formVertical").length > 0 &&
             this.$jQuery(".formVertical").mCustomScrollbar("destroy");
@@ -156,14 +180,18 @@ export default {
                     includingVat: this.formData.maxPrice.includingVat
                 },
                 startDateTime:
-                    this.dateTimeRange.length > 1
-                        ? new Date(this.dateTimeRange[0]).toISOString()
+                    this.formData?.dateTimeRange?.length > 1
+                        ? new Date(this.formData.dateTimeRange[0]).toISOString()
                         : null,
                 endDateTime:
-                    this.dateTimeRange.length > 1
-                        ? new Date(this.dateTimeRange[1]).toISOString()
+                    this.formData?.dateTimeRange?.length > 1
+                        ? new Date(this.formData.dateTimeRange[1]).toISOString()
                         : null
             };
+            // for edit
+            if (this.dialogType === "edit") {
+                params.guid = this.guid;
+            }
             this.$refs.tariffForm.validate((valid) => {
                 if (valid) {
                     this.$API(params)
@@ -182,10 +210,21 @@ export default {
                         })
                         .catch((err) => {
                             console.log(err);
-                            this.$message({
-                                type: "warning",
-                                message: i18n.t("error_network")
-                            });
+                            if (err.status === 404) {
+                                this.$message({
+                                    type: "warning",
+                                    message: i18n.t("general.tariffNotFound", {
+                                        item: this.data.guid
+                                    })
+                                });
+                            } else {
+                                this.$message({
+                                    type: "warning",
+                                    message: i18n.t("error_network")
+                                });
+                            }
+                            this.isUpdate = true;
+                            this.visible = false;
                         });
                 } else {
                     console.log("error submit!!");
@@ -197,6 +236,22 @@ export default {
             this.$nextTick(() => {
                 this.$refs?.tariffForm?.clearValidate("customPriceName");
             });
+            this.formData = {
+                customPriceName: "",
+                priceType: "REGULAR",
+                minPrice: {
+                    excludingVat: null,
+                    includingVat: null
+                },
+                maxPrice: {
+                    excludingVat: null,
+                    includingVat: null
+                },
+                dateTimeRange: []
+            };
+            this.guid = "";
+            this.pricingSectionData = [];
+            this.elements = [];
             this.$emit("close", this.isUpdate);
         }
     }

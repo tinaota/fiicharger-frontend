@@ -4,7 +4,7 @@
             <div class="item">
                 <label>{{ $t('general.days') }}</label>
                 <el-select class="autoresizeselect" v-model="daysSelected" clearable multiple filterable @change="updatePricingConditions">
-                    <el-option v-for="item in daysList" :label="item" :key="item" :value="item"></el-option>
+                    <el-option v-for="item in daysList" :label="item" :key="item" :value="item.toUpperCase()"></el-option>
                 </el-select>
             </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
         <div v-if="tabSelected==='reservation' || tabSelected==='all'" class="reservation">
             <label>Reservation</label>
-            <el-select class="select-small" v-model="reservationSelected" :placeholder="$t(`chargingStation.reservation`)" @change="updatePricingConditions" filterable clearable>
+            <el-select class="select-small" v-model="reservation" :placeholder="$t(`chargingStation.reservation`)" @change="updatePricingConditions" filterable clearable>
                 <el-option v-for="item in reservationList" :label="item.name" :key="item.name" :value="item.name"></el-option>
             </el-select>
         </div>
@@ -77,7 +77,8 @@
 export default {
     components: {},
     props: {
-        tabSelected: String
+        tabSelected: String,
+        restrictions: Object
     },
     emits: ["emitPriceConditionsDataFromFilter"],
     data() {
@@ -92,7 +93,7 @@ export default {
             maxCurrent: null,
             minPower: null,
             maxPower: null,
-            reservationSelected: null,
+            reservation: null,
             dateRange: [],
             reservationList: [
                 { name: "RESERVATION" },
@@ -112,16 +113,123 @@ export default {
             ]
         };
     },
-    mounted() {},
+    watch: {
+        tabSelected: function () {
+            this.populateData();
+        }
+    },
+    watch: {
+        restrictions: function () {
+            this.populateData();
+        }
+    },
+
+    mounted() {
+        this.populateData();
+    },
     methods: {
+        populateData() {
+            if (
+                this.restrictions &&
+                Object.keys(this.restrictions).length > 0
+            ) {
+                if (
+                    this.restrictions.dayOfWeek &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.daysSelected = this.restrictions.dayOfWeek;
+                }
+                if (
+                    this.restrictions.startTime &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.startTime = this.restrictions.startTime;
+                }
+                if (
+                    this.restrictions.endTime &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.endTime = this.restrictions.endTime;
+                }
+                if (
+                    this.restrictions.minDuration &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.minDuration = this.restrictions.minDuration;
+                }
+                if (
+                    this.restrictions.maxDuration &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.maxDuration = this.restrictions.maxDuration;
+                }
+                if (
+                    this.restrictions.minKwh &&
+                    (this.tabSelected === "kWh" || this.tabSelected === "all")
+                ) {
+                    this.minKwh = this.restrictions.minKwh;
+                }
+                if (
+                    this.restrictions.maxKwh &&
+                    (this.tabSelected === "kWh" || this.tabSelected === "all")
+                ) {
+                    this.maxKwh = this.restrictions.maxKwh;
+                }
+                if (
+                    this.restrictions.minCurrent &&
+                    (this.tabSelected === "current" || this.tabSelected === "all")
+                ) {
+                    this.minCurrent = this.restrictions.minCurrent;
+                }
+                if (
+                    this.restrictions.maxCurrent &&
+                    (this.tabSelected === "current" || this.tabSelected === "all")
+                ) {
+                    this.maxCurrent = this.restrictions.maxCurrent;
+                }
+                if (
+                    this.restrictions.minPower &&
+                    (this.tabSelected === "power" || this.tabSelected === "all")
+                ) {
+                    this.minPower = this.restrictions.minPower;
+                }
+                if (
+                    this.restrictions.maxPower &&
+                    (this.tabSelected === "power" || this.tabSelected === "all")
+                ) {
+                    this.maxPower = this.restrictions.maxPower;
+                }
+                if (
+                    this.restrictions.reservation &&
+                    (this.tabSelected === "reservation" || this.tabSelected === "all")
+                ) {
+                    this.reservation = this.restrictions.reservation;
+                }
+
+                if (
+                    this.restrictions.startDate &&
+                    this.restrictions.endDate &&
+                    (this.tabSelected === "time" || this.tabSelected === "all")
+                ) {
+                    this.dateRange = [
+                        new Date(this.restrictions.startDate),
+                        new Date(this.restrictions.endDate)
+                    ];
+                }
+            }
+            // update data after population
+            this.updatePricingConditions()
+        },
         updatePricingConditions() {
             let params = {};
             if (this.daysSelected) {
                 params.dayOfWeek = this.daysSelected;
             }
             if (this.dateRange && this.dateRange.length > 0) {
-                params.startDate = this.dateRange[0].toISOString().substr(0,10);
-                params.endDate = this.dateRange[1].toISOString().substr(0,10);
+                params.startDate = this.dateRange[0]
+                    .toISOString()
+                    .substr(0, 10);
+                params.endDate = this.dateRange[1].toISOString().substr(0, 10);
             }
 
             if (this.startTime) {
@@ -155,8 +263,8 @@ export default {
             if (this.maxPower) {
                 params.maxPower = this.maxPower;
             }
-            if (this.reservationSelected) {
-                params.reservationSelected = this.reservationSelected;
+            if (this.reservation) {
+                params.reservation = this.reservation;
             }
             this.$emit("emitPriceConditionsDataFromFilter", params);
         }

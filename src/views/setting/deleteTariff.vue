@@ -17,6 +17,7 @@ import { $HTTP_deleteTarrifsById } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
 export default {
     props: { show: Boolean, data: Object },
+    emits:["close"],
     data() {
         return {
             visible: false,
@@ -45,7 +46,6 @@ export default {
             $HTTP_deleteTarrifsById(params)
                 .then((res) => {
                     that.isLoading = false;
-                    console.log(res);
                     if (res.status === 204) {
                         that.$message({
                             type: "success",

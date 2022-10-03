@@ -49,24 +49,24 @@
                     <el-table-column :min-width="2" :label="$t('general.minPrice')">
                         <el-table-column :label="$t('general.excludingVat')" :min-width="1">
                             <template slot-scope="scope">
-                                {{ scope.row.minPrice.excludingVat }}
+                                {{ scope.row.minPrice? scope.row.minPrice.excludingVat:'' }}
                             </template>
                         </el-table-column>
                         <el-table-column :label="$t('general.includingVat')" :min-width="1">
                             <template slot-scope="scope">
-                                {{ scope.row.minPrice.includingVat }}
+                                {{ scope.row.minPrice ? scope.row.minPrice.includingVat: '' }}
                             </template>
                         </el-table-column>
                     </el-table-column>
                     <el-table-column :min-width="2" :label="$t('general.maxPrice')">
                         <el-table-column :label="$t('general.excludingVat')" :min-width="1">
                             <template slot-scope="scope">
-                                {{ scope.row.maxPrice.excludingVat }}
+                                {{ scope.row.maxPrice?scope.row.maxPrice.excludingVat:'' }}
                             </template>
                         </el-table-column>
                         <el-table-column :label="$t('general.includingVat')" :min-width="1">
                             <template slot-scope="scope">
-                                {{ scope.row.maxPrice.includingVat }}
+                                {{ scope.row.maxPrice? scope.row.maxPrice.includingVat :'' }}
                             </template>
                         </el-table-column>
                     </el-table-column>
@@ -155,7 +155,6 @@ export default {
     },
     methods: {
         openDialog(type, data) {
-            console.log(type, data);
             if (type === "create") {
                 this.createDialog.show = true;
             } else if (type === "edit") {
@@ -246,13 +245,6 @@ export default {
         color: #5a607f;
         letter-spacing: 0;
     }
-    // .action_tariff_button {
-    //     background-color: transparent;
-    //     border-color: #409eff;
-    //     border-width: 2px;
-    //     color: #409eff;
-    //     font-weight: 600;
-    // }
 }
 
 .actions {

@@ -4,20 +4,19 @@
         <div v-for="index in countUsageComponent" :key="index" class="pricingUsageMain">
             <el-collapse class="usageCollapse" v-model="activePricingUsage" accordion>
                 <el-collapse-item class="usageCollapseItem" :title="$t('general.pricingUsage')" :name="`${index}`">
-                    <PricingUsage :usageCollapseIndex="index" :totalUsageCollapseIndex="countUsageComponent" @emitPriceUsageData="getEmittedPriceUsageData" @deletePricingUsageData="deletePricingUsageData"></PricingUsage>
+                    <PricingUsage :eachPriceComponent="priceComponents[index-1]" :usageCollapseIndex="index" :totalUsageCollapseIndex="countUsageComponent" @emitPriceUsageData="getEmittedPriceUsageData" @deletePricingUsageData="deletePricingUsageData"></PricingUsage>
                 </el-collapse-item>
             </el-collapse>
         </div>
         <div class="buttonDiv">
             <el-button size="small" type="primary" @click="addPricingUsage">{{ $t('general.addRow') }}</el-button>
         </div>
-        <PricingConditions :pricingSectionCollapseIndex="pricingSectionCollapseIndex" @emitPriceConditionsDataFromPriceConditions="getEmittedPriceConditionsData"></PricingConditions>
+        <PricingConditions :restrictions="restrictions" :pricingSectionCollapseIndex="pricingSectionCollapseIndex" @emitPriceConditionsDataFromPriceConditions="getEmittedPriceConditionsData"></PricingConditions>
         <!-- only allow to delete the last item -->
         <div class="actions" v-if="pricingSectionCollapseIndex===totalPricingSectionIndex">
             <i class="fa fa-trash" aria-hidden="true" @click="deletePricingSection"></i>
         </div>
         <hr />
-
     </div>
 </template>
 <script>
@@ -30,7 +29,8 @@ export default {
     },
     props: {
         pricingSectionCollapseIndex: Number,
-        totalPricingSectionIndex: Number
+        totalPricingSectionIndex: Number,
+        eachElement: Object
     },
     emits: ["deletePricingSectionData", "emitPriceSectionData"],
     data() {
@@ -38,15 +38,25 @@ export default {
             countUsageComponent: 1,
             activePricingUsage: "1",
             pricingUsageData: [],
-            pricingConditionsData: {}
+            pricingConditionsData: {},
+            restrictions: {},
+            priceComponents: []
         };
     },
     mounted() {
-        // this.updateDataPricingSectionMain();
+        if (this.eachElement) {
+            this.countUsageComponent = this.eachElement.priceComponents.length;
+            this.activePricingUsage = `${this.eachElement.priceComponents.length}`;
+            if (Object.keys(this.eachElement?.restrictions).length > 0) {
+                this.restrictions = this.eachElement.restrictions;
+            }
+            if (this.eachElement.priceComponents.length > 0) {
+                this.priceComponents = this.eachElement.priceComponents;
+            }
+        }
     },
     methods: {
         updateDataPricingSectionMain() {
-            // console.log("here");
             let priceSectionData = {};
             priceSectionData.priceComponents = [...this.pricingUsageData];
             if (Object.keys(this.pricingConditionsData).length > 0) {
@@ -61,7 +71,6 @@ export default {
             );
         },
         deletePricingSection() {
-            // console.log("delete pricing section");
             this.$emit("deletePricingSectionData");
         },
         getEmittedPriceUsageData(usageCollapseIndex, usageData) {
@@ -70,7 +79,7 @@ export default {
             if (usageCollapseIndex > this.pricingUsageData.length) {
                 this.pricingUsageData.push({ ...usageData });
             } else {
-                //    avoid mutation of array object
+                //avoid mutation of array object
                 let tempArr = [...this.pricingUsageData];
                 tempArr[usageCollapseIndex - 1] = usageData;
                 this.pricingUsageData = tempArr;
@@ -98,6 +107,7 @@ export default {
                     message: i18n.t("general.tariffUsageWarning")
                 });
             }
+            this.updateDataPricingSectionMain();
         },
         addPricingUsage() {
             this.countUsageComponent += 1;

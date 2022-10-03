@@ -1,11 +1,9 @@
 <template>
     <div class="pricingSectionsMain">
-        <!-- {{ pricingSectionData }}
-        {{ pricingSectionData.length }} -->
         <div v-for="index in pricingSectionCount" :key="index">
             <el-collapse class="pricingSectionCollapse" v-model="activePricingSection" accordion>
                 <el-collapse-item class="pricingSectionCollapseItem" :title="$t('general.pricingSections')" :name="`${index}`">
-                    <PricingSectionsSub :pricingSectionCollapseIndex="index" :totalPricingSectionIndex="pricingSectionCount" @deletePricingSectionData="deletePricingSectionData" @emitPriceSectionData="getEmittedPriceSectionData"></PricingSectionsSub>
+                    <PricingSectionsSub :eachElement="elements[index-1]" :pricingSectionCollapseIndex="index" :totalPricingSectionIndex="pricingSectionCount" @deletePricingSectionData="deletePricingSectionData" @emitPriceSectionData="getEmittedPriceSectionData"></PricingSectionsSub>
                 </el-collapse-item>
             </el-collapse>
         </div>
@@ -19,6 +17,9 @@ export default {
     components: {
         PricingSectionsSub
     },
+    props: {
+        elements: Array
+    },
     emits: ["emitPricingSectionDataFromMain"],
     data() {
         return {
@@ -27,6 +28,13 @@ export default {
             pricingSectionData: []
         };
     },
+    mounted() {
+        // if passed props i.e edit
+        if (this.elements.length > 0) {
+            this.pricingSectionCount = this.elements.length;
+            this.activePricingSection = `${this.elements.length}`;
+        }
+    },
     methods: {
         getEmittedPriceSectionData(priceSectionIndex, priceSectionData) {
             // check if item is present in that index
@@ -34,7 +42,7 @@ export default {
             if (priceSectionIndex > this.pricingSectionData.length) {
                 this.pricingSectionData.push({ ...priceSectionData });
             } else {
-                //    avoid mutation of array object
+                //avoid mutation of array object
                 let tempArr = [...this.pricingSectionData];
                 tempArr[priceSectionIndex - 1] = priceSectionData;
                 this.pricingSectionData = tempArr;
@@ -48,6 +56,10 @@ export default {
             // only allow deletion if more data is present
             if (this.pricingSectionData.length > 1) {
                 this.pricingSectionData.pop();
+                this.pricingSectionCount -= 1;
+                this.activePricingSection = `${
+                    parseInt(this.activePricingSection) - 1
+                }`;
                 // } else if (this.pricingSectionData.length === 1) {
             } else {
                 this.$message({
@@ -55,9 +67,9 @@ export default {
                     message: i18n.t("general.pricingSectionWarning")
                 });
             }
+            this.getEmittedPriceSectionData();
         },
         addPricingSections() {
-            console.log("add pricing sections");
             this.pricingSectionCount += 1;
             this.activePricingSection = `${
                 parseInt(this.activePricingSection) + 1

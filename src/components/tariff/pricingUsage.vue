@@ -36,7 +36,8 @@
 export default {
     props: {
         usageCollapseIndex: Number,
-        totalUsageCollapseIndex: Number
+        totalUsageCollapseIndex: Number,
+        eachPriceComponent: Object
     },
     emits: ["emitPriceUsageData", "deletePricingUsageData"],
     data() {
@@ -53,10 +54,28 @@ export default {
             ]
         };
     },
+    watch: {
+        eachPriceComponent: function () {
+            this.populateUsageData();
+        }
+    },
     mounted() {
-        this.updateData();
+        this.populateUsageData();
     },
     methods: {
+        populateUsageData() {
+            // if there is data is passed from edit
+            if (
+                this.eachPriceComponent &&
+                Object.keys(this.eachPriceComponent).length > 0
+            ) {
+                this.price = this.eachPriceComponent.price;
+                this.pricingUsageType = this.eachPriceComponent.type;
+                this.stepSize = this.eachPriceComponent.stepSize;
+                this.vat = this.eachPriceComponent.vat;
+            }
+            this.updateData();
+        },
         deletePricingUsage() {
             this.$emit("deletePricingUsageData");
         },
