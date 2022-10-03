@@ -9,8 +9,8 @@
         <div class="main_logo_img">
                 <div>
                     <img :src="systemLogo">
-                             <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = false">
-                {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
+                             <button class="drawer-closeBtn hidden_close" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = false">
+                {{ chargeBoxDrawer.isOpen ? `x ` : `x` }}
             </button>
                 </div>
            </div>
@@ -380,7 +380,7 @@ export default {
         height: 100%;
         text-align: right;
         padding: 18px;
-        background: rgba(228, 230, 234, 0.4);
+        background: rgba(228, 230, 234, 0.95);
         height: auto;
            box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
         .el-divider {
@@ -429,9 +429,17 @@ export default {
     }
 .hidden{
    float:left;
-   content:"/f0c9" 
+font-size: 30px;
+    border: none;
+    background: transparent;
 }
-
+.hidden_close{
+      float:right;
+          background: transparent;
+    font-size: 10px;
+    margin-left: 10px;
+    border: none; 
+}
 
 .main_class_header{
    display: flex;
@@ -459,15 +467,14 @@ height:calc(100vh);
     max-width: 15rem;
     min-width: 12rem;
     overflow: hidden;
-    background:rgba(228, 230, 234, .4);
+    background:rgba(228, 230, 234, .95);
     height: auto;
-    min-height: 100vh;
-    max-height: auto; 
+    min-height: 101vh;
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
 }
 .chargeBox-drawer {
        position: fixed;
-        top: 0px;
+        top: -10px;
         left: -8px;
         padding: 8px;
         border-radius: 8px 0 0 8px;
@@ -484,7 +491,6 @@ height:calc(100vh);
     height: 100%;
     display: flex;
     overflow: auto;
-    position: relative;
     z-index: 100;
     flex: 1 1 auto;
     justify-content: space-between;
@@ -492,6 +498,7 @@ height:calc(100vh);
             overflow: hidden;
             background:transparent;
             border-right: none;
+            min-width: 100%;
         }  
 }
 .body_section{
