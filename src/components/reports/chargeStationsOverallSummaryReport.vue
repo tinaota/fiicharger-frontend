@@ -1,15 +1,15 @@
 <template>
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
-        <el-table :data="tableData" v-loading="isLoading">
-            <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="1"></el-table-column>
-            <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="1"></el-table-column>
-            <el-table-column :label="$t('chargingStation.averageSessionPower') + '(kW)'" :min-width="1">
+        <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
+            <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="1" sortable="custom"></el-table-column>
+            <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="1" sortable="custom"></el-table-column>
+            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower') + '(kW)'" :min-width="1" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageSessionPower.toFixed(2) }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.averageHoursPerSession')" :min-width="1">
+            <el-table-column prop="averageHoursPerSession" :label="$t('chargingStation.averageHoursPerSession')" :min-width="1" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageHoursPerSession.toFixed(2) }}
                 </template>
@@ -28,9 +28,10 @@ export default {
     props: {
         filterParams: Object,
         dropdownSelected: String,
-        downloadClicked: Boolean
+        downloadClicked: Boolean,
+        sortingParams: Object
     },
-    emits: ["emitFetchedData"],
+    emits: ["emitFetchedData", "tableSorting"],
     data() {
         return {
             tableData: [],
@@ -45,12 +46,23 @@ export default {
             if (this.downloadClicked) {
                 this.fetchData();
             }
+        },
+        sortingParams() {
+            this.fetchData();
         }
     },
-    mounted() {
-        // this.fetchData();
+    mounted() {},
+    beforeDestroy() {
+        this.$emit("tableSorting", {});
     },
     methods: {
+        updateSorting(data) {
+            let tableSorting = {
+                OrderBy: data.prop,
+                IsDescending: data.order === "descending" || data.order === null
+            };
+            this.$emit("tableSorting", tableSorting);
+        },
         fetchData() {
             let params = {
                 page: this.page,
@@ -58,6 +70,9 @@ export default {
             };
             if (this.filterParams) {
                 params = { ...params, ...this.filterParams };
+            }
+            if (this.sortingParams) {
+                params = { ...params, ...this.sortingParams };
             }
             this.isLoading = true;
             $HTTP_getChargeStationsOverallSummary(params)

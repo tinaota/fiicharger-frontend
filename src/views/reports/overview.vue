@@ -15,10 +15,10 @@
                 <ChargePointsUsageReport :filterParams="filterParams" dropdownSelected="chargePointUsage" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargePointsUsageReport>
             </div>
             <div v-if="dropdownSelected ==='chargeStationSummary'">
-                <ChargeStationsSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargeStationsSummaryReport>
+                <ChargeStationsSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargeStationsSummaryReport>
             </div>
             <div v-if="dropdownSelected ==='chargeStationOverallSummary'">
-                <ChargeStationsOverallSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationOverallSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData"></ChargeStationsOverallSummaryReport>
+                <ChargeStationsOverallSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationOverallSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargeStationsOverallSummaryReport>
             </div>
             <!-- add remaining reports -->
 
