@@ -16,7 +16,7 @@
                                 </el-table-column>
                                 <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
                                 <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
-                                <el-table-column :label="$t('chargingStation.averageSessionPower')" :min-width="2">
+                                <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
                                     <template slot-scope="scope">
                                         {{ scope.row.averageSessionPower.toFixed(2) }}
                                     </template>
