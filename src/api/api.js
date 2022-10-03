@@ -368,3 +368,16 @@ export const $HTTP_getChargeStationsSummary = params => { return fetch(`${base_c
 
 // get charge stations overall summary
 export const $HTTP_getChargeStationsOverallSummary = params => { return fetch(`${base_charger}/api/reports/charge-stations/overall-summary`, params) }
+
+// tariff apis
+// get tariffs
+export const $HTTP_getTarrifs = params => { return fetch(`${base_charger}/api/reports/tariffs`, params) }
+
+// delete tarrif by guid
+export const $HTTP_deleteTarrifsById = params => { return del(`${base_charger}/api/tariffs/${params.guid}`, params) }
+
+// add tariffs
+export const $HTTP_addTariffs = params => { return post(`${base_charger}/api/tariffs`, params) }
+
+// edit tariffs
+export const $HTTP_updateTariffs = params => { return put(`${base_charger}/api/tariffs/${params.guid}`, params) }

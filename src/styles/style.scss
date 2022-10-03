@@ -1397,3 +1397,44 @@ input[type="number"] {
         word-break: break-word !important;
     }
 }
+
+.tariff-dialog {
+    height: 98vh;
+    margin: 1vh auto !important;
+    .el-dialog__body {
+        height: 84%;
+        padding: 1vh 2vw 1vh 2vw !important;
+    }
+}
+
+.pricingSectionCollapse {
+    .el-collapse-item__header {
+        font-size: 16px;
+        font-weight: 600;
+        height: 30px;
+        line-height: 30px;
+        background-color: transparent;
+    }
+    .el-collapse-item__content {
+        padding: 0;
+    }
+    .el-collapse-item__wrap {
+        background-color: transparent;
+    }
+}
+.usageCollapseItem {
+    .el-collapse-item__header {
+        font-size: 16px;
+        font-weight: 600;
+        height: 30px;
+        line-height: 30px;
+        background-color: #ffffff;
+        padding: 0px 5px 0 15px;
+    }
+    .el-collapse-item__content {
+        padding: 0;
+    }
+    .el-collapse-item__wrap {
+        background-color: #ffffff;
+    }
+}
