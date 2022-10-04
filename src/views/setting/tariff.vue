@@ -7,6 +7,23 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
+                    <el-input :placeholder="$t('general.name')" v-model="filter.tariffName" @change="fetchData()" clearable>
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                    <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.tariffType" @change="fetchData()" filterable clearable>
+                        <el-option v-for="(item, idx) in filter.tariffTypeList" :label="$t(`general.${item.name}`)" :key="idx" :value="item.value"></el-option>
+                    </el-select>
+                    <el-select class="select-small long" :placeholder="$t('general.deprecated')" v-model="filter.isDeprecated" @change="fetchData()" filterable clearable>
+                        <el-option v-for="(item, idx) in filter.deprecatedList" :label="item" :key="idx" :value="item"></el-option>
+                    </el-select>
+                    <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="fetchData()">
+                    </el-date-picker>
+                    <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="fetchData()">
+                    </el-date-picker>
+                    <el-date-picker class="tariff-date-time" v-model="filter.endDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeAfter')" @change="fetchData()">
+                    </el-date-picker>
+                    <el-date-picker class="tariff-date-time" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="fetchData()">
+                    </el-date-picker>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
@@ -92,8 +109,8 @@
                     </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
                         <template slot-scope="scope">
-                            <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg edit" :disabled="checkIfDeprecated(scope.row.deprecated)" @click="openDialog('edit', scope.row)"></el-button>
+                            <el-button class="no-bg delete" :disabled="checkIfDeprecated(scope.row.deprecated)" @click="openDialog('delete',scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -113,6 +130,7 @@ import { $HTTP_getTarrifs } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import DeleteTariff from "@/views/setting/deleteTariff";
 import UpdateTariff from "@/views/setting/updateTariff";
+import i18n from "../../lang/lang";
 
 export default {
     components: {
@@ -141,12 +159,32 @@ export default {
                 isLoading: false,
                 show: false,
                 data: {}
+            },
+            filter: {
+                isDeprecated: "False",
+                deprecatedList: ["True", "False"],
+                tariffName: "",
+                tariffType: "",
+                tariffTypeList: [
+                    { name: "regular", value: "REGULAR" },
+                    { name: "adHocPayment", value: "AD_HOC_PAYMENT" },
+                    { name: "profileCheap", value: "PROFILE_CHEAP" },
+                    { name: "profileFast", value: "PROFILE_FAST" },
+                    { name: "profileGreen", value: "PROFILE_GREEN" }
+                ],
+                startDateTimeAfter: null,
+                startDateTimeBefore: null,
+                endDateTimeAfter: null,
+                endDateTimeBefore: null
             }
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        checkIfDeprecated() {
+            return (item) => (item ? true : false);
         }
     },
     mounted() {
@@ -174,6 +212,35 @@ export default {
                 IsDescending: false,
                 OrderBy: "Name"
             };
+            if (this.filter.isDeprecated) {
+                params.IsDeprecated = this.filter.isDeprecated === "True";
+            }
+            if (this.filter.tariffName) {
+                params.Name = this.filter.tariffName;
+            }
+            if (this.filter.tariffType) {
+                params.Type = this.filter.tariffType;
+            }
+            if (this.filter.startDateTimeAfter) {
+                params.StartDateTimeAfter = new Date(
+                    this.filter.startDateTimeAfter
+                ).toISOString();
+            }
+            if (this.filter.startDateTimeBefore) {
+                params.StartDateTimeBefore = new Date(
+                    this.filter.startDateTimeBefore
+                ).toISOString();
+            }
+            if (this.filter.endDateTimeAfter) {
+                params.EndDateTimeAfter = new Date(
+                    this.filter.endDateTimeAfter
+                ).toISOString();
+            }
+            if (this.filter.endDateTimeBefore) {
+                params.EndDateTimeBefore = new Date(
+                    this.filter.endDateTimeBefore
+                ).toISOString();
+            }
             $HTTP_getTarrifs(params)
                 .then((res) => {
                     this.isLoading = false;
@@ -183,10 +250,25 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("noData")
-                        });
+                        if (
+                            this.filter.isDeprecated ||
+                            this.filter.tariffName ||
+                            this.filter.tariffType ||
+                            this.filter.startDateTimeAfter ||
+                            this.filter.startDateTimeBefore ||
+                            this.filter.endDateTimeAfter ||
+                            this.filter.endDateTimeBefore
+                        ) {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("emptyMessage")
+                            });
+                        } else {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("noData")
+                            });
+                        }
                     }
                 })
                 .catch((err) => {
@@ -244,6 +326,20 @@ export default {
         font-size: 1rem;
         color: #5a607f;
         letter-spacing: 0;
+    }
+    .el-button.is-disabled,
+    .el-button.is-disabled:focus,
+    .el-button.is-disabled:hover {
+        background-color: transparent;
+        &.edit {
+            background-image: url("~imgs/ic_modify.png");
+        }
+        &.delete {
+            background-image: url("~imgs/ic_delete.png");
+        }
+    }
+    .tariff-date-time {
+        width: 190px;
     }
 }
 
