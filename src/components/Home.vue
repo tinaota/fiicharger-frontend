@@ -4,7 +4,7 @@
 
    <section class="main_class_header">
 
-    <div v-show="chargeBoxDrawer.isOpen" class="chargeBox-drawer">  
+    <div v-show="chargeBoxDrawer.isOpen" class="chargeBox-drawer"> 
     <div class="main-nav-fii">
         <div class="main_logo_img">
                 <div>
@@ -41,8 +41,9 @@
            </div>
             <div class="version">{{ `${$t('version')}${version}(${roleNameObj})` }}</div>  
     </div>
+         <div class="inside_blc"></div>
     </div>
-    
+  
     <div class="body_section">
 
       <div class="header_section">
@@ -427,6 +428,18 @@ export default {
             }
         }
     }
+
+.inside_blc{
+      display: block;
+    position: absolute;
+    background: #000;
+    height: 100vh;
+    width: 100vw;
+    top: 10px;
+    left: 0;
+    z-index: -100;
+    opacity: .5;  
+}
 .hidden{
    float:left;
 font-size: 30px;
@@ -451,7 +464,7 @@ font-size: 30px;
 
 .body_right_section{
 width: 100%;
-height:calc(100vh);
+    height: calc(100vh - 76px);
 }
 .right-container{
    height: 100%;
@@ -470,7 +483,9 @@ height:calc(100vh);
     background:rgba(228, 230, 234, .95);
     height: auto;
     min-height: 101vh;
-    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06);
+       transition: transform 2s ease-in;
+        will-change: transform; 
 }
 .chargeBox-drawer {
        position: fixed;
