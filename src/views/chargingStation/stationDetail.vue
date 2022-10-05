@@ -286,6 +286,12 @@
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            {{ $t('menu.tariff') }}
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, null,'modifyTariff')">{{ $t('general.modify') }}</el-button>
+                                    </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -294,6 +300,7 @@
             </div>
             <EditChargeBox name="chargeBox" :show="dialog.isVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="closeShowPosDialog"></ShowPostion>
+            <ModifyChargeBoxTariff v-if="chargeBoxTariffDialog.visible" :show="chargeBoxTariffDialog.visible" :data="chargeBoxTariffDialog.data" @close="closeActionDialog('modifyChargeBoxTariff')"></ModifyChargeBoxTariff>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
             <UpdateFirmware :chargePointId="updatesFirmwareDialog.chargePointId" :show="updatesFirmwareDialog.show" @close="closeActionDialog('updatesFirmware')"></UpdateFirmware>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.show" @close="closeActionDialog('getDiagnostics')"></GetDiagnostics>
@@ -322,6 +329,7 @@ import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
+import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
 
 export default {
     components: {
@@ -333,7 +341,8 @@ export default {
         UpdateFirmware,
         GetDiagnostics,
         AddChargingProfile,
-        ClearChargingProfile
+        ClearChargingProfile,
+        ModifyChargeBoxTariff
     },
     data() {
         return {
@@ -424,6 +433,11 @@ export default {
             },
             clearChargingProfileDialog: {
                 show: false,
+                data: {}
+            },
+            chargeBoxTariffDialog: {
+                visible: false,
+                isLoading: false,
                 data: {}
             },
             timeOut: null,
@@ -752,6 +766,10 @@ export default {
                         chargePointId: row,
                         name: this.stationInfo.stationName
                     };
+                } else if (action === "modifyTariff") {
+                    this.chargeBoxTariffDialog.visible = true;
+                    this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
+                    this.chargeBoxTariffDialog.data.name = row.name;
                 }
             }
             this.setTimerApiCall();
@@ -783,6 +801,8 @@ export default {
             } else if (type === "clearChargingProfile") {
                 this.clearChargingProfileDialog.show = false;
                 this.clearChargingProfileDialog.data = {};
+            }else if (type === "modifyChargeBoxTariff") {
+                this.chargeBoxTariffDialog.visible = false;
             }
         },
         deleteChargers(id) {

@@ -96,23 +96,6 @@ export const $HTTP_updateIdTags = (params) => { return put(`${base_charger}/api/
 
 export const $HTTP_deleteIdTags = (params) => { return del(`${base_charger}/api/id-tags/${params.id}`) }
 
-// charge price apis
-export const $HTTP_getPriceStatusList = (params) => { return fetch(`${base_charger}/api/reports/charge-prices`, params) }
-
-export const $HTTP_addChargePrice = (params) => { return post(`${base_charger}/api/charge-prices`, params) }
-
-export const $HTTP_updateChargePrice = (params) => { return put(`${base_charger}/api/charge-prices/${params.id}`, params) }
-
-export const $HTTP_getRateTypeList = () => { return fetch(`${base_charger}/api/charge-prices/charge-rate-type-list`) }
-
-export const $HTTP_getCurrencyList = () => { return fetch(`${base_charger}/api/charge-prices/currency-type-list`) }
-
-export const $HTTP_deleteChargePrice = (params) => { return del(`${base_charger}/api/charge-prices/${params.chargePriceId}`, params) }
-
-export const $HTTP_updateChargeBoxPrice = (params) => { return putWithConfig(`${base_charger}/api/charge-points/${params.chargePointId}/charge-price`, params.data, params.config) }
-
-export const $HTTP_deleteChargeBoxPrice = (params) => { return del(`${base_charger}/api/charge-points/${params.chargePointId}/charge-price`) }
-
 //logout
 export const $HTTP_logout = (params) => { return post(`${base_auth}/auth/revoke`, qs.stringify(params)) }
 
@@ -381,3 +364,20 @@ export const $HTTP_addTariffs = params => { return post(`${base_charger}/api/tar
 
 // edit tariffs
 export const $HTTP_updateTariffs = params => { return put(`${base_charger}/api/tariffs/${params.guid}`, params) }
+
+// get tariff for a chargepoint
+export const $HTTP_getChargeBoxTariff = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/tariffs`) }
+
+// update charge box tariff
+export const $HTTP_updateChargeBoxTariff = (params) => {
+    let query;
+    if (params.tariffId) {
+        query = `?tariffId=${params.tariffId}`
+    } else {
+        query = ''
+    }
+    return post(`${base_charger}/api/charge-points/${params.chargePointId}/tariffs` + query)
+}
+
+// delete charge box tariff
+export const $HTTP_deleteChargeBoxTariff = (params) => { return del(`${base_charger}/api/charge-points/${params.chargePointId}/tariffs/${params.tariffId}`) }

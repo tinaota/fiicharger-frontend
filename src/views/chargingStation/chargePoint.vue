@@ -86,35 +86,6 @@
                             {{ scope.row.currentType }}
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column :label="$t('chargingStation.elecRate')">
-                        <el-table-column :label="$t('chargingStation.onPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, true)">
-                            <template slot-scope="scope">
-                                {{ scope.row.chargePrice!==null? getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.onPeak.rate) + '/' + getSymbols(scope.row.chargePrice.onPeak.type):'-' }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column :label="$t('chargingStation.offPeak')" :min-width="3" :render-header="(h, {column}) => renderTipsHeader(h, {column}, false)">
-                            <template slot-scope="scope">
-                                {{ scope.row.chargePrice!==null? getSymbols(scope.row.chargePrice.currencyType) + getSymbols(scope.row.chargePrice.offPeak.rate) + '/' + getSymbols(scope.row.chargePrice.offPeak.type):'-' }}
-                            </template>
-                        </el-table-column>
-                    </el-table-column> -->
-                    <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="180">
-                        <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
-                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
-                            </el-tooltip>
-                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="deleteCheckBox(scope.row.id)"></el-button>
-                            <el-button class="no-bg currency" @click="openChargeBoxPriceDialog(scope.row)"></el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column v-else :label="$t('general.action')" :width="65">
-                        <template slot-scope="scope">
-                            <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
-                                <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
-                            </el-tooltip>
-                        </template>
-                    </el-table-column> -->
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
@@ -176,6 +147,12 @@
                                         </span>
                                         <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
                                     </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <span>
+                                            {{ $t('menu.tariff') }}
+                                        </span>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'modifyTariff')">{{ $t('general.modify') }}</el-button>
+                                    </el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -187,7 +164,7 @@
             </div>
             <EditChargeBox name="chargeBox" :show="dialogVisible" :dialog="dialog" @close="(e)=>closeDialog(e,'edit')"></EditChargeBox>
             <ShowPostion :itemId="mapDialog.itemId" :show="mapDialog.visible" :position="mapDialog.position" @close="(e)=>closeDialog(e,'map')"></ShowPostion>
-            <ModifyChargeBoxPrice v-if="chargeBoxPriceDialog.visible" :show="chargeBoxPriceDialog.visible" :data="chargeBoxPriceDialog.data" @close="(e)=>closeDialog(e, 'modifyChargeBoxPrice')"></ModifyChargeBoxPrice>
+            <ModifyChargeBoxTariff v-if="chargeBoxTariffDialog.visible" :show="chargeBoxTariffDialog.visible" :data="chargeBoxTariffDialog.data" @close="(e)=>closeDialog(e, 'modifyChargeBoxTariff')"></ModifyChargeBoxTariff>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :action="commonpopup.action" @close="closeActionDialog('commonpopup')"></CommonPopup>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="(e)=>closeDialog(e, 'diagnosticsDialog')"></GetDiagnostics>
             <UpdateFirmware :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="(e)=>closeDialog(e,'updateDialog')"></UpdateFirmware>
@@ -205,7 +182,7 @@ import {
 } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
-import ModifyChargeBoxPrice from "@/components/chargingStation/modifyChargeBoxPrice";
+import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
 import {
     $GLOBAL_CURRENCY,
     $GLOBAL_PAGE_LIMIT,
@@ -231,7 +208,7 @@ export default {
         EditChargeBox,
         ShowPostion,
         Connector,
-        ModifyChargeBoxPrice,
+        ModifyChargeBoxTariff,
         CommonPopup,
         GetDiagnostics,
         UpdateFirmware,
@@ -300,13 +277,13 @@ export default {
                     lng: ""
                 }
             },
-            chargeBoxPriceDialog: {
+            chargeBoxTariffDialog: {
                 visible: false,
                 isLoading: false,
                 data: {}
             },
             updateDialog: {
-                chargePointId: '',
+                chargePointId: "",
                 visible: false
             },
             connectorList: [],
@@ -320,7 +297,7 @@ export default {
             timeOut: null,
             diagnosticsDialog: {
                 visible: false,
-                chargePointId: ''
+                chargePointId: ""
             },
             addChargingProfile: {
                 visible: false,
@@ -393,6 +370,10 @@ export default {
                 };
                 this.clearChargingProfile.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
+            } else if ((type = "modifyTariff")) {
+                this.chargeBoxTariffDialog.visible = true;
+                this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
+                this.chargeBoxTariffDialog.data.name = row.name;
             }
         },
         closeActionDialog(type) {
@@ -627,20 +608,14 @@ export default {
                     });
             });
         },
-        openChargeBoxPriceDialog(data) {
-            this.chargeBoxPriceDialog.visible = true;
-            this.chargeBoxPriceDialog.data.chargePrice = data.chargePrice;
-            this.chargeBoxPriceDialog.data.chargeBoxId = data.id;
-            this.chargeBoxPriceDialog.data.name = data.name;
-        },
         closeDialog(e, dialog) {
             if (dialog === "map") {
                 this.mapDialog.visible = false;
             } else if (dialog === "edit") {
                 this.dialogVisible = false;
-            } else if (dialog === "modifyChargeBoxPrice") {
-                this.chargeBoxPriceDialog.visible = false;
-            } else if (dialog === "diagnosticsDialog"){
+            } else if (dialog === "modifyChargeBoxTariff") {
+                this.chargeBoxTariffDialog.visible = false;
+            } else if (dialog === "diagnosticsDialog") {
                 this.diagnosticsDialog.visible = false;
             } else if (dialog === "updateDialog") {
                 this[dialog].visible = false;

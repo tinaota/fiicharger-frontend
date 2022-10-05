@@ -146,7 +146,7 @@
         "light": "Light",
         "dark": "Dark",
         "unknown": "Unknown",
-        "modifyChargeBoxPrice": "Choose from the price list to bind charger",
+        "modifyChargeBoxPrice": "Choose from the tariff list to bind charger",
         "updateRolesUser": "Choose roles to update to this user:",
         "changeRoles": "Change roles to : ",
         "deleteThis": "Are you sure you want to delete this ",
@@ -242,7 +242,9 @@
         "startDateTimeAfter": "Start Date Time After",
         "startDateTimeBefore": "Start Date Time Before",
         "endDateTimeAfter": "End Date Time After",
-        "endDateTimeBefore": "End Date Time Before"
+        "endDateTimeBefore": "End Date Time Before",
+        "typeConflict": "Tariff overlaps with existing tariff of type  for charge point {item}",
+        "tariffNotUpdated": "Tariff has not been updated for charge point {item}"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

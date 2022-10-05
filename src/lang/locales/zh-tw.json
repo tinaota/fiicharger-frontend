@@ -242,7 +242,9 @@
         "startDateTimeAfter": "開始日期時間之後",
         "startDateTimeBefore": "開始日期時間之前",
         "endDateTimeAfter": "結束日期時間之後",
-        "endDateTimeBefore": "結束日期時間之前"
+        "endDateTimeBefore": "結束日期時間之前",
+        "typeConflict": "關稅與充電點 {item} 的現有關稅類型重疊",
+        "tariffNotUpdated": "收費點 {item} 的資費尚未更新"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

@@ -242,7 +242,9 @@
         "startDateTimeAfter": "开始日期时间之后",
         "startDateTimeBefore": "开始日期时间之前",
         "endDateTimeAfter": "结束日期时间之后",
-        "endDateTimeBefore": "结束日期时间之前"
+        "endDateTimeBefore": "结束日期时间之前",
+        "typeConflict": "关税与充电点 {item} 的现有关税类型重叠",
+        "tariffNotUpdated": "收费点 {item} 的资费尚未更新"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
