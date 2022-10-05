@@ -152,5 +152,9 @@ export default {
         justify-content: flex-end;
         color: #0263ff;
     }
+    hr {
+        border-style: none;
+        border-top: 1px solid #606266;
+    }
 }
 </style>

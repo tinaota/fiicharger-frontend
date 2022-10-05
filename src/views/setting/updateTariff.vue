@@ -275,6 +275,10 @@ export default {
         margin-block-start: 0;
         margin-block-end: 0;
     }
+    hr{
+        border-style: none;
+        border-top: 1px solid #606266;
+    }
     .price {
         margin-bottom: 2px;
         .customPriceName {

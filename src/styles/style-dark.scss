@@ -151,6 +151,20 @@ $dark-background-color: #2d3855;
                     background: none !important;
                 }
             }
+            .tariff-dialog {
+                .el-collapse-item__header {
+                    color: $dark-font-color !important;
+                }
+                .el-collapse-item__content {
+                    color: $dark-font-color !important;
+                    .pricingUsageMain {
+                        .el-collapse-item__header,
+                        .el-collapse-item__content {
+                            color: #303133 !important;
+                        }
+                    }
+                }
+            }
         }
     }
     // update datepicker styling for station detail page only
