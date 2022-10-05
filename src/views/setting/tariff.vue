@@ -31,7 +31,7 @@
                         <template slot-scope="scope" v-if="scope.row.elements">
                             <div v-for="index in scope.row.elements.length" :key="index">
                                 <el-table :data="scope.row.elements[index-1].priceComponents">
-                                    <el-table-column :label="$t('general.priceComponents')">
+                                    <el-table-column :label="$t('general.pricingUsage')">
                                         <el-table-column prop="type" :label="$t('general.type')" :min-width="1"></el-table-column>
                                         <el-table-column prop="price" :label="$t('menu.price')" :min-width="1"></el-table-column>
                                         <el-table-column prop="vat" :label="$t('general.vat')" :min-width="1"></el-table-column>
@@ -39,7 +39,7 @@
                                     </el-table-column>
                                 </el-table>
                                 <el-table :data="[scope.row.elements[index-1].restrictions]">
-                                    <el-table-column :label="$t('general.restrictions')">
+                                    <el-table-column :label="$t('general.pricingConditions')">
                                         <el-table-column prop="startTime" :label="$t('general.startTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="endTime" :label="$t('general.endTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="startDate" :label="$t('general.startDate')" :min-width="1"></el-table-column>
