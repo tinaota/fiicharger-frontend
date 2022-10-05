@@ -87,7 +87,7 @@ export default {
             $API: null,
             formData: {
                 customPriceName: "",
-                priceType: "REGULAR",
+                priceType: null,
                 minPrice: {
                     excludingVat: null,
                     includingVat: null
@@ -104,7 +104,8 @@ export default {
                 { name: "adHocPayment", value: "AD_HOC_PAYMENT" },
                 { name: "profileCheap", value: "PROFILE_CHEAP" },
                 { name: "profileFast", value: "PROFILE_FAST" },
-                { name: "profileGreen", value: "PROFILE_GREEN" }
+                { name: "profileGreen", value: "PROFILE_GREEN" },
+                { name: "none", value: null }
             ],
             pickerOptions: {},
             pricingSectionData: [],
@@ -275,7 +276,7 @@ export default {
         margin-block-start: 0;
         margin-block-end: 0;
     }
-    hr{
+    hr {
         border-style: none;
         border-top: 1px solid #606266;
     }

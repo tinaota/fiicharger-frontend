@@ -216,6 +216,7 @@
         "pricingSections": "定价部分",
         "customPriceName": "自定义价格名称",
         "priceType": "价格类型",
+        "none": "没有任何",
         "regular": "常规的",
         "adHocPayment": "临时付款",
         "profileCheap": "配置文件便宜",

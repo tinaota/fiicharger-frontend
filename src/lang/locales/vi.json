@@ -216,6 +216,7 @@
         "pricingSections": "Phần Định giá",
         "customPriceName": "Tên giá tùy chỉnh",
         "priceType": "Loại giá",
+        "none": "Không ai",
         "regular": "Thường xuyên",
         "adHocPayment": "Thanh toán Ad Hoc",
         "profileCheap": "Hồ sơ giá rẻ",

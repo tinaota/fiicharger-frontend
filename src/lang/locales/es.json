@@ -216,6 +216,7 @@
         "pricingSections": "Secciones de precios",
         "customPriceName": "Nombre de precio personalizado",
         "priceType": "Tipo de precio",
+        "none": "Ninguno",
         "regular": "Regular",
         "adHocPayment": "Pago ad hoc",
         "profileCheap": "Perfil Barato",

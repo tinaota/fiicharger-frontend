@@ -216,6 +216,7 @@
         "pricingSections": "Pricing Sections",
         "customPriceName": "Custom Price Name",
         "priceType": "Price Type",
+        "none":"None",
         "regular": "Regular",
         "adHocPayment": "Ad Hoc Payment",
         "profileCheap": "Profile Cheap",
