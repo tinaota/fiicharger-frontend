@@ -8,7 +8,7 @@
         </div>
         <div class="otherInfo">
             <div class="price">
-                <div class="label">{{ $t('menu.price') }}<span style="color:red"><strong>* </strong></span></div>
+                <div class="label">{{ $t('menu.tariff') }}<span style="color:red"><strong>* </strong></span></div>
                 <div class="info">
                     <el-input-number class="inputFilter" v-model="price" :controls="false" @change="updateData"></el-input-number>
                 </div>

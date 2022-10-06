@@ -2,7 +2,7 @@
     <el-dialog custom-class="tariff-dialog" :title="dialogType==='create'?$t('general.create'):$t('general.modify')" top="0" width="31%" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="right-form formVertical">
             <div class="price">
-                <h3>{{ $t('menu.price') }}</h3>
+                <h3>{{ $t('menu.tariff') }}</h3>
                 <el-form ref="tariffForm" :rules="rules" :model="formData">
                     <div class="customPriceName">
                         <el-form-item prop="customPriceName" class="customPriceNameItem">
