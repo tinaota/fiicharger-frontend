@@ -436,7 +436,7 @@ export default {
     height: 100vh;
     width: 100vw;
     top: 10px;
-    left: 0;
+    left: 10px;
     z-index: -100;
     opacity: .5;  
 }
