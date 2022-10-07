@@ -18,13 +18,13 @@ export default {
         };
     },
     mounted() {
-        this.source = "/ai-dashboard";
+        this.source = window.location.origin + "/ai-dashboard/";
     }
 };
 </script>
 
 <style scoped>
-.mainctrl{
+.mainctrl {
     height: 100%;
 }
 #analytics,
