@@ -520,6 +520,7 @@ width: 100%;
    display: flex;
     flex-direction: column;
         flex: 1 1 auto;
+        width: 100%;
 }
     .version {
             color: #525e69;
