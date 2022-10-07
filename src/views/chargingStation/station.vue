@@ -41,13 +41,13 @@
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.nChargers')" label-class-name="center">
-                        <el-table-column prop="acCount" label="AC" :width="68" label-class-name="center" class-name="center">
+                        <el-table-column prop="acCount" label="AC" width="68" label-class-name="center" class-name="center">
                         </el-table-column>
-                        <el-table-column prop="dcCount" label="DC" :width="68" label-class-name="center" class-name="center">
+                        <el-table-column prop="dcCount" label="DC" width="68" label-class-name="center" class-name="center">
                         </el-table-column>
                     </el-table-column>
-                    <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('general.status')" :min-width="3">
+                    <el-table-column prop="modified" :label="$t('general.latestModification')" width="300"></el-table-column>
+                    <el-table-column :label="$t('general.status')" width="300">
                         <template slot-scope="scope">
                             <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.publish" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ $t(`general.${item.toLowerCase()}`) }}</el-radio>
                         </template>
