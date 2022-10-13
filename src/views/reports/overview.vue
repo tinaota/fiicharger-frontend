@@ -21,10 +21,13 @@
                 <div v-if="dropdownSelected ==='chargeStationOverallSummary'">
                     <ChargeStationsOverallSummaryReport :filterParams="filterParams" dropdownSelected="chargeStationOverallSummary" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ChargeStationsOverallSummaryReport>
                 </div>
+                <div v-if="dropdownSelected ==='transactions'">
+                    <TransactionsReport :filterParams="filterParams" dropdownSelected="transactions" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></TransactionsReport>
+                </div>
                 <!-- add remaining reports -->
 
                 <!-- add downloads option -->
-                <div class="downloads" style="display:flex">
+                <div class="downloads" style="display:flex" v-loading="loading" :element-loading-text="$t('general.preparingDocument')" element-loading-spinner="el-icon-loading">
                     <DownloadCSV :filterParams="filterParams" :dropdownSelected="dropdownSelected" :sortingParams="sortingParams" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadCSVClicked="updateDownloadCSVClicked"></DownloadCSV>
                     <DownloadPDF :filterParams="filterParams" :dropdownSelected="dropdownSelected" :sortingParams="sortingParams" :total="tableDataLength" :fetchDataComplete="fetchDataComplete" @downloadPDFClicked="updateDownloadPDFClicked"></DownloadPDF>
                 </div>
@@ -38,6 +41,7 @@ import ChargePointsReport from "@/components/reports/chargePointsReport.vue";
 import ChargePointsUsageReport from "@/components/reports/chargePointsUsageReport.vue";
 import ChargeStationsSummaryReport from "@/components/reports/chargeStationsSummaryReport.vue";
 import ChargeStationsOverallSummaryReport from "@/components/reports/chargeStationsOverallSummaryReport.vue";
+import TransactionsReport from "@/components/reports/transactionsReport.vue";
 import CommonFilter from "@/components/reports/filters/commonFilter.vue";
 import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
 import DownloadPDF from "@/components/reports/downloads/DownloadPDF.vue";
@@ -48,6 +52,7 @@ export default {
         ChargePointsUsageReport,
         ChargeStationsSummaryReport,
         ChargeStationsOverallSummaryReport,
+        TransactionsReport,
         CommonFilter,
         DownloadCSV,
         DownloadPDF
@@ -60,7 +65,8 @@ export default {
             downloadCSVClicked: false,
             fetchDataComplete: false,
             downloadPDFClicked: false,
-            sortingParams: {}
+            sortingParams: {},
+            loading: false
         };
     },
     mounted() {
@@ -77,10 +83,22 @@ export default {
             this.downloadCSVClicked = val;
             // update to false as download will happen after fetching all data
             this.fetchDataComplete = false;
+            // only set loading true if csv is not clicked but data is fetched
+            if (val) {
+                this.loading = true;
+            } else {
+                this.loading = false;
+            }
         },
         updateDownloadPDFClicked(val) {
             this.downloadPDFClicked = val;
             this.fetchDataComplete = false;
+            // only set loading true if pdf is not clicked but data is fetched
+            if (val) {
+                this.loading = true;
+            } else {
+                this.loading = false;
+            }
         },
         updateReportsData({ total, complete }) {
             // update only when downloads is clicked

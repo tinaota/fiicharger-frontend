@@ -9,6 +9,7 @@
             <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
             <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
+            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" :min-width="2"></el-table-column>
             <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" :min-width="2">
                 <template slot-scope="scope">
                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}

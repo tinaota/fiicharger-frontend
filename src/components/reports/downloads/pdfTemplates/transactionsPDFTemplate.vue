@@ -6,24 +6,37 @@
                     <div class="mainReport">
                         <div class="tableInfo">
                             <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
-                                <el-table-column prop="id" :label="$t('chargingStation.stationID')" :min-width="1"></el-table-column>
-                                <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="2">
+                                <el-table-column prop="id" :label="$t('chargingStation.transactionId')" :min-width="2">
                                 </el-table-column>
-                                <el-table-column :label="$t('general.address')" :min-width="4">
+                                <el-table-column prop="chargePointId" :label="$t('chargingStation.chargerId')" :min-width="3"></el-table-column>
+                                <!-- <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="1"> -->
+                                <!-- </el-table-column> -->
+                                <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
+                                <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" :min-width="2"></el-table-column>
+                                <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')+' (KWH)'" :min-width="1">
                                     <template slot-scope="scope">
-                                        {{ scope.row.address }}
+                                        {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                                     </template>
                                 </el-table-column>
-                                <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
-                                <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
-                                <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
+                                <!-- <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" :min-width="2">
                                     <template slot-scope="scope">
-                                        {{ scope.row.averageSessionPower.toFixed(2) }}
+                                        {{ getLocTime(scope.row.startTimestamp) }}
+                                    </template>
+                                </el-table-column> -->
+                                <el-table-column prop="meterStop" :label="$t('chargingStation.meterStop')+' (KWH)'" :min-width="1">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                                     </template>
                                 </el-table-column>
-                                <el-table-column :label="$t('chargingStation.averageHoursPerSession')" :min-width="2">
+                                <!-- <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" :min-width="2">
                                     <template slot-scope="scope">
-                                        {{ scope.row.averageHoursPerSession.toFixed(2) }}
+                                        {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
+                                    </template>
+                                </el-table-column> -->
+                                <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2"></el-table-column>
+                                <el-table-column prop="meterTotal" :label="$t('chargingStation.meterTotal')+' (KWH)'" :min-width="1">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -37,6 +50,7 @@
 
 <script>
 import fiics_logo from "imgs/fiics_logo.png";
+import { transformUtcToLocTime } from "@/utils/function";
 import VueHtml2pdf from "vue-html2pdf";
 export default {
     components: {
@@ -50,8 +64,13 @@ export default {
     data() {
         return {
             fiics_logo: fiics_logo,
-            dataPerPage: 14
+            dataPerPage: 15
         };
+    },
+    computed: {
+        getLocTime() {
+            return (item) => transformUtcToLocTime(item);
+        }
     },
     mounted() {
         this.$refs.html2Pdf.generatePdf();
@@ -92,7 +111,7 @@ export default {
                             `${i18n
                                 .t(`reports.${this.dropdownSelected}`)
                                 .toUpperCase()} REPORT`,
-                            9,
+                            9.5,
                             0.6
                         );
                         pdf.setDrawColor(220, 220, 220);
@@ -127,7 +146,7 @@ export default {
 }
 .pdf-item {
     .tableInfo {
-        margin-top: 70px;
+        margin-top: 80px;
     }
 }
 </style>

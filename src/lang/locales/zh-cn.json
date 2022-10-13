@@ -243,7 +243,8 @@
         "endDateTimeAfter": "结束日期时间之后",
         "endDateTimeBefore": "结束日期时间之前",
         "typeConflict": "关税与充电点 {item} 的现有关税类型重叠",
-        "tariffNotUpdated": "收费点 {item} 的资费尚未更新"
+        "tariffNotUpdated": "收费点 {item} 的资费尚未更新",
+        "preparingDocument": "准备文件..."
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -374,6 +375,7 @@
         "lastHeartbeat": "最近一次正常检测",
         "maxOutput": "最大输出",
         "startIdTag": "开始 ID 标签",
+        "stopIdTag": "停止 ID 标记",
         "meterStart": "电表启动",
         "meterStop": "电表停止",
         "meterTotal": "电表总计数",

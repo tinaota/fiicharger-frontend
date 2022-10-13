@@ -1,6 +1,6 @@
 <template>
     <div style="width:100%">
-        <el-select class="select-small compnentSelectDropdown" v-model="filter.dropdownSelected" :placeholder="$t('general.select')" @change="updateDropdownSelected">
+        <el-select class="select-small componentSelectDropdown" v-model="filter.dropdownSelected" :placeholder="$t('general.select')" @change="updateDropdownSelected">
             <el-option v-for="item in filter.dropdownList" :label="$t(`reports.${item}`)" :key="item" :value="item"></el-option>
         </el-select>
         <el-input v-if="addressFilter" :placeholder="$t('general.address')" v-model="filter.address" @change="updateParams" clearable>
@@ -36,10 +36,33 @@
         <el-input v-if="connectorTypeFilter" :placeholder="$t('general.connectorType')" v-model="filter.connectorType" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
+        <el-input v-if="connectorIdFilter" :placeholder="$t('chargingStation.connectorId')" v-model="filter.connectorId" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="startIdTagFilter" :placeholder="$t('chargingStation.startIdTag')" v-model="filter.startIdTag" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="stopIdTagFilter" :placeholder="$t('chargingStation.stopIdTag')" v-model="filter.stopIdTag" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="stopReasonFilter" :placeholder="$t('chargingStation.stopReason')" v-model="filter.stopReason" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-select v-if="isActiveFilter" class="select-small" v-model="filter.isActive" :placeholder="$t('general.active')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
         <el-input v-if="keyWordFilter" :placeholder="$t('general.keyWord')" v-model="filter.keyWord" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <el-date-picker v-if="dateRangeFilter" :default-time="['00:00:00', '23:59:59']" v-model="filter.dateRange" type="daterange" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="filter.pickerOptions" :clearable="false" class="" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="startDateTimeAfterFilter" class="single-date-picker" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="startDateTimeBeforeFilter" class="single-date-picker" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="endDateTimeAfterFilter" class="single-date-picker" v-model="filter.endDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeAfter')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="endDateTimeBeforeFilter" class="single-date-picker" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="updateParams">
         </el-date-picker>
     </div>
 </template>
@@ -60,16 +83,17 @@ export default {
                     "chargePointUsage",
                     // "chargeStations",
                     "chargeStationSummary",
-                    "chargeStationOverallSummary"
+                    "chargeStationOverallSummary",
                     // "chargingProfileTemplates",
                     // "chargingProfiles",
                     // "idTags",
                     // "reservations",
-                    // "transactions"
+                    "transactions"
                 ],
                 isBoundToStation: null,
                 chargePointName: "",
                 chargePointId: "",
+                connectorId: "",
                 stationName: "",
                 stationId: "",
                 zipCode: "",
@@ -89,7 +113,15 @@ export default {
                 stationStatus: "",
                 stationStatusList: ["Enabled", "Disabled"],
                 currentType: "",
-                currentTypeList: ["AC", "DC"]
+                currentTypeList: ["AC", "DC"],
+                startIdTag: "",
+                stopIdTag: "",
+                stopReason: "",
+                isActive: null,
+                startDateTimeAfter: null,
+                startDateTimeBefore: null,
+                endDateTimeAfter: null,
+                endDateTimeBefore: null
             }
         };
     },
@@ -111,8 +143,12 @@ export default {
         chargePointIdFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
+                this.filter.dropdownSelected === "chargePointUsage" ||
+                this.filter.dropdownSelected === "transactions"
             );
+        },
+        connectorIdFilter() {
+            return this.filter.dropdownSelected === "transactions";
         },
         chargePointNameFilter() {
             return (
@@ -170,6 +206,30 @@ export default {
                 this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
         },
+        startIdTagFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        stopIdTagFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        stopReasonFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        isActiveFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        startDateTimeBeforeFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        startDateTimeAfterFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        endDateTimeAfterFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
+        endDateTimeBeforeFilter() {
+            return this.filter.dropdownSelected === "transactions";
+        },
         dateRangeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePointUsage" ||
@@ -199,6 +259,7 @@ export default {
                 isBoundToStation: null,
                 chargePointName: "",
                 chargePointId: "",
+                connectorId: "",
                 stationName: "",
                 stationId: "",
                 zipCode: "",
@@ -207,7 +268,15 @@ export default {
                 address: "",
                 connectionStatus: "",
                 currentType: "",
-                stationStatus: ""
+                stationStatus: "",
+                startIdTag: "",
+                stopIdTag: "",
+                stopReason: "",
+                isActive: null,
+                startDateTimeAfter: null,
+                startDateTimeBefore: null,
+                endDateTimeAfter: null,
+                endDateTimeBefore: null
             };
             // set default dates
             this.mountDefaultDateRange();
@@ -229,7 +298,17 @@ export default {
                 params.Name = this.filter.chargePointName;
             }
             if (this.filter.chargePointId) {
-                params.Id = this.filter.chargePointId;
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.ChargePointId = this.filter.chargePointId;
+                } else {
+                    params.Id = this.filter.chargePointId;
+                }
+            }
+
+            if (this.filter.connectorId) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.ConnectorId = this.filter.connectorId;
+                }
             }
             if (this.filter.stationName) {
                 if (
@@ -261,6 +340,26 @@ export default {
             if (this.filter.keyWord) {
                 params.Keyword = this.filter.keyWord;
             }
+            if (this.filter.startIdTag) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StartIdTag = this.filter.startIdTag;
+                }
+            }
+            if (this.filter.stopIdTag) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StopIdTag = this.filter.stopIdTag;
+                }
+            }
+            if (this.filter.stopReason) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StopReason = this.filter.stopReason;
+                }
+            }
+            if (this.filter.isActive) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.IsActive = this.filter.isActive === "true";
+                }
+            }
             if (this.filter.dateRange) {
                 if (
                     this.filter.dropdownSelected === "chargePointUsage" ||
@@ -272,6 +371,27 @@ export default {
                     params.After = this.filter.dateRange[0];
                 }
             }
+
+            if (this.filter.startDateTimeAfter) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StartedAfter = this.filter.startDateTimeAfter;
+                }
+            }
+            if (this.filter.startDateTimeBefore) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StartedBefore = this.filter.startDateTimeBefore;
+                }
+            }
+            if (this.filter.endDateTimeAfter) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StoppedAfter = this.filter.endDateTimeAfter;
+                }
+            }
+            if (this.filter.endDateTimeBefore) {
+                if (this.filter.dropdownSelected === "transactions") {
+                    params.StoppedBefore = this.filter.endDateTimeBefore;
+                }
+            }
             this.$emit("updateParams", params);
         }
     }
@@ -279,7 +399,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.compnentSelectDropdown,
+.componentSelectDropdown,
 div + div {
     margin-left: 5px;
 }

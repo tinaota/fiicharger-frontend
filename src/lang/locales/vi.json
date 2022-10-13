@@ -243,7 +243,8 @@
         "endDateTimeAfter": "Ngày Kết thúc Thời gian Sau",
         "endDateTimeBefore": "Ngày kết thúc trước giờ",
         "typeConflict": "Biểu phí trùng lặp với biểu thuế hiện có của loại điểm tính phí {item}",
-        "tariffNotUpdated": "Biểu phí chưa được cập nhật cho điểm tính phí {item}"
+        "tariffNotUpdated": "Biểu phí chưa được cập nhật cho điểm tính phí {item}",
+        "preparingDocument": "Chuẩn bị tài liệu ..."
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -374,6 +375,7 @@
         "lastHeartbeat": "Nhịp tim cuối cùng",
         "maxOutput": "Đầu ra tối đa",
         "startIdTag": "Bắt đầu thẻ ID",
+        "stopIdTag": "Thẻ ID dừng",
         "meterStart": "Bắt đầu đồng hồ",
         "meterStop": "Đồng hồ dừng",
         "meterTotal": "Tổng số mét",

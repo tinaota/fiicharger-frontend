@@ -243,7 +243,8 @@
         "endDateTimeAfter": "End Date Time After",
         "endDateTimeBefore": "End Date Time Before",
         "typeConflict": "Tariff overlaps with existing tariff of type  for charge point {item}",
-        "tariffNotUpdated": "Tariff has not been updated for charge point {item}"
+        "tariffNotUpdated": "Tariff has not been updated for charge point {item}",
+        "preparingDocument": "Preparing Document ..."
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -374,6 +375,7 @@
         "lastHeartbeat": "Last Heartbeat",
         "maxOutput": "Max Output",
         "startIdTag": "Start ID Tag",
+        "stopIdTag": "Stop ID Tag",
         "meterStart": "Meter Start",
         "meterStop": "Meter Stop",
         "meterTotal": "Meter Total",

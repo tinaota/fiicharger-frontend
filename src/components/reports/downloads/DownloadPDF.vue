@@ -14,6 +14,9 @@
         <div class="" v-if="dropdownSelected==='chargeStationOverallSummary' && isDataDownloadComplete">
             <ChargeStationsSummaryOverallPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryOverallPDFTemplate>
         </div>
+        <div class="" v-if="dropdownSelected==='transactions' && isDataDownloadComplete">
+            <TransactionsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></TransactionsPDFTemplate>
+        </div>
     </div>
 </template>
 
@@ -23,19 +26,21 @@ import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getChargePointsUsage,
     $HTTP_getChargeStationsSummary,
-    $HTTP_getChargeStationsOverallSummary
+    $HTTP_getChargeStationsOverallSummary,
+    $HTTP_getAllTransactions
 } from "@/api/api";
 import ChargePointsPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointPDFTemplate.vue";
 import ChargePointsUsagePDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointsUsagePDFTemplate.vue";
 import ChargeStationsSummaryPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryPDFTemplate.vue";
 import ChargeStationsSummaryOverallPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryOverallPDFTemplate.vue";
-
+import TransactionsPDFTemplate from "@/components/reports/downloads/pdfTemplates/transactionsPDFTemplate.vue";
 export default {
     components: {
         ChargePointsPDFTemplate,
         ChargePointsUsagePDFTemplate,
         ChargeStationsSummaryPDFTemplate,
-        ChargeStationsSummaryOverallPDFTemplate
+        ChargeStationsSummaryOverallPDFTemplate,
+        TransactionsPDFTemplate
     },
     props: {
         filterParams: Object,
@@ -87,6 +92,8 @@ export default {
                 this.dropdownSelected === "chargeStationOverallSummary"
             ) {
                 $API = $HTTP_getChargeStationsOverallSummary;
+            } else if (this.dropdownSelected === "transactions") {
+                $API = $HTTP_getAllTransactions;
             }
             $API(params)
                 .then((res) => {
@@ -103,7 +110,7 @@ export default {
                 })
                 .then(() => {
                     this.downloadPDFClicked = false;
-                    this.$emit("downloadPDFClicked", false);
+                    // this.$emit("downloadPDFClicked", false);
                 })
                 .catch(() => {
                     this.downloadPDFClicked = false;

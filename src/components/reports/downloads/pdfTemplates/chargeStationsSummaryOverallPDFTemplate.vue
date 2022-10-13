@@ -5,7 +5,7 @@
                 <section class="pdf-item" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
                     <div class="mainReport">
                         <div class="tableInfo">
-                            <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage-1))">
+                            <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
                                 <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
                                 <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
                                 <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
@@ -42,7 +42,7 @@ export default {
     data() {
         return {
             fiics_logo: fiics_logo,
-            dataPerPage: 16
+            dataPerPage: 14
         };
     },
     mounted() {
@@ -115,9 +115,6 @@ export default {
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
-        th {
-            color: red;
-        }
     }
 }
 .pdf-item {
