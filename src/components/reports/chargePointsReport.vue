@@ -67,7 +67,10 @@ export default {
             }
         },
         sortingParams() {
-            this.fetchData();
+            // check if sorting object is present
+            if (Object.keys(this.sortingParams).length > 0) {
+                this.fetchData();
+            }
         }
     },
     mounted() {},

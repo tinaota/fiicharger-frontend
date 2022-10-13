@@ -69,7 +69,10 @@ export default {
             }
         },
         sortingParams() {
-            this.fetchData();
+            // check if sorting object is present
+            if (Object.keys(this.sortingParams).length > 0) {
+                this.fetchData();
+            }
         }
     },
     mounted() {},
@@ -82,8 +85,6 @@ export default {
                 OrderBy: data.prop,
                 IsDescending: data.order === "descending" || data.order === null
             };
-            console.log(data);
-            console.log(tableSorting)
             this.$emit("tableSorting", tableSorting);
         },
         fetchData() {
