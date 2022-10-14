@@ -1,26 +1,23 @@
 <template>
     <div>
-        <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="false" :preview-modal="false" :filename="$t(`reports.${dropdownSelected}`)" :paginate-elements-by-height="1000" :pdf-quality="2" :manual-pagination="false" pdf-format="a4" pdf-orientation="portrait" pdf-content-width="800px" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
-            <section slot="pdf-content">
-                <section class="pdf-item" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
-                    <div class="mainReport">
-                        <div class="tableInfo">
-                            <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
-                                <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
-                                <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
-                                <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.averageSessionPower.toFixed(2) }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('chargingStation.averageHoursPerSession')" :min-width="2">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.averageHoursPerSession.toFixed(2) }}
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
+        <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="false" :preview-modal="false" :html-to-pdf-options="htmlToPdfOptions" :pdf-quality="2" :manual-pagination="true" pdf-format="a4" pdf-orientation="landscape" pdf-content-width="1120px" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
+            <section slot="pdf-content" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
+                <section class="pdf-item">
+                    <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
+                        <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
+                        <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
+                        <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
+                            <template slot-scope="scope">
+                                {{ scope.row.averageSessionPower.toFixed(2) }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column :label="$t('chargingStation.averageHoursPerSession')" :min-width="2">
+                            <template slot-scope="scope">
+                                {{ scope.row.averageHoursPerSession.toFixed(2) }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div v-if="n< Math.ceil(tableData.length/dataPerPage)" class="html2pdf__page-break" />
                 </section>
             </section>
         </vue-html2pdf>
@@ -42,7 +39,22 @@ export default {
     data() {
         return {
             fiics_logo: fiics_logo,
-            dataPerPage: 14
+            dataPerPage: 17,
+            htmlToPdfOptions: {
+                filename: i18n.t(`reports.${this.dropdownSelected}`),
+                margin: [20, 3, 10, 3],
+                jsPDF: {
+                    format: "a4",
+                    orientation: "landscape"
+                },
+                image: {
+                    type: "jpeg",
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                }
+            }
         };
     },
     mounted() {
@@ -64,7 +76,7 @@ export default {
                         pdf.text(
                             "Page " + i + " of " + totalPages,
                             pdf.internal.pageSize.getWidth() * 0.88,
-                            pdf.internal.pageSize.getHeight() - 0.3
+                            pdf.internal.pageSize.getHeight() * 0.95
                         );
                         // more documentation here as jspdf
                         // http://raw.githack.com/MrRio/jsPDF/master/docs/module-addImage.html#~addImage
@@ -72,24 +84,34 @@ export default {
                         pdf.addImage(
                             fiics_logo,
                             "png",
-                            pdf.internal.pageSize.getWidth() - 1,
-                            pdf.internal.pageSize.getHeight() - 0.25,
-                            1,
-                            0.2
+                            pdf.internal.pageSize.getWidth() * 0.88,
+                            pdf.internal.pageSize.getHeight() * 0.96,
+                            21,
+                            6.5
                         );
                         // logo at top
-                        pdf.addImage(fiics_logo, "png", 0.6, 0.35, 1.7, 0.4);
-                        pdf.text(" info@fii-usa.com", 3.2, 0.7);
+                        pdf.addImage(fiics_logo, "png", 4, 10, 40, 10);
+                        pdf.text(
+                            " info@fii-usa.com",
+                            pdf.internal.pageSize.getWidth() * 0.45,
+                            pdf.internal.pageSize.getHeight() * 0.09
+                        );
                         pdf.text(
                             `${i18n
                                 .t(`reports.${this.dropdownSelected}`)
                                 .toUpperCase()} REPORT`,
-                            4.7,
-                            0.7
+                            pdf.internal.pageSize.getWidth() * 0.7,
+                            pdf.internal.pageSize.getHeight() * 0.09
                         );
                         pdf.setDrawColor(220, 220, 220);
                         pdf.setLineWidth(0.01);
-                        pdf.line(0.5, 0.8, 8, 0.8);
+                        // x1 y1 x2 y2 coordinates
+                        pdf.line(
+                            pdf.internal.pageSize.getWidth() * 0.01,
+                            pdf.internal.pageSize.getHeight() * 0.1,
+                            pdf.internal.pageSize.getWidth() * 0.98,
+                            pdf.internal.pageSize.getHeight() * 0.1
+                        );
                     }
                 })
                 .then(() => {
@@ -100,26 +122,3 @@ export default {
     }
 };
 </script>
-
-
-<style lang="scss" scoped>
-.mainReport {
-    margin: 0px 50px 0 50px;
-    display: flex;
-    .tableInfo:nth-child(0) {
-        margin-top: 40px;
-    }
-    .tableInfo {
-        display: flex;
-        margin-top: 20px;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-}
-.pdf-item {
-    .tableInfo {
-        margin-top: 70px;
-    }
-}
-</style>

@@ -1,37 +1,34 @@
 <template>
     <div>
-        <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="false" :preview-modal="false" :filename="$t(`reports.${dropdownSelected}`)" :paginate-elements-by-height="1000" :pdf-quality="2" :manual-pagination="false" pdf-format="a4" pdf-orientation="landscape" pdf-content-width="1150px" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
-            <section slot="pdf-content">
-                <section class="pdf-item" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
-                    <div class="mainReport">
-                        <div class="tableInfo">
-                            <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
-                                <el-table-column prop="id" label="ID" :min-width="4"></el-table-column>
-                                <el-table-column prop="name" :label="$t('general.name')" :min-width="4"></el-table-column>
-                                <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" :min-width="1"></el-table-column>
-                                <el-table-column :label="$t('general.type')" :min-width="1" class-name="center">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.currentType }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('chargingStation.lastHeartbeat')" :min-width="3">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('userAccount.createdDate')" :min-width="3">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.created!==null? getLocTime(scope.row.created):'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.latestModification')" :min-width="3">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.modified!==null? getLocTime(scope.row.modified):'' }}
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                        </div>
-                    </div>
+        <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="false" :preview-modal="false" :html-to-pdf-options="htmlToPdfOptions" :pdf-quality="2" :manual-pagination="true" pdf-format="a4" pdf-orientation="landscape" pdf-content-width="1150px" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
+            <section slot="pdf-content" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
+                <section class="pdf-item">
+                    <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
+                        <el-table-column prop="id" label="ID" :min-width="4"></el-table-column>
+                        <el-table-column prop="name" :label="$t('general.name')" :min-width="4"></el-table-column>
+                        <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" :min-width="1"></el-table-column>
+                        <el-table-column :label="$t('general.type')" :min-width="1" class-name="center">
+                            <template slot-scope="scope">
+                                {{ scope.row.currentType }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column :label="$t('chargingStation.lastHeartbeat')" :min-width="3">
+                            <template slot-scope="scope">
+                                {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column :label="$t('userAccount.createdDate')" :min-width="3">
+                            <template slot-scope="scope">
+                                {{ scope.row.created!==null? getLocTime(scope.row.created):'' }}
+                            </template>
+                        </el-table-column>
+                        <el-table-column :label="$t('general.latestModification')" :min-width="3">
+                            <template slot-scope="scope">
+                                {{ scope.row.modified!==null? getLocTime(scope.row.modified):'' }}
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div v-if="n< Math.ceil(tableData.length/dataPerPage)" class="html2pdf__page-break" />
                 </section>
             </section>
         </vue-html2pdf>
@@ -54,7 +51,22 @@ export default {
     data() {
         return {
             fiics_logo: fiics_logo,
-            dataPerPage: 17
+            dataPerPage: 16,
+            htmlToPdfOptions: {
+                filename: i18n.t(`reports.${this.dropdownSelected}`),
+                margin: [20, 3, 10, 3],
+                jsPDF: {
+                    format: "a4",
+                    orientation: "landscape"
+                },
+                image: {
+                    type: "jpeg",
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 2
+                }
+            }
         };
     },
     computed: {
@@ -81,7 +93,7 @@ export default {
                         pdf.text(
                             "Page " + i + " of " + totalPages,
                             pdf.internal.pageSize.getWidth() * 0.88,
-                            pdf.internal.pageSize.getHeight() - 0.3
+                            pdf.internal.pageSize.getHeight() * 0.95
                         );
                         // more documentation here as jspdf
                         // http://raw.githack.com/MrRio/jsPDF/master/docs/module-addImage.html#~addImage
@@ -89,24 +101,34 @@ export default {
                         pdf.addImage(
                             fiics_logo,
                             "png",
-                            pdf.internal.pageSize.getWidth() - 1.45,
-                            pdf.internal.pageSize.getHeight() - 0.25,
-                            1,
-                            0.2
+                            pdf.internal.pageSize.getWidth() * 0.88,
+                            pdf.internal.pageSize.getHeight() * 0.96,
+                            21,
+                            6.5
                         );
                         // logo at top
-                        pdf.addImage(fiics_logo, "png", 0.6, 0.35, 1.7, 0.4);
-                        pdf.text(" info@fii-usa.com", 5.4, 0.7);
+                        pdf.addImage(fiics_logo, "png", 4, 10, 40, 10);
+                        pdf.text(
+                            " info@fii-usa.com",
+                            pdf.internal.pageSize.getWidth() * 0.45,
+                            pdf.internal.pageSize.getHeight() * 0.09
+                        );
                         pdf.text(
                             `${i18n
                                 .t(`reports.${this.dropdownSelected}`)
                                 .toUpperCase()} REPORT`,
-                            9.5,
-                            0.6
+                            pdf.internal.pageSize.getWidth() * 0.8,
+                            pdf.internal.pageSize.getHeight() * 0.09
                         );
                         pdf.setDrawColor(220, 220, 220);
                         pdf.setLineWidth(0.01);
-                        pdf.line(0.5, 0.8, 11.4, 0.8);
+                        // x1 y1 x2 y2 coordinates
+                        pdf.line(
+                            pdf.internal.pageSize.getWidth() * 0.01,
+                            pdf.internal.pageSize.getHeight() * 0.1,
+                            pdf.internal.pageSize.getWidth() * 0.98,
+                            pdf.internal.pageSize.getHeight() * 0.1
+                        );
                     }
                 })
                 .then(() => {
@@ -117,26 +139,3 @@ export default {
     }
 };
 </script>
-
-
-<style lang="scss" scoped>
-.mainReport {
-    margin: 0px 50px 0 50px;
-    display: flex;
-    .tableInfo:nth-child(0) {
-        margin-top: 40px;
-    }
-    .tableInfo {
-        display: flex;
-        margin-top: 20px;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-    }
-}
-.pdf-item {
-    .tableInfo {
-        margin-top: 80px;
-    }
-}
-</style>
