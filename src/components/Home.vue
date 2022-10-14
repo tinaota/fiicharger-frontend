@@ -47,12 +47,13 @@
     <div class="body_section">
 
       <div class="header_section">
-                    
-                   <el-col class="header-info">
+               <div class="left_header_info">
               <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = true">
                 {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
             </button>
-       
+             <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>
+                 </div>
+                        <el-col class="header-info">
                 <div class="img-container">
                     <img :src="userAvatar" />
                 </div>
@@ -131,6 +132,7 @@ export default {
                 account: "",
                 name: "",
             },
+            breadcrumb:"",
                   chargeBoxDrawer: {
                 visible: false,
                 isLoading: false,
@@ -182,6 +184,7 @@ export default {
     },
     watch: {
         "$route.path": function () {
+            this.breadcrumb=window.location.pathname.substring(12)
             if (
                 this.routerName !== this.$route.path &&
                 this.routerName === "/location" || this.routerName==='/station' &&
@@ -377,13 +380,24 @@ export default {
         color: #303133;
     }
 }
-    .header-info {
-        height: 100%;
-        text-align: right;
-        padding: 18px;
+    .header_section{
+             padding: 15px;
         background: rgba(228, 230, 234, 0.95);
         height: auto;
-           box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06); 
+           box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.06);
+               display: flex;
+            width: 100%;   
+    }
+    .left_header_info{
+        display: flex;
+    width: 100%;
+    align-items: center;
+    }
+    .header-info {
+        text-align: right;
+            display: block;
+            padding:0px 20px;
+             width: 100%;
         .el-divider {
             background-color: #979797;
             margin: 0 24px;
@@ -461,7 +475,14 @@ font-size: 30px;
     overflow: hidden;
     width: 100%; 
 }
-
+.header_breadcrumb{
+  text-align: left;
+      font-size: 30px;
+    padding-left: 15px;
+    text-transform: uppercase;
+    font-weight: 600;
+  
+}
 .body_right_section{
 width: 100%;
     height: calc(100vh - 76px);
