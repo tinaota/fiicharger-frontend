@@ -2,20 +2,23 @@
     <div class="downloadPdf">
         <el-button size="small" type="primary" @click="buttonClicked">{{ $t(`general.downloadPDF`) }}</el-button>
         <!-- add pdf templates -->
-        <div class="" v-if="dropdownSelected==='chargePoints' && isDataDownloadComplete">
+        <div v-if="dropdownSelected==='chargePoints' && isDataDownloadComplete">
             <ChargePointsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargePointsPDFTemplate>
         </div>
-        <div class="" v-if="dropdownSelected==='chargePointUsage' && isDataDownloadComplete">
+        <div v-if="dropdownSelected==='chargePointUsage' && isDataDownloadComplete">
             <ChargePointsUsagePDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargePointsUsagePDFTemplate>
         </div>
-        <div class="" v-if="dropdownSelected==='chargeStationSummary' && isDataDownloadComplete">
+        <div v-if="dropdownSelected==='chargeStationSummary' && isDataDownloadComplete">
             <ChargeStationsSummaryPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryPDFTemplate>
         </div>
-        <div class="" v-if="dropdownSelected==='chargeStationOverallSummary' && isDataDownloadComplete">
+        <div v-if="dropdownSelected==='chargeStationOverallSummary' && isDataDownloadComplete">
             <ChargeStationsSummaryOverallPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ChargeStationsSummaryOverallPDFTemplate>
         </div>
-        <div class="" v-if="dropdownSelected==='transactions' && isDataDownloadComplete">
+        <div v-if="dropdownSelected==='transactions' && isDataDownloadComplete">
             <TransactionsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></TransactionsPDFTemplate>
+        </div>
+        <div v-if="dropdownSelected==='idTags' && isDataDownloadComplete">
+            <IdTagsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></IdTagsPDFTemplate>
         </div>
     </div>
 </template>
@@ -27,20 +30,23 @@ import {
     $HTTP_getChargePointsUsage,
     $HTTP_getChargeStationsSummary,
     $HTTP_getChargeStationsOverallSummary,
-    $HTTP_getAllTransactions
+    $HTTP_getAllTransactions,
+    $HTTP_getIdTagsList
 } from "@/api/api";
 import ChargePointsPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointPDFTemplate.vue";
 import ChargePointsUsagePDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointsUsagePDFTemplate.vue";
 import ChargeStationsSummaryPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryPDFTemplate.vue";
 import ChargeStationsSummaryOverallPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryOverallPDFTemplate.vue";
 import TransactionsPDFTemplate from "@/components/reports/downloads/pdfTemplates/transactionsPDFTemplate.vue";
+import IdTagsPDFTemplate from "@/components/reports/downloads/pdfTemplates/idTagsPDFTemplate.vue";
 export default {
     components: {
         ChargePointsPDFTemplate,
         ChargePointsUsagePDFTemplate,
         ChargeStationsSummaryPDFTemplate,
         ChargeStationsSummaryOverallPDFTemplate,
-        TransactionsPDFTemplate
+        TransactionsPDFTemplate,
+        IdTagsPDFTemplate
     },
     props: {
         filterParams: Object,
@@ -94,6 +100,8 @@ export default {
                 $API = $HTTP_getChargeStationsOverallSummary;
             } else if (this.dropdownSelected === "transactions") {
                 $API = $HTTP_getAllTransactions;
+            } else if (this.dropdownSelected === "idTags") {
+                $API = $HTTP_getIdTagsList;
             }
             $API(params)
                 .then((res) => {

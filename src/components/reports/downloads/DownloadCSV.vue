@@ -10,7 +10,8 @@ import {
     $HTTP_getChargePointsUsage,
     $HTTP_getChargeStationsSummary,
     $HTTP_getChargeStationsOverallSummary,
-    $HTTP_getAllTransactions
+    $HTTP_getAllTransactions,
+    $HTTP_getIdTagsList
 } from "@/api/api";
 import Papa from "papaparse";
 export default {
@@ -58,6 +59,8 @@ export default {
                 $API = $HTTP_getChargeStationsOverallSummary;
             } else if (this.dropdownSelected === "transactions") {
                 $API = $HTTP_getAllTransactions;
+            } else if (this.dropdownSelected === "idTags") {
+                $API = $HTTP_getIdTagsList;
             }
             $API(params)
                 .then((res) => {

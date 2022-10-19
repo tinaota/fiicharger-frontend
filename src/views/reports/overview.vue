@@ -24,6 +24,9 @@
                 <div v-if="dropdownSelected ==='transactions'">
                     <TransactionsReport :filterParams="filterParams" dropdownSelected="transactions" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></TransactionsReport>
                 </div>
+                <div v-if="dropdownSelected ==='idTags'">
+                    <IdTagsReport :filterParams="filterParams" dropdownSelected="idTags" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></IdTagsReport>
+                </div>
                 <!-- add remaining reports -->
 
                 <!-- add downloads option -->
@@ -42,6 +45,7 @@ import ChargePointsUsageReport from "@/components/reports/chargePointsUsageRepor
 import ChargeStationsSummaryReport from "@/components/reports/chargeStationsSummaryReport.vue";
 import ChargeStationsOverallSummaryReport from "@/components/reports/chargeStationsOverallSummaryReport.vue";
 import TransactionsReport from "@/components/reports/transactionsReport.vue";
+import IdTagsReport from "@/components/reports/idTagsReport.vue";
 import CommonFilter from "@/components/reports/filters/commonFilter.vue";
 import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
 import DownloadPDF from "@/components/reports/downloads/DownloadPDF.vue";
@@ -53,6 +57,7 @@ export default {
         ChargeStationsSummaryReport,
         ChargeStationsOverallSummaryReport,
         TransactionsReport,
+        IdTagsReport,
         CommonFilter,
         DownloadCSV,
         DownloadPDF

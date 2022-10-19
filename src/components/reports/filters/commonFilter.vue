@@ -9,6 +9,12 @@
         <el-input v-if="zipCodeFilter" :placeholder="$t('general.zipCode')" v-model="filter.zipCode" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
+        <el-input v-if="regularIdFilter" placeholder="ID" v-model="filter.regularId" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <el-input v-if="parentIdTagIdFilter" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" @change="updateParams" clearable>
+            <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
         <el-input v-if="chargePointIdFilter" :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.chargePointId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -51,6 +57,12 @@
         <el-select v-if="isActiveFilter" class="select-small" v-model="filter.isActive" :placeholder="$t('general.active')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
+        <el-select v-if="isExpiredFilter" class="select-small" v-model="filter.isExpired" :placeholder="$t('idTags.expired')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
+        <el-select v-if="isBlockedFilter" class="select-small" v-model="filter.isBlocked" :placeholder="$t('idTags.blocked')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
         <el-input v-if="keyWordFilter" :placeholder="$t('general.keyWord')" v-model="filter.keyWord" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -86,12 +98,13 @@ export default {
                     "chargeStationOverallSummary",
                     // "chargingProfileTemplates",
                     // "chargingProfiles",
-                    // "idTags",
+                    "idTags",
                     // "reservations",
                     "transactions"
                 ],
                 isBoundToStation: null,
                 chargePointName: "",
+                regularId: "",
                 chargePointId: "",
                 connectorId: "",
                 stationName: "",
@@ -118,6 +131,9 @@ export default {
                 stopIdTag: "",
                 stopReason: "",
                 isActive: null,
+                isExpired: null,
+                isBlocked: null,
+                parentIdTagId: "",
                 startDateTimeAfter: null,
                 startDateTimeBefore: null,
                 endDateTimeAfter: null,
@@ -139,6 +155,9 @@ export default {
                 this.filter.dropdownSelected === "chargeStationSummary" ||
                 this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
+        },
+        regularIdFilter() {
+            return this.filter.dropdownSelected === "idTags";
         },
         chargePointIdFilter() {
             return (
@@ -218,6 +237,15 @@ export default {
         isActiveFilter() {
             return this.filter.dropdownSelected === "transactions";
         },
+        isExpiredFilter() {
+            return this.filter.dropdownSelected === "idTags";
+        },
+        isBlockedFilter() {
+            return this.filter.dropdownSelected === "idTags";
+        },
+        parentIdTagIdFilter() {
+            return this.filter.dropdownSelected === "idTags";
+        },
         startDateTimeBeforeFilter() {
             return this.filter.dropdownSelected === "transactions";
         },
@@ -258,6 +286,7 @@ export default {
                 ...this.filter,
                 isBoundToStation: null,
                 chargePointName: "",
+                regularId: "",
                 chargePointId: "",
                 connectorId: "",
                 stationName: "",
@@ -273,6 +302,9 @@ export default {
                 stopIdTag: "",
                 stopReason: "",
                 isActive: null,
+                isExpired: null,
+                isBlocked: null,
+                parentIdTagId: "",
                 startDateTimeAfter: null,
                 startDateTimeBefore: null,
                 endDateTimeAfter: null,
@@ -296,6 +328,10 @@ export default {
             }
             if (this.filter.chargePointName) {
                 params.Name = this.filter.chargePointName;
+            }
+
+            if (this.filter.regularId) {
+                params.Id = this.filter.regularId;
             }
             if (this.filter.chargePointId) {
                 if (this.filter.dropdownSelected === "transactions") {
@@ -359,6 +395,15 @@ export default {
                 if (this.filter.dropdownSelected === "transactions") {
                     params.IsActive = this.filter.isActive === "true";
                 }
+            }
+            if (this.filter.isExpired) {
+                params.IsExpired = this.filter.isExpired === "true";
+            }
+            if (this.filter.isBlocked) {
+                params.IsBlocked = this.filter.isBlocked === "true";
+            }
+            if (this.filter.parentIdTagId) {
+                params.ParentIdTagId = this.filter.parentIdTagId;
             }
             if (this.filter.dateRange) {
                 if (
