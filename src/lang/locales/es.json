@@ -706,6 +706,18 @@
         "chargingProfiles": "Perfiles de carga",
         "idTags": "Etiquetas de identificación",
         "reservations": "Reservas",
-        "transactions": "Actas"
+        "transactions": "Actas",
+        "transactionsReport": "Informe de transacciones",
+        "reservationReport": "Informe de Reservas",
+        "chargePointsReport": "Informe de puntos de recarga",
+        "chargePointsConnectorSummaryReport": "Informe resumido del conector de puntos de recarga",
+        "chargePointsTransactionSummaryReport": "Informe resumido de transacciones de puntos de recarga",
+        "chargePointUsageReport": "Informes de uso de puntos de recarga",
+        "chargeStationsReport": "Informe de estaciones de carga",
+        "chargeStationSummaryReport": "Informe resumido de las estaciones de carga",
+        "chargeStationOverallSummaryReport": "Informe de resumen general de la estación de carga",
+        "chargingProfileTemplatesReport": "Informe de plantillas de perfil de carga",
+        "chargingProfilesReport": "Informe de perfiles de carga",
+        "idTagsReport": "Informe de etiquetas de identificación"
     }
 }

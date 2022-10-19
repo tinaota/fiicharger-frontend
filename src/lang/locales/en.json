@@ -215,7 +215,7 @@
         "pricingSections": "Pricing Sections",
         "customPriceName": "Custom Price Name",
         "priceType": "Price Type",
-        "none":"None",
+        "none": "None",
         "regular": "Regular",
         "adHocPayment": "Ad Hoc Payment",
         "profileCheap": "Profile Cheap",
@@ -707,6 +707,18 @@
         "chargingProfiles": "Charging Profiles",
         "idTags": "ID Tags",
         "reservations": "Reservations",
-        "transactions": "Transactions"
+        "transactions": "Transactions",
+        "transactionsReport": "Transactions Report",
+        "reservationReport": "Reservations Report",
+        "chargePointsReport": "Charge Points Report",
+        "chargePointsConnectorSummaryReport": "Charge Points Connector Summary Report",
+        "chargePointsTransactionSummaryReport": "Charge Points Transactions Summary Report",
+        "chargePointUsageReport": "Charge Points Usage Reports",
+        "chargeStationsReport": "Charge Stations Report",
+        "chargeStationSummaryReport": "Charge Stations Summary Report",
+        "chargeStationOverallSummaryReport": "Charge Station Overall Summary Report",
+        "chargingProfileTemplatesReport": "Charging Profile Templates Report",
+        "chargingProfilesReport": "Charging Profiles Report",
+        "idTagsReport": "Id Tags Report"
     }
 }

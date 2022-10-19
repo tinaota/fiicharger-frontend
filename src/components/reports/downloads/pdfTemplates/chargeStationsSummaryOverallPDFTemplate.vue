@@ -1,123 +1,185 @@
 <template>
-    <div>
-        <vue-html2pdf :show-layout="false" :float-layout="true" :enable-download="false" :preview-modal="false" :html-to-pdf-options="htmlToPdfOptions" :pdf-quality="2" :manual-pagination="true" pdf-format="a4" pdf-orientation="landscape" pdf-content-width="1120px" @beforeDownload="beforeDownload($event)" ref="html2Pdf">
-            <section slot="pdf-content" v-for="n in Math.ceil(tableData.length/dataPerPage)" :key="n">
-                <section class="pdf-item">
-                    <el-table header-cell-class-name="pdfTableHeader" :data="tableData.slice((n-1)*dataPerPage, (n-1)*dataPerPage+(dataPerPage))">
-                        <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2"></el-table-column>
-                        <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2"></el-table-column>
-                        <el-table-column :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2">
-                            <template slot-scope="scope">
-                                {{ scope.row.averageSessionPower.toFixed(2) }}
-                            </template>
-                        </el-table-column>
-                        <el-table-column :label="$t('chargingStation.averageHoursPerSession')" :min-width="2">
-                            <template slot-scope="scope">
-                                {{ scope.row.averageHoursPerSession.toFixed(2) }}
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <div v-if="n< Math.ceil(tableData.length/dataPerPage)" class="html2pdf__page-break" />
-                </section>
-            </section>
-        </vue-html2pdf>
+    <div style="visibility:hidden">
     </div>
 </template>
 
 <script>
 import fiics_logo from "imgs/fiics_logo.png";
-import VueHtml2pdf from "vue-html2pdf";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 export default {
-    components: {
-        VueHtml2pdf
-    },
     props: {
         tableData: Array,
         dropdownSelected: String
     },
     emits: ["pdfDownloaded"],
     data() {
-        return {
-            fiics_logo: fiics_logo,
-            dataPerPage: 17,
-            htmlToPdfOptions: {
-                filename: i18n.t(`reports.${this.dropdownSelected}`),
-                margin: [20, 3, 10, 3],
-                jsPDF: {
-                    format: "a4",
-                    orientation: "landscape"
-                },
-                image: {
-                    type: "jpeg",
-                    quality: 0.98
-                },
-                html2canvas: {
-                    scale: 2
-                }
-            }
-        };
+        return {};
     },
     mounted() {
-        this.$refs.html2Pdf.generatePdf();
+        this.generatePdf();
     },
     methods: {
-        async beforeDownload({ html2pdf, options, pdfContent }) {
-            await html2pdf()
-                .set(options)
-                .from(pdfContent)
-                .toPdf()
-                .get("pdf")
-                .then((pdf) => {
-                    const totalPages = pdf.internal.getNumberOfPages();
-                    for (let i = 1; i <= totalPages; i++) {
-                        pdf.setPage(i);
-                        pdf.setFontSize(10);
-                        pdf.setTextColor(150);
-                        pdf.text(
-                            "Page " + i + " of " + totalPages,
-                            pdf.internal.pageSize.getWidth() * 0.88,
-                            pdf.internal.pageSize.getHeight() * 0.95
-                        );
-                        // more documentation here as jspdf
-                        // http://raw.githack.com/MrRio/jsPDF/master/docs/module-addImage.html#~addImage
-                        // logo at bottom
-                        pdf.addImage(
-                            fiics_logo,
-                            "png",
-                            pdf.internal.pageSize.getWidth() * 0.88,
-                            pdf.internal.pageSize.getHeight() * 0.96,
-                            21,
-                            6.5
-                        );
-                        // logo at top
-                        pdf.addImage(fiics_logo, "png", 4, 10, 40, 10);
-                        pdf.text(
-                            " info@fii-usa.com",
-                            pdf.internal.pageSize.getWidth() * 0.45,
-                            pdf.internal.pageSize.getHeight() * 0.09
-                        );
-                        pdf.text(
-                            `${i18n
-                                .t(`reports.${this.dropdownSelected}`)
-                                .toUpperCase()} REPORT`,
-                            pdf.internal.pageSize.getWidth() * 0.7,
-                            pdf.internal.pageSize.getHeight() * 0.09
-                        );
-                        pdf.setDrawColor(220, 220, 220);
-                        pdf.setLineWidth(0.01);
-                        // x1 y1 x2 y2 coordinates
-                        pdf.line(
-                            pdf.internal.pageSize.getWidth() * 0.01,
-                            pdf.internal.pageSize.getHeight() * 0.1,
-                            pdf.internal.pageSize.getWidth() * 0.98,
-                            pdf.internal.pageSize.getHeight() * 0.1
-                        );
+        generatePdf() {
+            let data = this.tableData.map((item) => {
+                return [
+                    {
+                        text: item.dcFastChargers,
+                        color: "#525E69",
+                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                    },
+                    {
+                        text: item.weeklyUtilization,
+                        color: "#525E69",
+                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                    },
+                    {
+                        text:
+                            item.averageSessionPower !== null
+                                ? item.averageSessionPower.toFixed(2)
+                                : "",
+                        color: "#525E69",
+                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                    },
+                    {
+                        text:
+                            item.averageHoursPerSession !== null
+                                ? item.averageHoursPerSession.toFixed(2)
+                                : "",
+                        color: "#525E69",
+                        margin: [0, 10, 0, 0],
+                        fontSize: 10
                     }
-                })
-                .then(() => {
-                    this.$emit("pdfDownloaded", true);
-                })
-                .save();
+                ];
+            });
+            var docDefinition = {
+                pageOrientation: "landscape",
+                pageSize: "A4",
+                pageMargins: [40, 55, 40, 40],
+                header: function () {
+                    return [
+                        {
+                            columns: [
+                                {
+                                    image: fiics_logo,
+                                    width: 120,
+                                    margin: [38, 10, 0, 0]
+                                },
+                                {
+                                    text: "info@fii-usa.com",
+                                    color: "#525E69",
+                                    margin: [250, 25, 0, 0]
+                                },
+                                {
+                                    text: `${i18n
+                                        .t(
+                                            `reports.chargeStationOverallSummaryReport`
+                                        )
+                                        .toUpperCase()}`,
+                                    alignment: "right",
+                                    color: "#525E69",
+                                    margin: [35, 25, 20, 0]
+                                }
+                            ]
+                        },
+                        {
+                            canvas: [
+                                {
+                                    type: "line",
+                                    x1: 40,
+                                    y1: 5,
+                                    x2: 825,
+                                    y2: 5,
+                                    lineColor: "#525E69",
+                                    lineWidth: 0.1
+                                }
+                            ]
+                        }
+                    ];
+                },
+                footer: function (currentPage, pageCount) {
+                    return [
+                        {
+                            text:
+                                "Page" +
+                                currentPage.toString() +
+                                " of " +
+                                pageCount,
+                            alignment: "right",
+                            margin: [0, 10, 35, 0],
+                            color: "#525E69"
+                        }
+                    ];
+                },
+                content: [
+                    {
+                        layout: "lightHorizontalLines",
+                        table: {
+                            // headers are automatically repeated if the table spans over multiple pages
+                            // you can declare how many rows should be treated as headers
+                            headerRows: 1,
+                            widths: [150, 200, 200, 180],
+                            heights: 30,
+                            dontBreakRows: true, //fix more spaces in first row in page break
+                            body: [
+                                [
+                                    {
+                                        text: i18n.t(
+                                            "chargingStation.dcFastChargers"
+                                        ),
+                                        bold: true,
+                                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                                    },
+                                    {
+                                        text: i18n.t(
+                                            "chargingStation.weeklyUtilization"
+                                        ),
+                                        bold: true,
+                                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                                    },
+                                    {
+                                        text:
+                                            i18n.t(
+                                                "chargingStation.averageSessionPower"
+                                            ) + "( kW)",
+                                        bold: true,
+                                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                                    },
+                                    {
+                                        text: i18n.t(
+                                            "chargingStation.averageHoursPerSession"
+                                        ),
+                                        bold: true,
+                                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                                    }
+                                ],
+                                ...data
+                            ]
+                        }
+                    }
+                ]
+            };
+            // download the PDF
+            try {
+                //open in a new tab
+                //pdfMake.createPdf(docDefinition).open();
+                pdfMake
+                    .createPdf(docDefinition)
+                    .download(i18n.t(`reports.${this.dropdownSelected}Report`));
+                this.$emit("pdfDownloaded", true);
+            } catch (e) {
+                this.$emit("pdfDownloaded", true);
+                console.log("PDF creation error");
+            }
         }
     }
 };

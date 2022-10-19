@@ -706,6 +706,18 @@
         "chargingProfiles": "Cấu hình sạc",
         "idTags": "Thẻ ID",
         "reservations": "Đặt trước",
-        "transactions": "Giao dịch"
+        "transactions": "Giao dịch",
+        "transactionsReport": "Báo cáo Giao dịch",
+        "reservationReport": "Báo cáo Đặt chỗ",
+        "chargePointsReport": "Báo cáo điểm phí",
+        "chargePointsConnectorSummaryReport": "Báo cáo Tóm tắt về Trình kết nối Điểm Phí",
+        "chargePointsTransactionSummaryReport": "Báo cáo Tóm tắt Giao dịch Điểm Phí",
+        "chargePointUsageReport": "Báo cáo sử dụng điểm tính phí",
+        "chargeStationsReport": "Báo cáo Trạm thu phí",
+        "chargeStationSummaryReport": "Báo cáo Tóm tắt Trạm thu phí",
+        "chargeStationOverallSummaryReport": "Báo cáo Tóm tắt Tổng thể Trạm thu phí",
+        "chargingProfileTemplatesReport": "Báo cáo Mẫu Hồ sơ Tính phí",
+        "chargingProfilesReport": "Báo cáo Cấu hình Tính phí",
+        "idTagsReport": "Báo cáo Thẻ Id"
     }
 }

@@ -706,6 +706,18 @@
         "chargingProfiles": "充電配置文件",
         "idTags": "身份標籤",
         "reservations": "預訂",
-        "transactions": "交易"
+        "transactions": "交易",
+        "transactionsReport": "交易報告",
+        "reservationReport": "預訂報告",
+        "chargePointsReport": "充電點報告",
+        "chargePointsConnectorSummaryReport": "充電點連接器總結報告",
+        "chargePointsTransactionSummaryReport": "收費點交易匯總報告",
+        "chargePointUsageReport": "充電點使用報告",
+        "chargeStationsReport": "充電站報告",
+        "chargeStationSummaryReport": "充電站總結報告",
+        "chargeStationOverallSummaryReport": "充電站總體總結報告",
+        "chargingProfileTemplatesReport": "計費配置文件模板報告",
+        "chargingProfilesReport": "充電配置文件報告",
+        "idTagsReport": "ID 標籤報告"
     }
 }
