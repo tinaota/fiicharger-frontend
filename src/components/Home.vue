@@ -51,7 +51,7 @@
               <button class="drawer-closeBtn hidden" :class="{ 'open': (chargeBoxDrawer.isOpen)}" @click="chargeBoxDrawer.isOpen = true">
                 {{ chargeBoxDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
             </button>
-             <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>
+            <!-- <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>-->
                  </div>
                         <el-col class="header-info">
                 <div class="img-container">
