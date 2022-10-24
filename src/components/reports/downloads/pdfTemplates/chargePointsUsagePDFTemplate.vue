@@ -5,9 +5,10 @@
 
 <script>
 import fiics_logo from "imgs/fiics_logo.png";
+import { getDefaultFont } from "@/utils/function";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import additionalPdfFonts from "@/assets/fonts/vfs_fonts";
 export default {
     props: {
         tableData: Array,
@@ -15,7 +16,10 @@ export default {
     },
     emits: ["pdfDownloaded"],
     data() {
-        return {};
+        return { defaultFont: null };
+    },
+    created() {
+        this.defaultFont = getDefaultFont();
     },
     mounted() {
         this.generatePdf();
@@ -204,12 +208,33 @@ export default {
                             ]
                         }
                     }
-                ]
+                ],
+                defaultStyle: {
+                    font: this.defaultFont
+                }
             };
             // download the PDF
             try {
                 //open in a new tab
                 //pdfMake.createPdf(docDefinition).open();
+                pdfMake.vfs = {
+                    ...pdfFonts.pdfMake.vfs,
+                    ...additionalPdfFonts
+                };
+                pdfMake.fonts = {
+                    NotoSansSC: {
+                        normal: "NotoSansSC.ttf",
+                        bold: "NotoSansSC.ttf"
+                    },
+                    NotoSansTC: {
+                        normal: "NotoSansTC.ttf",
+                        bold: "NotoSansTC.ttf"
+                    },
+                    Roboto: {
+                        normal: "Roboto-Regular.ttf",
+                        bold: "Roboto-Medium.ttf"
+                    }
+                };
                 pdfMake
                     .createPdf(docDefinition)
                     .download(i18n.t(`reports.${this.dropdownSelected}Report`));

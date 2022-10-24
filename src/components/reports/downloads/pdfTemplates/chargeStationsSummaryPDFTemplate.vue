@@ -5,9 +5,10 @@
 
 <script>
 import fiics_logo from "imgs/fiics_logo.png";
+import { getDefaultFont } from "@/utils/function";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import additionalPdfFonts from "@/assets/fonts/vfs_fonts";
 export default {
     props: {
         tableData: Array,
@@ -15,7 +16,10 @@ export default {
     },
     emits: ["pdfDownloaded"],
     data() {
-        return {};
+        return { defaultFont: null };
+    },
+    created() {
+        this.defaultFont = getDefaultFont();
     },
     mounted() {
         this.generatePdf();
@@ -24,8 +28,12 @@ export default {
         generatePdf() {
             let data = this.tableData.map((item) => {
                 return [
-                    { text: item.id, color: "#525E69", margin: [0, 10, 0, 0],
-                        fontSize: 10 },
+                    {
+                        text: item.id,
+                        color: "#525E69",
+                        margin: [0, 10, 0, 0],
+                        fontSize: 10
+                    },
                     {
                         text: item.name,
                         color: "#525E69",
@@ -134,7 +142,7 @@ export default {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [50,100,210,70,80,90,80],
+                            widths: [50, 100, 210, 70, 80, 90, 80],
                             heights: 30,
                             dontBreakRows: true, //fix more spaces in first row in page break
                             body: [
@@ -152,9 +160,7 @@ export default {
                                         bold: true
                                     },
                                     {
-                                        text: i18n.t(
-                                            "general.address"
-                                        ),
+                                        text: i18n.t("general.address"),
                                         bold: true
                                     },
                                     {
@@ -164,10 +170,9 @@ export default {
                                         bold: true
                                     },
                                     {
-                                        text:
-                                            i18n.t(
-                                                "chargingStation.weeklyUtilization"
-                                            ),
+                                        text: i18n.t(
+                                            "chargingStation.weeklyUtilization"
+                                        ),
                                         bold: true
                                     },
                                     {
@@ -178,10 +183,9 @@ export default {
                                         bold: true
                                     },
                                     {
-                                        text:
-                                            i18n.t(
-                                                "chargingStation.averageHoursPerSession"
-                                            ) ,
+                                        text: i18n.t(
+                                            "chargingStation.averageHoursPerSession"
+                                        ),
                                         bold: true
                                     }
                                 ],
@@ -189,12 +193,33 @@ export default {
                             ]
                         }
                     }
-                ]
+                ],
+                defaultStyle: {
+                    font: this.defaultFont
+                }
             };
             // download the PDF
             try {
                 //open in a new tab
                 //pdfMake.createPdf(docDefinition).open();
+                pdfMake.vfs = {
+                    ...pdfFonts.pdfMake.vfs,
+                    ...additionalPdfFonts
+                };
+                pdfMake.fonts = {
+                    NotoSansSC: {
+                        normal: "NotoSansSC.ttf",
+                        bold: "NotoSansSC.ttf"
+                    },
+                    NotoSansTC: {
+                        normal: "NotoSansTC.ttf",
+                        bold: "NotoSansTC.ttf"
+                    },
+                    Roboto: {
+                        normal: "Roboto-Regular.ttf",
+                        bold: "Roboto-Medium.ttf"
+                    }
+                };
                 pdfMake
                     .createPdf(docDefinition)
                     .download(i18n.t(`reports.${this.dropdownSelected}Report`));

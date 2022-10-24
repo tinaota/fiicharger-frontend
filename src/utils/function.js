@@ -114,3 +114,19 @@ export const updateLangCookie = function (oldLang, newLang) {
 
     document.cookie = `fii.culture=${newCookie};expires=${expiryDate};path=/;`
 }
+
+export const getDefaultFont = () => {
+    const languageCookie = ("; " + document.cookie)
+        .split(`; fii.culture=`)
+        .pop()
+        .split(";")[0];
+    let defaultFont;
+    if (languageCookie.includes("Hant")) {
+        defaultFont = "NotoSansTC";
+    } else if (languageCookie.includes("Hans")) {
+        defaultFont = "NotoSansSC";
+    } else {
+        defaultFont = "Roboto"
+    }
+    return defaultFont
+}
