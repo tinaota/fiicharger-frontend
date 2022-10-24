@@ -133,6 +133,7 @@ export default {
         border-radius: 6px;
         text-align: center;
         margin-left: 5px;
+        padding: 0;
     }
 }
 </style>
