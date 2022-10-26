@@ -189,6 +189,7 @@
         "downloadPDF": "Descargar PDF",
         "keyWord": "Palabra clave",
         "currentType": "Tipo actual",
+        "powerType": "Tipo de energía",
         "connectorType": "Tipo de conector",
         "minPrice": "Precio mínimo",
         "maxPrice": "Precio Máximo",

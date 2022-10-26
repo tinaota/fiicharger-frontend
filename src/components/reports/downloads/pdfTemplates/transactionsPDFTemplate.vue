@@ -40,7 +40,7 @@ export default {
                         fontSize: 10
                     },
                     {
-                        text: item.chargePointId,
+                        text: item.chargePointName,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
                         fontSize: 10
@@ -169,7 +169,7 @@ export default {
                                     },
                                     {
                                         text: i18n.t(
-                                            "chargingStation.chargerId"
+                                            "chargingStation.chargePointName"
                                         ),
                                         bold: true
                                     },

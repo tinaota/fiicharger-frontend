@@ -2,9 +2,9 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="id" label="ID" :min-width="2" sortable="custom">
+            <el-table-column prop="value" label="ID" :min-width="2" sortable="custom">
             </el-table-column>
-            <el-table-column prop="parentIdTagId" :label="$t('idTags.parentIdTagId')" :min-width="2" sortable="custom">
+            <el-table-column prop="parentIdTagValue" :label="$t('idTags.parentIdTagId')" :min-width="2" sortable="custom">
             </el-table-column>
             <el-table-column prop="isBlocked" :label="$t('idTags.blocked')" :min-width="2" sortable="custom">
                 <template slot-scope="scope">

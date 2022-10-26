@@ -12,9 +12,10 @@
         <el-input v-if="regularIdFilter" placeholder="ID" v-model="filter.regularId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <el-input v-if="parentIdTagIdFilter" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" @change="updateParams" clearable>
+        <!-- removed station id filter as it requires a complete uuid for filtration -->
+        <!-- <el-input v-if="parentIdTagIdFilter" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
+        </el-input> -->
         <el-input v-if="chargePointIdFilter" :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.chargePointId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -24,9 +25,10 @@
         <el-input v-if="stationNameFilter" :placeholder="$t('chargingStation.stationName')" v-model="filter.stationName" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <el-input v-if="stationIdFilter" :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="updateParams" clearable>
+        <!-- removed station id filter as it requires a complete uuid for filtration -->
+        <!-- <el-input v-if="stationIdFilter" :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
+        </el-input> -->
         <el-select v-if="isBoundToStationFilter" class="select-small" v-model="filter.isBoundToStation" :placeholder="$t('general.boundToStation')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
@@ -36,12 +38,12 @@
         <el-select v-if="stationStatusFilter" class="select-small" v-model="filter.stationStatus" :placeholder="$t('chargingStation.stationStatus')" @change="updateParams" clearable>
             <el-option v-for="item in filter.stationStatusList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
-        <el-select v-if="currentTypeFilter" class="select-small" v-model="filter.currentType" :placeholder="$t('general.currentType')" @change="updateParams" clearable>
-            <el-option v-for="item in filter.currentTypeList" :label="item" :key="item" :value="item"></el-option>
+        <el-select v-if="powerTypeFilter" class="select-small" v-model="filter.powerType" :placeholder="$t('general.powerType')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.powerTypeList" :label="item.name" :key="item.value" :value="item.value"></el-option>
         </el-select>
-        <el-input v-if="connectorTypeFilter" :placeholder="$t('general.connectorType')" v-model="filter.connectorType" @change="updateParams" clearable>
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
+        <el-select v-if="connectorTypeFilter" class="select-small" :placeholder="$t('general.connectorType')" v-model="filter.connectorType" @change="updateParams" clearable>
+            <el-option v-for="item in filter.connectorTypeList" :label="item.name" :key="item.value" :value="item.value"></el-option>
+        </el-select>
         <el-input v-if="connectorIdFilter" :placeholder="$t('chargingStation.connectorId')" v-model="filter.connectorId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -125,8 +127,99 @@ export default {
                 connectionStatusList: ["Connected", "Disconnected"],
                 stationStatus: "",
                 stationStatusList: ["Enabled", "Disabled"],
-                currentType: "",
-                currentTypeList: ["AC", "DC"],
+                powerType: "",
+                powerTypeList: [
+                    { name: "All", value: "all" },
+                    { name: "AC single phase", value: "AC_1_PHASE" },
+                    { name: "AC two phases", value: "AC_2_PHASE" },
+                    {
+                        name: "AC two phases w/ split phase",
+                        value: "AC_2_PHASE_SPLIT"
+                    },
+                    { name: "AC three phases", value: "AC_3_PHASE" },
+                    { name: "DC", value: "DC" }
+                ],
+                connectorTypeList: [
+                    { name: "CHAdeMO, DC", value: "CHADEMO" },
+                    { name: "ChaoJi", value: "CHAOJI" },
+                    { name: "Type A, NEMA 1-15, 2 pins", value: "DOMESTIC_A" },
+                    { name: "Type B, NEMA 5-15, 3 pins", value: "DOMESTIC_B" },
+                    { name: "Type C, CEE 7/17, 2 pins", value: "DOMESTIC_C" },
+                    { name: "Type D, 3 pins", value: "DOMESTIC_D" },
+                    { name: "Type E, CEE 7/5, 3 pins", value: "DOMESTIC_E" },
+                    {
+                        name: "Type F, CEE 7/4, Schuko, 3 pin)",
+                        value: "DOMESTIC_F"
+                    },
+                    {
+                        name: "Type G, BS 1363, Commonwealth, 3 pins",
+                        value: "DOMESTIC_G"
+                    },
+                    { name: "Type H, SI-32, 3 pins", value: "DOMESTIC_H" },
+                    { name: "Type I, AS 3112, 3 pins", value: "DOMESTIC_I" },
+                    { name: "Type J, SEV 1011, 3 pins", value: "DOMESTIC_J" },
+                    {
+                        name: "Type K, DS 60884-2-D1, 3 pins",
+                        value: "DOMESTIC_K"
+                    },
+                    {
+                        name: "Type L, CEI 23-16-VII, 3 pins",
+                        value: "DOMESTIC_L"
+                    },
+                    { name: "Type M, BS 546, 3 pins", value: "DOMESTIC_M" },
+                    { name: "Type N, NBR 14136, 3 pins", value: "DOMESTIC_N" },
+                    {
+                        name: "Type O, TIS 166-2549, 3 pins",
+                        value: "DOMESTIC_O"
+                    },
+                    { name: "Guobiao GB/T 20234.2 AC", value: "GBT_AC" },
+                    { name: "Guobiao GB/T 20234.3 DC", value: "GBT_DC" },
+                    {
+                        name: "IEC 60309-2 16A single phase",
+                        value: "IEC_60309_2_single_16"
+                    },
+                    {
+                        name: "IEC 60309-2 16A three phase",
+                        value: "IEC_60309_2_three_16"
+                    },
+                    {
+                        name: "IEC 60309-2 32A three phase",
+                        value: "IEC_60309_2_three_32"
+                    },
+                    {
+                        name: "IEC 60309-2 64A three phase",
+                        value: "IEC_60309_2_three_64"
+                    },
+                    { name: "Type 1, SAE J1772)", value: "IEC_62196_T1" },
+                    { name: "Type 1 combo, DC", value: "IEC_62196_T1_COMBO" },
+                    { name: "Type 2, Mennekes", value: "IEC_62196_T2" },
+                    { name: "Type 2 combo, DC", value: "IEC_62196_T2_COMBO" },
+                    { name: "Type 3A", value: "IEC_62196_T3A" },
+                    { name: "Type 3C, Scame", value: "IEC_62196_T3C" },
+                    { name: "NEMA 5-20, 3 pins", value: "NEMA_5_20" },
+                    { name: "NEMA 6-30, 3 pins", value: "NEMA_6_30" },
+                    { name: "NEMA 6-50, 3 pins", value: "NEMA_6_50" },
+                    { name: "NEMA 10-30, 3 pins", value: "NEMA_10_30" },
+                    { name: "NEMA 10-50, 3 pins", value: "NEMA_10_50" },
+                    { name: "NEMA 14-30, 3 pins", value: "NEMA_14_30" },
+                    { name: "NEMA 14-50, 3 pins", value: "NEMA_14_50" },
+                    {
+                        name: "On-board bottom-up pantograph",
+                        value: "PANTOGRAPH_BOTTOM_UP"
+                    },
+                    {
+                        name: "Off-board top-down pantograph",
+                        value: "PANTOGRAPH_TOP_DOWN"
+                    },
+                    {
+                        name: "Tesla Roadster-type, round, 4 pins",
+                        value: "TESLA_R"
+                    },
+                    {
+                        name: "Tesla Model-S-type, oval, 5 pins",
+                        value: "TESLA_S"
+                    }
+                ],
                 startIdTag: "",
                 stopIdTag: "",
                 stopReason: "",
@@ -205,7 +298,7 @@ export default {
                 this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
         },
-        currentTypeFilter() {
+        powerTypeFilter() {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage" ||
@@ -296,7 +389,7 @@ export default {
                 connectorType: "",
                 address: "",
                 connectionStatus: "",
-                currentType: "",
+                powerType: "",
                 stationStatus: "",
                 startIdTag: "",
                 stopIdTag: "",
@@ -331,11 +424,18 @@ export default {
             }
 
             if (this.filter.regularId) {
-                params.Id = this.filter.regularId;
+                if (this.filter.dropdownSelected === "idTags") {
+                    params.Value = this.filter.regularId;
+                }
             }
             if (this.filter.chargePointId) {
                 if (this.filter.dropdownSelected === "transactions") {
-                    params.ChargePointId = this.filter.chargePointId;
+                    params.OcppId = this.filter.chargePointId;
+                } else if (
+                    this.filter.dropdownSelected === "chargePoints" ||
+                    this.filter.dropdownSelected === "chargePointUsage"
+                ) {
+                    params.OcppId = this.filter.chargePointId;
                 } else {
                     params.Id = this.filter.chargePointId;
                 }
@@ -362,13 +462,13 @@ export default {
                 params.ZipCode = this.filter.zipCode;
             }
             if (this.filter.stationStatus) {
-                params.Status = this.filter.stationStatus;
+                params.Publish = this.filter.stationStatus === "Enabled";
             }
             if (this.filter.connectionStatus) {
                 params.Status = this.filter.connectionStatus;
             }
-            if (this.filter.currentType) {
-                params.CurrentType = this.filter.currentType;
+            if (this.filter.powerType && this.filter.powerType !== "all") {
+                params.PowerType = this.filter.powerType;
             }
             if (this.filter.connectorType) {
                 params.ConnectorType = this.filter.connectorType;
@@ -403,7 +503,9 @@ export default {
                 params.IsBlocked = this.filter.isBlocked === "true";
             }
             if (this.filter.parentIdTagId) {
-                params.ParentIdTagId = this.filter.parentIdTagId;
+                if (this.filter.dropdownSelected === "idTags") {
+                    params.ParentIdTagId = this.filter.parentIdTagId;
+                }
             }
             if (this.filter.dateRange) {
                 if (

@@ -29,12 +29,6 @@ export default {
             let data = this.tableData.map((item) => {
                 return [
                     {
-                        text: item.id,
-                        color: "#525E69",
-                        margin: [0, 10, 0, 0],
-                        fontSize: 10
-                    },
-                    {
                         text: item.name,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
@@ -142,17 +136,11 @@ export default {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [50, 100, 210, 70, 80, 90, 80],
+                            widths: [100, 260, 70, 80, 90, 80],
                             heights: 30,
                             dontBreakRows: true, //fix more spaces in first row in page break
                             body: [
                                 [
-                                    {
-                                        text: i18n.t(
-                                            "chargingStation.stationID"
-                                        ),
-                                        bold: true
-                                    },
                                     {
                                         text: i18n.t(
                                             "chargingStation.stationName"

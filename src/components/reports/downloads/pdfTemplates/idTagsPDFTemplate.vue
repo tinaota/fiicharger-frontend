@@ -34,13 +34,13 @@ export default {
             let data = this.tableData.map((item) => {
                 return [
                     {
-                        text: item.id,
+                        text: item.value,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
                         fontSize: 10
                     },
                     {
-                        text: item.parentIdTagId,
+                        text: item.parentIdTagValue,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
                         fontSize: 10

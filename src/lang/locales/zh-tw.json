@@ -189,6 +189,7 @@
         "downloadPDF": "下載PDF",
         "keyWord": "關鍵詞",
         "currentType": "當前類型",
+        "powerType": "電源類型",
         "connectorType": "連接器類型",
         "minPrice": "最低價格",
         "maxPrice": "最高價格",

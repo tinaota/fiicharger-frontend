@@ -36,7 +36,7 @@ export default {
             let data = this.tableData.map((item) => {
                 return [
                     {
-                        text: item.id,
+                        text: item.ocppId,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
                         fontSize: 10
@@ -152,7 +152,7 @@ export default {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [155, 155, 35, 30, 100, 100, 100],
+                            widths: [130, 130, 65, 30, 100, 100, 120],
                             heights: 30,
                             dontBreakRows: true, //fix more spaces in first row in page break
                             body: [
@@ -161,37 +161,44 @@ export default {
                                         text: i18n.t(
                                             "chargingStation.chargerId"
                                         ),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text: i18n.t("general.name"),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text:
                                             i18n.t("chargingStation.power") +
                                             " (kW)",
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text: i18n.t("general.type"),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text: i18n.t(
                                             "chargingStation.lastHeartbeat"
                                         ),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text: i18n.t("userAccount.createdDate"),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     },
                                     {
                                         text: i18n.t(
                                             "general.latestModification"
                                         ),
-                                        bold: true
+                                        bold: true,
+                                        margin: [0, 10, 0, 0]
                                     }
                                 ],
                                 ...data

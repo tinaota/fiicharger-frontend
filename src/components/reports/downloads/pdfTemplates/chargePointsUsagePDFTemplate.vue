@@ -29,7 +29,7 @@ export default {
             let data = this.tableData.map((item) => {
                 return [
                     {
-                        text: item.id,
+                        text: item.ocppId,
                         color: "#525E69",
                         margin: [0, 10, 0, 0],
                         fontSize: 10
@@ -151,7 +151,7 @@ export default {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [140, 195, 50, 50, 50, 70, 55, 50],
+                            widths: [100, 235, 50, 50, 50, 70, 55, 50],
                             heights: 30,
                             dontBreakRows: true, //fix more spaces in first row in page break
                             body: [

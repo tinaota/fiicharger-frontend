@@ -2,7 +2,7 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="id" :label="$t('chargingStation.chargerId')" :min-width="2" sortable="custom">
+            <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" :min-width="2" sortable="custom">
             </el-table-column>
             <el-table-column prop="station" :label="$t('chargingStation.stationName')" :min-width="2" sortable="custom">
             </el-table-column>

@@ -189,6 +189,7 @@
         "downloadPDF": "Download PDF",
         "keyWord": "Key Word",
         "currentType": "Current Type",
+        "powerType":"Power Type",
         "connectorType": "Connector Type",
         "minPrice": "Minimum Price",
         "maxPrice": "Maximum Price",
