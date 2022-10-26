@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/valid-v-model -->
 <template>
     <div class="scroll">
         <div class="mainctrl">
@@ -16,18 +17,18 @@
                     <el-input :placeholder="$t('chargingStation.stationName')" v-model="filter.stationName" @change="fetchData('s')" clearable>
                         <i slot="prefix" class="el-input__icon el-icon-search"></i>
                     </el-input>
-                    <el-select class="select-small" v-model="filter.status" :placeholder="$t('general.status')" v-loading="locationList.isLoading" @change="fetchData('status')" filterable clearable>
+                    <el-select class="select-small" v-model="filter.status" :placeholder="$t('general.status')" @change="fetchData('status')" filterable clearable>
                         <el-option v-for="item in statusList.data" :label="$t(`general.${item.toLowerCase()}`)" :key="item" :value="item"></el-option>
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column :label="$t('chargingStation.stationID')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.stationName')" :min-width="2">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.name }}</el-link>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column>
+                    <!-- <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column> -->
                     <el-table-column prop="address.zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
                     <el-table-column :label="$t('general.address')" :min-width="5">
                         <template slot-scope="scope">
@@ -48,7 +49,7 @@
                     <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="3"></el-table-column>
                     <el-table-column :label="$t('general.status')" :min-width="3">
                         <template slot-scope="scope">
-                            <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.status" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ $t(`general.${item.toLowerCase()}`) }}</el-radio>
+                            <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.publish" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ $t(`general.${item.toLowerCase()}`) }}</el-radio>
                         </template>
                     </el-table-column>
                     <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
@@ -241,7 +242,6 @@ import {
     $HTTP_updateStation,
     $HTTP_deleteStation,
     $HTTP_getChargeBoxListById,
-    $HTTP_getStatusListChargeStations,
     $HTTP_addBoundingToStation,
     $HTTP_getIndividualStationData,
     $HTTP_getAllChargeBoxList,
@@ -269,8 +269,7 @@ export default {
                 data: []
             },
             statusList: {
-                isLoading: false,
-                data: []
+                data: ["Disabled", "Enabled"]
             },
             filter: {
                 stationName: "",
@@ -368,7 +367,6 @@ export default {
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchLocationList();
-        this.fetchStatusList();
         this.fetchData();
     },
     beforeDestroy() {
@@ -403,23 +401,6 @@ export default {
                     });
                 });
         },
-        fetchStatusList() {
-            this.statusList.isLoading = true;
-            $HTTP_getStatusListChargeStations()
-                .then((data) => {
-                    this.statusList.isLoading = false;
-                    if (data?.length > 0) {
-                        this.statusList.data = data;
-                    }
-                })
-                .catch((err) => {
-                    console.log("locationList", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
-                });
-        },
         fetchData(type) {
             this.isLoading = true;
             let param = {
@@ -432,7 +413,7 @@ export default {
             }
 
             if (this.filter.status) {
-                param.status = this.filter.status;
+                param.publish = this.filter.status==='Enabled';
             }
             if (this.filter.stationName) {
                 param.name = this.filter.stationName;
@@ -452,6 +433,9 @@ export default {
                             item["modified"] = transformUtcToLocTime(
                                 item.modified
                             );
+                            item["publish"] = item.publish
+                                ? "Enabled"
+                                : "Disabled";
                             return item;
                         });
                     } else {
@@ -813,7 +797,7 @@ export default {
                     $API(params)
                         .then((data) => {
                             that.dialog.isLoading = false;
-                            if (data.id >= 0) {
+                            if (data.id) {
                                 that.$message({
                                     type: "success",
                                     message: sucMsg
@@ -935,27 +919,29 @@ export default {
                     "Content-Type": "application/json"
                 }
             };
+            console.log(data.publish === "Enabled");
 
             let params = {
                 stationId: data.id,
                 config: config,
-                status: data.status
+                publish: data.publish === "Enabled"
             };
 
-            $HTTP_updateStatusStation(params).then((res) => {
-                if (res) {
+            $HTTP_updateStatusStation(params)
+                .then(() => {
                     that.$message({
                         type: "success",
                         message: i18n.t("general.sucUpdateMsg")
                     });
-                } else {
+                    that.fetchData();
+                })
+                .catch(() => {
                     that.$message({
                         type: "warning",
                         message: i18n.t("error_network")
                     });
-                }
-                that.fetchData();
-            });
+                    that.fetchData();
+                });
         }
     }
 };

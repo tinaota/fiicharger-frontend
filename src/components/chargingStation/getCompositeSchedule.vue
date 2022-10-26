@@ -7,7 +7,7 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargerId') }}</div>
-                <div class="info">{{ data.chargePointId }}</div>
+                <div class="info">{{ data.ocppId }}</div>
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
@@ -77,6 +77,8 @@ export default {
                             that.data.name;
                         that.showCompositeScheduleDialog.data.chargePointId =
                             that.data.chargePointId;
+                        that.showCompositeScheduleDialog.data.ocppId =
+                            that.data.ocppId;
                         that.showCompositeScheduleDialog.visible = true;
                     } else {
                         that.visible = false;

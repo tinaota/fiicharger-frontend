@@ -36,7 +36,7 @@
                         <div class="info">
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.chargerId') }} :</div>
-                                <div class="msg">{{ item.id }}</div>
+                                <div class="msg">{{ item.ocppId }}</div>
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.power') }} : </div>

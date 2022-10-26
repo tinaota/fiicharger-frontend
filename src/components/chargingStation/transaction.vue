@@ -74,7 +74,8 @@ export default {
     props: {
         chargerId: String,
         dateRange: Array,
-        isUpdateData: Boolean
+        isUpdateData: Boolean,
+        ocppId: String
     },
     emits: ["updated"],
     data() {
@@ -130,9 +131,11 @@ export default {
     methods: {
         openDialog(action, data) {
             if (action === "addChargingProfile") {
+                console.log(data)
                 this.addChargingProfile.data = {
                     chargePointId: data.chargePointId,
-                    transactionId: data.id
+                    transactionId: data.id,
+                    ocppId: this.ocppId
                 };
                 this.addChargingProfile.connectorId = data.connectorId;
                 this.addChargingProfile.visible = true;

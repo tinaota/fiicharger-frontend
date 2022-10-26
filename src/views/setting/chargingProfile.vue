@@ -21,7 +21,6 @@
                             </el-table>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="id" label="ID" :min-width="1"></el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="1"></el-table-column>
                     <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" :min-width="2"></el-table-column>
                     <el-table-column prop="chargingProfileKind" :label="$t('chargingProfile.chargingProfileKind')" :min-width="2"></el-table-column>

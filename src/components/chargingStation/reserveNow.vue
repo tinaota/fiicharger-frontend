@@ -7,7 +7,7 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargerId') }}</div>
-                <div class="info">{{ data.chargePointId }}</div>
+                <div class="info">{{ data.ocppId }}</div>
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
@@ -19,7 +19,7 @@
             <div class="item">
                 <div class="label">{{ $t('menu.idTag') }}</div>
                 <el-select class="select-small info" v-model="param.idTag" filterable v-loading="idTagList.isLoading">
-                    <el-option v-for="item in idTagList.data" :label="item.id" :key="item.id" :value="item.id"></el-option>
+                    <el-option v-for="item in idTagList.data" :label="item.value" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
             <div class="item">

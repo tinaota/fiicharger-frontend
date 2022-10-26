@@ -7,7 +7,7 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargerId') }}</div>
-                <div class="info">{{ data.chargePointId }}</div>
+                <div class="info">{{ data.ocppId }}</div>
             </div>
             <div class="item" v-if="startSchedule">
                 <div class="label">{{ $t('chargingProfile.startSchedule') }}</div>

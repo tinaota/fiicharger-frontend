@@ -7,7 +7,7 @@
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargingProfile') }}</div>
                 <el-select class="select-small info" v-model="param.chargingProfileId" filterable v-loading="chargingProfileList.isLoading">
-                    <el-option v-for="(item, key) in chargingProfileList.data" :label="item.id" :key="key" :value="item.id"></el-option>
+                    <el-option v-for="(item, key) in chargingProfileList.data" :label="item.name" :key="key" :value="item.id"></el-option>
                 </el-select>
             </div>
         </div>

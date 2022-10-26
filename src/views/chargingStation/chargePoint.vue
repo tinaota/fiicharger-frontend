@@ -23,17 +23,15 @@
                         <el-option :label="$t('general.all')" value="all"></el-option>
                         <el-option v-for="(item, idx) in chargeBoxStatusList" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
-                    <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.currentType" @change="fetchData('s')" clearable>
-                        <el-option :label="$t('general.all')" value="all"></el-option>
-                        <el-option label="AC" value="AC"></el-option>
-                        <el-option label="DC" value="DC"></el-option>
+                    <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.powerType" @change="fetchData('s')" clearable>
+                        <el-option v-for="(item, idx) in powerTypeList" :label="item.name" :key="idx" :value="item.value"></el-option>
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.id }}</el-link>
+                            <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                             <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
                                 <el-button class="no-bg" @click="handleShowDialog(scope.row)"><i class="fa fa-map-marker" aria-hidden="true"></i>
                                 </el-button>
@@ -83,7 +81,7 @@
                     </el-table-column>
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
-                            {{ scope.row.currentType }}
+                            {{ scope.row.powerType }}
                         </template>
                     </el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
@@ -225,7 +223,7 @@ export default {
                 tmpSearch: "",
                 search: "",
                 zipCode: "",
-                currentType: null,
+                powerType: null,
                 chargeBoxStatus: null,
                 name: null,
                 stationId: null
@@ -257,7 +255,7 @@ export default {
                         lat: ""
                     },
                     id: "",
-                    chargeType: "AC",
+                    chargeType: "AC_1_PHASE",
                     unitType: "",
                     power: 0,
                     onPeakElectricityRate: 0,
@@ -306,7 +304,18 @@ export default {
             clearChargingProfile: {
                 visible: false,
                 data: {}
-            }
+            },
+            powerTypeList: [
+                { name: "All", value: "all" },
+                { name: "AC single phase", value: "AC_1_PHASE" },
+                { name: "AC two phases", value: "AC_2_PHASE" },
+                {
+                    name: "AC two phases w/ split phase",
+                    value: "AC_2_PHASE_SPLIT"
+                },
+                { name: "AC three phases", value: "AC_3_PHASE" },
+                { name: "DC", value: "DC" }
+            ]
         };
     },
     computed: {
@@ -339,13 +348,12 @@ export default {
             if (action === "edit") {
                 this.openDialog(1, data);
             } else if (action === "delete") {
-                this.deleteCheckBox(data.id);
+                this.deleteCheckBox(data.id, data.ocppId);
             } else if (action === "getDiagnostics") {
                 this.diagnosticsDialog.visible = true;
                 this.diagnosticsDialog.chargePointId = data.id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "run") {
-                console.log("runAction run", data.id);
                 this.updateDialog.visible = true;
                 this.updateDialog.chargePointId = data.id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
@@ -359,7 +367,8 @@ export default {
             } else if (type === "addChargingProfile") {
                 this.addChargingProfile.data = {
                     chargePointId: row.id,
-                    name: row.name
+                    name: row.name,
+                    ocppId: row.ocppId
                 };
                 this.addChargingProfile.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
@@ -374,6 +383,7 @@ export default {
                 this.chargeBoxTariffDialog.visible = true;
                 this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
                 this.chargeBoxTariffDialog.data.name = row.name;
+                this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
             }
         },
         closeActionDialog(type) {
@@ -430,14 +440,14 @@ export default {
                 param.Status = this.filter.chargeBoxStatus;
             }
             if (this.filter.tmpSearch) {
-                param.id = this.filter.tmpSearch;
+                param.OcppId = this.filter.tmpSearch;
             }
             if (this.filter.stationId) {
                 param.StationId = this.filter.stationId;
             }
 
-            if (this.filter.currentType && this.filter.currentType !== "all") {
-                param.CurrentType = this.filter.currentType;
+            if (this.filter.powerType && this.filter.powerType !== "all") {
+                param.PowerType = this.filter.powerType;
             }
 
             if (this.filter.name) {
@@ -472,7 +482,7 @@ export default {
                             this.filter.tmpSearch ||
                             this.filter.zipCode ||
                             this.filter.chargeBoxStatus ||
-                            this.filter.currentType ||
+                            this.filter.powerType ||
                             this.filter.stationId
                         ) {
                             this.$message({
@@ -506,7 +516,7 @@ export default {
                             this.filter.tmpSearch ||
                             this.filter.zipCode ||
                             this.filter.chargeBoxStatus ||
-                            this.filter.currentType ||
+                            this.filter.powerType ||
                             this.filter.stationId
                         ) {
                             this.$message({
@@ -540,11 +550,12 @@ export default {
                         lon: data.coordinates.longitude,
                         lat: data.coordinates.latitude
                     },
-                    chargeType: data.currentType,
+                    chargeType: data.powerType,
                     installationDate: data.installed,
                     chargeBoxName: data.name,
                     id: data.id,
-                    power: data.powerKw
+                    power: data.powerKw,
+                    ocppId: data.ocppId
                 };
             } else {
                 this.dialog.info = {
@@ -554,7 +565,7 @@ export default {
                         lon: "",
                         lat: ""
                     },
-                    chargeType: "AC",
+                    chargeType: "AC_1_PHASE",
                     installationDate: "",
                     chargeBoxName: "",
                     id: "",
@@ -564,10 +575,10 @@ export default {
             this.dialogVisible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
-        deleteCheckBox(id) {
+        deleteCheckBox(id, ocppId) {
             const that = this;
             this.$confirm(
-                i18n.t("general.deleteItem", { item: id }),
+                i18n.t("general.deleteItem", { item: ocppId }),
                 i18n.t("general.hint"),
                 {
                     showClose: false,
@@ -635,6 +646,7 @@ export default {
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleRowClick(row) {
+            console.log(row);
             if (row) {
                 const data = Object.assign({}, row);
                 window.sessionStorage.setItem(

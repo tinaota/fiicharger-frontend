@@ -1,10 +1,13 @@
 <template>
     <div style="width:100%">
-        <el-select style="width:100%" v-if="selectedLabel==='id'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
+        <el-select style="width:100%" v-if="selectedLabel==='id' && listType!=='idTag'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
             <el-option v-for="item in list.data" :label="item.id" :key="item.id" :value="item.id"></el-option>
         </el-select>
         <el-select style="width:100%" v-if="selectedLabel==='name'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
             <el-option v-for="item in list.data" :label="item.name" :key="item.id" :value="item.id"></el-option>
+        </el-select>
+        <el-select style="width:100%" v-if="selectedLabel==='id' && listType==='idTag'" class="select-small" v-model="selected" :placeholder="$t(`${placeHolder}`)" v-loading="list.isLoading" @change="updateSelected" filterable clearable>
+            <el-option v-for="item in list.data" :label="item.value" :key="item.id" :value="item.id"></el-option>
         </el-select>
     </div>
 </template>

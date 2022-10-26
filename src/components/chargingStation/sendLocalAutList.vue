@@ -18,24 +18,24 @@
                     <el-radio v-for="item in updateTypeList.data" :label="item.value" :key="item.value">{{ item.name }}</el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item v-show="sendListData.updateType === '0'">
+            <el-form-item v-show="sendListData.updateType === 'Differential'">
                 <div class="label">{{ $t('sendLocalList.addUpdateList') }}</div>
                 <el-select v-model="sendListData.idtags" multiple :placeholder="$t('general.select')">
-                    <el-option v-for="item in idtagList" :key="item.id" :label="item.id" :value="item.id">
+                    <el-option v-for="item in idtagList" :key="item.id" :label="item.value" :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item v-show="sendListData.updateType === '0'">
+            <el-form-item v-show="sendListData.updateType === 'Differential'">
                 <div class="label">{{ $t('sendLocalList.deleteList') }}</div>
                 <el-select v-model="sendListData.deletedIdtags" multiple :placeholder="$t('general.select')">
-                    <el-option v-for="item in idtagList" :key="item.id" :label="item.id" :value="item.id">
+                    <el-option v-for="item in idtagList" :key="item.id" :label="item.value" :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item v-show="sendListData.updateType === '1'">
+            <el-form-item v-show="sendListData.updateType === 'Full'">
                 <div class="label">{{ $t('sendLocalList.addUpdateList') }}</div>
                 <el-select v-model="sendListData.idtags" multiple :placeholder="$t('general.select')">
-                    <el-option v-for="item in idtagList" :key="item.id" :label="item.id" :value="item.id">
+                    <el-option v-for="item in idtagList" :key="item.id" :label="item.value" :value="item.id">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -75,7 +75,7 @@ export default {
             diagnosticsData: [],
             sendListData: {
                 listVersion: '',
-                updateType: '1',
+                updateType: 'Full',
                 idtags: [],
                 deletedIdtags: [],
                 clearList: false
@@ -84,11 +84,11 @@ export default {
                 isLoading: false,
                 data: [
                     {
-                        value: "1",
+                        value: "Full",
                         name: i18n.t("general.full")
                     },
                     {
-                        value: "0",
+                        value: "Differential",
                         name: i18n.t("general.differential")
                     }
                 ]
@@ -131,7 +131,7 @@ export default {
         initData() {
             this.sendListData = {
                 listVersion: '',
-                updateType: '1',
+                updateType: 'Full',
                 idtags: [],
                 deletedIdtags: [],
                 clearList: false

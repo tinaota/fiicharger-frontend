@@ -2,7 +2,7 @@
     <el-dialog :title="$t(`actions.${action}`)" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="formVertical">
             <!-- choose connector if row data is present else charger id -->
-            <p>{{ $t(`actions.${action}Question`,{item:rowData!==undefined && rowData.id!==undefined? rowData.id: chargePointId}) }}</p>
+            <p>{{ $t(`actions.${action}Question`,{item:rowData!==undefined && rowData.id!==undefined? rowData.id: ocppId}) }}</p>
             <!-- only show id tag list for start/stop transaction -->
             <div v-if="action==='startConnectorTransaction'">
                 <StartTransactionPopup @update="updateParams"></StartTransactionPopup>
@@ -45,6 +45,7 @@ export default {
     props: {
         show: Boolean,
         chargePointId: String,
+        ocppId: String,
         action: String,
         rowData: Object
     },

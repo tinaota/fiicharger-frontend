@@ -4,9 +4,8 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.management') }}</el-breadcrumb-item>
                 <el-breadcrumb-item :to="{ path: '/station' }">{{ $t('menu.station') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ "#" + curRouteParam.stationId + " " + curRouteParam.stationName }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ "#"+ curRouteParam.stationName }}</el-breadcrumb-item>
             </el-breadcrumb>
-
             <div class="card-alt">
                 <div class="card-8 rank-area">
                     <div class="header">
@@ -33,8 +32,8 @@
                         </li>
                         <li>
                             <div class="label">
-                                <span class="name">{{ $t('general.zipCode') }}</span>
-                                <span class="num">{{ stationInfo.zipCode }}</span>
+                                <span class="name">{{ $t('userAccount.phone') }}</span>
+                                <span class="num">{{ stationInfo.phone }}</span>
                             </div>
                         </li>
                     </ul>
@@ -192,7 +191,7 @@
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
                     <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
                         <template slot-scope="scope">
-                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.id }}</el-link>
+                            <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                         </template>
                     </el-table-column>
 
@@ -235,7 +234,7 @@
                                         <span>
                                             {{ $t('chargingStation.chargingProfile') }}
                                         </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
+                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row,null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
                                     </el-dropdown-item>
                                     <el-dropdown-item>
                                         <span>
@@ -662,20 +661,30 @@ export default {
             $HTTP_getStationInfo(param)
                 .then((data) => {
                     this.isLoading = false;
-                    if (data?.id >= 0) {
+                    console.log(data);
+                    if (data?.id) {
                         this.stationInfo = {
                             stationId: data.id,
                             stationName: data.name,
                             zipCode: data.address.zipCode,
-                            address: data.address.street,
+                            address:
+                                data.address.street +
+                                "," +
+                                data.address.city +
+                                "," +
+                                data.address.state +
+                                "," +
+                                data.address.zipCode,
                             loc: {
                                 lng: data.coordinates.longitude,
                                 lon: data.coordinates.longitude,
                                 lat: data.coordinates.latitude
                             },
-                            serviceStartTime: "5am",
-                            serviceEndTime: "5pm",
-                            phone: "None"
+                            serviceStartTime:
+                                data.openHour + "-" + data.openMinute,
+                            serviceEndTime:
+                                data.closeHour + "-" + data.closeMinute,
+                            phone: data.phoneNumber
                         };
                         this.chargerCount = {
                             acCount: data.acCount,
@@ -757,8 +766,9 @@ export default {
                 } else if (action === "addChargingProfile") {
                     this.addChargingProfileDialog.show = true;
                     this.addChargingProfileDialog.data = {
-                        chargePointId: row,
-                        name: this.stationInfo.stationName
+                        chargePointId: row.id,
+                        name: this.stationInfo.stationName,
+                        ocppId: row.ocppId
                     };
                 } else if (action === "clearChargingProfile") {
                     this.clearChargingProfileDialog.show = true;
@@ -770,6 +780,7 @@ export default {
                     this.chargeBoxTariffDialog.visible = true;
                     this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
                     this.chargeBoxTariffDialog.data.name = row.name;
+                    this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
                 }
             }
             this.setTimerApiCall();
@@ -801,7 +812,7 @@ export default {
             } else if (type === "clearChargingProfile") {
                 this.clearChargingProfileDialog.show = false;
                 this.clearChargingProfileDialog.data = {};
-            }else if (type === "modifyChargeBoxTariff") {
+            } else if (type === "modifyChargeBoxTariff") {
                 this.chargeBoxTariffDialog.visible = false;
             }
         },
