@@ -2,35 +2,35 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="id" :label="$t('chargingStation.transactionId')" :min-width="1" sortable="custom">
+            <el-table-column prop="id" :label="$t('chargingStation.transactionId')" width="100" sortable="custom">
             </el-table-column>
-            <el-table-column prop="chargePointId" :label="$t('chargingStation.chargerId')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="1" sortable="custom">
+            <el-table-column prop="chargePointName" :label="$t('chargingStation.chargePointName')" width="200" sortable="custom"></el-table-column>
+            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="100" sortable="custom">
             </el-table-column>
-            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')+'(KWH)'" :min-width="2" sortable="custom">
+            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200" sortable="custom"></el-table-column>
+            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200" sortable="custom"></el-table-column>
+            <el-table-column prop="meterStart" :label="$t('chargingStation.meterStart')+' (KWH)'" width="100" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" :min-width="2" sortable="custom">
+            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="180" sortable="custom">
                 <template slot-scope="scope">
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="meterStop" :label="$t('chargingStation.meterStop')+'(KWH)'" :min-width="2" sortable="custom">
+            <el-table-column prop="meterStop" :label="$t('chargingStation.meterStop')+' (KWH)'" width="100" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" :min-width="2" sortable="custom">
+            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" width="180" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="meterTotal" :label="$t('chargingStation.meterTotal')+' (KWH)'" :min-width="1" sortable="custom">
+            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" width="130" sortable="custom"></el-table-column>
+            <el-table-column prop="meterTotal" :label="$t('chargingStation.meterTotal')+' (KWH)'" width="100" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                 </template>
@@ -161,6 +161,6 @@ export default {
     border-radius: 6px;
     text-align: center;
     margin-left: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 </style>
