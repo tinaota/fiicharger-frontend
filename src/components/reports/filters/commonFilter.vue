@@ -12,23 +12,23 @@
         <el-input v-if="regularIdFilter" placeholder="ID" v-model="filter.regularId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <!-- removed station id filter as it requires a complete uuid for filtration -->
-        <!-- <el-input v-if="parentIdTagIdFilter" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" @change="updateParams" clearable>
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input> -->
+        <el-select v-if="parentIdTagIdFilter" class="select-small" v-model="filter.parentIdTagId" :placeholder="$t('idTags.parentIdTagId')" v-loading="filter.parentIdTagIdList.isLoading" @change="updateParams" clearable>
+            <el-option v-for="item in filter.parentIdTagIdList.data" :label="item.value" :key="item.value" :value="item.id"></el-option>
+        </el-select>
         <el-input v-if="chargePointIdFilter" :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.chargePointId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <el-input v-if="chargePointNameFilter" :placeholder="$t('chargingStation.chargePointName')" v-model="filter.chargePointName" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
+        <!-- uses text station name filter -->
         <el-input v-if="stationNameFilter" :placeholder="$t('chargingStation.stationName')" v-model="filter.stationName" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <!-- removed station id filter as it requires a complete uuid for filtration -->
-        <!-- <el-input v-if="stationIdFilter" :placeholder="$t('chargingStation.stationID')" v-model="filter.stationId" @change="updateParams" clearable>
-            <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input> -->
+        <!-- uses station id for filter, show station name -->
+        <el-select v-if="stationIdFilter" class="select-small" v-model="filter.stationId" :placeholder="$t('chargingStation.stationName')" v-loading="filter.stationList.isLoading" @change="updateParams" clearable>
+            <el-option v-for="item in filter.stationList.data" :label="item.name" :key="item.value" :value="item.id"></el-option>
+        </el-select>
         <el-select v-if="isBoundToStationFilter" class="select-small" v-model="filter.isBoundToStation" :placeholder="$t('general.boundToStation')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
@@ -83,7 +83,8 @@
 
 <script>
 import moment from "moment";
-
+import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import { $HTTP_getIdTagsList, $HTTP_getStationList } from "@/api/api";
 export default {
     emits: ["updateDropdown", "updateParams"],
     data() {
@@ -123,6 +124,15 @@ export default {
                         return time.getTime() > today;
                     }
                 },
+                parentIdTagIdList: {
+                    data: [],
+                    isLoading: false
+                },
+                stationList: {
+                    data: [],
+                    isLoading: false
+                },
+                limit: $GLOBAL_PAGE_LIMIT,
                 connectionStatus: "",
                 connectionStatusList: ["Connected", "Disconnected"],
                 stationStatus: "",
@@ -359,6 +369,21 @@ export default {
             );
         }
     },
+    watch: {
+        filter: function () {
+            // get id tag filters
+            if (this.filter.dropdownSelected === "idTags") {
+                this.getParentIdTagList();
+            }
+            // get station id filters
+            if (
+                this.filter.dropdownSelected === "chargePoints" ||
+                this.filter.dropdownSelected === "chargePointUsage"
+            ) {
+                this.getStationList();
+            }
+        }
+    },
     mounted() {
         // add dates
         this.mountDefaultDateRange();
@@ -367,6 +392,50 @@ export default {
         this.updateParams();
     },
     methods: {
+        getParentIdTagList() {
+            this.filter.parentIdTagIdList.isLoading = true;
+            let params = {
+                page: 1,
+                limit: this.limit
+            };
+            $HTTP_getIdTagsList(params)
+                .then((res) => {
+                    if (res?.data?.length > 0) {
+                        this.filter.parentIdTagIdList.data = res.data;
+                        this.filter.parentIdTagIdList.isLoading = false;
+                    }
+                })
+                .catch((err) => {
+                    console.log("idTagListError", err);
+                    this.filter.parentIdTagIdList.isLoading = false;
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
+        getStationList() {
+            let params = {
+                page: 1,
+                limit: this.limit
+            };
+            this.filter.stationList.isLoading = true;
+            $HTTP_getStationList(params)
+                .then((res) => {
+                    this.filter.stationList.isLoading = false;
+                    if (res.data.length > 0) {
+                        this.filter.stationList.data = res.data;
+                    }
+                })
+                .catch((err) => {
+                    console.log("idTagListError", err);
+                    this.filter.stationList.isLoading = false;
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
         mountDefaultDateRange() {
             // add dates
             const startOfDay = moment().subtract(6, "days").startOf("day");
