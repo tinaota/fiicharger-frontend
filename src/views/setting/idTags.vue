@@ -20,15 +20,14 @@
                         <el-option label="True" value="true"></el-option>
                         <el-option label="False" value="false"></el-option>
                     </el-select>
-
                     <el-select class="select-small long" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" v-loading="isLoading" @change="fetchData('filter')" filterable clearable>
-                        <el-option v-for="(item, idx) in parentIdTagIdList" :label="item.id" :key="idx" :value="item.id"></el-option>
+                        <el-option v-for="(item, idx) in parentIdTagIdList" :label="item.value" :key="idx" :value="item.id"></el-option>
                     </el-select>
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create', tableData)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
-                    <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                    <el-table-column prop="parentIdTagId" :label="$t('idTags.parentIdTagId')" :min-width="2"></el-table-column>
+                    <el-table-column prop="value" label="ID" :min-width="2"></el-table-column>
+                    <el-table-column prop="parentIdTagValue" :label="$t('idTags.parentIdTagId')" :min-width="2"></el-table-column>
                     <el-table-column prop="isBlocked" :label="$t('idTags.blocked')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.isBlocked.toString() }}
@@ -150,7 +149,7 @@ export default {
                 limit: this.limit,
             };
             if (this.filter.id) {
-                params.Id = this.filter.id;
+                params.Value = this.filter.id;
             }
 
             if (this.filter.parentIdTagId) {
