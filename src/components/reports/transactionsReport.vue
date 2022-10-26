@@ -96,7 +96,9 @@ export default {
         fetchData() {
             let params = {
                 page: this.page,
-                limit: this.limit
+                limit: this.limit,
+                OrderBy: "id",
+                IsDescending: false
             };
             if (this.filterParams) {
                 params = { ...params, ...this.filterParams };
