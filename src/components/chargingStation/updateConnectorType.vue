@@ -4,7 +4,7 @@
             <p>{{ $t('chargingStation.changeConnector') }}</p>
             <h3>{{ $t('menu.information') }}</h3>
             <p> {{ $t('chargingStation.connector') }} ID : {{ connectorId }}</p>
-            <p> {{ $t('chargingStation.chargerId') }}: {{ chargePointId }}</p>
+            <p> {{ $t('chargingStation.chargerId') }}: {{ ocppId }}</p>
 
             <div class="form-item">
                 <el-select class="select-small" v-model="connectorTypeDefault" :placeholder="$t('general.type')" filterable clearable>
@@ -27,7 +27,8 @@ export default {
         show: Boolean,
         connectorId: Number,
         chargePointId: String,
-        connectorType: String
+        connectorType: String,
+        ocppId: String
     },
     data() {
         return {

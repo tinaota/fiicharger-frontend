@@ -332,7 +332,7 @@
                 <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData && active==='reservation'" @updated="aleadyUpdateData('reservation')"></Reservation>
                 <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData && active==='chargingProfile'" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
             </div>
-            <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
+            <UpdateConnectorType :show="changeConnectorType.show" v-if="changeConnectorType.show" :ocppId="changeConnectorType.ocppId" :connectorId="changeConnectorType.connectorId" :chargePointId="changeConnectorType.chargePointId" :connectorType="changeConnectorType.connectorType" @close="closeDialog('connectorType')" />
             <Configuration :show="configuration.show" v-if="configuration.show" :chargePointId="configuration.chargePointId" :selectedKey="configuration.selectedKey" @close="closeDialog('configuration')" />
             <SetConfiguration :show="setConfiguration.show" v-if="setConfiguration.show" :chargePointId="setConfiguration.chargePointId" :selectedKey="setConfiguration.selectedKey" @close="closeDialog('setConfiguration')"></SetConfiguration>
             <CommonPopup :show="commonpopup.show" v-if="commonpopup.show" :chargePointId="commonpopup.chargePointId" :ocppId="commonpopup.ocppId" :rowData="commonpopup.rowData" :action="commonpopup.action" @close="(isUpdate)=>closeDialog('commonpopup', isUpdate)"></CommonPopup>
@@ -416,7 +416,8 @@ export default {
                 show: false,
                 connectorId: null,
                 chargePointId: null,
-                connectorType: null
+                connectorType: null,
+                ocppId: null
             },
             configuration: {
                 show: false,
@@ -779,6 +780,7 @@ export default {
                 this.changeConnectorType.chargePointId =
                     this.chargePointById[0].id;
                 this.changeConnectorType.connectorType = row.type;
+                this.changeConnectorType.ocppId = this.curRouteParam.ocppId;
             } else if (type === "configuration") {
                 this.configuration.show = true;
                 this.configuration.chargePointId = this.chargePointById[0].id;
@@ -808,6 +810,7 @@ export default {
                 this.changeConnectorType.connectorId = null;
                 this.changeConnectorType.chargePointId = null;
                 this.changeConnectorType.connectorType = null;
+                this.changeConnectorType.ocppId = null;
             } else if (type === "configuration") {
                 this.configuration.show = false;
                 this.configuration.chargePointId = null;
