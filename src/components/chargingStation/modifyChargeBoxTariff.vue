@@ -5,7 +5,7 @@
             <div class="item">
                 <p class="label">{{ $t('menu.tariff') }}</p>
                 <el-select class="autoresizeselect" v-model="tariffId" :placeholder="$t('menu.tariff')" v-loading="tariffList.isLoading" multiple filterable clearable>
-                    <el-option v-for="(item, idx) in tariffList.data" :label="item.name" :key="idx" :value="item.guid"></el-option>
+                    <el-option v-for="(item, idx) in tariffList.data" :label="item.name" :key="idx" :value="item.id"></el-option>
                 </el-select>
             </div>
         </div>
@@ -54,11 +54,12 @@ export default {
             };
             $HTTP_getChargeBoxTariff(params).then((res) => {
                 if (res && res.length > 0) {
-                    let tariffList = res.map((item) => item.guid);
+                    let tariffList = res.map((item) => item.id);
                     this.originalSelectedTariffId = tariffList;
                     this.tariffId = tariffList;
                 } else {
                     this.originalSelectedTariffId = [];
+                    this.tariffId = [];
                 }
             });
         },
@@ -75,6 +76,7 @@ export default {
                         this.tariffList.data = res.data;
                     } else {
                         this.tariffList.data = [];
+                        this.tariffList.isLoading = false;
                         this.$message({
                             type: "warning",
                             message: i18n.t("emptyMessage")
@@ -170,7 +172,7 @@ export default {
                 that.$message({
                     type: "warning",
                     message: i18n.t("general.tariffNotUpdated", {
-                        item: this.data.chargeBoxId
+                        item: this.data.ocppId
                     })
                 });
             }

@@ -39,7 +39,7 @@ export default {
         deleteTariff() {
             const that = this;
             let params = {
-                guid: that.data.guid
+                id: that.data.id
             };
             that.isLoading = true;
 
@@ -67,7 +67,7 @@ export default {
                         that.$message({
                             type: "warning",
                             message: i18n.t("general.tariffNotFound", {
-                                item: that.data.guid
+                                item: that.data.id
                             })
                         });
                         that.visible = false;

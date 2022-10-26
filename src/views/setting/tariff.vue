@@ -13,9 +13,6 @@
                     <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.tariffType" @change="fetchData()" filterable clearable>
                         <el-option v-for="(item, idx) in filter.tariffTypeList" :label="$t(`general.${item.name}`)" :key="idx" :value="item.value"></el-option>
                     </el-select>
-                    <el-select class="select-small long" :placeholder="$t('general.deprecated')" v-model="filter.isDeprecated" @change="fetchData()" filterable clearable>
-                        <el-option v-for="(item, idx) in filter.deprecatedList" :label="item" :key="idx" :value="item"></el-option>
-                    </el-select>
                     <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="fetchData()">
                     </el-date-picker>
                     <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="fetchData()">
@@ -161,8 +158,6 @@ export default {
                 data: {}
             },
             filter: {
-                isDeprecated: "False",
-                deprecatedList: ["True", "False"],
                 tariffName: "",
                 tariffType: "",
                 tariffTypeList: [
@@ -212,9 +207,6 @@ export default {
                 IsDescending: false,
                 OrderBy: "Name"
             };
-            if (this.filter.isDeprecated) {
-                params.IsDeprecated = this.filter.isDeprecated === "True";
-            }
             if (this.filter.tariffName) {
                 params.Name = this.filter.tariffName;
             }
@@ -251,7 +243,6 @@ export default {
                         this.tableData = [];
                         this.total = 0;
                         if (
-                            this.filter.isDeprecated ||
                             this.filter.tariffName ||
                             this.filter.tariffType ||
                             this.filter.startDateTimeAfter ||

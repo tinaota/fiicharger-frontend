@@ -98,7 +98,7 @@ export default {
                 },
                 dateTimeRange: []
             },
-            guid: "",
+            id: "",
             priceTypeList: [
                 { name: "regular", value: "REGULAR" },
                 { name: "adHocPayment", value: "AD_HOC_PAYMENT" },
@@ -154,7 +154,7 @@ export default {
                     ]
                 };
             }
-            this.guid = this.data.guid;
+            this.id = this.data.id;
             this.elements = this.data.elements;
         }
         this.$jQuery(".formVertical").length > 0 &&
@@ -191,7 +191,7 @@ export default {
             };
             // for edit
             if (this.dialogType === "edit") {
-                params.guid = this.guid;
+                params.id = this.id;
             }
             this.$refs.tariffForm.validate((valid) => {
                 if (valid) {
@@ -215,7 +215,7 @@ export default {
                                 this.$message({
                                     type: "warning",
                                     message: i18n.t("general.tariffNotFound", {
-                                        item: this.data.guid
+                                        item: this.data.id
                                     })
                                 });
                             } else {
@@ -250,7 +250,7 @@ export default {
                 },
                 dateTimeRange: []
             };
-            this.guid = "";
+            this.id = "";
             this.pricingSectionData = [];
             this.elements = [];
             this.$emit("close", this.isUpdate);
