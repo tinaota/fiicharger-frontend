@@ -156,7 +156,7 @@ export default {
                             // headers are automatically repeated if the table spans over multiple pages
                             // you can declare how many rows should be treated as headers
                             headerRows: 1,
-                            widths: [70, "*", "auto", "auto", 50, 50, 100, 50],
+                            widths: [70, 130, 90, 90, 65, 60, 90, 65],
                             heights: 30,
                             dontBreakRows: true, //fix more spaces in first row in page break
                             body: [

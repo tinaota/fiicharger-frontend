@@ -121,10 +121,10 @@
                 <div id="map-container" class="google-map"></div>
                 <div class="right-form formVertical">
                     <el-form ref="stationForm" :rules="rules" :model="dialog.info" style="width:98%">
-                        <div class="form-item" v-if="dialog.type">
+                        <!-- <div class="form-item" v-if="dialog.type">
                             <div class="label">{{ $t('chargingStation.stationID') }}</div>
                             <el-input v-model="dialog.info.stationId" disabled></el-input>
-                        </div>
+                        </div> -->
                         <div class="form-item">
                             <el-form-item prop="stationName">
                                 <div class="label">{{ $t('chargingStation.stationName') }}</div>
@@ -375,7 +375,6 @@ export default {
     },
     methods: {
         runAction(data, action) {
-            console.log(data, action);
             if (action === "bind") {
                 this.openBindDialog(data);
             } else if (action === "edit") {
@@ -413,7 +412,7 @@ export default {
             }
 
             if (this.filter.status) {
-                param.publish = this.filter.status==='Enabled';
+                param.publish = this.filter.status === "Enabled";
             }
             if (this.filter.stationName) {
                 param.name = this.filter.stationName;
@@ -529,7 +528,6 @@ export default {
             this.dialog.type = type;
             if (type === 1) {
                 let stationId = data.id;
-
                 $HTTP_getIndividualStationData(stationId)
                     .then((res) => {
                         let serviceStartTime =
@@ -559,7 +557,8 @@ export default {
                             },
                             phone: res.phoneNumber,
                             serviceStartTime: serviceStartTime,
-                            serviceEndTime: serviceEndTime
+                            serviceEndTime: serviceEndTime,
+                            publish: data.publish === "Enabled"
                         };
 
                         this.drawMap();
@@ -764,7 +763,6 @@ export default {
             this.$refs.stationForm.validate((valid) => {
                 if (valid) {
                     const that = this;
-
                     let startTime =
                         that.dialog.info.serviceStartTime.split(":");
                     let endTime = that.dialog.info.serviceEndTime.split(":");
@@ -775,6 +773,7 @@ export default {
                                 longitude: that.dialog.info.loc.lon
                             },
                             name: that.dialog.info.stationName,
+                            publish: that.dialog.info.publish,
                             phoneNumber: that.dialog.info.phone,
                             address: that.dialog.info.address,
                             openHour: parseInt(startTime[0]),
@@ -919,8 +918,6 @@ export default {
                     "Content-Type": "application/json"
                 }
             };
-            console.log(data.publish === "Enabled");
-
             let params = {
                 stationId: data.id,
                 config: config,

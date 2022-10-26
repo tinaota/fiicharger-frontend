@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="$t('chargingStation.remoteTrigger')" width="420px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog :title="$t('chargingStation.remoteTrigger')" width="460px" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="dialogForm">
             <div class="item">
                 <div class="label">{{ $t('chargingStation.chargePointName') }}</div>

@@ -69,7 +69,7 @@
 
 <script>
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
-import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import { $GLOBAL_PAGE_LIMIT, $ALL_DATA_COUNT } from "@/utils/global";
 import { $HTTP_getIdTagsList } from "@/api/api";
 import UpdateIdTags from "@/views/setting/updateIdTags";
 import DeleteIdTags from "@/views/setting/deleteIdTags";
@@ -88,6 +88,7 @@ export default {
             isLoading: false,
             page: 1,
             limit: $GLOBAL_PAGE_LIMIT,
+            filterLimit: $ALL_DATA_COUNT,
             parentIdTagIdList:[],
             total: 0,
             dialog: {
@@ -129,7 +130,11 @@ export default {
     methods: {
         // get parent Id Tag List
         getParentIdTagList() {
-            $HTTP_getIdTagsList()
+            let params = {
+                page: 1,
+                limit: this.filterLimit,
+            };
+            $HTTP_getIdTagsList(params)
                 .then((res) => {
                     if (res?.data?.length > 0) {
                         this.parentIdTagIdList = res.data;
@@ -225,7 +230,7 @@ export default {
                 this.editDialog.visible = false;
             }
             this.fetchData();
-
+            this.getParentIdTagList();
             this.$jQuery(".scroll").mCustomScrollbar("update");
         },
     },

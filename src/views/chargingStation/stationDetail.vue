@@ -12,12 +12,12 @@
                         <div class="title">{{ $t('chargingStation.stationInfo') }} </div>
                     </div>
                     <ul class="rank">
-                        <li>
+                        <!-- <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.stationID') }}</span>
                                 <span class="num">{{ stationInfo.stationId }}</span>
                             </div>
-                        </li>
+                        </li> -->
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.stationName') }}</span>
@@ -34,6 +34,12 @@
                             <div class="label">
                                 <span class="name">{{ $t('userAccount.phone') }}</span>
                                 <span class="num">{{ stationInfo.phone }}</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="label">
+                                <span class="name">{{ $t('general.businessHours') }}</span>
+                                <span class="num">{{ stationInfo.serviceStartTime + ':00' + ' - ' + stationInfo.serviceEndTime + ':00' }}</span>
                             </div>
                         </li>
                     </ul>
@@ -184,7 +190,6 @@
                 <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
                     <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></TransactionTraffic>
                 </div>
-
             </div>
             <div class="card-8 table-result">
                 <div class="header">{{ $t('menu.chargePoint') }}</div>
@@ -404,7 +409,8 @@ export default {
                     installationDate: "",
                     chargeBoxName: "",
                     id: "",
-                    power: 0
+                    power: 0,
+                    ocppId: ""
                 },
                 isVisible: false
             },
@@ -623,7 +629,7 @@ export default {
             if (action === "edit") {
                 this.openDialog(data);
             } else if (action === "delete") {
-                this.deleteChargers(data.id);
+                this.deleteChargers(data.id, data.ocppId);
             }
         },
         getChargersList(params) {
@@ -660,8 +666,6 @@ export default {
             this.isLoading = true;
             $HTTP_getStationInfo(param)
                 .then((data) => {
-                    this.isLoading = false;
-                    console.log(data);
                     if (data?.id) {
                         this.stationInfo = {
                             stationId: data.id,
@@ -669,11 +673,11 @@ export default {
                             zipCode: data.address.zipCode,
                             address:
                                 data.address.street +
-                                "," +
+                                ", " +
                                 data.address.city +
-                                "," +
+                                ", " +
                                 data.address.state +
-                                "," +
+                                ", " +
                                 data.address.zipCode,
                             loc: {
                                 lng: data.coordinates.longitude,
@@ -681,9 +685,21 @@ export default {
                                 lat: data.coordinates.latitude
                             },
                             serviceStartTime:
-                                data.openHour + "-" + data.openMinute,
+                                (data.openHour < 10
+                                    ? "0" + data.openHour
+                                    : data.openHour) +
+                                ":" +
+                                (data.openMinute < 10
+                                    ? "0" + data.openMinute
+                                    : data.openMinute),
                             serviceEndTime:
-                                data.closeHour + "-" + data.closeMinute,
+                                (data.closeHour < 10
+                                    ? "0" + data.closeHour
+                                    : data.closeHour) +
+                                ":" +
+                                (data.closeMinute < 10
+                                    ? "0" + data.closeMinute
+                                    : data.closeMinute),
                             phone: data.phoneNumber
                         };
                         this.chargerCount = {
@@ -697,6 +713,7 @@ export default {
                                 that.lang === "en" ? data.message : data.reason
                         });
                     }
+                    this.isLoading = false;
                 })
                 .catch((err) => {
                     console.log(err);
@@ -746,7 +763,8 @@ export default {
                 installationDate: data.installed,
                 chargeBoxName: data.name,
                 id: data.id,
-                power: data.powerKw
+                power: data.powerKw,
+                ocppId: data.ocppId
             };
             this.dialog.isVisible = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
@@ -816,10 +834,10 @@ export default {
                 this.chargeBoxTariffDialog.visible = false;
             }
         },
-        deleteChargers(id) {
+        deleteChargers(id, ocppId) {
             const that = this;
             this.$confirm(
-                i18n.t("general.deleteItem", { item: id }),
+                i18n.t("general.deleteItem", { item: ocppId }),
                 i18n.t("general.hint"),
                 {
                     showClose: false,
@@ -842,7 +860,9 @@ export default {
                                     this.page = 1;
                                 }
                             }
-                            that.fetchData();
+                            that.getChargersList({
+                                stationId: this.curRouteParam.stationId
+                            });
                         } else {
                             this.$message({
                                 type: "warning",

@@ -646,7 +646,6 @@ export default {
             this.$jQuery(".scroll").mCustomScrollbar("disable");
         },
         handleRowClick(row) {
-            console.log(row);
             if (row) {
                 const data = Object.assign({}, row);
                 window.sessionStorage.setItem(

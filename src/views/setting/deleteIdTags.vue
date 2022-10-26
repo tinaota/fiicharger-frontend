@@ -4,13 +4,12 @@
             <div class="form-item">
                 {{ $t('general.deleteThis') }} {{ $t('menu.idTag').toLowerCase() }}?
                 <h3>{{ $t('menu.information') }}</h3>
-                <p>ID: {{ data[0].value }}</p>
-                <p>{{ $t('idTags.parentIdTagId') }} :{{ data[0].parentIdTagValue }} </p>
-                <p>{{ $t('idTags.expired') }} :{{ getLocTime(data[0].expired) }}</p>
-                <p>{{ $t('idTags.blocked') }} :{{ data[0].blocked }}</p>
-                <p>{{ $t('idTags.created') }} :{{ getLocTime(data[0].created) }}</p>
-                <p>{{ $t('idTags.modified') }} :{{ getLocTime(data[0].modified) }} </p>
-
+                <p>ID : {{ data[0].value }}</p>
+                <p>{{ $t('idTags.parentIdTagId') }} : {{ data[0].parentIdTagValue }} </p>
+                <p>{{ $t('idTags.expired') }} : {{ getLocTime(data[0].expired) }}</p>
+                <p>{{ $t('idTags.blocked') }} : {{ data[0].isBlocked }}</p>
+                <p>{{ $t('idTags.created') }} : {{ getLocTime(data[0].created) }}</p>
+                <p>{{ $t('idTags.modified') }} : {{ getLocTime(data[0].modified) }} </p>
             </div>
         </div>
         <span slot="footer" class="dialog-footer">

@@ -24,7 +24,6 @@
                     <div class="el-dropdown-link userinfo-inner img-container">
                         <el-button class="no-bg i change-theme-icon el-icon-setting" :style="{color:isDark? '#ffa500':'#000000'}"></el-button>
                     </div>
-
                     <el-dropdown-menu slot="dropdown" :class="isDark? 'home-settings dropdown-menu dark-theme':'home-settings dropdown-menu light-theme'">
                         <el-menu :default-active="activeIndex" mode="vertical" collapse :class="isDark? 'dark-theme':'light-theme'">
                             <el-submenu index="1">
@@ -149,8 +148,8 @@ export default {
         "$route.path": function () {
             if (
                 this.routerName !== this.$route.path &&
-                this.routerName === "/location" &&
-                this.$route.path === "/chargePoint"
+                this.routerName === "/location" || this.routerName==='/station' &&
+                this.$route.path === "/chargePoint" || this.$route.path ==='/chargePoint/chargePointDetail'
             ) {
                 this.handleMenuSelect("/chargePoint", ["/chargingStation", "/chargePoint"]);
             }
