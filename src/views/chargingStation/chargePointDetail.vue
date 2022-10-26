@@ -819,6 +819,7 @@ export default {
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.ocppId = null;
                 this.commonpopup.action = "";
+                this.commonpopup.rowData = {};
                 this.updateApi = data;
             } else if (type === "reserveNow") {
                 this.reserveNow.visible = false;

@@ -131,7 +131,6 @@ export default {
     methods: {
         openDialog(action, data) {
             if (action === "addChargingProfile") {
-                console.log(data)
                 this.addChargingProfile.data = {
                     chargePointId: data.chargePointId,
                     transactionId: data.id,
@@ -140,7 +139,6 @@ export default {
                 this.addChargingProfile.connectorId = data.connectorId;
                 this.addChargingProfile.visible = true;
             } else if (action === "stopTransactionWithTransactionId") {
-                console.log(action, data);
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = data.chargePointId;
                 this.commonpopup.action = action;
@@ -220,6 +218,7 @@ export default {
                 this.commonpopup.show = false;
                 this.commonpopup.chargePointId = null;
                 this.commonpopup.action = "";
+                this.commonpopup.rowData = {};
             }
             data && this.getAllTransactions();
         }
