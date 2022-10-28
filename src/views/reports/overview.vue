@@ -48,7 +48,12 @@ import TransactionsReport from "@/components/reports/transactionsReport.vue";
 import IdTagsReport from "@/components/reports/idTagsReport.vue";
 import CommonFilter from "@/components/reports/filters/commonFilter.vue";
 import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
-import DownloadPDF from "@/components/reports/downloads/DownloadPDF.vue";
+import LoadingPDFComponent from "@/components/reports/downloads/LoadingPDFComponent.vue";
+// lazy loading downloadpdf component
+const DownloadPDF = () => ({
+    component: import("@/components/reports/downloads/DownloadPDF.vue"),
+    loading: LoadingPDFComponent,
+});
 import { setScrollBar } from "@/utils/function";
 export default {
     components: {
