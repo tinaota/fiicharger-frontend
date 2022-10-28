@@ -207,10 +207,10 @@
             </el-dialog>
             <el-dialog :title="$t('general.bind')" width="400px" :visible.sync="bindDialog.visible" :show-close="false" v-loading="bindDialog.isLoading" @close="closeDialog(false)">
                 <div class="vertial formVertical">
-                    <div class="form-item">
+                    <!-- <div class="form-item">
                         <div class="label">{{ $t('chargingStation.stationID') }}</div>
                         <el-input v-model="bindDialog.info.stationId" disabled></el-input>
-                    </div>
+                    </div> -->
                     <div class="form-item">
                         <div class="label">{{ $t('chargingStation.stationName') }}</div>
                         <el-input v-model="bindDialog.info.stationName" disabled></el-input>
