@@ -92,6 +92,69 @@ export default {
                     });
                 });
         },
+        deleteTariff(deletedTariffId, params, newAddedTariffId) {
+            const that = this;
+            deletedTariffId.map((item) => {
+                params.tariffId = item;
+                $HTTP_deleteChargeBoxTariff(params)
+                    .then((res) => {
+                        that.isLoading = false;
+                        if (res) {
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucUpdateMsg")
+                            });
+                            that.isUpdate = true;
+                            that.visible = false;
+                            this.addTariff(newAddedTariffId, params);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        that.isLoading = false;
+                        that.visible = false;
+                        deleteTariff = false;
+                        let _errors = err?.data?.errors
+                            ? Object.values(err?.data?.errors)
+                            : err?.data;
+                        that.$message({
+                            type: "warning",
+                            message: _errors.toString()
+                        });
+                    });
+            });
+        },
+        addTariff(newAddedTariffId, params) {
+            const that = this;
+            newAddedTariffId.map((item) => {
+                params.tariffId = item;
+                $HTTP_updateChargeBoxTariff(params)
+                    .then((res) => {
+                        that.isLoading = false;
+                        if (res) {
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucUpdateMsg")
+                            });
+                            that.isUpdate = true;
+                            that.visible = false;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.isLoading = false;
+                        that.visible = false;
+                        if (err.status === 409) {
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("general.typeConflict", {
+                                    item: this.data.chargeBoxId
+                                })
+                            });
+                        }
+                    });
+            });
+        },
         updateTariff() {
             const that = this;
             that.isLoading = true;
@@ -106,65 +169,16 @@ export default {
             let params = {
                 chargePointId: that.data.chargeBoxId
             };
+            let deleteTariffCheck = false;
+            if (deletedTariffId.length > 0) {
+                deleteTariffCheck = true;
+                this.deleteTariff(deletedTariffId, params, newAddedTariffId);
+            }
 
-            newAddedTariffId.length > 0 &&
-                newAddedTariffId.map((item) => {
-                    params.tariffId = item;
-                    $HTTP_updateChargeBoxTariff(params)
-                        .then((res) => {
-                            that.isLoading = false;
-                            if (res) {
-                                that.$message({
-                                    type: "success",
-                                    message: i18n.t("general.sucUpdateMsg")
-                                });
-                                that.isUpdate = true;
-                                that.visible = false;
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            that.isLoading = false;
-                            that.visible = false;
-                            if (err.status === 409) {
-                                that.$message({
-                                    type: "warning",
-                                    message: i18n.t("general.typeConflict", {
-                                        item: this.data.chargeBoxId
-                                    })
-                                });
-                            }
-                        });
-                });
+            if (newAddedTariffId.length > 0 && !deleteTariffCheck) {
+                this.addTariff(newAddedTariffId, params);
+            }
 
-            deletedTariffId.length > 0 &&
-                deletedTariffId.map((item) => {
-                    params.tariffId = item;
-                    $HTTP_deleteChargeBoxTariff(params)
-                        .then((res) => {
-                            that.isLoading = false;
-                            if (res) {
-                                that.$message({
-                                    type: "success",
-                                    message: i18n.t("general.sucUpdateMsg")
-                                });
-                                that.isUpdate = true;
-                                that.visible = false;
-                            }
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                            that.isLoading = false;
-                            that.visible = false;
-                            let _errors = err?.data?.errors
-                                ? Object.values(err?.data?.errors)
-                                : err?.data;
-                            that.$message({
-                                type: "warning",
-                                message: _errors.toString()
-                            });
-                        });
-                });
             // do not update anything if nth is changed
             if (newAddedTariffId.length === 0 && deletedTariffId.length === 0) {
                 that.isLoading = false;
