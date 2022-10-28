@@ -113,6 +113,8 @@ export default {
                     if (res?.data?.length > 0) {
                         this.parentIdTagIdList = res.data;
                         this.parentIdTagListLoading = false;
+                    } else {
+                        this.parentIdTagListLoading = false;
                     }
                 })
                 .catch((err) => {
