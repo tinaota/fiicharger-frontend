@@ -369,9 +369,8 @@ export default {
             } else {
                 markerStyle = this.markerImgStyle.medium;
             }
-
             markerImage = new google.maps.MarkerImage(
-                markerStyle.icon[item.status === "Enabled" ? "green" : "red"], //這裡要判斷顯是哪個
+                markerStyle.icon[item.publish ? "green" : "red"], //這裡要判斷顯是哪個
                 new google.maps.Size(markerStyle.size[0], markerStyle.size[1])
             );
             const marker = new MarkerWithLabel({
