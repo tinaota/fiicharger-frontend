@@ -865,6 +865,8 @@ export default {
         aleadyUpdateData(type) {
             if (type === "reservation") {
                 this.isUpDateReservationData = false;
+                // update to new reservation list on cancelReservation in connectors
+                this.cancelReservation.data = {};
             } else if (type === "chargingProfile") {
                 this.isUpDateChargingProfileData = false;
             } else if (type === "transaction") {
