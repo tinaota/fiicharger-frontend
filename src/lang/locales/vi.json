@@ -46,7 +46,8 @@
         "analysis": "Phân tích",
         "analytics": "Phân tích",
         "overview": "Tổng quát",
-        "tariff": "Giá"
+        "tariff": "Giá",
+                "sessions": "Phiên"
     },
     "login": {
         "login": "Đăng nhập",
@@ -245,7 +246,8 @@
         "endDateTimeBefore": "Ngày kết thúc trước giờ",
         "typeConflict": "Biểu phí trùng lặp với biểu thuế hiện có của loại điểm tính phí {item}",
         "tariffNotUpdated": "Biểu phí chưa được cập nhật cho điểm tính phí {item}",
-        "preparingDocument": "Chuẩn bị tài liệu ..."
+        "preparingDocument": "Chuẩn bị tài liệu ...",
+                "authMethod": "Phương thức xác thực"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

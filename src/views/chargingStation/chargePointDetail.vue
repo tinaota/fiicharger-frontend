@@ -311,6 +311,8 @@
                 <el-tabs v-model="active" @tab-click="handleClick">
                     <el-tab-pane :label="$t('menu.analysis')" name="analysis">
                     </el-tab-pane>
+                    <el-tab-pane :label="$t('menu.sessions')" name="sessions">
+                    </el-tab-pane>
                     <el-tab-pane :label="$t('menu.transaction')" name="transaction">
                     </el-tab-pane>
                     <el-tab-pane :label="$t('chargingStation.reservation')" name="reservation">
@@ -328,6 +330,7 @@
                         <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
                     </div>
                 </div>
+                <Sessions v-if="active==='sessions' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpdateSessionsData && active==='sessions'" @updated="aleadyUpdateData('sessions')"></Sessions>
                 <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateApi && active==='transaction'" @updated="aleadyUpdateData('transaction')"></Transaction>
                 <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData && active==='reservation'" @updated="aleadyUpdateData('reservation')"></Reservation>
                 <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData && active==='chargingProfile'" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
@@ -359,6 +362,7 @@ import {
 } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import Transaction from "@/components/chargingStation/transaction";
+import Sessions from "@/components/chargingStation/sessions";
 import Reservation from "@/components/chargingStation/reservation";
 import ReserveNow from "@/components/chargingStation/reserveNow";
 import CancelReservation from "@/components/chargingStation/cancelReservation";
@@ -384,7 +388,6 @@ import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
 import UploadFirmware from "@/components/chargingStation/uploadFirmware";
 import GetCompositeSchedule from "@/components/chargingStation/getCompositeSchedule";
-
 export default {
     components: {
         Connector,
@@ -393,6 +396,7 @@ export default {
         Configuration,
         SetConfiguration,
         CommonPopup,
+        Sessions,
         Reservation,
         ReserveNow,
         CancelReservation,
@@ -566,6 +570,7 @@ export default {
             graphSelected: "transactionAndTraffic",
             graphList: ["transactionAndTraffic"],
             isUpDateChargingProfileData: true,
+            isUpdateSessionsData: true,
             addChargingProfile: {
                 visible: false,
                 data: {}
@@ -871,6 +876,8 @@ export default {
                 this.isUpDateChargingProfileData = false;
             } else if (type === "transaction") {
                 this.updateApi = false;
+            }else if(type==="sessions"){
+                this.isUpdateSessionsData =false
             }
         },
         handleClick() {

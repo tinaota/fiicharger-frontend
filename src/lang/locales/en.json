@@ -46,7 +46,8 @@
         "analysis": "Analysis",
         "analytics": "Analytics",
         "overview": "Overview",
-        "tariff": "Price"
+        "tariff": "Price",
+        "sessions": "Sessions"
     },
     "login": {
         "login": "Login",
@@ -189,7 +190,7 @@
         "downloadPDF": "Download PDF",
         "keyWord": "Key Word",
         "currentType": "Current Type",
-        "powerType":"Power Type",
+        "powerType": "Power Type",
         "connectorType": "Connector Type",
         "minPrice": "Minimum Price",
         "maxPrice": "Maximum Price",
@@ -245,7 +246,8 @@
         "endDateTimeBefore": "End Date Time Before",
         "typeConflict": "Tariff overlaps with existing tariff of type  for charge point {item}",
         "tariffNotUpdated": "Tariff has not been updated for charge point {item}",
-        "preparingDocument": "Preparing Document ..."
+        "preparingDocument": "Preparing Document ...",
+        "authMethod": "Auth Method"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

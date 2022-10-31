@@ -46,7 +46,8 @@
         "analysis": "分析",
         "analytics": "分析",
         "overview": "概述",
-        "tariff": "价格"
+        "tariff": "价格",
+        "sessions": "会话"
     },
     "login": {
         "login": "登入",
@@ -245,7 +246,8 @@
         "endDateTimeBefore": "结束日期时间之前",
         "typeConflict": "关税与充电点 {item} 的现有关税类型重叠",
         "tariffNotUpdated": "收费点 {item} 的资费尚未更新",
-        "preparingDocument": "准备文件..."
+        "preparingDocument": "准备文件...",
+        "authMethod": "认证方法"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

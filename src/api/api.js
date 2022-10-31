@@ -371,3 +371,6 @@ export const $HTTP_updateChargeBoxTariff = (params) => {
 
 // delete charge box tariff
 export const $HTTP_deleteChargeBoxTariff = (params) => { return del(`${base_charger}/api/charge-points/${params.chargePointId}/tariffs/${params.tariffId}`) }
+
+// sessions api
+export const $HTTP_getAllSessionsData = (params) => { return fetch(`${base_charger}/api/reports/sessions`, params) }
