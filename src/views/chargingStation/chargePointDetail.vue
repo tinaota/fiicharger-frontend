@@ -56,11 +56,11 @@
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('general.installationDate') }}</div>
-                        <div class="content">{{ getLocTime( chargePointById[0].created) }}</div>
+                        <div class="content">{{chargePointById[0].created!==null? getLocTime( chargePointById[0].created):'' }}</div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.lastHeartbeat') }}</div>
-                        <div class="content">{{ getLocTime(chargePointById[0].lastHeartbeat) }}</div>
+                        <div class="content">{{ chargePointById[0].lastHeartbeat!==null ? getLocTime(chargePointById[0].lastHeartbeat):'' }}</div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.connectors') }}</div>
@@ -330,8 +330,8 @@
                         <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
                     </div>
                 </div>
-                <Sessions v-if="active==='sessions' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpdateSessionsData && active==='sessions'" @updated="aleadyUpdateData('sessions')"></Sessions>
-                <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateApi && active==='transaction'" @updated="aleadyUpdateData('transaction')"></Transaction>
+                <Sessions v-if="active==='sessions' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateSessionsData && active==='sessions'" @updated="aleadyUpdateData('sessions')"></Sessions>
+                <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateTransactions && active==='transaction'" @updated="aleadyUpdateData('transaction')"></Transaction>
                 <Reservation v-else-if="active==='reservation' && dateRange.length>1" :dateRange="dateRange" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateReservationData && active==='reservation'" @updated="aleadyUpdateData('reservation')"></Reservation>
                 <ChargingProfile v-else-if="active==='chargingProfile'" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="isUpDateChargingProfileData && active==='chargingProfile'" @updated="aleadyUpdateData('chargingProfile')"></ChargingProfile>
             </div>
@@ -570,7 +570,7 @@ export default {
             graphSelected: "transactionAndTraffic",
             graphList: ["transactionAndTraffic"],
             isUpDateChargingProfileData: true,
-            isUpdateSessionsData: true,
+            updateSessionsData: true,
             addChargingProfile: {
                 visible: false,
                 data: {}
@@ -587,7 +587,7 @@ export default {
                 visible: false,
                 data: {}
             },
-            updateApi: false, //use this to hit other apis in components
+            updateTransactions: false, //use this to hit other apis in components
             settingsInput: ""
         };
     },
@@ -828,14 +828,20 @@ export default {
                 this.commonpopup.ocppId = null;
                 this.commonpopup.action = "";
                 this.commonpopup.rowData = {};
-                this.updateApi = data;
+                if (this.active === "transactions") {
+                    this.updateTransactions = data;
+                } else if (this.active === "sessions") {
+                    this.updateSessionsData = data;
+                }
             } else if (type === "reserveNow") {
                 this.reserveNow.visible = false;
                 this.isUpDateReservationData = data;
+                this.updateSessionsData = data;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "cancelReservation") {
                 this.cancelReservation.visible = false;
                 this.isUpDateReservationData = data;
+                this.updateSessionsData = data;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
             } else if (type === "remoteTrigger") {
                 this.remoteTrigger.visible = false;
@@ -875,9 +881,9 @@ export default {
             } else if (type === "chargingProfile") {
                 this.isUpDateChargingProfileData = false;
             } else if (type === "transaction") {
-                this.updateApi = false;
-            }else if(type==="sessions"){
-                this.isUpdateSessionsData =false
+                this.updateTransactions = false;
+            } else if (type === "sessions") {
+                this.updateSessionsData = false;
             }
         },
         handleClick() {

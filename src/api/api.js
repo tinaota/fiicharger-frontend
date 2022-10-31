@@ -77,6 +77,10 @@ export const $HTTP_getAllTransactions = (params) => {
     return fetch(`${base_charger}/api/reports/transactions`, params)
 }
 
+export const $HTTP_getAllTransactionsById = (params) => {
+    return fetch(`${base_charger}/api/reports/transactions/${params.transactionId}`)
+}
+
 export const $HTTP_startConnectorTransaction = (params) => {
     return post(`${base_charger}/api/ocpp/charge-points/${params.chargePointId}/transactions`, params);
 }
@@ -221,14 +225,6 @@ export const $HTTP_getConnectorStatusesById = (params) => {
     return fetch(`${base_charger}/api/reports/charge-points/${params.chargePointId}/connectors`)
 }
 
-//get transaction summary
-// export const $HTTP_getTransactionSummary = (params) => {
-//     return fetch(
-//         `${base_charger}/api/reports/charge-points/transaction-summary`,
-//         params
-//     );
-// }
-
 export const $HTTP_getTransactionsStatistics = (params) => {
     return fetch(`${base_charger}/api/reports/transactions/statistics`, params)
 }
@@ -250,6 +246,8 @@ export const $HTTP_reserveNow = params => { return post(`${base_charger}/api/ocp
  * @description get reservation
  */
 export const $HTTP_getReservation = params => { return fetch(`${base_charger}/api/reports/reservations`, params) }
+
+export const $HTTP_getAllReservationById = params => { return fetch(`${base_charger}/api/reports/reservations/${params.reservationId}`) }
 
 /**
  * @description cancel reservation
