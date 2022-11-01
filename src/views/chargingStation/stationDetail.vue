@@ -226,7 +226,11 @@
                             {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="currentType" :label="$t('general.type')" :min-width="2"></el-table-column>
+                    <el-table-column prop="powerType" :label="$t('general.type')" :min-width="2">
+                        <template slot-scope="scope">
+                            {{ scope.row.powerType? getPowerType(scope.row.powerType):'' }}
+                        </template>
+                    </el-table-column>
 
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
                         <template slot-scope="scope">
@@ -334,6 +338,7 @@ import AddChargingProfile from "@/components/chargingStation/addChargingProfile"
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
+import { $POWER_TYPE_LIST } from "@/utils/global";
 
 export default {
     components: {
@@ -527,7 +532,8 @@ export default {
                 ]
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic"]
+            graphList: ["transactionAndTraffic"],
+            powerTypeList: $POWER_TYPE_LIST
         };
     },
     computed: {
@@ -542,6 +548,14 @@ export default {
                     return accumulator + value;
                 }, 0);
                 return sum;
+            };
+        },
+        getPowerType() {
+            return (item) => {
+                let convertedValue = this.powerTypeList.filter(
+                    (powerType) => powerType.value === item
+                );
+                return convertedValue[0].name;
             };
         }
     },
@@ -759,7 +773,7 @@ export default {
                     lon: data.coordinates.longitude,
                     lat: data.coordinates.latitude
                 },
-                chargeType: data.currentType,
+                chargeType: data.powerType,
                 installationDate: data.installed,
                 chargeBoxName: data.name,
                 id: data.id,

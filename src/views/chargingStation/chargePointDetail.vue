@@ -39,7 +39,7 @@
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('general.type') }}</div>
-                        <div class="content">{{ chargePointById[0].currentType }}</div>
+                        <div class="content">{{ chargePointById[0].powerType ? getPowerType(chargePointById[0].powerType):''}}</div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.elecRate') }}</div>
@@ -186,7 +186,7 @@
                         </el-table-column>
                         <el-table-column :label="$t('general.type')" :min-width="7">
                             <template slot-scope="scope">
-                                {{ scope.row.type }}
+                                {{ scope.row.type}}
                                 <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
                             </template>
                         </el-table-column>
@@ -382,7 +382,7 @@ import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthListVersion";
 import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
-import { $GLOBAL_REFRESH } from "@/utils/global";
+import { $GLOBAL_REFRESH, $POWER_TYPE_LIST } from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
@@ -588,7 +588,8 @@ export default {
                 data: {}
             },
             updateTransactions: false, //use this to hit other apis in components
-            settingsInput: ""
+            settingsInput: "",
+            powerTypeList: $POWER_TYPE_LIST
         };
     },
     computed: {
@@ -597,6 +598,14 @@ export default {
         },
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        getPowerType() {
+            return (item) => {
+                let convertedValue = this.powerTypeList.filter(
+                    (powerType) => powerType.value === item
+                );
+                return convertedValue[0].name;
+            };
         }
     },
     created() {

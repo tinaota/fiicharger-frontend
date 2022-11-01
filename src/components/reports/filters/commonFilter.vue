@@ -83,7 +83,7 @@
 
 <script>
 import moment from "moment";
-import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import { $GLOBAL_PAGE_LIMIT, $POWER_TYPE_LIST } from "@/utils/global";
 import { $HTTP_getIdTagsList, $HTTP_getStationList } from "@/api/api";
 export default {
     emits: ["updateDropdown", "updateParams"],
@@ -138,17 +138,7 @@ export default {
                 stationStatus: "",
                 stationStatusList: ["Enabled", "Disabled"],
                 powerType: "",
-                powerTypeList: [
-                    { name: "All", value: "all" },
-                    { name: "AC single phase", value: "AC_1_PHASE" },
-                    { name: "AC two phases", value: "AC_2_PHASE" },
-                    {
-                        name: "AC two phases w/ split phase",
-                        value: "AC_2_PHASE_SPLIT"
-                    },
-                    { name: "AC three phases", value: "AC_3_PHASE" },
-                    { name: "DC", value: "DC" }
-                ],
+                powerTypeList: $POWER_TYPE_LIST,
                 connectorTypeList: [
                     { name: "CHAdeMO, DC", value: "CHADEMO" },
                     { name: "ChaoJi", value: "CHAOJI" },

@@ -22,3 +22,13 @@ export const $GLOBAL_CURRENCY = {
 export const $ALL_DATA_COUNT = 200;
 export const $GLOBAL_REFRESH = 10000;
 
+export const $POWER_TYPE_LIST = [
+    { name: "AC single phase", value: "AC_1_PHASE" },
+    { name: "AC two phases", value: "AC_2_PHASE" },
+    {
+        name: "AC two phases w/ split phase",
+        value: "AC_2_PHASE_SPLIT"
+    },
+    { name: "AC three phases", value: "AC_3_PHASE" },
+    { name: "DC", value: "DC" }
+]

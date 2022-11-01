@@ -81,7 +81,7 @@
                     </el-table-column>
                     <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
                         <template slot-scope="scope">
-                            {{ scope.row.powerType }}
+                            {{ scope.row.powerType? getPowerType(scope.row.powerType):'' }}
                         </template>
                     </el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
@@ -185,7 +185,8 @@ import {
     $GLOBAL_CURRENCY,
     $GLOBAL_PAGE_LIMIT,
     $ALL_DATA_COUNT,
-    $GLOBAL_REFRESH
+    $GLOBAL_REFRESH,
+    $POWER_TYPE_LIST
 } from "@/utils/global";
 import {
     $HTTP_getAllChargeBoxList,
@@ -305,17 +306,7 @@ export default {
                 visible: false,
                 data: {}
             },
-            powerTypeList: [
-                { name: "All", value: "all" },
-                { name: "AC single phase", value: "AC_1_PHASE" },
-                { name: "AC two phases", value: "AC_2_PHASE" },
-                {
-                    name: "AC two phases w/ split phase",
-                    value: "AC_2_PHASE_SPLIT"
-                },
-                { name: "AC three phases", value: "AC_3_PHASE" },
-                { name: "DC", value: "DC" }
-            ]
+            powerTypeList: $POWER_TYPE_LIST
         };
     },
     computed: {
@@ -324,6 +315,14 @@ export default {
         },
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        getPowerType() {
+            return (item) => {
+                let convertedValue = this.powerTypeList.filter(
+                    (powerType) => powerType.value === item
+                );
+                return convertedValue[0].name;
+            };
         }
     },
     mounted() {
