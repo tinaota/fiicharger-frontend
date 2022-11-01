@@ -186,7 +186,7 @@
                         </el-table-column>
                         <el-table-column :label="$t('general.type')" :min-width="7">
                             <template slot-scope="scope">
-                                {{ scope.row.type}}
+                                {{ scope.row.type? getConnectorType(scope.row.type):''}}
                                 <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
                             </template>
                         </el-table-column>
@@ -382,7 +382,11 @@ import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthListVersion";
 import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
-import { $GLOBAL_REFRESH, $POWER_TYPE_LIST } from "@/utils/global";
+import {
+    $GLOBAL_REFRESH,
+    $POWER_TYPE_LIST,
+    $CONNECTOR_TYPE_LIST
+} from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
@@ -589,7 +593,8 @@ export default {
             },
             updateTransactions: false, //use this to hit other apis in components
             settingsInput: "",
-            powerTypeList: $POWER_TYPE_LIST
+            powerTypeList: $POWER_TYPE_LIST,
+            connectorTypeList: $CONNECTOR_TYPE_LIST
         };
     },
     computed: {
@@ -602,6 +607,14 @@ export default {
         getPowerType() {
             return (item) => {
                 let convertedValue = this.powerTypeList.filter(
+                    (powerType) => powerType.value === item
+                );
+                return convertedValue[0].name;
+            };
+        },
+        getConnectorType() {
+            return (item) => {
+                let convertedValue = this.connectorTypeList.filter(
                     (powerType) => powerType.value === item
                 );
                 return convertedValue[0].name;
