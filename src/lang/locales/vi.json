@@ -47,7 +47,7 @@
         "analytics": "Phân tích",
         "overview": "Tổng quát",
         "tariff": "Giá",
-                "sessions": "Phiên"
+        "sessions": "Phiên"
     },
     "login": {
         "login": "Đăng nhập",
@@ -247,7 +247,9 @@
         "typeConflict": "Biểu phí trùng lặp với biểu thuế hiện có của loại điểm tính phí {item}",
         "tariffNotUpdated": "Biểu phí chưa được cập nhật cho điểm tính phí {item}",
         "preparingDocument": "Chuẩn bị tài liệu ...",
-                "authMethod": "Phương thức xác thực"
+        "authMethod": "Phương thức xác thực",
+        "reservationUsage": "Sử dụng đặt chỗ",
+        "reservationType": "Loại đặt chỗ"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

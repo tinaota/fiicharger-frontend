@@ -12,15 +12,15 @@
                             </div>
                         </el-form-item>
                     </div>
-                    <div class="priceType">
+                    <!-- <div class="priceType">
                         <div class="label">{{ $t('general.priceType') }}</div>
                         <div class="info">
                             <el-radio-group v-model="formData.priceType">
                                 <el-radio-button v-for="item in priceTypeList" :label="item.value" :key="item.value">{{ $t(`general.${item.name}`) }}</el-radio-button>
                             </el-radio-group>
                         </div>
-                    </div>
-                    <div class="otherItems">
+                    </div> -->
+                    <!-- <div class="otherItems">
                         <div class="minMaxPrice">
                             <div class="excludingVAT">
                                 <div class="minPrice">
@@ -54,7 +54,7 @@
                         <div class="dateTimePicker">
                             <el-date-picker class="tariff-date-time-picker" v-model="formData.dateTimeRange" type="datetimerange" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :default-time="['00:00:00', '23:59:59']" :clearable="false"></el-date-picker>
                         </div>
-                    </div>
+                    </div> -->
                 </el-form>
             </div>
             <hr />
@@ -89,12 +89,12 @@ export default {
                 customPriceName: "",
                 priceType: null,
                 minPrice: {
-                    excludingVat: null,
-                    includingVat: null
+                    excludingVat: 0,
+                    includingVat: 0
                 },
                 maxPrice: {
-                    excludingVat: null,
-                    includingVat: null
+                    excludingVat: 0,
+                    includingVat: 0
                 },
                 dateTimeRange: []
             },
@@ -155,7 +155,41 @@ export default {
                 };
             }
             this.id = this.data.id;
-            this.elements = this.data.elements;
+            // update elements before sending
+            let modifiedData = [];
+            let tempData = [...this.data.elements];
+            tempData.map((item) => {
+                let tempPriceComponents = item.priceComponents;
+                let priceComponentArray = [];
+                tempPriceComponents.map((eachPriceComponent) => {
+                    if (
+                        item.restrictions.reservation &&
+                        item.restrictions.reservation === "RESERVATION"
+                    ) {
+                        let tempObj = { ...eachPriceComponent };
+                        tempObj.isReservationTypePresent = true;
+                        tempObj.reservationType = "RESERVATION";
+                        priceComponentArray.push(tempObj);
+                    } else if (
+                        item.restrictions.reservation &&
+                        item.restrictions.reservation === "RESERVATION_EXPIRES"
+                    ) {
+                        let tempObj = { ...eachPriceComponent };
+                        tempObj.isReservationTypePresent = true;
+                        tempObj.reservationType = "RESERVATION_EXPIRES";
+                        priceComponentArray.push(tempObj);
+                    } else {
+                        let tempObj = { ...eachPriceComponent };
+                        tempObj.isReservationTypePresent = false;
+                        tempObj.reservationType = null;
+                        priceComponentArray.push(tempObj);
+                    }
+                });
+                modifiedData = [...modifiedData, ...priceComponentArray];
+            });
+            let finalModifiedObject = {};
+            finalModifiedObject.priceComponents = modifiedData;
+            this.elements = [finalModifiedObject];
         }
         this.$jQuery(".formVertical").length > 0 &&
             this.$jQuery(".formVertical").mCustomScrollbar("destroy");
@@ -165,7 +199,66 @@ export default {
     },
     methods: {
         getPricingSectionData(pricingSectionData) {
-            this.pricingSectionData = [...pricingSectionData];
+            let modifiedData = [];
+            pricingSectionData.map((item) => {
+                let tempPriceComponents = item.priceComponents;
+
+                let noReservationArray = [];
+                let reservationExpiresArray = [];
+                let reservationArray = [];
+
+                tempPriceComponents.map((eachPriceComponent) => {
+                    if (
+                        eachPriceComponent.isReservationTypePresent &&
+                        eachPriceComponent.reservationType === "RESERVATION"
+                    ) {
+                        // remove after getting types and dont mutate an obj
+                        let tempObj = { ...eachPriceComponent };
+                        delete tempObj["isReservationTypePresent"];
+                        delete tempObj["reservationType"];
+                        reservationArray.push(tempObj);
+                    } else if (
+                        eachPriceComponent.isReservationTypePresent &&
+                        eachPriceComponent.reservationType ===
+                            "RESERVATION_EXPIRES"
+                    ) {
+                        let tempObj = { ...eachPriceComponent };
+                        delete tempObj["isReservationTypePresent"];
+                        delete tempObj["reservationType"];
+                        reservationExpiresArray.push(tempObj);
+                    } else if (!eachPriceComponent.isReservationTypePresent) {
+                        let tempObj = { ...eachPriceComponent };
+
+                        delete tempObj["isReservationTypePresent"];
+                        delete tempObj["reservationType"];
+                        noReservationArray.push(tempObj);
+                    }
+                });
+
+                let noReservationObject = {},
+                    reservationExpiresObject = {},
+                    reservationObject = {};
+                if (noReservationArray.length > 0) {
+                    noReservationObject.priceComponents = noReservationArray;
+                    modifiedData.push(noReservationObject);
+                }
+                if (reservationExpiresArray.length > 0) {
+                    reservationExpiresObject.priceComponents =
+                        reservationExpiresArray;
+                    reservationExpiresObject.restrictions = {
+                        reservation: "RESERVATION_EXPIRES"
+                    };
+                    modifiedData.push(reservationExpiresObject);
+                }
+                if (reservationArray.length > 0) {
+                    reservationObject.priceComponents = reservationArray;
+                    reservationObject.restrictions = {
+                        reservation: "RESERVATION"
+                    };
+                    modifiedData.push(reservationObject);
+                }
+            });
+            this.pricingSectionData = [...modifiedData];
         },
         updateTariff() {
             let params = {
@@ -241,12 +334,12 @@ export default {
                 customPriceName: "",
                 priceType: "REGULAR",
                 minPrice: {
-                    excludingVat: null,
-                    includingVat: null
+                    excludingVat: 0,
+                    includingVat: 0
                 },
                 maxPrice: {
-                    excludingVat: null,
-                    includingVat: null
+                    excludingVat: 0,
+                    includingVat: 0
                 },
                 dateTimeRange: []
             };

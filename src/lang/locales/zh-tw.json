@@ -247,7 +247,9 @@
         "typeConflict": "關稅與充電點 {item} 的現有關稅類型重疊",
         "tariffNotUpdated": "收費點 {item} 的資費尚未更新",
         "preparingDocument": "準備文件...",
-        "authMethod": "認證方法"
+        "authMethod": "認證方法",
+        "reservationUsage": "預約使用",
+        "reservationType": "預訂類型"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

@@ -13,14 +13,14 @@
                     <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.tariffType" @change="fetchData()" filterable clearable>
                         <el-option v-for="(item, idx) in filter.tariffTypeList" :label="$t(`general.${item.name}`)" :key="idx" :value="item.value"></el-option>
                     </el-select>
-                    <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="fetchData()">
+                    <!-- <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="fetchData()">
                     </el-date-picker>
                     <el-date-picker class="tariff-date-time" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="fetchData()">
                     </el-date-picker>
                     <el-date-picker class="tariff-date-time" v-model="filter.endDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeAfter')" @change="fetchData()">
                     </el-date-picker>
                     <el-date-picker class="tariff-date-time" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="fetchData()">
-                    </el-date-picker>
+                    </el-date-picker> -->
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
@@ -37,7 +37,7 @@
                                 </el-table>
                                 <el-table :data="[scope.row.elements[index-1].restrictions]">
                                     <el-table-column :label="$t('general.pricingConditions')">
-                                        <el-table-column prop="startTime" :label="$t('general.startTime')" :min-width="1"></el-table-column>
+                                        <!-- <el-table-column prop="startTime" :label="$t('general.startTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="endTime" :label="$t('general.endTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="startDate" :label="$t('general.startDate')" :min-width="1"></el-table-column>
                                         <el-table-column prop="endDate" :label="$t('general.endDate')" :min-width="1"></el-table-column>
@@ -49,7 +49,7 @@
                                         <el-table-column prop="maxPower" :label="$t('general.maxPower')" :min-width="1"></el-table-column>
                                         <el-table-column prop="minDuration" :label="$t('general.minDuration')" :min-width="1"></el-table-column>
                                         <el-table-column prop="maxDuration" :label="$t('general.maxDuration')" :min-width="1"></el-table-column>
-                                        <el-table-column prop="dayOfWeek" :label="$t('general.dayOfWeek')" :min-width="1"></el-table-column>
+                                        <el-table-column prop="dayOfWeek" :label="$t('general.dayOfWeek')" :min-width="1"></el-table-column> -->
                                         <el-table-column prop="reservation" :label="$t('chargingStation.reservation')" :min-width="1"></el-table-column>
                                     </el-table-column>
                                 </el-table>
@@ -60,7 +60,7 @@
                     <el-table-column prop="name" :label="$t('general.name')" :min-width="2"></el-table-column>
                     <el-table-column prop="currency" :label="$t('general.currency')" :min-width="1"></el-table-column>
                     <el-table-column prop="type" :label="$t('general.type')" :min-width="2"></el-table-column>
-                    <el-table-column :min-width="2" :label="$t('general.minPrice')">
+                    <!-- <el-table-column :min-width="2" :label="$t('general.minPrice')">
                         <el-table-column :label="$t('general.excludingVat')" :min-width="1">
                             <template slot-scope="scope">
                                 {{ scope.row.minPrice? scope.row.minPrice.excludingVat:'' }}
@@ -71,8 +71,8 @@
                                 {{ scope.row.minPrice ? scope.row.minPrice.includingVat: '' }}
                             </template>
                         </el-table-column>
-                    </el-table-column>
-                    <el-table-column :min-width="2" :label="$t('general.maxPrice')">
+                    </el-table-column> -->
+                    <!-- <el-table-column :min-width="2" :label="$t('general.maxPrice')">
                         <el-table-column :label="$t('general.excludingVat')" :min-width="1">
                             <template slot-scope="scope">
                                 {{ scope.row.maxPrice?scope.row.maxPrice.excludingVat:'' }}
@@ -83,31 +83,31 @@
                                 {{ scope.row.maxPrice? scope.row.maxPrice.includingVat :'' }}
                             </template>
                         </el-table-column>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.startDate')" :min-width="2">
+                    </el-table-column> -->
+                    <!-- <el-table-column :label="$t('general.startDate')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.startDateTime? getLocTime(scope.row.startDateTime) :'' }}
                         </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.endDate')" :min-width="2">
+                    </el-table-column> -->
+                    <!-- <el-table-column :label="$t('general.endDate')" :min-width="2">
                         <template slot-scope="scope">
                             {{ scope.row.startDateTime? getLocTime(scope.row.endDateTime) :'' }}
+                        </template>
+                    </el-table-column> -->
+                    <el-table-column :label="$t('userAccount.createdDate')" :min-width="2">
+                        <template slot-scope="scope">
+                            {{ scope.row.created?getLocTime(scope.row.created):'' }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.modified')" :min-width="2">
                         <template slot-scope="scope">
-                            {{ scope.row.startDateTime?getLocTime(scope.row.modified):'' }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column :label="$t('general.deprecated')" :min-width="2">
-                        <template slot-scope="scope">
-                            {{ scope.row.deprecated? getLocTime(scope.row.deprecated): '' }}
+                            {{ scope.row.modified?getLocTime(scope.row.modified):'' }}
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
                         <template slot-scope="scope">
-                            <el-button class="no-bg edit" :disabled="checkIfDeprecated(scope.row.deprecated)" @click="openDialog('edit', scope.row)"></el-button>
-                            <el-button class="no-bg delete" :disabled="checkIfDeprecated(scope.row.deprecated)" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
+                            <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -177,9 +177,6 @@ export default {
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
-        },
-        checkIfDeprecated() {
-            return (item) => (item ? true : false);
         }
     },
     mounted() {

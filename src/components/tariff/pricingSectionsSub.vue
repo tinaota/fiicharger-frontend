@@ -11,21 +11,21 @@
         <div class="buttonDiv">
             <el-button size="small" type="primary" @click="addPricingUsage">{{ $t('general.addRow') }}</el-button>
         </div>
-        <PricingConditions :restrictions="restrictions" :pricingSectionCollapseIndex="pricingSectionCollapseIndex" @emitPriceConditionsDataFromPriceConditions="getEmittedPriceConditionsData"></PricingConditions>
+        <!-- <PricingConditions :restrictions="restrictions" :pricingSectionCollapseIndex="pricingSectionCollapseIndex" @emitPriceConditionsDataFromPriceConditions="getEmittedPriceConditionsData"></PricingConditions> -->
         <!-- only allow to delete the last item -->
-        <div class="actions" v-if="pricingSectionCollapseIndex===totalPricingSectionIndex">
+        <!-- <div class="actions" v-if="pricingSectionCollapseIndex===totalPricingSectionIndex">
             <i class="fa fa-trash" aria-hidden="true" @click="deletePricingSection"></i>
-        </div>
+        </div> -->
         <hr />
     </div>
 </template>
 <script>
 import PricingUsage from "@/components/tariff/pricingUsage.vue";
-import PricingConditions from "@/components/tariff/pricingConditions.vue";
+// import PricingConditions from "@/components/tariff/pricingConditions.vue";
 export default {
     components: {
         PricingUsage,
-        PricingConditions
+        // PricingConditions
     },
     props: {
         pricingSectionCollapseIndex: Number,
@@ -39,7 +39,7 @@ export default {
             activePricingUsage: "1",
             pricingUsageData: [],
             pricingConditionsData: {},
-            restrictions: {},
+            // restrictions: {},
             priceComponents: []
         };
     },
@@ -47,9 +47,9 @@ export default {
         if (this.eachElement) {
             this.countUsageComponent = this.eachElement.priceComponents.length;
             this.activePricingUsage = `${this.eachElement.priceComponents.length}`;
-            if (Object.keys(this.eachElement?.restrictions).length > 0) {
-                this.restrictions = this.eachElement.restrictions;
-            }
+            // if (Object.keys(this.eachElement?.restrictions).length > 0) {
+            //     this.restrictions = this.eachElement.restrictions;
+            // }
             if (this.eachElement.priceComponents.length > 0) {
                 this.priceComponents = this.eachElement.priceComponents;
             }
@@ -59,11 +59,11 @@ export default {
         updateDataPricingSectionMain() {
             let priceSectionData = {};
             priceSectionData.priceComponents = [...this.pricingUsageData];
-            if (Object.keys(this.pricingConditionsData).length > 0) {
-                priceSectionData.restrictions = {
-                    ...this.pricingConditionsData
-                };
-            }
+            // if (Object.keys(this.pricingConditionsData).length > 0) {
+            //     priceSectionData.restrictions = {
+            //         ...this.pricingConditionsData
+            //     };
+            // }
             this.$emit(
                 "emitPriceSectionData",
                 this.pricingSectionCollapseIndex,
@@ -86,13 +86,13 @@ export default {
             }
             this.updateDataPricingSectionMain();
         },
-        getEmittedPriceConditionsData(
-            pricingSectionCollapseIndex,
-            priceConditionsData
-        ) {
-            this.pricingConditionsData = { ...priceConditionsData };
-            this.updateDataPricingSectionMain();
-        },
+        // getEmittedPriceConditionsData(
+        //     pricingSectionCollapseIndex,
+        //     priceConditionsData
+        // ) {
+        //     this.pricingConditionsData = { ...priceConditionsData };
+        //     this.updateDataPricingSectionMain();
+        // },
         deletePricingUsageData() {
             // only allow deletion if more data is present
             if (this.pricingUsageData.length > 1) {

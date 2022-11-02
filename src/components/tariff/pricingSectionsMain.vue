@@ -7,7 +7,7 @@
                 </el-collapse-item>
             </el-collapse>
         </div>
-        <el-button size="small" type="primary" @click="addPricingSections">{{ $t('general.addRow') }}</el-button>
+        <!-- <el-button size="small" type="primary" @click="addPricingSections">{{ $t('general.addRow') }}</el-button> -->
     </div>
 </template>
 

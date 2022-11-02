@@ -247,7 +247,9 @@
         "typeConflict": "Tariff overlaps with existing tariff of type  for charge point {item}",
         "tariffNotUpdated": "Tariff has not been updated for charge point {item}",
         "preparingDocument": "Preparing Document ...",
-        "authMethod": "Auth Method"
+        "authMethod": "Auth Method",
+        "reservationUsage": "Reservation Usage",
+        "reservationType": "Reservation Type"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

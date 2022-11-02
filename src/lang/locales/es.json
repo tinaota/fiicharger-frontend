@@ -247,7 +247,9 @@
         "typeConflict": "La tarifa se superpone con la tarifa existente de tipo para el punto de recarga {item}",
         "tariffNotUpdated": "No se ha actualizado la tarifa del punto de recarga {item}",
         "preparingDocument": "Preparando documento ...",
-        "authMethod": "Método de autenticación"
+        "authMethod": "Método de autenticación",
+        "reservationUsage": "Uso de la reserva",
+        "reservationType": "Tipo de reserva"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

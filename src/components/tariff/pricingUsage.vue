@@ -3,8 +3,22 @@
         <div class="pricingUsageType">
             <div class="label">{{ $t('general.type') }}<span style="color:red"><strong>* </strong></span></div>
             <el-radio-group v-model="pricingUsageType" @change="updateData">
-                <el-radio-button v-for="item in pricingUsageTypeList" :label="item.value" :key="item.value">{{ $t(`general.${item.name}`) }}</el-radio-button>
+                <el-radio-button v-for="item in pricingUsageTypeList" :label="item.value" :key="item.value">{{ item.name!=='reservation'? $t(`general.${item.name}`) : $t(`chargingStation.${item.name}`) }}</el-radio-button>
             </el-radio-group>
+        </div>
+        <div class="reservationOptions" v-if="pricingUsageType==='RESERVATION'">
+            <div class="item">
+                <label>{{ $t('general.reservationUsage') }}</label>
+                <el-select class="autoresizeselect" v-model="reservationUsageType" clearable filterable @change="updateData">
+                    <el-option v-for="item in reservationUsageTypeList" :label="item.name!=='reservation'? $t(`general.${item.name}`) : $t(`chargingStation.${item.name}`) " :key="item.name" :value="item.value"></el-option>
+                </el-select>
+            </div>
+            <div class="item">
+                <label>{{ $t('general.reservationType') }}</label>
+                <el-select class="autoresizeselect" v-model="reservationType" clearable filterable @change="updateData">
+                    <el-option v-for="item in reservationTypeList" :label="item.name" :key="item.name" :value="item.name"></el-option>
+                </el-select>
+            </div>
         </div>
         <div class="otherInfo">
             <div class="price">
@@ -50,7 +64,15 @@ export default {
                 { name: "time", value: "TIME" },
                 { name: "flat", value: "FLAT" },
                 { name: "parkingTime", value: "PARKING_TIME" },
-                { name: "energy", value: "ENERGY" }
+                { name: "energy", value: "ENERGY" },
+                { name: "reservation", value: "RESERVATION" }
+            ],
+            reservationUsageType: "TIME",
+            reservationUsageTypeList: [],
+            reservationType: "RESERVATION",
+            reservationTypeList: [
+                { name: "RESERVATION" },
+                { name: "RESERVATION_EXPIRES" }
             ]
         };
     },
@@ -60,6 +82,7 @@ export default {
         }
     },
     mounted() {
+        this.reservationUsageTypeList = this.pricingUsageTypeList.slice(0, 2);
         this.populateUsageData();
     },
     methods: {
@@ -70,7 +93,25 @@ export default {
                 Object.keys(this.eachPriceComponent).length > 0
             ) {
                 this.price = this.eachPriceComponent.price;
-                this.pricingUsageType = this.eachPriceComponent.type;
+                // check the condition for type
+                if (!this.eachPriceComponent.isReservationTypePresent) {
+                    this.pricingUsageType = this.eachPriceComponent.type;
+                } else if (
+                    this.eachPriceComponent.isReservationTypePresent &&
+                    this.eachPriceComponent.reservationType === "RESERVATION"
+                ) {
+                    this.pricingUsageType = "RESERVATION";
+                    this.reservationType = "RESERVATION";
+                    this.reservationUsageType = this.eachPriceComponent.type;
+                } else if (
+                    this.eachPriceComponent.isReservationTypePresent &&
+                    this.eachPriceComponent.reservationType ===
+                        "RESERVATION_EXPIRES"
+                ) {
+                    this.pricingUsageType = "RESERVATION";
+                    this.reservationType = "RESERVATION_EXPIRES";
+                    this.reservationUsageType = this.eachPriceComponent.type;
+                }
                 this.stepSize = this.eachPriceComponent.stepSize;
                 this.vat = this.eachPriceComponent.vat;
             }
@@ -80,11 +121,22 @@ export default {
             this.$emit("deletePricingUsageData");
         },
         updateData() {
-            let priceUsageData = {
-                type: this.pricingUsageType,
+            let priceUsageData;
+            priceUsageData = {
+                // check if it reservation
+                type:
+                    this.pricingUsageType === "RESERVATION"
+                        ? this.reservationUsageType
+                        : this.pricingUsageType,
                 vat: this.vat,
                 stepSize: this.stepSize,
-                price: this.price
+                price: this.price,
+                isReservationTypePresent:
+                    this.pricingUsageType === "RESERVATION",
+                reservationType:
+                    this.pricingUsageType === "RESERVATION"
+                        ? this.reservationType
+                        : null
             };
             this.$emit(
                 "emitPriceUsageData",
@@ -106,6 +158,9 @@ export default {
     .pricingUsageType,
     .otherInfo {
         margin-bottom: 5px;
+    }
+    .reservationOptions {
+        display: flex;
     }
     .otherInfo {
         display: flex;

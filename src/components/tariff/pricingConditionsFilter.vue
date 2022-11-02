@@ -24,7 +24,7 @@
                 </el-time-picker>
             </div>
         </div>
-        <div v-if="tabSelected==='time' || tabSelected==='all'" class="duration">
+        <!-- <div v-if="tabSelected==='time' || tabSelected==='all'" class="duration">
             <div class="item">
                 <label>{{ $t('general.minDuration') }}</label>
                 <el-input-number class="inputFilter" v-model="minDuration" :controls="false" @change="updatePricingConditions"> </el-input-number>
@@ -69,7 +69,7 @@
             <el-select class="select-small" v-model="reservation" :placeholder="$t(`chargingStation.reservation`)" @change="updatePricingConditions" filterable clearable>
                 <el-option v-for="item in reservationList" :label="item.name" :key="item.name" :value="item.name"></el-option>
             </el-select>
-        </div>
+        </div> -->
     </div>
 </template>
 
