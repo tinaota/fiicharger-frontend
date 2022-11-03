@@ -252,7 +252,12 @@
         "reservationType": "Reservation Type",
         "reservationUsageTooltip": "reservationUsageTooltip....",
         "reservationTypeTooltip": "reservationTypeTooltip...",
-        "stepSizeToolTip":"stepSizeToolTip..."
+        "stepSizeToolTip": "stepSizeToolTip...",
+        "timeInfo": "timeInfo",
+        "flatInfo": "flatInfo",
+        "parking_timeInfo": "parking_timeInfo",
+        "energyInfo": "energyInfo",
+        "reservationInfo": "reservationInfo"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

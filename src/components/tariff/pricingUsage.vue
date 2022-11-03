@@ -5,6 +5,9 @@
             <el-radio-group v-model="pricingUsageType" @change="updateData">
                 <el-radio-button v-for="item in pricingUsageTypeList" :label="item.value" :key="item.value">{{ item.name!=='reservation'? $t(`general.${item.name}`) : $t(`chargingStation.${item.name}`) }}</el-radio-button>
             </el-radio-group>
+            <div class="radioInfo">
+                <span>{{ $t(`general.${pricingUsageType.toLowerCase()}Info`) }}</span>
+            </div>
         </div>
         <div class="reservationOptions" v-if="pricingUsageType==='RESERVATION'">
             <div class="item">
