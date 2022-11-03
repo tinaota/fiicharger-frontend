@@ -249,7 +249,10 @@
         "preparingDocument": "Preparing Document ...",
         "authMethod": "Auth Method",
         "reservationUsage": "Reservation Usage",
-        "reservationType": "Reservation Type"
+        "reservationType": "Reservation Type",
+        "reservationUsageTooltip": "reservationUsageTooltip....",
+        "reservationTypeTooltip": "reservationTypeTooltip...",
+        "stepSizeToolTip":"stepSizeToolTip..."
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

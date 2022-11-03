@@ -8,12 +8,18 @@
         </div>
         <div class="reservationOptions" v-if="pricingUsageType==='RESERVATION'">
             <div class="item">
+                <el-tooltip :content="$t('general.reservationUsageTooltip')" placement="top">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </el-tooltip>
                 <label>{{ $t('general.reservationUsage') }}</label>
                 <el-select class="autoresizeselect" v-model="reservationUsageType" clearable filterable @change="updateData">
                     <el-option v-for="item in reservationUsageTypeList" :label="item.name!=='reservation'? $t(`general.${item.name}`) : $t(`chargingStation.${item.name}`) " :key="item.name" :value="item.value"></el-option>
                 </el-select>
             </div>
             <div class="item">
+                <el-tooltip :content="$t('general.reservationTypeTooltip')" placement="top">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                </el-tooltip>
                 <label>{{ $t('general.reservationType') }}</label>
                 <el-select class="autoresizeselect" v-model="reservationType" clearable filterable @change="updateData">
                     <el-option v-for="item in reservationTypeList" :label="item.name" :key="item.name" :value="item.name"></el-option>
@@ -34,7 +40,14 @@
                 </div>
             </div>
             <div class="stepSize">
-                <div class="label">{{ $t('general.stepSize') }}<span style="color:red"><strong>* </strong></span></div>
+
+                <div class="label">
+                    <el-tooltip :content="$t('general.stepSizeToolTip')" placement="top">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </el-tooltip>
+                    {{ $t('general.stepSize') }}
+                    <span style="color:red"><strong>* </strong></span>
+                </div>
                 <div class="info">
                     <el-input-number class="inputFilter" v-model="stepSize" :controls="false" @change="updateData"></el-input-number>
                 </div>
