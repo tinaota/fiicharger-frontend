@@ -511,12 +511,10 @@ export default {
         display: block;
         position: absolute;
         top: calc(68px + 2.4vh);
-        left: calc(208px + 1.6vw);
     }
     .loc-filter {
         position: absolute;
         top: calc(68px + 2.4vh + 27px);
-        left: calc(208px + 1.6vw);
     }
 }
 .google-map {

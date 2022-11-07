@@ -6,7 +6,7 @@
                     <div class="main_logo_img">
                         <div>
                             <img :src="systemLogo">
-                            <button class="drawer-closeBtn hidden_close" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen=!navigationDrawer.isOpen">
+                            <button class="drawer-closeBtn hidden_close" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen=false">
                                 {{ navigationDrawer.isOpen ? `X ` : `X` }}
                             </button>
                         </div>
@@ -41,7 +41,7 @@
             </div>
             <div class="body_section">
                 <div class="header_section">
-                    <div class="left_header_info">
+                    <div class="left_header_info" v-if="!navigationDrawer.isOpen">
                         <button class="drawer-closeBtn hidden" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen = true">
                             {{ navigationDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
                         </button>
