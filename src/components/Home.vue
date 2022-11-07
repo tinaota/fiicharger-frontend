@@ -552,7 +552,7 @@ export default {
     border-radius: 8px 0 0 8px;
     border: none;
     font-size: 20px;
-    z-index: 1000;
+    z-index: 3000;
     &.open {
         right: 335px;
     }
