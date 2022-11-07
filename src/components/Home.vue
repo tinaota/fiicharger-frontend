@@ -548,7 +548,7 @@ export default {
     position: fixed;
     top: -10px;
     left: -8px;
-    padding: 8px;
+    padding: 8px 0 0 8px;
     border-radius: 8px 0 0 8px;
     border: none;
     font-size: 20px;
@@ -577,6 +577,7 @@ export default {
     flex-direction: column;
     flex: 1 1 auto;
     width: 100%;
+    min-height: 101vh;
 }
 .version {
     color: #525e69;

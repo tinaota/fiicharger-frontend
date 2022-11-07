@@ -1,17 +1,26 @@
 $dark-font-color: #ffffff;
 $dark-background-color: #2d3855;
 .dark-theme {
-    .el-select .el-input .el-select__caret {
+    .el-select .el-input .el-select__caret,
+    .drawer-closeBtn {
         color: #c0c4cc !important;
     }
-    .header {
+    .header,
+    .header_section,
+    .main-nav-fii,
+    .main_logo_img {
         background: #151a30 !important;
         .userinfo-inner {
             color: $dark-font-color !important;
         }
     }
 
-    .left-container {
+    .body_section {
+        background: #222b45 !important;
+    }
+
+    .left-container,
+    .navigation-drawer {
         background: #151a30 !important;
         ul {
             background: inherit !important;
