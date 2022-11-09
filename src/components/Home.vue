@@ -1,7 +1,7 @@
 <template>
     <div :class="isDark? 'dark-theme':'light-theme'">
         <section class="main_class_header">
-            <div v-show="navigationDrawer.isOpen" class="navigation-drawer">
+            <div v-show="navigationDrawer.isOpen" class="navigation-drawer slide-in">
                 <div class="main-nav-fii">
                     <div class="main_logo_img">
                         <div>
@@ -481,7 +481,7 @@ export default {
 .inside_blc {
     display: block;
     position: absolute;
-    background: #000;
+    background: transparent;
     height: 100vh;
     width: 100vw;
     top: 10px;
@@ -553,6 +553,25 @@ export default {
     z-index: 3000;
     &.open {
         right: 335px;
+    }
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+}
+
+.slide-in {
+    animation: slide-in 0.5s forwards;
+    -webkit-animation: slide-in 0.5s forwards;
+}
+
+@keyframes slide-in {
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+@-webkit-keyframes slide-in {
+    100% {
+        -webkit-transform: translateX(0%);
     }
 }
 
