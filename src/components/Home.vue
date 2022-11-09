@@ -37,7 +37,7 @@
                     </div>
                     <div class="version">{{ `${$t('version')}${version}(${roleNameObj})` }}</div>
                 </div>
-                <div class="inside_blc"></div>
+                <div class="inside_blc" @click="navigationDrawer.isOpen = false"></div>
             </div>
             <div class="body_section">
                 <div class="header_section">
@@ -86,8 +86,8 @@
                 <div class="body_right_section">
                     <section class="right-container">
                         <transition name="fade" mode="out-in">
-                                <router-view></router-view>
-                            </transition>
+                            <router-view></router-view>
+                        </transition>
                     </section>
                 </div>
             </div>
