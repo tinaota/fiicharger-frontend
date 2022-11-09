@@ -86,10 +86,8 @@
                 <div class="body_right_section">
                     <section class="right-container">
                         <transition name="fade" mode="out-in">
-                            <transition name="fade" mode="out-in">
                                 <router-view></router-view>
                             </transition>
-                        </transition>
                     </section>
                 </div>
             </div>
