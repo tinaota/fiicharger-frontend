@@ -39,7 +39,7 @@
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('general.businessHours') }}</span>
-                                <span class="num">{{ stationInfo.serviceStartTime + ':00' + ' - ' + stationInfo.serviceEndTime + ':00' }}</span>
+                                <span class="num">{{ (stationInfo.serviceStartTime!==''?stationInfo.serviceStartTime + '00' +' - ':'') + (stationInfo.serviceEndTime!==''?stationInfo.serviceEndTime + '00':'') }}</span>
                             </div>
                         </li>
                     </ul>
@@ -699,21 +699,27 @@ export default {
                                 lat: data.coordinates.latitude
                             },
                             serviceStartTime:
-                                (data.openHour < 10
-                                    ? "0" + data.openHour
-                                    : data.openHour) +
-                                ":" +
-                                (data.openMinute < 10
-                                    ? "0" + data.openMinute
-                                    : data.openMinute),
+                                (data.openHour!==null && data.openHour < 10
+                                    ? "0" + data.openHour + ":"
+                                    : data.openHour!==null
+                                    ? data.openHour + ":"
+                                    : "") +
+                                (data.openMinute!==null && data.openMinute < 10
+                                    ? "0" + data.openMinute + ":"
+                                    : data.openMinute!==null
+                                    ? data.openMinute+ ":"
+                                    : ""),
                             serviceEndTime:
-                                (data.closeHour < 10
-                                    ? "0" + data.closeHour
-                                    : data.closeHour) +
-                                ":" +
-                                (data.closeMinute < 10
-                                    ? "0" + data.closeMinute
-                                    : data.closeMinute),
+                                (data.closeHour!==null && data.closeHour < 10
+                                    ? "0" + data.closeHour + ":"
+                                    : data.closeHour!==null
+                                    ? data.closeHour + ":"
+                                    : "") +
+                                (data.closeMinute!==null && data.closeMinute < 10
+                                    ? "0" + data.closeMinute + ":"
+                                    : data.closeMinute!==null
+                                    ? data.closeMinute+ ":"
+                                    : ""),
                             phone: data.phoneNumber
                         };
                         this.chargerCount = {
