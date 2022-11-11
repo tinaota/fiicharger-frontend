@@ -29,7 +29,7 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
+                    <el-table-column :label="$t('chargingStation.chargerId')" width="320">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                             <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
@@ -38,13 +38,13 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" :min-width="1">
+                    <el-table-column prop="name" :label="$t('general.name')" width="320"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.power')" width="150">
                         <template slot-scope="scope">
                             {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="1" class-name="center">
+                    <el-table-column :label="$t('chargingStation.connectionStatus')" width="150" class-name="center">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -68,23 +68,23 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connector')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.connector')" width="250">
                         <template slot-scope="scope">
                             <!-- {{scope.row.connectors.length}} -->
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.lastHeartbeat')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.lastHeartbeat')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.type')" :min-width="2" class-name="center">
+                    <el-table-column :label="$t('general.type')" width="200" class-name="center">
                         <template slot-scope="scope">
                             {{ scope.row.powerType? getPowerType(scope.row.powerType):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="150">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
                                 <el-button class="action_chargers_stations">

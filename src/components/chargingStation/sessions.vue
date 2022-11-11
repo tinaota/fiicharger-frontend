@@ -5,27 +5,27 @@
                 <template slot-scope="scope">
                     <el-table :data="reservationData[scope.row.index]" v-loading="reservationDataIsLoading">
                         <el-table-column :label="$t('chargingStation.reservation')">
-                            <el-table-column prop="id" label="ID" :min-width="1"></el-table-column>
-                            <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2"></el-table-column>
-                            <el-table-column prop="idTag" :label="$t('menu.idTag')" :min-width="2"></el-table-column>
-                            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" :min-width="2"></el-table-column>
-                            <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
-                            <el-table-column :label="$t('chargingStation.startDateTime')" :min-width="3">
+                            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+                            <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" width="150"></el-table-column>
+                            <el-table-column prop="idTag" :label="$t('menu.idTag')" width="180"></el-table-column>
+                            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" width="150"></el-table-column>
+                            <el-table-column prop="status" :label="$t('general.status')" width="160"></el-table-column>
+                            <el-table-column :label="$t('chargingStation.startDateTime')" width="250">
                                 <template slot-scope="scope">
                                     {{ scope.row.created ? getLocTime(scope.row.created) : '' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.expiryDateTime')" :min-width="3">
+                            <el-table-column :label="$t('chargingStation.expiryDateTime')" width="250">
                                 <template slot-scope="scope">
                                     {{ scope.row.expiryDate ? getLocTime(scope.row.expiryDate) : '' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.cancelledDateTime')" :min-width="3">
+                            <el-table-column :label="$t('chargingStation.cancelledDateTime')" width="250">
                                 <template slot-scope="scope">
                                     {{ scope.row.cancelled ? getLocTime(scope.row.cancelled) : '' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.usedDateTime')" :min-width="3">
+                            <el-table-column :label="$t('chargingStation.usedDateTime')" width="250">
                                 <template slot-scope="scope">
                                     {{ scope.row.used ? getLocTime(scope.row.used) : '' }}
                                 </template>
@@ -35,33 +35,33 @@
 
                     <el-table :data="transactionData[scope.row.index]" v-loading="transactionDataIsLoading">
                         <el-table-column :label="$t('menu.transaction')">
-                            <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
-                            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
-                            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" :min-width="2"></el-table-column>
-                            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" :min-width="2">
+                            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+                            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="120"></el-table-column>
+                            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200"></el-table-column>
+                            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200"></el-table-column>
+                            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" width="180">
                                 <template slot-scope="scope">
                                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                                 </template>
                             </el-table-column>
-                            <!-- <el-table-column prop="reservationId" label="Reservation Id" :min-width="2"></el-table-column> -->
-                            <el-table-column :label="$t('chargingStation.startTimestamp')" :min-width="2">
+                            <!-- <el-table-column prop="reservationId" label="Reservation Id" width="200"></el-table-column> -->
+                            <el-table-column :label="$t('chargingStation.startTimestamp')" width="200">
                                 <template slot-scope="scope">
                                     {{ getLocTime(scope.row.startTimestamp) }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" :min-width="2">
+                            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" width="180">
                                 <template slot-scope="scope">
                                     {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.stopTimestamp')" :min-width="2">
+                            <el-table-column :label="$t('chargingStation.stopTimestamp')" width="200">
                                 <template slot-scope="scope">
                                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2"></el-table-column>
-                            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" :min-width="2">
+                            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" width="180"></el-table-column>
+                            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" width="180">
                                 <template slot-scope="scope">
                                     {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                                 </template>
@@ -70,19 +70,19 @@
                     </el-table>
                 </template>
             </el-table-column>
-            <el-table-column prop="id" label="ID" :min-width="1"></el-table-column>
-            <el-table-column prop="idTagValue" :label="$t('menu.idTag')" :min-width="2"></el-table-column>
-            <el-table-column prop="authMethod" :label="$t('general.authMethod')" :min-width="2"></el-table-column>
-            <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
-            <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" :min-width="2"></el-table-column>
-            <el-table-column prop="reservationId" :label="$t('chargingStation.reservationId')" :min-width="2"></el-table-column>
-            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" :min-width="2"></el-table-column>
-            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" :min-width="2">
+            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+            <el-table-column prop="idTagValue" :label="$t('menu.idTag')" width="250"></el-table-column>
+            <el-table-column prop="authMethod" :label="$t('general.authMethod')" width="200"></el-table-column>
+            <el-table-column prop="status" :label="$t('general.status')" width="200"></el-table-column>
+            <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" width="200"></el-table-column>
+            <el-table-column prop="reservationId" :label="$t('chargingStation.reservationId')" width="200"></el-table-column>
+            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" width="200"></el-table-column>
+            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="200">
                 <template slot-scope="scope">
                     {{ scope.row.startTimestamp!==null ?getLocTime(scope.row.startTimestamp):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" :min-width="2">
+            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" width="200">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null ? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
@@ -104,6 +104,12 @@ import {
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 
 export default {
+    props: {
+        chargerId: String,
+        dateRange: Array,
+        isUpdateData: Boolean,
+        ocppId: String
+    },
     emits: ["updated"],
     data() {
         return {
@@ -119,21 +125,10 @@ export default {
             transactionDataIsLoading: false
         };
     },
-    props: {
-        chargerId: String,
-        dateRange: Array,
-        isUpdateData: Boolean,
-        ocppId: String
-    },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
         }
-    },
-    mounted() {
-        this.getAllSessionsData();
-        // set empty values to reservation data
-        // this.reservationData =
     },
     watch: {
         dateRange: function () {
@@ -147,6 +142,11 @@ export default {
                 }, 2000);
             }
         }
+    },
+    mounted() {
+        this.getAllSessionsData();
+        // set empty values to reservation data
+        // this.reservationData =
     },
     methods: {
         expandChange(row, expanded) {

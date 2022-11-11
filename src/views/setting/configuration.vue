@@ -9,14 +9,14 @@
             </div>
             <div class="formVertical" :key="componentKey">
                 <el-table :data="configurations" v-loading="isLoading">
-                    <el-table-column prop="key" :label="$t('general.key')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('general.accessibility')" :min-width="1">
+                    <el-table-column prop="key" :label="$t('general.key')" width="300"></el-table-column>
+                    <el-table-column :label="$t('general.accessibility')" width="100">
                         <template slot-scope="scope">
                             {{ scope.row.isReadOnly? 'R' : 'RW' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="description" :label="$t('general.description')" :min-width="6"></el-table-column>
-                    <el-table-column :label="$t('general.value')" :min-width="4">
+                    <el-table-column prop="description" :label="$t('general.description')" width="650"></el-table-column>
+                    <el-table-column :label="$t('general.value')" width="400">
                         <template slot-scope="scope">
                             <div v-if="scope.row.type==='boolean'">
                                 <SwitchComponent :rowData="scope.row" @switchClicked="updateConfiguration"></SwitchComponent>
@@ -187,7 +187,6 @@ export default {
             display: block;
             float: right;
             margin-top: -65px;
-            margin-right: -25px;
         }
         .formVertical {
             max-height: 68vh !important;

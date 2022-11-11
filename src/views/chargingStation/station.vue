@@ -23,14 +23,14 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column :label="$t('chargingStation.stationName')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.stationName')" width="200">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.name }}</el-link>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="3"></el-table-column> -->
-                    <el-table-column prop="address.zipCode" :label="$t('general.zipCode')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('general.address')" :min-width="5">
+                    <!-- <el-table-column prop="name" :label="$t('chargingStation.stationName')" width="3"></el-table-column> -->
+                    <el-table-column prop="address.zipCode" :label="$t('general.zipCode')" width="200"></el-table-column>
+                    <el-table-column :label="$t('general.address')" width="500">
                         <template slot-scope="scope">
                             <div class="address">{{ scope.row.address.street +', '+ scope.row.address.city +', '+ scope.row.address.state }}</div>
                             <div class="position">
@@ -1009,5 +1009,23 @@ ul {
 }
 .actionFunction {
     margin-left: 10px;
+}
+
+.el-form .form-item {
+    width: 98%;
+}
+
+@media only screen and (max-width: 1280px) {
+    .el-form {
+        .form-item {
+            width: 94%;
+            .timeRange {
+                text-align: center;
+            }
+            .timeRange > div {
+                width: 100% !important;
+            }
+        }
+    }
 }
 </style>

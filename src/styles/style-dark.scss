@@ -76,6 +76,16 @@ $dark-background-color: #2d3855;
                     color: $dark-font-color !important;
                 }
             }
+            .formVertical {
+                .profilePeriods {
+                    .label,
+                    .time,
+                    .el-table {
+                        background: #323d5d !important;
+                        color: $dark-font-color !important;
+                    }
+                }
+            }
             .el-dialog__body {
                 .table-result {
                     .el-table {

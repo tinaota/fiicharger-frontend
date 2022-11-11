@@ -49,7 +49,6 @@
                                         <el-table-column prop="price" :label="$t('menu.tariff')" width="200"></el-table-column>
                                         <el-table-column prop="vat" :label="$t('general.vat') + ' (%)'" width="200"></el-table-column>
                                         <el-table-column prop="stepSize" :label="$t('general.stepSize')" width="200"></el-table-column>
-
                                     </el-table-column>
                                 </el-table>
                                 <!-- <el-table :data="[scope.row.elements[index-1].restrictions]">
@@ -83,7 +82,7 @@
                                 {{ scope.row.minPrice? scope.row.minPrice.excludingVat:'' }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('general.includingVat')" :min-width="1">
+                        <el-table-column :label="$t('general.includingVat')" width="100">
                             <template slot-scope="scope">
                                 {{ scope.row.minPrice ? scope.row.minPrice.includingVat: '' }}
                             </template>
@@ -95,7 +94,7 @@
                                 {{ scope.row.maxPrice?scope.row.maxPrice.excludingVat:'' }}
                             </template>
                         </el-table-column>
-                        <el-table-column :label="$t('general.includingVat')" :min-width="1">
+                        <el-table-column :label="$t('general.includingVat')" width="100">
                             <template slot-scope="scope">
                                 {{ scope.row.maxPrice? scope.row.maxPrice.includingVat :'' }}
                             </template>
@@ -111,12 +110,12 @@
                             {{ scope.row.startDateTime? getLocTime(scope.row.endDateTime) :'' }}
                         </template>
                     </el-table-column> -->
-                    <el-table-column :label="$t('userAccount.createdDate')" :min-width="2">
+                    <el-table-column :label="$t('userAccount.createdDate')" width="300">
                         <template slot-scope="scope">
                             {{ scope.row.created?getLocTime(scope.row.created):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.modified')" :min-width="2">
+                    <el-table-column :label="$t('general.modified')" width="300">
                         <template slot-scope="scope">
                             {{ scope.row.modified?getLocTime(scope.row.modified):'' }}
                         </template>

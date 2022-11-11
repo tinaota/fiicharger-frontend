@@ -2,35 +2,35 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" :min-width="2" sortable="custom">
+            <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" width="300" sortable="custom">
             </el-table-column>
-            <el-table-column prop="station" :label="$t('chargingStation.stationName')" :min-width="2" sortable="custom">
+            <el-table-column prop="station" :label="$t('chargingStation.stationName')" width="200" sortable="custom">
             </el-table-column>
-            <el-table-column prop="address" :label="$t('general.address')" :min-width="3" sortable="custom">
+            <el-table-column prop="address" :label="$t('general.address')" width="400" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.address }}
                 </template>
             </el-table-column>
-            <el-table-column prop="uptime" :label="$t('chargingStation.uptime')" :min-width="1" sortable="custom">
+            <el-table-column prop="uptime" :label="$t('chargingStation.uptime')" width="100" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.uptime }} %
                 </template>
             </el-table-column>
-            <el-table-column prop="chargeEvents" :label="$t('chargingStation.chargeEvents')" :min-width="1" sortable="custom">
+            <el-table-column prop="chargeEvents" :label="$t('chargingStation.chargeEvents')" width="100" sortable="custom">
             </el-table-column>
-            <el-table-column prop="uniqueUsers" :label="$t('chargingStation.uniqueUsers')" :min-width="1" sortable="custom">
+            <el-table-column prop="uniqueUsers" :label="$t('chargingStation.uniqueUsers')" width="100" sortable="custom">
             </el-table-column>
-            <el-table-column prop="averageChargeTime" :label="$t('chargingStation.averageChargeTime') + ' (min)'" :min-width="1" sortable="custom">
+            <el-table-column prop="averageChargeTime" :label="$t('chargingStation.averageChargeTime') + ' (min)'" width="180" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageChargeTime.toFixed(2) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="averagePower" :label="$t('chargingStation.averagePower') +' (kW)'" :min-width="1" sortable="custom">
+            <el-table-column prop="averagePower" :label="$t('chargingStation.averagePower') +' (kW)'" width="200" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averagePower.toFixed(2) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="totalEnergy" :label="$t('chargingStation.totalEnergy') +' (kWh)'" :min-width="1" sortable="custom">
+            <el-table-column prop="totalEnergy" :label="$t('chargingStation.totalEnergy') +' (kWh)'" width="200" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.totalEnergy.toFixed(2) }}
                 </template>

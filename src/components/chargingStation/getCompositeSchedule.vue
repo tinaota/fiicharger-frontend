@@ -138,6 +138,7 @@ export default {
         margin-top: 5px;
         .info {
             width: 180px;
+            word-break: break-all
         }
     }
 }

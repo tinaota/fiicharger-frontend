@@ -136,4 +136,9 @@ export default {
 </script>
 
 <style lang = "scss" scoped>
+@media only screen and (max-width: 1280px) {
+    button{
+        margin-bottom: 5px;
+    }
+}
 </style>

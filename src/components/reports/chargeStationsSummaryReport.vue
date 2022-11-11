@@ -2,21 +2,21 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="name" :label="$t('chargingStation.stationName')" :min-width="2" sortable="custom">
+            <el-table-column prop="name" :label="$t('chargingStation.stationName')" width="200" sortable="custom">
             </el-table-column>
-            <el-table-column prop="address" :label="$t('general.address')" :min-width="4" sortable="custom">
+            <el-table-column prop="address" :label="$t('general.address')" width="450" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.address }}
                 </template>
             </el-table-column>
-            <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="2" sortable="custom"></el-table-column>
-            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower')+ '(kW)'" :min-width="2" sortable="custom">
+            <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" width="200" sortable="custom"></el-table-column>
+            <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" width="200" sortable="custom"></el-table-column>
+            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower')+ '(kW)'" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageSessionPower.toFixed(2) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="averageHoursPerSession" :label="$t('chargingStation.averageHoursPerSession')" :min-width="2" sortable="custom">
+            <el-table-column prop="averageHoursPerSession" :label="$t('chargingStation.averageHoursPerSession')" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageHoursPerSession.toFixed(2) }}
                 </template>

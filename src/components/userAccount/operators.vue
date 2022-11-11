@@ -13,38 +13,38 @@
                 </el-input>
                 <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
             </div>
-            <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                <el-table-column :label="$t('userAccount.operatorName')" :min-width="3">
+            <el-table :data="tableData" class="moreCol" v-loading="isLoading" style="width: 100%">
+                <el-table-column :label="$t('userAccount.operatorName')" width="300">
                     <template slot-scope="scope">
                         {{ clientName(scope.row) }}
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="$t('userAccount.logo')" :min-width="3">
+                <el-table-column :label="$t('userAccount.logo')" width="300">
                     <template slot-scope="scope">
                         <img :src="getImageUrl(scope.row.picture)" class="logo" :style="{maxHeight: '50px',maxWidth:'50px'}">
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="$t('userAccount.mobile')" :min-width="3">
+                <el-table-column :label="$t('userAccount.mobile')" width="300">
                     <template slot-scope="scope">
                         {{ scope.row.phoneNumber ? scope.row.phoneNumber : '' }}
                     </template>
                 </el-table-column>
-                <el-table-column :label="$t('userAccount.mobileVerification')" :min-width="2">
+                <el-table-column :label="$t('userAccount.mobileVerification')" width="200">
                     <template slot-scope="scope">
                         {{ convertBooleanToString(scope.row.phoneNumberConfirmed) }}
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="email" :label="$t('userAccount.email')" :min-width="4"></el-table-column>
-                <el-table-column prop="emailConfirmed" :label="$t('userAccount.emailVerification')" :min-width="2">
+                <el-table-column prop="email" :label="$t('userAccount.email')" width="200"></el-table-column>
+                <el-table-column prop="emailConfirmed" :label="$t('userAccount.emailVerification')" width="200">
                     <template slot-scope="scope">
                         {{ convertBooleanToString(scope.row.emailConfirmed) }}
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="$t('general.action')" :width="182">
+                <el-table-column :label="$t('general.action')" width="182">
                     <template slot-scope="scope">
                         <el-button class="no-bg i" icon="el-icon-lock" @click="openPwdDialog(scope.row.id)"></el-button>
                         <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>

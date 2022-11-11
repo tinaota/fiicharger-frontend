@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="dialogType==='create'?$t('general.create'):$t('general.modify')" width="30%" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog :title="dialogType==='create'?$t('general.create'):$t('general.modify')" :width="isIpad? '50%':'30%'" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="right-form formVertical">
             <el-form ref="updateIdTagsForm" :rules="rules" :model="dialog" style="width:96%">
                 <div class="form-item">
@@ -73,6 +73,12 @@ export default {
                 }
             }
         };
+    },
+    computed: {
+        isIpad() {
+            // check if it is ipad or not
+            return screen.width <= 1280;
+        }
     },
     mounted() {
         const that = this;

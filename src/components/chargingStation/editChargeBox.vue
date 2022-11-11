@@ -2,7 +2,7 @@
     <el-dialog :title="(dialog.type === 0) ? $t('general.create'): $t('general.modify')" width="80%" :visible.sync="visible" custom-class="map" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div id="map-container" class="google-map"></div>
         <div class="right-form formVertical">
-            <el-form ref="chargeBoxForm" :rules="rules" :model="editDialog.info" style="width:98%">
+            <el-form ref="chargeBoxForm" :rules="rules" :model="editDialog.info" style="width:96%">
                 <div class="form-item">
                     <el-form-item prop="id">
                         <div class="label">OCPP Id</div>
@@ -337,5 +337,13 @@ export default {
 
 .formVertical .form-item .el-input input:disabled {
     background: #d3d3d3 !important;
+}
+
+@media only screen and (max-width: 1280px) {
+.formVertical{
+    .el-form{
+        width: 92% !important;
+    }
+}
 }
 </style>

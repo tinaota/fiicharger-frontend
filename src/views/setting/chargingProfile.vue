@@ -14,28 +14,28 @@
                         <template slot-scope="scope">
                             <el-table :data="scope.row.chargingSchedulePeriods">
                                 <el-table-column :label="$t('chargingProfile.chargingSchedulePeriods')">
-                                    <el-table-column prop="limit" :label="$t('chargingProfile.limit')" :min-width="1"></el-table-column>
-                                    <el-table-column prop="numberPhases" :label="$t('chargingProfile.numberPhases')" :min-width="1"></el-table-column>
-                                    <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" :min-width="1"></el-table-column>
+                                    <el-table-column prop="limit" :label="$t('chargingProfile.limit')" width="250"></el-table-column>
+                                    <el-table-column prop="numberPhases" :label="$t('chargingProfile.numberPhases')" width="250"></el-table-column>
+                                    <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" width="250"></el-table-column>
                                 </el-table-column>
                             </el-table>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="name" :label="$t('general.name')" :min-width="1"></el-table-column>
-                    <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" :min-width="2"></el-table-column>
-                    <el-table-column prop="chargingProfileKind" :label="$t('chargingProfile.chargingProfileKind')" :min-width="2"></el-table-column>
-                    <el-table-column prop="recurrencyKind" :label="$t('chargingProfile.recurrencyKind')" :min-width="2"></el-table-column>
-                    <el-table-column :label="$t('chargingProfile.validFrom')" :min-width="2">
+                    <el-table-column prop="name" :label="$t('general.name')" width="200"></el-table-column>
+                    <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" width="200"></el-table-column>
+                    <el-table-column prop="chargingProfileKind" :label="$t('chargingProfile.chargingProfileKind')" width="200"></el-table-column>
+                    <el-table-column prop="recurrencyKind" :label="$t('chargingProfile.recurrencyKind')" width="200"></el-table-column>
+                    <el-table-column :label="$t('chargingProfile.validFrom')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.startSchedule ? getLocTime(scope.row.startSchedule) : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.elecRateMin')" :min-width="1">
+                    <el-table-column :label="$t('chargingStation.elecRateMin')" width="250">
                         <template slot-scope="scope">
                             {{ scope.row.minChargingRate ? scope.row.minChargingRate + scope.row.chargingRateUnit : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="100">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="200">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit',scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>

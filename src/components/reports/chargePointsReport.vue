@@ -2,27 +2,27 @@
     <div class="table-result">
         <el-button size="small" type="primary" @click="fetchData">{{ $t(`general.generate`) }}</el-button>
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
-            <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" :min-width="3" sortable="custom">
+            <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" width="320" sortable="custom">
             </el-table-column>
-            <el-table-column prop="name" :label="$t('general.name')" :min-width="3" sortable="custom"></el-table-column>
-            <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" :min-width="1" sortable="custom">
+            <el-table-column prop="name" :label="$t('general.name')" width="320" sortable="custom"></el-table-column>
+            <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" width="150" sortable="custom">
             </el-table-column>
-            <el-table-column prop="currentType" :label="$t('general.type')" :min-width="2" class-name="center" sortable="custom">
+            <el-table-column prop="currentType" :label="$t('general.type')" width="200" class-name="center" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.currentType }}
                 </template>
             </el-table-column>
-            <el-table-column prop="lastHeartbeat" :label="$t('chargingStation.lastHeartbeat')" :min-width="2" sortable="custom">
+            <el-table-column prop="lastHeartbeat" :label="$t('chargingStation.lastHeartbeat')" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="created" :label="$t('userAccount.createdDate')" :min-width="2" sortable="custom">
+            <el-table-column prop="created" :label="$t('userAccount.createdDate')" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.created!==null? getLocTime(scope.row.created):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="modified" :label="$t('general.latestModification')" :min-width="2" sortable="custom">
+            <el-table-column prop="modified" :label="$t('general.latestModification')" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.modified!==null? getLocTime(scope.row.modified):'' }}
                 </template>

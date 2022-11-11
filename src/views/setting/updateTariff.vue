@@ -1,5 +1,5 @@
 <template>
-    <el-dialog custom-class="tariff-dialog" :title="dialogType==='create'?$t('general.create'):$t('general.modify')" top="0" width="31%" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
+    <el-dialog custom-class="tariff-dialog" :title="dialogType==='create'?$t('general.create'):$t('general.modify')" top="0" :width="isIpad?'60%': '31%'" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
         <div class="right-form formVertical">
             <div class="price">
                 <h3>{{ $t('menu.tariff') }}</h3>
@@ -137,6 +137,10 @@ export default {
                 this.formData.maxPrice.excludingVat > 0 ||
                 this.formData.maxPrice.includingVat > 0
             );
+        },
+        isIpad() {
+            // check if it is ipad or not
+            return screen.width <= 1280;
         }
     },
     mounted() {

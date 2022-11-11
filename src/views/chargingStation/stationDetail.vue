@@ -194,19 +194,19 @@
             <div class="card-8 table-result">
                 <div class="header">{{ $t('menu.chargePoint') }}</div>
                 <el-table :data="tableData" v-loading="isLoading" class="moreCol">
-                    <el-table-column :label="$t('chargingStation.chargerId')" :min-width="3">
+                    <el-table-column :label="$t('chargingStation.chargerId')" width="320">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="name" :label="$t('general.name')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.powerConsumption')" :min-width="2">
+                    <el-table-column prop="name" :label="$t('general.name')" width="320"></el-table-column>
+                    <el-table-column :label="$t('chargingStation.powerConsumption')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.powerKw + "kW" }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.connectionStatus')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.connectionStatus')" width="200">
                         <template slot-scope="scope">
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
@@ -216,17 +216,17 @@
                             </el-tooltip>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('menu.chargePoint')" :min-width="2">
+                    <el-table-column :label="$t('menu.chargePoint')" width="200">
                         <template slot-scope="scope">
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('chargingStation.lastHeartbeat')" :min-width="2">
+                    <el-table-column :label="$t('chargingStation.lastHeartbeat')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.lastHeartbeat!==null? getLocTime(scope.row.lastHeartbeat):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="powerType" :label="$t('general.type')" :min-width="2">
+                    <el-table-column prop="powerType" :label="$t('general.type')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.powerType? getPowerType(scope.row.powerType):'' }}
                         </template>

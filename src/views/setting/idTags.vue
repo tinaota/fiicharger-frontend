@@ -26,30 +26,30 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create', tableData)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
-                    <el-table-column prop="value" label="ID" :min-width="2"></el-table-column>
-                    <el-table-column prop="parentIdTagValue" :label="$t('idTags.parentIdTagId')" :min-width="2"></el-table-column>
-                    <el-table-column prop="isBlocked" :label="$t('idTags.blocked')" :min-width="2">
+                    <el-table-column prop="value" label="ID" width="250"></el-table-column>
+                    <el-table-column prop="parentIdTagValue" :label="$t('idTags.parentIdTagId')" width="250"></el-table-column>
+                    <el-table-column prop="isBlocked" :label="$t('idTags.blocked')" width="250">
                         <template slot-scope="scope">
                             {{ scope.row.isBlocked.toString() }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="expiryDate" :label="$t('idTags.expiryDate')" :min-width="2">
+                    <el-table-column prop="expiryDate" :label="$t('idTags.expiryDate')" width="250">
                         <template slot-scope="scope">
                             {{ getLocTime(scope.row.expiryDate) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="created" :label="$t('idTags.created')" :min-width="2">
+                    <el-table-column prop="created" :label="$t('idTags.created')" width="250">
                         <template slot-scope="scope">
                             {{ getLocTime(scope.row.created) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="modified" :label="$t('idTags.modified')" :min-width="2">
+                    <el-table-column prop="modified" :label="$t('idTags.modified')" width="250">
                         <template slot-scope="scope">
                             {{ getLocTime(scope.row.modified) }}
                         </template>
                     </el-table-column>
 
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="100">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="250">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit',scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>

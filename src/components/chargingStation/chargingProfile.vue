@@ -1,22 +1,22 @@
 <template>
     <div class="table-result">
         <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
-            <el-table-column prop="id" :label="$t('chargingProfile.id')" :min-width="2"></el-table-column>
-            <el-table-column prop="name" :label="$t('chargingProfile.name')" :min-width="2"></el-table-column>
-            <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" :min-width="2">
+            <el-table-column prop="id" :label="$t('chargingProfile.id')" width="200"></el-table-column>
+            <el-table-column prop="name" :label="$t('chargingProfile.name')" width="200"></el-table-column>
+            <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" width="200">
                 <template slot-scope="scope">
                     {{ scope.row.connectorId === 0 ? $t('general.all'): scope.row.connectorId }}
                 </template>
             </el-table-column>
-            <el-table-column prop="status" :label="$t('general.status')" :min-width="2"></el-table-column>
-            <el-table-column prop="chargingProfilePurpose" :label="$t('chargingProfile.chargingProfilePurpose')" :min-width="2"></el-table-column>\
-            <el-table-column prop="isActive" :label="$t('general.active')" :min-width="2">
+            <el-table-column prop="status" :label="$t('general.status')" width="200"></el-table-column>
+            <el-table-column prop="chargingProfilePurpose" :label="$t('chargingProfile.chargingProfilePurpose')" width="200"></el-table-column>\
+            <el-table-column prop="isActive" :label="$t('general.active')" width="200">
                 <template slot-scope="scope">
                     {{ scope.row.isActive? 'true': 'false' }}
                 </template>
             </el-table-column>
 
-            <!-- <el-table-column prop="chargingProfileInfo.maxPower" :label="$t('chargingProfile.maxPower')" :min-width="2"></el-table-column> -->
+            <!-- <el-table-column prop="chargingProfileInfo.maxPower" :label="$t('chargingProfile.maxPower')" width="200"></el-table-column> -->
             <!-- <el-table-column :label="$t('chargingProfile.validFrom')" :min-width="3">
                 <template slot-scope="scope">
                     {{ scope.row.chargingProfileInfo.validFrom ? getLocTime(scope.row.chargingProfileInfo.validFrom) : '' }}

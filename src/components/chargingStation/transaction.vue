@@ -6,43 +6,43 @@
             </el-select>
         </div>
         <el-table :data="allTransactions" v-loading="isLoading">
-            <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" :min-width="2"></el-table-column>
-            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" :min-width="2"></el-table-column>
-            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" :min-width="2"></el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" :min-width="2">
+            <el-table-column prop="id" label="ID" width="40"></el-table-column>
+            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="120"></el-table-column>
+            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200"></el-table-column>
+            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                 </template>
             </el-table-column>
-            <!-- <el-table-column prop="reservationId" label="Reservation Id" :min-width="2"></el-table-column> -->
-            <el-table-column :label="$t('chargingStation.startTimestamp')" :min-width="2">
+            <!-- <el-table-column prop="reservationId" label="Reservation Id" width="200"></el-table-column> -->
+            <el-table-column :label="$t('chargingStation.startTimestamp')" width="180">
                 <template slot-scope="scope">
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" :min-width="2">
+            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.stopTimestamp')" :min-width="2">
+            <el-table-column :label="$t('chargingStation.stopTimestamp')" width="180">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" :min-width="2"></el-table-column>
-            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" :min-width="2">
+            <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" width="120"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.chargingProfile')" :min-width="2">
+            <el-table-column :label="$t('chargingStation.chargingProfile')" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" class="actionFunction" v-if="scope.row.stopTimestamp===null" @click="openDialog('addChargingProfile', scope.row)">{{ $t('general.add') }}</el-button>
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('menu.transaction')" :min-width="2">
+            <el-table-column :label="$t('menu.transaction')" width="200">
                 <template slot-scope="scope">
                     <el-button type="primary" class="actionFunction" v-if="scope.row.stopTimestamp===null" @click="openDialog('stopTransactionWithTransactionId', scope.row)">{{ $t('general.stop') }}</el-button>
                 </template>

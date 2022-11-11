@@ -107,6 +107,7 @@ export default {
                         return result;
                     },
                     padding: [12,20],
+                    position:'top',
                     borderColor: "#FFFFFF",
                     borderWidth: 1,
                     axisPointer: {

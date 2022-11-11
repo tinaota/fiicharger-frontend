@@ -16,36 +16,37 @@
                     <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openCreateDialog()"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
-                    <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
-                    <el-table-column prop="make" :label="$t('cars.maker')" :min-width="3"></el-table-column>
-                    <el-table-column prop="model" :label="$t('cars.model')" :min-width="4"></el-table-column>
-                    <el-table-column prop="trim" :label="$t('cars.trim')" :min-width="4"></el-table-column>
-                    <el-table-column prop="year" :label="$t('cars.year')" :min-width="4"></el-table-column>
-                    <el-table-column :label="$t('cars.acPower')" :min-width="3">
+                    <el-table-column prop="id" label="ID" width="100"></el-table-column>
+                    <el-table-column prop="make" :label="$t('cars.maker')" width="150"></el-table-column>
+                    <el-table-column prop="model" :label="$t('cars.model')" width="200"></el-table-column>
+                    <el-table-column prop="trim" :label="$t('cars.trim')" width="200"></el-table-column>
+                    <el-table-column prop="year" :label="$t('cars.year')" width="200"></el-table-column>
+                    <el-table-column :label="$t('cars.acPower')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.chargePower ? scope.row.chargePower + "kW" : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="plugType" :label="$t('cars.acPlug')" :min-width="3"></el-table-column>
-                    <el-table-column :label="$t('cars.dcPower')" :min-width="3">
+                    <el-table-column prop="plugType" :label="$t('cars.acPlug')" width="200"></el-table-column>
+                    <el-table-column :label="$t('cars.dcPower')" width="100">
                         <template slot-scope="scope">
                             {{ scope.row.fastChargePower ? scope.row.fastChargePower + "kW" : '' }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="fastChargePlugType" :label="$t('cars.dcPlug')" :min-width="3"></el-table-column>
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="140">
+                    <el-table-column prop="fastChargePlugType" :label="$t('cars.dcPlug')" width="200"></el-table-column>
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="140">
                         <template slot-scope="scope">
                             <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
                             <el-button class="no-bg edit" @click="openEditDialog(scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDeleteDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column v-else :label="$t('general.action')" :width="70">
+                    <el-table-column v-else :label="$t('general.action')" width="70">
                         <template slot-scope="scope">
                             <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+
                 <div class="total">{{ $t("general.result", {item:total}) }}</div>
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
