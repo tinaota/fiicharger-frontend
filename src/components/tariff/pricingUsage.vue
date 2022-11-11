@@ -55,7 +55,7 @@
                     {{ $t('general.stepSize') }}
                     <span style="color:red"><strong>* </strong></span>
                 </div> -->
-                <div class="info" v-if="reservationUsageType!=='FLAT'">
+                <div class="info" v-if="pricingUsageType!=='RESERVATION' || (pricingUsageType==='RESERVATION' && reservationUsageType==='TIME')">
                     <el-tooltip :content="$t('general.stepSizeToolTip')" placement="top">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </el-tooltip>

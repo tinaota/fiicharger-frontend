@@ -3,7 +3,7 @@
         <span class="priceInfo">{{ $t("general.priceInfo") }}</span>
         <div v-for="index in countUsageComponent" :key="index" class="pricingUsageMain">
             <el-collapse class="usageCollapse" v-model="activePricingUsage" accordion>
-                <el-collapse-item class="usageCollapseItem" :title="$t('general.pricingUsage')" :name="`${index}`">
+                <el-collapse-item class="usageCollapseItem" :title="getTitle(pricingUsageData[index-1]?.type, pricingUsageData[index-1]?.reservationType)" :name="`${index}`">
                     <PricingUsage :eachPriceComponent="priceComponents[index-1]" :usageCollapseIndex="index" :totalUsageCollapseIndex="countUsageComponent" :currency="currency" @emitPriceUsageData="getEmittedPriceUsageData" @deletePricingUsageData="deletePricingUsageData"></PricingUsage>
                 </el-collapse-item>
             </el-collapse>
@@ -57,6 +57,32 @@ export default {
         }
     },
     methods: {
+        getTitle(type, reservationType) {
+            if (type !== undefined && reservationType !== undefined) {
+                if (reservationType === null) {
+                    return `${i18n.t(
+                        `general.${type?.toLowerCase()}PriceUsage`
+                    )}`;
+                } else if (reservationType === "RESERVATION") {
+                    if (type === "TIME") {
+                        return `${i18n.t(`general.reservationTimePriceUsage`)}`;
+                    } else if (type === "FLAT") {
+                        return `${i18n.t(`general.reservationFlatPriceUsage`)}`;
+                    }
+                } else if (reservationType === "RESERVATION_EXPIRES") {
+                    if (type === "TIME") {
+                        return `${i18n.t(
+                            `general.reservation_expiresTimePriceUsage`
+                        )}`;
+                    } else if (type === "FLAT") {
+                        return `${i18n.t(
+                            `general.reservation_expiresFlatPriceUsage`
+                        )}`;
+                    }
+                }
+            }
+            return;
+        },
         updateDataPricingSectionMain() {
             let priceSectionData = {};
             priceSectionData.priceComponents = [...this.pricingUsageData];
