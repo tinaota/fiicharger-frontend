@@ -4,7 +4,7 @@
         <div v-for="index in countUsageComponent" :key="index" class="pricingUsageMain">
             <el-collapse class="usageCollapse" v-model="activePricingUsage" accordion>
                 <el-collapse-item class="usageCollapseItem" :title="$t('general.pricingUsage')" :name="`${index}`">
-                    <PricingUsage :eachPriceComponent="priceComponents[index-1]" :usageCollapseIndex="index" :totalUsageCollapseIndex="countUsageComponent" @emitPriceUsageData="getEmittedPriceUsageData" @deletePricingUsageData="deletePricingUsageData"></PricingUsage>
+                    <PricingUsage :eachPriceComponent="priceComponents[index-1]" :usageCollapseIndex="index" :totalUsageCollapseIndex="countUsageComponent" :currency="currency" @emitPriceUsageData="getEmittedPriceUsageData" @deletePricingUsageData="deletePricingUsageData"></PricingUsage>
                 </el-collapse-item>
             </el-collapse>
         </div>
@@ -24,13 +24,14 @@ import PricingUsage from "@/components/tariff/pricingUsage.vue";
 // import PricingConditions from "@/components/tariff/pricingConditions.vue";
 export default {
     components: {
-        PricingUsage,
+        PricingUsage
         // PricingConditions
     },
     props: {
         pricingSectionCollapseIndex: Number,
         totalPricingSectionIndex: Number,
-        eachElement: Object
+        eachElement: Object,
+        currency: String
     },
     emits: ["deletePricingSectionData", "emitPriceSectionData"],
     data() {
@@ -122,7 +123,7 @@ export default {
 <style lang="scss" scoped>
 .pricingSectionsSub {
     .priceInfo {
-        font-size: 10px;
+        font-size: 12px;
     }
     .pricingUsageMain {
         display: flex;
@@ -130,6 +131,7 @@ export default {
         .usageCollapse {
             width: 94%;
             margin-bottom: 5px;
+            font-size: 13px;
         }
     }
     .buttonDiv {

@@ -1405,9 +1405,13 @@ input[type="number"] {
         height: 84%;
         padding: 1vh 2vw 1vh 2vw !important;
     }
-    .fa-info-circle{
+    .fa-info-circle {
         color: #0263ff;
     }
+}
+
+.tableInfoTooltip {
+    padding: 3px !important;
 }
 
 .pricingSectionCollapse {
@@ -1443,8 +1447,8 @@ input[type="number"] {
 }
 
 .price {
-    .customPriceName {
-        .customPriceNameItem {
+    .customName {
+        .customNameItem {
             width: 100%;
             margin-bottom: 0;
             .el-form-item__content {

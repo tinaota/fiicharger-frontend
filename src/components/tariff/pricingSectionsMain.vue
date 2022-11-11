@@ -3,7 +3,7 @@
         <div v-for="index in pricingSectionCount" :key="index">
             <el-collapse class="pricingSectionCollapse" v-model="activePricingSection" accordion>
                 <el-collapse-item class="pricingSectionCollapseItem" :title="$t('general.pricingSections')" :name="`${index}`">
-                    <PricingSectionsSub :eachElement="elements[index-1]" :pricingSectionCollapseIndex="index" :totalPricingSectionIndex="pricingSectionCount" @deletePricingSectionData="deletePricingSectionData" @emitPriceSectionData="getEmittedPriceSectionData"></PricingSectionsSub>
+                    <PricingSectionsSub :eachElement="elements[index-1]" :pricingSectionCollapseIndex="index" :totalPricingSectionIndex="pricingSectionCount" :currency="currency" @deletePricingSectionData="deletePricingSectionData" @emitPriceSectionData="getEmittedPriceSectionData"></PricingSectionsSub>
                 </el-collapse-item>
             </el-collapse>
         </div>
@@ -18,7 +18,8 @@ export default {
         PricingSectionsSub
     },
     props: {
-        elements: Array
+        elements: Array,
+        currency: String
     },
     emits: ["emitPricingSectionDataFromMain"],
     data() {

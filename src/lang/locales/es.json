@@ -249,7 +249,30 @@
         "preparingDocument": "Preparando documento ...",
         "authMethod": "Método de autenticación",
         "reservationUsage": "Uso de la reserva",
-        "reservationType": "Tipo de reserva"
+        "reservationType": "Tipo de reserva",
+        "reservationUsageTooltip": "Si las reservas deben facturarse por tiempo o tarifa plana",
+        "reservationTypeTooltip": "Si RESERVATION_EXPIRES, este precio aplica para reservas que caducan sin ser utilizadas",
+        "stepSizeToolTip": "Importe mínimo a facturar. Los importes inferiores a este valor se redondean a este valor",
+        "timeInfo": "Precio por tiempo de carga",
+        "flatInfo": "Tarifa plana por cobrar",
+        "parking_timeInfo": "Precio por tiempo enchufado pero sin cargar",
+        "energyInfo": "Precio por cantidad de energía transferida",
+        "reservationInfo": "Precio para reservas",
+        "timeStep": "Segundos",
+        "billedPer": "Facturado por",
+        "timeDesc": "por hora",
+        "reservationDesc": "por Reserva",
+        "energyDesc": "por kWh",
+        "energyStep": "Qu",
+        "flatDesc": "por sección",
+        "timePriceUsage": "Tiempo de carga",
+        "energyPriceUsage": "Energía de carga",
+        "flatPriceUsage": "Carga plana",
+        "parking_timePriceUsage": "Tiempo de estacionamiento",
+        "reservationTimePriceUsage": "Tiempo de reserva",
+        "reservationFlatPriceUsage": "Piso de Reserva",
+        "reservation_expiresTimePriceUsage": "Tiempo de reserva (vencido)",
+        "reservation_expiresFlatPriceUsage": "Reserva (caducada) Plana"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -443,7 +466,8 @@
         "dcFastChargers": "Cargadores de CC",
         "weeklyUtilization": "Sessions Per Week",
         "averageSessionPower": "Potencia media de sesión",
-        "averageHoursPerSession": "Promedio de horas por sesión"
+        "averageHoursPerSession": "Promedio de horas por sesión",
+        "stationStatus": "Estado de la estación"
     },
     "userAccount": {
         "memberName": "Nombre de miembro",

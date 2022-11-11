@@ -130,3 +130,39 @@ export const getDefaultFont = () => {
     }
     return defaultFont
 }
+
+export const getCurrencySymbolsFromCurrencyCode = (currencyCode) => {
+    let currencySymbol;
+    switch (currencyCode) {
+        case "USD":
+            currencySymbol = "$";
+            break;
+        case "EUR":
+            currencySymbol = "€";
+            break;
+        case "CNY":
+            currencySymbol = "¥";
+            break;
+        case "INR":
+            currencySymbol = "₹";
+            break;
+        case "JPY":
+            currencySymbol = "¥";
+            break;
+        case "KRW":
+            currencySymbol = "₩";
+            break;
+        case "MXN":
+            currencySymbol = "$";
+            break;
+        case "NPR":
+            currencySymbol = "रू";
+            break;
+        case "TWD":
+            currencySymbol = "NT$";
+            break;
+        default:
+            currencySymbol = currencyCode;
+    }
+    return currencySymbol
+}

@@ -4,11 +4,22 @@
             <div class="price">
                 <h3>{{ $t('menu.tariff') }}</h3>
                 <el-form ref="tariffForm" :rules="rules" :model="formData">
-                    <div class="customPriceName">
-                        <el-form-item prop="customPriceName" class="customPriceNameItem">
+                    <div class="customName">
+                        <el-form-item prop="customPriceName" class="customNameItem">
                             <div class="label">{{ $t('general.customPriceName') }}<span style="color:red"><strong>* </strong></span></div>
                             <div class="info">
                                 <el-input style="width:100%" v-model="formData.customPriceName"></el-input>
+                            </div>
+                        </el-form-item>
+                    </div>
+                    <div class="customName">
+                        <el-form-item prop="currency" class="customNameItem">
+                            <div class="label">{{ $t('general.currency') }}<span style="color:red"><strong>* </strong></span></div>
+                            <div class="info">
+                                <!-- <el-input style="width:100%" v-model="formData.currency"></el-input> -->
+                                <el-select style="width:100%" class="select-small" :placeholder="$t(`general.currency`)" v-model="formData.currency" filterable clearable>
+                                    <el-option v-for="item in currencyCodesList" :label="item.currency" :key="item.code" :value="item.code"></el-option>
+                                </el-select>
                             </div>
                         </el-form-item>
                     </div>
@@ -59,7 +70,7 @@
             </div>
             <hr />
             <div class="pricingSections">
-                <PricingSectionsMain :elements="elements" @emitPricingSectionDataFromMain="getPricingSectionData"></PricingSectionsMain>
+                <PricingSectionsMain :elements="elements" :currency="formData.currency" @emitPricingSectionDataFromMain="getPricingSectionData"></PricingSectionsMain>
             </div>
         </div>
         <span slot="footer" class="dialog-footer">
@@ -73,7 +84,7 @@ import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import { $HTTP_addTariffs, $HTTP_updateTariffs } from "@/api/api";
 import PricingSectionsMain from "@/components/tariff/pricingSectionsMain.vue";
 import { validateIsEmpty } from "@/utils/validation";
-
+import CurrencyCodes from "currency-codes/data";
 export default {
     components: { PricingSectionsMain },
     props: { show: Boolean, dialogType: String, data: Object },
@@ -87,6 +98,7 @@ export default {
             $API: null,
             formData: {
                 customPriceName: "",
+                currency: "",
                 priceType: null,
                 minPrice: {
                     excludingVat: 0,
@@ -110,9 +122,11 @@ export default {
             pickerOptions: {},
             pricingSectionData: [],
             rules: {
-                customPriceName: [{ validator: validateIsEmpty }]
+                customPriceName: [{ validator: validateIsEmpty }],
+                currency: [{ validator: validateIsEmpty }]
             },
-            elements: []
+            elements: [],
+            currencyCodesList: CurrencyCodes.filter(item=>item.code!=='XXX' && item.code!=='XTS')
         };
     },
     computed: {
@@ -134,6 +148,7 @@ export default {
             this.$API = $HTTP_updateTariffs;
             this.formData = {
                 customPriceName: this.data.name,
+                currency: this.data.currency,
                 priceType: this.data.type,
                 minPrice: {
                     excludingVat: this.data.minPrice.excludingVat,
@@ -263,6 +278,7 @@ export default {
         updateTariff() {
             let params = {
                 name: this.formData.customPriceName,
+                currency: this.formData.currency,
                 type: this.formData.priceType,
                 elements: this.pricingSectionData,
                 minPrice: {
@@ -329,9 +345,11 @@ export default {
         closeDialog() {
             this.$nextTick(() => {
                 this.$refs?.tariffForm?.clearValidate("customPriceName");
+                this.$refs?.tariffForm?.clearValidate("currency");
             });
             this.formData = {
                 customPriceName: "",
+                currency: "",
                 priceType: "REGULAR",
                 minPrice: {
                     excludingVat: 0,
@@ -375,7 +393,7 @@ export default {
     }
     .price {
         margin-bottom: 2px;
-        .customPriceName {
+        .customName {
             display: flex;
             width: 100%;
             height: 40px;

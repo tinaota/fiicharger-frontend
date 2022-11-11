@@ -1,5 +1,5 @@
 <template>
-    <div class="pricingUsage">
+    <div class="pricingUsage" style="font-size:16px">
         <div class="pricingUsageType">
             <div class="label">{{ $t('general.type') }}<span style="color:red"><strong>* </strong></span></div>
             <el-radio-group v-model="pricingUsageType" @change="updateData">
@@ -31,28 +31,37 @@
         </div>
         <div class="otherInfo">
             <div class="price">
-                <div class="label">{{ $t('menu.tariff') }}<span style="color:red"><strong>* </strong></span></div>
+                <!-- <div class="label">{{ $t('menu.tariff') }}<span style="color:red"><strong>* </strong></span></div> -->
                 <div class="info">
+                    <span>{{ getCurrencySymbol(currency) }}</span>
                     <el-input-number class="inputFilter" v-model="price" :controls="false" @change="updateData"></el-input-number>
+                    <span v-if="pricingUsageType!=='RESERVATION'"> {{ pricingUsageType==='ENERGY' || pricingUsageType==='FLAT' ?$t(`general.${pricingUsageType?.toLowerCase()}Desc`): $t('general.timeDesc') }}</span>
+                    <span v-if="pricingUsageType==='RESERVATION'"> {{ reservationUsageType==='TIME' ?$t('general.timeDesc'):$t(`general.${pricingUsageType?.toLowerCase()}Desc`) }}</span><span style="color:red"><strong>* </strong></span>
+
                 </div>
             </div>
             <div class="vat">
-                <div class="label">{{ $t('general.vat') }}(%)<span style="color:red"><strong>* </strong></span></div>
+                <!-- <div class="label">{{ $t('general.vat') }}(%)<span style="color:red"><strong>* </strong></span></div> -->
                 <div class="info">
                     <el-input-number class="inputFilter" v-model="vat" :controls="false" @change="updateData"></el-input-number>
+                    <span>% {{ $t('general.vat') }}</span><span style="color:red"><strong>* </strong></span>
                 </div>
             </div>
-            <div class="stepSize">
-
-                <div class="label">
+            <div class="stepSize" v-if="pricingUsageType!=='FLAT'">
+                <!-- <div class="label">
                     <el-tooltip :content="$t('general.stepSizeToolTip')" placement="top">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                     </el-tooltip>
                     {{ $t('general.stepSize') }}
                     <span style="color:red"><strong>* </strong></span>
-                </div>
-                <div class="info">
+                </div> -->
+                <div class="info" v-if="reservationUsageType!=='FLAT'">
+                    <el-tooltip :content="$t('general.stepSizeToolTip')" placement="top">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </el-tooltip>
+                    <span>{{ $t(`general.billedPer`) }}</span>
                     <el-input-number class="inputFilter" v-model="stepSize" :controls="false" @change="updateData"></el-input-number>
+                    <span>{{ pricingUsageType==='ENERGY' || pricingUsageType==='TIME' ?$t(`general.${pricingUsageType?.toLowerCase()}Step`):$t(`general.timeStep`) }}</span><span style="color:red"><strong>* </strong></span>
                 </div>
             </div>
         </div>
@@ -63,11 +72,14 @@
     </div>
 </template>
 <script>
+import { getCurrencySymbolsFromCurrencyCode } from "@/utils/function";
+
 export default {
     props: {
         usageCollapseIndex: Number,
         totalUsageCollapseIndex: Number,
-        eachPriceComponent: Object
+        eachPriceComponent: Object,
+        currency: String
     },
     emits: ["emitPriceUsageData", "deletePricingUsageData"],
     data() {
@@ -91,6 +103,11 @@ export default {
                 { name: "RESERVATION_EXPIRES" }
             ]
         };
+    },
+    computed: {
+        getCurrencySymbol() {
+            return (item) => getCurrencySymbolsFromCurrencyCode(item);
+        }
     },
     watch: {
         eachPriceComponent: function () {
@@ -145,7 +162,7 @@ export default {
                         ? this.reservationUsageType
                         : this.pricingUsageType,
                 vat: this.vat,
-                stepSize: this.stepSize,
+                stepSize: this.pricingUsageType === "FLAT" ? 0 : this.stepSize,
                 price: this.price,
                 isReservationTypePresent:
                     this.pricingUsageType === "RESERVATION",
@@ -178,11 +195,29 @@ export default {
     .reservationOptions {
         display: flex;
     }
+    .radioInfo {
+        margin-top: 2px;
+    }
     .otherInfo {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
         .inputFilter {
             width: 115px;
+        }
+        .info {
+            margin-top: 5px;
+            span {
+                margin-left: 5px;
+            }
+        }
+        .stepSize {
+            .info {
+                span:first-of-type {
+                    margin-left: 2px;
+                    margin-right: 5px;
+                }
+            }
         }
     }
     .actions {

@@ -29,15 +29,32 @@
                             <div v-for="index in scope.row.elements.length" :key="index">
                                 <el-table :data="scope.row.elements[index-1].priceComponents">
                                     <el-table-column :label="$t('general.pricingUsage')">
-                                        <el-table-column prop="type" :label="$t('general.type')" :min-width="1"></el-table-column>
-                                        <el-table-column prop="price" :label="$t('menu.tariff')" :min-width="1"></el-table-column>
-                                        <el-table-column prop="vat" :label="$t('general.vat')" :min-width="1"></el-table-column>
-                                        <el-table-column prop="stepSize" :label="$t('general.stepSize')" :min-width="1"></el-table-column>
+                                        <el-table-column v-if="!scope.row.elements[index-1].restrictions.reservation" :label="$t('general.type')" width="200">
+                                            <template slot-scope="scope">
+                                                {{$t(`general.${scope.row.type.toLowerCase()}PriceUsage`)}}
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column v-if="scope.row.elements[index-1].restrictions.reservation && scope.row.elements[index-1].restrictions.reservation==='RESERVATION'" :label="$t('general.type')" width="200">
+                                            <template slot-scope="scope">
+                                                {{scope.row.type==='FLAT'? $t('general.reservationFlatPriceUsage'):$t('general.reservationTimePriceUsage')}}
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column v-if="scope.row.elements[index-1].restrictions.reservation && scope.row.elements[index-1].restrictions.reservation==='RESERVATION_EXPIRES'" :label="$t('general.type')" width="200">
+                                            <template slot-scope="scope">
+                                                {{scope.row.type==='FLAT'? $t('general.reservation_expiresFlatPriceUsage'):$t('general.reservation_expiresTimePriceUsage')}}
+                                            </template>
+                                        </el-table-column>
+                                        <!-- <el-table-column v-if="scope.row.elements[index-1].restrictions.reservation" prop="type" :label="$t('general.reservationUsage')" width="200"></el-table-column>
+                                        <el-table-column v-if="scope.row.elements[index-1].restrictions.reservation" :label="$t('general.reservationType')" width="200">{{ scope.row.elements[index-1].restrictions.reservation }}</el-table-column> -->
+                                        <el-table-column prop="price" :label="$t('menu.tariff')" width="200"></el-table-column>
+                                        <el-table-column prop="vat" :label="$t('general.vat') + ' (%)'" width="200"></el-table-column>
+                                        <el-table-column prop="stepSize" :label="$t('general.stepSize')" width="200"></el-table-column>
+
                                     </el-table-column>
                                 </el-table>
-                                <el-table :data="[scope.row.elements[index-1].restrictions]">
-                                    <el-table-column :label="$t('general.pricingConditions')">
-                                        <!-- <el-table-column prop="startTime" :label="$t('general.startTime')" :min-width="1"></el-table-column>
+                                <!-- <el-table :data="[scope.row.elements[index-1].restrictions]">
+                                    <el-table-column :label="$t('general.pricingConditions')"> -->
+                                <!-- <el-table-column prop="startTime" :label="$t('general.startTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="endTime" :label="$t('general.endTime')" :min-width="1"></el-table-column>
                                         <el-table-column prop="startDate" :label="$t('general.startDate')" :min-width="1"></el-table-column>
                                         <el-table-column prop="endDate" :label="$t('general.endDate')" :min-width="1"></el-table-column>
@@ -50,16 +67,16 @@
                                         <el-table-column prop="minDuration" :label="$t('general.minDuration')" :min-width="1"></el-table-column>
                                         <el-table-column prop="maxDuration" :label="$t('general.maxDuration')" :min-width="1"></el-table-column>
                                         <el-table-column prop="dayOfWeek" :label="$t('general.dayOfWeek')" :min-width="1"></el-table-column> -->
-                                        <el-table-column prop="reservation" :label="$t('chargingStation.reservation')" :min-width="1"></el-table-column>
+                                <!-- <el-table-column prop="reservation" :label="$t('chargingStation.reservation')" width="150"></el-table-column>
                                     </el-table-column>
-                                </el-table>
+                                </el-table> -->
                             </div>
                         </template>
                     </el-table-column>
 
-                    <el-table-column prop="name" :label="$t('general.name')" :min-width="2"></el-table-column>
-                    <el-table-column prop="currency" :label="$t('general.currency')" :min-width="1"></el-table-column>
-                    <el-table-column prop="type" :label="$t('general.type')" :min-width="2"></el-table-column>
+                    <el-table-column prop="name" :label="$t('general.name')" width="300"></el-table-column>
+                    <el-table-column prop="currency" :label="$t('general.currency')" width="250"></el-table-column>
+                    <!-- <el-table-column prop="type" :label="$t('general.type')" width="200"></el-table-column> -->
                     <!-- <el-table-column :min-width="2" :label="$t('general.minPrice')">
                         <el-table-column :label="$t('general.excludingVat')" :min-width="1">
                             <template slot-scope="scope">
@@ -104,10 +121,20 @@
                             {{ scope.row.modified?getLocTime(scope.row.modified):'' }}
                         </template>
                     </el-table-column>
-                    <el-table-column :label="$t('general.action')" :width="130" v-if="permissionEditAble">
+                    <el-table-column :label="$t('general.action')" width="450" v-if="permissionEditAble">
                         <template slot-scope="scope">
                             <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
                             <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-tooltip placement="top" popper-class="tableInfoTooltip">
+                                <div slot="content">
+                                    <el-table :data="tableInfoData">
+                                        <el-table-column prop="type" :label="$t('general.type')" width="200"> </el-table-column>
+                                        <el-table-column prop="price" :label="$t('menu.tariff')" width="150"> </el-table-column>
+                                        <el-table-column prop="stepSize" :label="$t('general.stepSize') + ' ('+ $t('general.billedPer') + ')'" width="150"> </el-table-column>
+                                    </el-table>
+                                </div>
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            </el-tooltip>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -171,7 +198,49 @@ export default {
                 startDateTimeBefore: null,
                 endDateTimeAfter: null,
                 endDateTimeBefore: null
-            }
+            },
+            tableInfoData: [
+                {
+                    type: i18n.t("general.timePriceUsage"),
+                    price: i18n.t("general.timeDesc"),
+                    stepSize: i18n.t("general.timeStep")
+                },
+                {
+                    type: i18n.t("general.flatPriceUsage"),
+                    price: i18n.t("general.flatDesc"),
+                    stepSize: null
+                },
+                {
+                    type: i18n.t("general.parking_timePriceUsage"),
+                    price: i18n.t("general.timeDesc"),
+                    stepSize: i18n.t("general.timeStep")
+                },
+                {
+                    type: i18n.t("general.energyPriceUsage"),
+                    price: i18n.t("general.energyDesc"),
+                    stepSize: i18n.t("general.energyStep")
+                },
+                {
+                    type: i18n.t("general.reservationTimePriceUsage"),
+                    price: i18n.t("general.timeDesc"),
+                    stepSize: i18n.t("general.timeStep")
+                },
+                {
+                    type: i18n.t("general.reservationFlatPriceUsage"),
+                    price: i18n.t("general.reservationDesc"),
+                    stepSize: null
+                },
+                {
+                    type: i18n.t("general.reservation_expiresTimePriceUsage"),
+                    price: i18n.t("general.timeDesc"),
+                    stepSize: i18n.t("general.timeStep")
+                },
+                {
+                    type: i18n.t("general.reservation_expiresFlatPriceUsage"),
+                    price: i18n.t("general.reservationDesc"),
+                    stepSize: null
+                }
+            ]
         };
     },
     computed: {
@@ -336,6 +405,14 @@ export default {
     margin: 0px;
 }
 .actionFunction {
+    margin-left: 10px;
+}
+.fa-info-circle {
+    color: #0263ff;
+    width: 24px;
+    height: 24px;
+    font-size: 20px;
+    margin-top: 4px;
     margin-left: 10px;
 }
 </style>
