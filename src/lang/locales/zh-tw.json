@@ -272,7 +272,20 @@
         "reservationTimePriceUsage": "預約時間",
         "reservationFlatPriceUsage": "預訂公寓",
         "reservation_expiresTimePriceUsage": "預約（過期）時間",
-        "reservation_expiresFlatPriceUsage": "預訂（過期）單位"
+        "reservation_expiresFlatPriceUsage": "預訂（過期）單位",
+        "totalCost": "總消耗",
+        "totalCostWithVat": "總成本（稅）",
+        "totalFixedCost": "固定成本",
+        "totalFixedCostWithVat": "固定成本（稅）",
+        "totalEnergy": "總能量",
+        "totalEnergyCost": "能源成本",
+        "totalTime": "總時間",
+        "totalTimeCost": "時間成本",
+        "totalTimeCostWithVat": "時間成本（稅）",
+        "totalParkingTime": "總停車時間",
+        "totalParkingCost": "停車費",
+        "totalReservationCost": "預訂費用",
+        "sessionDetails": "會議詳情"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

@@ -3,6 +3,54 @@
         <el-table :data="tableData" v-loading="isLoading" @expand-change="expandChange">
             <el-table-column type="expand">
                 <template slot-scope="scope">
+                    <el-table :data="[tableData[scope.row.index]]">
+                        <el-table-column :label="$t('menu.tariff')">
+                            <el-table-column prop="totalCost" :label="$t('general.totalCost')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalCost.excludingVat ?scope.row.totalCost.excludingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalCost" :label="$t('general.totalCostWithVat')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalCost.includingVat ?scope.row.totalCost.includingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalFixedCost" :label="$t('general.totalFixedCost')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalFixedCost.excludingVat ?scope.row.totalFixedCost.excludingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalFixedCost" :label="$t('general.totalFixedCostWithVat')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalFixedCost.includingVat ?scope.row.totalFixedCost.includingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalEnergyCost" :label="$t('general.totalEnergyCost')" width="130"></el-table-column>
+                            <el-table-column prop="totalTimeCost" :label="$t('general.totalTimeCost')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalTimeCost.excludingVat ?scope.row.totalTimeCost.excludingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalTimeCost" :label="$t('general.totalTimeCostWithVat')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalTimeCost.includingVat ?scope.row.totalTimeCost.includingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalParkingCost" :label="$t('general.totalParkingCost')" width="150"></el-table-column>
+                            <el-table-column prop="totalReservationCost" :label="$t('general.totalReservationCost')" width="150">
+                            </el-table-column>
+                        </el-table-column>
+                        <el-table-column :label="$t('general.sessionDetails')">
+                            <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalEnergy ? scope.row.totalEnergy.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalTime" :label="$t('general.totalTime') + '(s)'" width="130"></el-table-column>
+                            <el-table-column prop="totalParkingTime" :label="$t('general.totalParkingTime') + '(s)'" width="150"></el-table-column>
+
+                        </el-table-column>
+                    </el-table>
                     <el-table :data="reservationData[scope.row.index]" v-loading="reservationDataIsLoading">
                         <el-table-column :label="$t('chargingStation.reservation')">
                             <el-table-column prop="id" label="ID" width="100"></el-table-column>

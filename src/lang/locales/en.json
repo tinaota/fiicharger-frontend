@@ -272,7 +272,20 @@
         "reservationTimePriceUsage": "Reservation Time",
         "reservationFlatPriceUsage": "Reservation Flat",
         "reservation_expiresTimePriceUsage": "Reservation (Expired) Time",
-        "reservation_expiresFlatPriceUsage": "Reservation (Expired) Flat"
+        "reservation_expiresFlatPriceUsage": "Reservation (Expired) Flat",
+        "totalCost": "Total Cost",
+        "totalCostWithVat": "Total Cost(Tax)",
+        "totalFixedCost": "Fixed Cost",
+        "totalFixedCostWithVat": "Fixed Cost(Tax)",
+        "totalEnergy": "Total Energy",
+        "totalEnergyCost": "Energy Cost",
+        "totalTime": "Total Time",
+        "totalTimeCost": "Time Cost",
+        "totalTimeCostWithVat": "Time Cost(Tax)",
+        "totalParkingTime": "Total Parking Time",
+        "totalParkingCost": "Parking Cost",
+        "totalReservationCost": "Reservation Cost",
+        "sessionDetails": "Session Details"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

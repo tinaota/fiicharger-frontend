@@ -272,7 +272,20 @@
         "reservationTimePriceUsage": "Thời gian đặt trước",
         "reservationFlatPriceUsage": "Căn hộ đặt trước",
         "reservation_expiresTimePriceUsage": "Thời gian đặt trước (đã hết hạn)",
-        "reservation_expiresFlatPriceUsage": "Đặt trước (Đã hết hạn) Căn hộ"
+        "reservation_expiresFlatPriceUsage": "Đặt trước (Đã hết hạn) Căn hộ",
+        "totalCost": "Tổng chi phí",
+        "totalCostWithVat": "Tổng chi phí (Thuế)",
+        "totalFixedCost": "Chi phí cố định",
+        "totalFixedCostWithVat": "Chi phí cố định (Thuế)",
+        "totalEnergy": "Tổng năng lượng",
+        "totalEnergyCost": "Chi phí năng lượng",
+        "totalTime": "Tổng thời gian",
+        "totalTimeCost": "Chi phí thời gian",
+        "totalTimeCostWithVat": "Chi phí thời gian (Thuế)",
+        "totalParkingTime": "Tổng thời gian đỗ xe",
+        "totalParkingCost": "Chi phí đỗ xe",
+        "totalReservationCost": "Chi phí đặt trước",
+        "sessionDetails": "Chi tiết phiên"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

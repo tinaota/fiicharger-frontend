@@ -272,7 +272,20 @@
         "reservationTimePriceUsage": "预约时间",
         "reservationFlatPriceUsage": "预订公寓",
         "reservation_expiresTimePriceUsage": "预约（过期）时间",
-        "reservation_expiresFlatPriceUsage": "预订（过期）单位"
+        "reservation_expiresFlatPriceUsage": "预订（过期）单位",
+        "totalCost": "总消耗",
+        "totalCostWithVat": "总成本（税）",
+        "totalFixedCost": "固定成本",
+        "totalFixedCostWithVat": "固定成本（税）",
+        "totalEnergy": "总能量",
+        "totalEnergyCost": "能源成本",
+        "totalTime": "总时间",
+        "totalTimeCost": "时间成本",
+        "totalTimeCostWithVat": "时间成本（税）",
+        "totalParkingTime": "总停车时间",
+        "totalParkingCost": "停车费",
+        "totalReservationCost": "预订费用",
+        "sessionDetails": "会议详情"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

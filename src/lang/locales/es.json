@@ -272,7 +272,20 @@
         "reservationTimePriceUsage": "Tiempo de reserva",
         "reservationFlatPriceUsage": "Piso de Reserva",
         "reservation_expiresTimePriceUsage": "Tiempo de reserva (vencido)",
-        "reservation_expiresFlatPriceUsage": "Reserva (caducada) Plana"
+        "reservation_expiresFlatPriceUsage": "Reserva (caducada) Plana",
+        "totalCost": "Coste total",
+        "totalCostWithVat": "Coste total (impuestos)",
+        "totalFixedCost": "Costo fijo",
+        "totalFixedCostWithVat": "Coste fijo (Impuesto)",
+        "totalEnergy": "Energía Total",
+        "totalEnergyCost": "Costo energético",
+        "totalTime": "Tiempo Total",
+        "totalTimeCost": "Costo de tiempo",
+        "totalTimeCostWithVat": "Costo de tiempo (impuestos)",
+        "totalParkingTime": "Tiempo total de estacionamiento",
+        "totalParkingCost": "Costo de estacionamiento",
+        "totalReservationCost": "Costo de Reserva",
+        "sessionDetails": "Detalles de la sesión"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
