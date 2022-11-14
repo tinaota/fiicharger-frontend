@@ -1410,6 +1410,23 @@ input[type="number"] {
     }
 }
 
+// hide table headers in tariff page
+.tariff {
+    .el-table {
+        .el-table {
+            margin-bottom: 0px;
+            tr {
+                background: transparent;
+            }
+        }
+        .el-table__expanded-cell > div:not(:first-child) {
+            .el-table__header-wrapper {
+                display: none;
+            }
+        }
+    }
+}
+
 .tableInfoTooltip {
     padding: 3px !important;
 }
