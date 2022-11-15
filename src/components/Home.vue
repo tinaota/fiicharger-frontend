@@ -42,7 +42,7 @@
             <div class="body_section">
                 <div class="header_section">
                     <div class="left_header_info" v-if="!navigationDrawer.isOpen">
-                        <button class="drawer-closeBtn hidden" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen = true">
+                        <button class="drawer-closeBtn hidden hamburgerOpen" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen = true">
                             {{ navigationDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
                         </button>
                         <!-- <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>-->
@@ -430,6 +430,10 @@ export default {
     display: flex;
     width: 100%;
     align-items: center;
+    .hamburgerOpen {
+        padding: 0;
+        color: inherit
+    }
 }
 .header-info {
     text-align: right;
