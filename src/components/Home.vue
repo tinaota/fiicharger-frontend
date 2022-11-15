@@ -4,12 +4,10 @@
             <div v-show="navigationDrawer.isOpen" class="navigation-drawer slide-in">
                 <div class="main-nav-fii">
                     <div class="main_logo_img">
-                        <div>
-                            <img :src="systemLogo">
-                            <button class="drawer-closeBtn hidden_close" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen=false">
-                                {{ navigationDrawer.isOpen ? `X ` : `X` }}
-                            </button>
-                        </div>
+                        <img :src="systemLogo">
+                        <button class="drawer-closeBtn hidden_close" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen=false">
+                            {{ navigationDrawer.isOpen ? `X ` : `X` }}
+                        </button>
                     </div>
                     <div class="main-nav">
                         <el-menu id="list-wraper" ref="menuCollapsed" unique-opened router :default-active="routerName" class="el-menu-vertical-demo home-menu" @select="handleMenuSelect" :collapse="isCollapse">
@@ -432,7 +430,7 @@ export default {
     align-items: center;
     .hamburgerOpen {
         padding: 0;
-        color: inherit
+        color: inherit;
     }
 }
 .header-info {
@@ -505,9 +503,10 @@ export default {
 .hidden_close {
     float: right;
     background: transparent;
-    font-size: 10px;
+    font-size: 15px;
     margin-left: 10px;
     border: none;
+    color: inherit;
 }
 
 .main_class_header {
@@ -539,7 +538,7 @@ export default {
 .main-nav-fii {
     display: flex;
     flex-direction: column;
-    max-width: 15rem;
+    max-width: 16rem;
     min-width: 12rem;
     overflow: hidden;
     background: rgba(228, 230, 234, 0.95);

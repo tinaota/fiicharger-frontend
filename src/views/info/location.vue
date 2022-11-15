@@ -217,7 +217,8 @@ export default {
     },
     mounted() {
         const that = this;
-        let halfHintBarWidth = this.$jQuery(".hint-bar").width() / 2 + 12;
+        let halfHintBarWidth = this.$jQuery(".hint-bar").width();
+        console.log(halfHintBarWidth)
         this.$jQuery(".hint-bar").css(
             "left",
             `calc(50vw + 104px -  ${halfHintBarWidth}px)`
@@ -651,6 +652,13 @@ width: 105%;
                     }
                 }
             }
+        }
+    }
+}
+@media only screen and (max-width: 1280px) {
+    .drawer-closeBtn {
+        &.open {
+            right: 338px !important;
         }
     }
 }
