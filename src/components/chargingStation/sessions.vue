@@ -40,20 +40,29 @@
                             <el-table-column prop="totalReservationCost" :label="$t('general.totalReservationCost')" width="150">
                             </el-table-column>
                         </el-table-column>
+                    </el-table>
+                    <el-table :data="[tableData[scope.row.index]]">
                         <el-table-column :label="$t('general.sessionDetails')">
-                            <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="130">
+                            <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="200">
                                 <template slot-scope="scope">
                                     {{scope.row.totalEnergy ? scope.row.totalEnergy.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalTime" :label="$t('general.totalTime') + '(s)'" width="130"></el-table-column>
-                            <el-table-column prop="totalParkingTime" :label="$t('general.totalParkingTime') + '(s)'" width="150"></el-table-column>
-
+                            <el-table-column prop="totalTime" :label="$t('general.totalTime')" width="150">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalTime? getConvertedTime(scope.row.totalTime):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="totalParkingTime" :label="$t('general.totalParkingTime')" width="200">
+                                <template slot-scope="scope">
+                                    {{scope.row.totalParkingTime===0?'0s' :getConvertedTime(scope.row.totalParkingTime)}}
+                                </template>
+                            </el-table-column>
                         </el-table-column>
                     </el-table>
                     <el-table :data="reservationData[scope.row.index]" v-loading="reservationDataIsLoading">
                         <el-table-column :label="$t('chargingStation.reservation')">
-                            <el-table-column prop="id" label="ID" width="100"></el-table-column>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
                             <el-table-column prop="connectorId" :label="$t('chargingStation.connectorId')" width="150"></el-table-column>
                             <el-table-column prop="idTag" :label="$t('menu.idTag')" width="180"></el-table-column>
                             <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" width="150"></el-table-column>
@@ -73,7 +82,7 @@
                                     {{ scope.row.cancelled ? getLocTime(scope.row.cancelled) : '' }}
                                 </template>
                             </el-table-column>
-                            <el-table-column :label="$t('chargingStation.usedDateTime')" width="250">
+                            <el-table-column :label="$t('chargingStation.usedDateTime')" width="240">
                                 <template slot-scope="scope">
                                     {{ scope.row.used ? getLocTime(scope.row.used) : '' }}
                                 </template>
@@ -83,8 +92,8 @@
 
                     <el-table :data="transactionData[scope.row.index]" v-loading="transactionDataIsLoading">
                         <el-table-column :label="$t('menu.transaction')">
-                            <el-table-column prop="id" label="ID" width="100"></el-table-column>
-                            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="120"></el-table-column>
+                            <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                            <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="100"></el-table-column>
                             <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200"></el-table-column>
                             <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200"></el-table-column>
                             <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" width="180">
@@ -121,10 +130,23 @@
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
             <el-table-column prop="idTagValue" :label="$t('menu.idTag')" width="250"></el-table-column>
             <el-table-column prop="authMethod" :label="$t('general.authMethod')" width="200"></el-table-column>
-            <el-table-column prop="status" :label="$t('general.status')" width="200"></el-table-column>
-            <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" width="200"></el-table-column>
-            <el-table-column prop="reservationId" :label="$t('chargingStation.reservationId')" width="200"></el-table-column>
-            <el-table-column prop="transactionId" :label="$t('chargingStation.transactionId')" width="200"></el-table-column>
+            <el-table-column prop="status" :label="$t('general.status')" width="180"></el-table-column>
+            <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" width="180"></el-table-column>
+            <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="130">
+                <template slot-scope="scope">
+                    {{scope.row.totalEnergy ? scope.row.totalEnergy.toFixed(2):''}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="totalTime" :label="$t('general.totalTime')" width="150">
+                <template slot-scope="scope">
+                    {{scope.row.totalTime? getConvertedTime(scope.row.totalTime):''}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="totalCost" :label="$t('general.totalCostWithVat')" width="130">
+                <template slot-scope="scope">
+                    {{scope.row.totalCost.includingVat ?scope.row.totalCost.includingVat.toFixed(2):''}}
+                </template>
+            </el-table-column>
             <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="200">
                 <template slot-scope="scope">
                     {{ scope.row.startTimestamp!==null ?getLocTime(scope.row.startTimestamp):'' }}
@@ -143,7 +165,10 @@
 </template>
 
 <script>
-import { transformUtcToLocTime } from "@/utils/function";
+import {
+    transformUtcToLocTime,
+    transformSecondsToReadableForm
+} from "@/utils/function";
 import {
     $HTTP_getAllSessionsData,
     $HTTP_getAllReservationById,
@@ -176,6 +201,9 @@ export default {
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        getConvertedTime() {
+            return (item) => transformSecondsToReadableForm(item);
         }
     },
     watch: {

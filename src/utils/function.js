@@ -36,6 +36,20 @@ export const transformUtcToLocTimeForGraphs = function (date, format = "MMM DD H
     return moment(utcDate).local().format(format);
 }
 
+export const transformSecondsToReadableForm = function (timeInSeconds) {
+    timeInSeconds = Number(timeInSeconds);
+    var days = Math.floor(timeInSeconds / (3600 * 24));
+    var hours = Math.floor(timeInSeconds % (3600 * 24) / 3600);
+    var minutes = Math.floor(timeInSeconds % 3600 / 60);
+    var seconds = Math.floor(timeInSeconds % 60);
+
+    var dayDisplay = days > 0 ? days + "d " : "";
+    var hourDisplay = hours > 0 ? hours + "h " : "";
+    var minuteDisplay = minutes > 0 ? minutes + "m " : "";
+    var secondDisplay = seconds > 0 ? seconds + "s" : "";
+    return (dayDisplay + hourDisplay + minuteDisplay + secondDisplay).replace(/,\s*$/, "")
+}
+
 export const transformToSymbols = function (name) {
     let symbol;
     switch (name) {
