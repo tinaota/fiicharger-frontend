@@ -26,7 +26,7 @@
                                                     <span>{{ $t(child.name) }}</span>
                                                 </template>
                                                 <template v-for="subChild in child.children">
-                                                    <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}">{{ $t(subChild.name) }}</el-menu-item>
+                                                    <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}" @click="closeNavigation">{{ $t(subChild.name) }}</el-menu-item>
                                                 </template>
                                             </el-submenu>
                                         </template>
@@ -288,6 +288,9 @@ export default {
         setScrollBar(".home-menu", this);
     },
     methods: {
+        closeNavigation() {
+            this.navigationDrawer.isOpen = false;
+        },
         setRoles(userData) {
             // set role(highest one)
             if (userData?.roles?.indexOf("Super") != -1) {
