@@ -11,7 +11,7 @@
                 <el-input :placeholder="$t('userAccount.operatorName')" v-model="filter.tmpContactPersion" @change="fetchData('c')" clearable>
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
-                <el-button class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
+                <el-button class="right" aria-label="plus icon" icon="el-icon-plus" @click="openDialog(0)"></el-button>
             </div>
             <el-table :data="tableData" class="moreCol" v-loading="isLoading" style="width: 100%">
                 <el-table-column :label="$t('userAccount.operatorName')" width="300">
@@ -22,7 +22,7 @@
 
                 <el-table-column :label="$t('userAccount.logo')" width="300">
                     <template slot-scope="scope">
-                        <img :src="getImageUrl(scope.row.picture)" class="logo" :style="{maxHeight: '50px',maxWidth:'50px'}">
+                        <img v-if="scope.row.picture" :src="getImageUrl(scope.row.picture)" class="logo" :style="{maxHeight: '50px',maxWidth:'50px'}" alt="userAccount">
                     </template>
                 </el-table-column>
 
@@ -46,10 +46,10 @@
 
                 <el-table-column :label="$t('general.action')" width="182">
                     <template slot-scope="scope">
-                        <el-button class="no-bg i" icon="el-icon-lock" @click="openPwdDialog(scope.row.id)"></el-button>
-                        <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                        <el-button class="no-bg i" icon="el-icon-user" @click="openRolesDialog(scope.row)"></el-button>
-                        <el-button class="no-bg delete" @click="openDeleteDialog(scope.row)"></el-button>
+                        <el-button class="no-bg i" icon="el-icon-lock" aria-label="password icon" @click="openPwdDialog(scope.row.id)"></el-button>
+                        <el-button class="no-bg edit" aria-label="edit icon" @click="openDialog(1, scope.row)"></el-button>
+                        <el-button class="no-bg i" icon="el-icon-user" aria-label="roles icon" @click="openRolesDialog(scope.row)"></el-button>
+                        <el-button class="no-bg delete" aria-label="delete icon" @click="openDeleteDialog(scope.row)"></el-button>
 
                     </template>
                 </el-table-column>

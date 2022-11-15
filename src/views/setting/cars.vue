@@ -13,7 +13,7 @@
                     <el-select class="select-small" v-model="filter.carModel" :placeholder="$t('cars.model')" v-loading="carModelList.isLoading" @change="fetchData('models')" filterable clearable>
                         <el-option v-for="(item, idx) in carModelList.data" :label="item" :key="idx" :value="item"></el-option>
                     </el-select>
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openCreateDialog()"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus icon" class="right" icon="el-icon-plus" @click="openCreateDialog()"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column prop="id" label="ID" width="100"></el-table-column>
@@ -35,9 +35,9 @@
                     <el-table-column prop="fastChargePlugType" :label="$t('cars.dcPlug')" width="200"></el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="140">
                         <template slot-scope="scope">
-                            <el-button class="no-bg detail" @click="openDetailDialog(scope.row.id)"></el-button>
-                            <el-button class="no-bg edit" @click="openEditDialog(scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="openDeleteDialog(scope.row)"></el-button>
+                            <el-button class="no-bg detail" aria-label="detail icon" @click="openDetailDialog(scope.row.id)"></el-button>
+                            <el-button class="no-bg edit" aria-label="edit icon" @click="openEditDialog(scope.row)"></el-button>
+                            <el-button class="no-bg delete" aria-label="delete icon" @click="openDeleteDialog(scope.row)"></el-button>
                         </template>
                     </el-table-column>
                     <el-table-column v-else :label="$t('general.action')" width="70">

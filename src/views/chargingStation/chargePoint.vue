@@ -26,14 +26,14 @@
                     <el-select class="select-small long" :placeholder="$t('general.type')" v-model="filter.powerType" @change="fetchData('s')" clearable>
                         <el-option v-for="(item, idx) in powerTypeList" :label="item.name" :key="idx" :value="item.value"></el-option>
                     </el-select>
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus button" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column :label="$t('chargingStation.chargerId')" width="320">
                         <template slot-scope="scope">
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                             <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
-                                <el-button class="no-bg" @click="handleShowDialog(scope.row)"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <el-button aria-label="location" class="no-bg" @click="handleShowDialog(scope.row)"><i class="fa fa-map-marker" aria-hidden="true"></i>
                                 </el-button>
                             </el-tooltip>
                         </template>

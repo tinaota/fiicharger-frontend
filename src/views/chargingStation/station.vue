@@ -20,7 +20,7 @@
                     <el-select class="select-small" v-model="filter.status" :placeholder="$t('general.status')" @change="fetchData('status')" filterable clearable>
                         <el-option v-for="item in statusList.data" :label="$t(`general.${item.toLowerCase()}`)" :key="item" :value="item"></el-option>
                     </el-select>
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus icon" class="right" icon="el-icon-plus" @click="openDialog(0)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column :label="$t('chargingStation.stationName')" width="200">
@@ -35,7 +35,7 @@
                             <div class="address">{{ scope.row.address.street +', '+ scope.row.address.city +', '+ scope.row.address.state }}</div>
                             <div class="position">
                                 <el-tooltip :content="scope.row.coordinates.longitude+','+scope.row.coordinates.latitude" placement="bottom" effect="light" popper-class="custom">
-                                    <el-button class="no-bg loc" @click="handleShowDialog(scope.row)"></el-button>
+                                    <el-button class="no-bg loc" aria-label="location" @click="handleShowDialog(scope.row)"></el-button>
                                 </el-tooltip>
                             </div>
                         </template>
@@ -59,7 +59,7 @@
                             <el-button class="no-bg delete" @click="deleteStation(scope.row.id, scope.row.name)"></el-button>
                         </template>
                     </el-table-column> -->
-                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
+                    <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="146">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
                                 <el-button class="action_chargers_stations">

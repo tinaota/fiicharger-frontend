@@ -13,14 +13,14 @@
         </div> -->
         <div class="hint-bar">
             <div class="item">
-                <img :src="icon.normal">
-                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)">{{ statisticsInfo.connectedCount }}</span>
+                <img :src="icon.normal" alt="connectedIcon">
+                <span class="num" v-if="statisticsInfo.connectedCount !== 0" @click="goChargePointPage(`Connected`)" aria-label="connectedIconCount">{{ statisticsInfo.connectedCount }}</span>
                 <span class="num" v-else>0</span>
                 <span class="text">{{ $t('general.connected') }}</span>
             </div>
             <div class="item">
-                <img :src="icon.serviceUnavailable">
-                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)">{{ statisticsInfo.disconnectedCount }}</span>
+                <img :src="icon.serviceUnavailable" alt="disconnectedIcon">
+                <span class="num" v-if="statisticsInfo.disconnectedCount !== 0" @click="goChargePointPage(`Disconnected`)" aria-label="disconnectedIconCount">{{ statisticsInfo.disconnectedCount }}</span>
                 <span class="num" v-else>0</span>
                 <span class="text">{{ $t('general.disconnected') }}</span>
             </div>
@@ -388,7 +388,6 @@ export default {
                 labelStyle: { opacity: 1.0 },
                 icon: markerImage
             });
-            // console.log(item);
 
             marker.addListener("click", () => {
                 that.changeChargeBoxDrawerData(false, this.filter.stationId);
@@ -519,7 +518,7 @@ export default {
     }
 }
 .google-map {
-width: 105%;
+    width: 105%;
     height: 100vh;
     background: #a1c1fb;
     z-index: 0;

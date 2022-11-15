@@ -21,7 +21,7 @@
                     </el-date-picker>
                     <el-date-picker class="tariff-date-time" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="fetchData()">
                     </el-date-picker> -->
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus icon" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol" v-loading="isLoading">
                     <el-table-column type="expand">
@@ -122,8 +122,8 @@
                     </el-table-column>
                     <el-table-column :label="$t('general.action')" width="450" v-if="permissionEditAble">
                         <template slot-scope="scope">
-                            <el-button class="no-bg edit" @click="openDialog('edit', scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg edit" aria-label="edit icon" @click="openDialog('edit', scope.row)"></el-button>
+                            <el-button class="no-bg delete" aria-label="delete icon" @click="openDialog('delete',scope.row)"></el-button>
                             <el-tooltip placement="top" popper-class="tableInfoTooltip">
                                 <div slot="content">
                                     <el-table :data="tableInfoData">

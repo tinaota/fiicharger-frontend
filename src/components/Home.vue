@@ -47,7 +47,7 @@
                     </div>
                     <el-col class="header-info">
                         <div class="img-container">
-                            <img :src="userAvatar" />
+                            <img :src="userAvatar" alt="userAvatar" />
                         </div>
                         <el-dropdown trigger="click">
                             <div class="el-dropdown-link userinfo-inner">
@@ -60,7 +60,7 @@
                         <el-divider direction="vertical"></el-divider>
                         <el-dropdown trigger="click">
                             <div class="el-dropdown-link userinfo-inner img-container">
-                                <el-button class="no-bg i change-theme-icon el-icon-setting" :style="{color:isDark? '#ffa500':'#000000'}"></el-button>
+                                <el-button aria-label="settings" class="no-bg i change-theme-icon el-icon-setting" :style="{color:isDark? '#ffa500':'#000000'}"></el-button>
                             </div>
                             <el-dropdown-menu slot="dropdown" :class="isDark? 'home-settings dropdown-menu dark-theme':'home-settings dropdown-menu light-theme'">
                                 <el-menu :default-active="activeIndex" mode="vertical" collapse :class="isDark? 'dark-theme':'light-theme'">

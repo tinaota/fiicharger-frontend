@@ -7,7 +7,7 @@
             </el-breadcrumb>
             <div class="card-8 table-result">
                 <div class="filter">
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus icon" class="right" icon="el-icon-plus" @click="openDialog('create')"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
                     <el-table-column type="expand">
@@ -37,8 +37,8 @@
                     </el-table-column>
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="200">
                         <template slot-scope="scope">
-                            <el-button class="no-bg edit" @click="openDialog('edit',scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg edit" aria-label="edit icon" @click="openDialog('edit',scope.row)"></el-button>
+                            <el-button class="no-bg delete" aria-label="delete icon" @click="openDialog('delete',scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>

@@ -23,7 +23,7 @@
                     <el-select class="select-small long" :placeholder="$t('idTags.parentIdTagId')" v-model="filter.parentIdTagId" v-loading="isLoading" @change="fetchData('filter')" filterable clearable>
                         <el-option v-for="(item, idx) in parentIdTagIdList" :label="item.value" :key="idx" :value="item.id"></el-option>
                     </el-select>
-                    <el-button v-if="permissionEditAble" class="right" icon="el-icon-plus" @click="openDialog('create', tableData)"></el-button>
+                    <el-button v-if="permissionEditAble" aria-label="plus icon" class="right" icon="el-icon-plus" @click="openDialog('create', tableData)"></el-button>
                 </div>
                 <el-table :data="tableData" class="moreCol enable-row-click" v-loading="isLoading">
                     <el-table-column prop="value" label="ID" width="250"></el-table-column>
@@ -51,8 +51,8 @@
 
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="250">
                         <template slot-scope="scope">
-                            <el-button class="no-bg edit" @click="openDialog('edit',scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="openDialog('delete',scope.row)"></el-button>
+                            <el-button class="no-bg edit" aria-label="edit icon" @click="openDialog('edit',scope.row)"></el-button>
+                            <el-button class="no-bg delete" aria-label="delete icon" @click="openDialog('delete',scope.row)"></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
