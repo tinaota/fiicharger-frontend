@@ -17,7 +17,7 @@
         "stationDetail": "充電站資訊",
         "management": "管理",
         "chargePoint": "充電樁",
-        "chargingSession": "會議",
+        "chargingSession": "充電紀錄",
         "chargePointAlert": "警報",
         "setting": "設定",
         "memberAccount": "會員帳號",
@@ -47,7 +47,7 @@
         "analytics": "分析",
         "overview": "概述",
         "tariff": "價格",
-        "sessions": "會話"
+        "sessions": "充電紀錄"
     },
     "login": {
         "login": "登入",
@@ -273,19 +273,19 @@
         "reservationFlatPriceUsage": "預訂公寓",
         "reservation_expiresTimePriceUsage": "預約（過期）時間",
         "reservation_expiresFlatPriceUsage": "預訂（過期）單位",
-        "totalCost": "總消耗",
-        "totalCostWithVat": "總成本（稅）",
-        "totalFixedCost": "固定成本",
-        "totalFixedCostWithVat": "固定成本（稅）",
-        "totalEnergy": "總能量",
-        "totalEnergyCost": "能源成本",
+        "totalCost": "總費用",
+        "totalCostWithVat": "總費用（含稅）",
+        "totalFixedCost": "交易費",
+        "totalFixedCostWithVat": "交易費（含稅）",
+        "totalEnergy": "總電量",
+        "totalEnergyCost": "電量費",
         "totalTime": "總時間",
-        "totalTimeCost": "時間成本",
-        "totalTimeCostWithVat": "時間成本（稅）",
+        "totalTimeCost": "充電時間費",
+        "totalTimeCostWithVat": "充電時長費（含稅）",
         "totalParkingTime": "總停車時間",
         "totalParkingCost": "停車費",
-        "totalReservationCost": "預訂費用",
-        "sessionDetails": "會議詳情"
+        "totalReservationCost": "預約費",
+        "sessionDetails": "詳情"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

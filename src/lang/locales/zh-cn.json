@@ -17,7 +17,7 @@
         "stationDetail": "充电站资讯",
         "management": "管理",
         "chargePoint": "充电桩",
-        "chargingSession": "會議",
+        "chargingSession": "充电纪录",
         "chargePointAlert": "警報",
         "setting": "设定",
         "memberAccount": "会员帐号",
@@ -47,7 +47,7 @@
         "analytics": "分析",
         "overview": "概述",
         "tariff": "价格",
-        "sessions": "会话"
+        "sessions": "充电纪录"
     },
     "login": {
         "login": "登入",
@@ -273,19 +273,19 @@
         "reservationFlatPriceUsage": "预订公寓",
         "reservation_expiresTimePriceUsage": "预约（过期）时间",
         "reservation_expiresFlatPriceUsage": "预订（过期）单位",
-        "totalCost": "总消耗",
-        "totalCostWithVat": "总成本（税）",
-        "totalFixedCost": "固定成本",
-        "totalFixedCostWithVat": "固定成本（税）",
-        "totalEnergy": "总能量",
-        "totalEnergyCost": "能源成本",
+        "totalCost": "总费用",
+        "totalCostWithVat": "总费用（含税）",
+        "totalFixedCost": "交易费",
+        "totalFixedCostWithVat": "交易费（含税）",
+        "totalEnergy": "总电量",
+        "totalEnergyCost": "电量费",
         "totalTime": "总时间",
-        "totalTimeCost": "时间成本",
-        "totalTimeCostWithVat": "时间成本（税）",
+        "totalTimeCost": "充电时间费",
+        "totalTimeCostWithVat": "充电时间费（税）",
         "totalParkingTime": "总停车时间",
         "totalParkingCost": "停车费",
-        "totalReservationCost": "预订费用",
-        "sessionDetails": "会议详情"
+        "totalReservationCost": "预约费用",
+        "sessionDetails": "详情"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
