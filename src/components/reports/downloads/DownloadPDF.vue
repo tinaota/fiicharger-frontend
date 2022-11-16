@@ -20,6 +20,9 @@
         <div v-if="dropdownSelected==='idTags' && isDataDownloadComplete">
             <IdTagsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></IdTagsPDFTemplate>
         </div>
+        <div v-if="dropdownSelected==='reservations' && isDataDownloadComplete">
+            <ReservationsPDFTemplate :tableData="tableData" :dropdownSelected="dropdownSelected" @pdfDownloaded="pdfDownloaded"></ReservationsPDFTemplate>
+        </div>
     </div>
 </template>
 
@@ -31,7 +34,8 @@ import {
     $HTTP_getChargeStationsSummary,
     $HTTP_getChargeStationsOverallSummary,
     $HTTP_getAllTransactions,
-    $HTTP_getIdTagsList
+    $HTTP_getIdTagsList,
+    $HTTP_getReservation
 } from "@/api/api";
 import ChargePointsPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointPDFTemplate.vue";
 import ChargePointsUsagePDFTemplate from "@/components/reports/downloads/pdfTemplates/chargePointsUsagePDFTemplate.vue";
@@ -39,6 +43,7 @@ import ChargeStationsSummaryPDFTemplate from "@/components/reports/downloads/pdf
 import ChargeStationsSummaryOverallPDFTemplate from "@/components/reports/downloads/pdfTemplates/chargeStationsSummaryOverallPDFTemplate.vue";
 import TransactionsPDFTemplate from "@/components/reports/downloads/pdfTemplates/transactionsPDFTemplate.vue";
 import IdTagsPDFTemplate from "@/components/reports/downloads/pdfTemplates/idTagsPDFTemplate.vue";
+import ReservationsPDFTemplate from "@/components/reports/downloads/pdfTemplates/reservationsPDFTemplate.vue";
 export default {
     components: {
         ChargePointsPDFTemplate,
@@ -46,7 +51,8 @@ export default {
         ChargeStationsSummaryPDFTemplate,
         ChargeStationsSummaryOverallPDFTemplate,
         TransactionsPDFTemplate,
-        IdTagsPDFTemplate
+        IdTagsPDFTemplate,
+        ReservationsPDFTemplate
     },
     props: {
         filterParams: Object,
@@ -102,6 +108,8 @@ export default {
                 $API = $HTTP_getAllTransactions;
             } else if (this.dropdownSelected === "idTags") {
                 $API = $HTTP_getIdTagsList;
+            } else if (this.dropdownSelected === "reservations") {
+                $API = $HTTP_getReservation;
             }
             $API(params)
                 .then((res) => {

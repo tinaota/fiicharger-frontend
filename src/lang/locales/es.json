@@ -285,7 +285,11 @@
         "totalParkingTime": "Tiempo total de estacionamiento",
         "totalParkingCost": "Costo de estacionamiento",
         "totalReservationCost": "Costo de Reserva",
-        "sessionDetails": "Detalles de la sesión"
+        "sessionDetails": "Detalles de la sesión",
+        "createdBefore": "Creado antes",
+        "createdAfter": "Creado después",
+        "expiresBefore": "Caduca antes",
+        "expiresAfter": "Expira después de"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

@@ -218,7 +218,6 @@ export default {
     mounted() {
         const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width();
-        console.log(halfHintBarWidth)
         this.$jQuery(".hint-bar").css(
             "left",
             `calc(50vw + 104px -  ${halfHintBarWidth}px)`

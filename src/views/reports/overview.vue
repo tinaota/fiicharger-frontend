@@ -27,6 +27,9 @@
                 <div v-if="dropdownSelected ==='idTags'">
                     <IdTagsReport :filterParams="filterParams" dropdownSelected="idTags" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></IdTagsReport>
                 </div>
+                <div v-if="dropdownSelected ==='reservations'">
+                    <ReservationsReport :filterParams="filterParams" dropdownSelected="idTags" :downloadClicked="downloadCSVClicked || downloadPDFClicked" @emitFetchedData="updateReportsData" :sortingParams="sortingParams" @tableSorting="updateSortingParams"></ReservationsReport>
+                </div>
                 <!-- add remaining reports -->
 
                 <!-- add downloads option -->
@@ -46,13 +49,14 @@ import ChargeStationsSummaryReport from "@/components/reports/chargeStationsSumm
 import ChargeStationsOverallSummaryReport from "@/components/reports/chargeStationsOverallSummaryReport.vue";
 import TransactionsReport from "@/components/reports/transactionsReport.vue";
 import IdTagsReport from "@/components/reports/idTagsReport.vue";
+import ReservationsReport from "@/components/reports/reservationsReport.vue";
 import CommonFilter from "@/components/reports/filters/commonFilter.vue";
 import DownloadCSV from "@/components/reports/downloads/DownloadCSV.vue";
 import LoadingPDFComponent from "@/components/reports/downloads/LoadingPDFComponent.vue";
 // lazy loading downloadpdf component
 const DownloadPDF = () => ({
     component: import("@/components/reports/downloads/DownloadPDF.vue"),
-    loading: LoadingPDFComponent,
+    loading: LoadingPDFComponent
 });
 import { setScrollBar } from "@/utils/function";
 export default {
@@ -63,6 +67,7 @@ export default {
         ChargeStationsOverallSummaryReport,
         TransactionsReport,
         IdTagsReport,
+        ReservationsReport,
         CommonFilter,
         DownloadCSV,
         DownloadPDF

@@ -11,7 +11,8 @@ import {
     $HTTP_getChargeStationsSummary,
     $HTTP_getChargeStationsOverallSummary,
     $HTTP_getAllTransactions,
-    $HTTP_getIdTagsList
+    $HTTP_getIdTagsList,
+    $HTTP_getReservation
 } from "@/api/api";
 import Papa from "papaparse";
 export default {
@@ -61,6 +62,8 @@ export default {
                 $API = $HTTP_getAllTransactions;
             } else if (this.dropdownSelected === "idTags") {
                 $API = $HTTP_getIdTagsList;
+            } else if (this.dropdownSelected === "reservations") {
+                $API = $HTTP_getReservation;
             }
             $API(params)
                 .then((res) => {

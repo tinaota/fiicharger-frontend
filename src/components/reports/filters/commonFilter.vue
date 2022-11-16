@@ -15,6 +15,7 @@
         <el-select v-if="parentIdTagIdFilter" class="select-small" v-model="filter.parentIdTagId" :placeholder="$t('idTags.parentIdTagId')" v-loading="filter.parentIdTagIdList.isLoading" @change="updateParams" clearable>
             <el-option v-for="item in filter.parentIdTagIdList.data" :label="item.value" :key="item.value" :value="item.id"></el-option>
         </el-select>
+        <!-- ocpp id -->
         <el-input v-if="chargePointIdFilter" :placeholder="$t('chargingStation.charger')+ ' ID'" v-model="filter.chargePointId" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
@@ -31,6 +32,9 @@
         </el-select>
         <el-select v-if="isBoundToStationFilter" class="select-small" v-model="filter.isBoundToStation" :placeholder="$t('general.boundToStation')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
+        <el-select v-if="reservationStatusFilter" class="select-small" v-model="filter.reservationStatus" :placeholder="$t('general.status')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.reservationStatusList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
         <el-select v-if="connectionStatusFilter" class="select-small" v-model="filter.connectionStatus" :placeholder="$t('chargingStation.connectionStatus')" @change="updateParams" clearable>
             <el-option v-for="item in filter.connectionStatusList" :label="item" :key="item" :value="item"></el-option>
@@ -78,12 +82,24 @@
         </el-date-picker>
         <el-date-picker v-if="endDateTimeBeforeFilter" class="single-date-picker" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="updateParams">
         </el-date-picker>
+        <el-date-picker v-if="createdAfterFilter" class="single-date-picker" v-model="filter.createdAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.createdAfter')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="createdBeforeFilter" class="single-date-picker" v-model="filter.createdBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.createdBefore')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="expiresAfterFilter" class="single-date-picker" v-model="filter.expiresAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.expiresAfter')" @change="updateParams">
+        </el-date-picker>
+        <el-date-picker v-if="expiresBeforeFilter" class="single-date-picker" v-model="filter.expiresBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.expiresBefore')" @change="updateParams">
+        </el-date-picker>
     </div>
 </template>
 
 <script>
 import moment from "moment";
-import { $GLOBAL_PAGE_LIMIT, $POWER_TYPE_LIST, $CONNECTOR_TYPE_LIST } from "@/utils/global";
+import {
+    $GLOBAL_PAGE_LIMIT,
+    $POWER_TYPE_LIST,
+    $CONNECTOR_TYPE_LIST
+} from "@/utils/global";
 import { $HTTP_getIdTagsList, $HTTP_getStationList } from "@/api/api";
 export default {
     emits: ["updateDropdown", "updateParams"],
@@ -102,7 +118,7 @@ export default {
                     // "chargingProfileTemplates",
                     // "chargingProfiles",
                     "idTags",
-                    // "reservations",
+                    "reservations",
                     "transactions"
                 ],
                 isBoundToStation: null,
@@ -150,7 +166,19 @@ export default {
                 startDateTimeAfter: null,
                 startDateTimeBefore: null,
                 endDateTimeAfter: null,
-                endDateTimeBefore: null
+                endDateTimeBefore: null,
+                createdAfter: null,
+                createdBefore: null,
+                expiresAfter: null,
+                expiresBefore: null,
+                reservationStatus: "",
+                reservationStatusList: [
+                    "Accepted",
+                    "Faulted",
+                    "Occupied",
+                    "Rejected",
+                    "Unavailable"
+                ]
             }
         };
     },
@@ -176,11 +204,15 @@ export default {
             return (
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage" ||
-                this.filter.dropdownSelected === "transactions"
+                this.filter.dropdownSelected === "transactions" ||
+                this.filter.dropdownSelected === "reservations"
             );
         },
         connectorIdFilter() {
-            return this.filter.dropdownSelected === "transactions";
+            return (
+                this.filter.dropdownSelected === "transactions" ||
+                this.filter.dropdownSelected === "reservations"
+            );
         },
         chargePointNameFilter() {
             return (
@@ -205,6 +237,9 @@ export default {
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage"
             );
+        },
+        reservationStatusFilter() {
+            return this.filter.dropdownSelected === "reservations";
         },
         connectionStatusFilter() {
             return (
@@ -239,7 +274,10 @@ export default {
             );
         },
         startIdTagFilter() {
-            return this.filter.dropdownSelected === "transactions";
+            return (
+                this.filter.dropdownSelected === "transactions" ||
+                this.filter.dropdownSelected === "reservations"
+            );
         },
         stopIdTagFilter() {
             return this.filter.dropdownSelected === "transactions";
@@ -248,7 +286,10 @@ export default {
             return this.filter.dropdownSelected === "transactions";
         },
         isActiveFilter() {
-            return this.filter.dropdownSelected === "transactions";
+            return (
+                this.filter.dropdownSelected === "transactions" ||
+                this.filter.dropdownSelected === "reservations"
+            );
         },
         isExpiredFilter() {
             return this.filter.dropdownSelected === "idTags";
@@ -270,6 +311,18 @@ export default {
         },
         endDateTimeBeforeFilter() {
             return this.filter.dropdownSelected === "transactions";
+        },
+        createdAfterFilter() {
+            return this.filter.dropdownSelected === "reservations";
+        },
+        createdBeforeFilter() {
+            return this.filter.dropdownSelected === "reservations";
+        },
+        expiresAfterFilter() {
+            return this.filter.dropdownSelected === "reservations";
+        },
+        expiresBeforeFilter() {
+            return this.filter.dropdownSelected === "reservations";
         },
         dateRangeFilter() {
             return (
@@ -380,7 +433,12 @@ export default {
                 startDateTimeAfter: null,
                 startDateTimeBefore: null,
                 endDateTimeAfter: null,
-                endDateTimeBefore: null
+                endDateTimeBefore: null,
+                createdAfter: null,
+                createdBefore: null,
+                expiresAfter: null,
+                expiresBefore: null,
+                reservationStatus: ""
             };
             // set default dates
             this.mountDefaultDateRange();
@@ -440,6 +498,9 @@ export default {
             if (this.filter.zipCode) {
                 params.ZipCode = this.filter.zipCode;
             }
+            if (this.filter.reservationStatus) {
+                params.Status = this.filter.reservationStatus;
+            }
             if (this.filter.stationStatus) {
                 params.Publish = this.filter.stationStatus === "Enabled";
             }
@@ -458,6 +519,8 @@ export default {
             if (this.filter.startIdTag) {
                 if (this.filter.dropdownSelected === "transactions") {
                     params.StartIdTag = this.filter.startIdTag;
+                } else if (this.filter.dropdownSelected === "reservations") {
+                    params.IdTag = this.filter.startIdTag;
                 }
             }
             if (this.filter.stopIdTag) {
@@ -471,7 +534,10 @@ export default {
                 }
             }
             if (this.filter.isActive) {
-                if (this.filter.dropdownSelected === "transactions") {
+                if (
+                    this.filter.dropdownSelected === "transactions" ||
+                    this.filter.dropdownSelected === "reservations"
+                ) {
                     params.IsActive = this.filter.isActive === "true";
                 }
             }
@@ -516,6 +582,26 @@ export default {
             if (this.filter.endDateTimeBefore) {
                 if (this.filter.dropdownSelected === "transactions") {
                     params.StoppedBefore = this.filter.endDateTimeBefore;
+                }
+            }
+            if (this.filter.createdAfter) {
+                if (this.filter.dropdownSelected === "reservations") {
+                    params.CreatedAfter = this.filter.createdAfter;
+                }
+            }
+            if (this.filter.createdBefore) {
+                if (this.filter.dropdownSelected === "reservations") {
+                    params.CreatedBefore = this.filter.createdBefore;
+                }
+            }
+            if (this.filter.expiresBefore) {
+                if (this.filter.dropdownSelected === "reservations") {
+                    params.ExpiresBefore = this.filter.expiresBefore;
+                }
+            }
+            if (this.filter.expiresAfter) {
+                if (this.filter.dropdownSelected === "reservations") {
+                    params.ExpiresAfter = this.filter.expiresAfter;
                 }
             }
             this.$emit("updateParams", params);

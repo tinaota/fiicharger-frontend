@@ -284,8 +284,12 @@
         "totalTimeCostWithVat": "充電時長費（含稅）",
         "totalParkingTime": "總停車時間",
         "totalParkingCost": "停車費",
-        "totalReservationCost": "預約費",
-        "sessionDetails": "詳情"
+        "totalReservationCost": "預訂費用",
+        "sessionDetails": "會議詳情",
+        "createdBefore": "之前創建",
+        "createdAfter": "創建於",
+        "expiresBefore": "過期前",
+        "expiresAfter": "過期後"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

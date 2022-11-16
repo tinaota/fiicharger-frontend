@@ -285,7 +285,11 @@
         "totalParkingTime": "Tổng thời gian đỗ xe",
         "totalParkingCost": "Chi phí đỗ xe",
         "totalReservationCost": "Chi phí đặt trước",
-        "sessionDetails": "Chi tiết phiên"
+        "sessionDetails": "Chi tiết phiên",
+        "createdBefore": "Được tạo trước",
+        "createdAfter": "Được tạo sau",
+        "expiresBefore": "Hết hạn trước",
+        "expiresAfter": "Hết hạn sau"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

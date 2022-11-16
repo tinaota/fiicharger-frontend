@@ -284,8 +284,12 @@
         "totalTimeCostWithVat": "充电时间费（税）",
         "totalParkingTime": "总停车时间",
         "totalParkingCost": "停车费",
-        "totalReservationCost": "预约费用",
-        "sessionDetails": "详情"
+        "totalReservationCost": "预订费用",
+        "sessionDetails": "会议详情",
+        "createdBefore": "之前创建",
+        "createdAfter": "创建于",
+        "expiresBefore": "过期前",
+        "expiresAfter": "过期后"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
