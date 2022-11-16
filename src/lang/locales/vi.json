@@ -47,7 +47,8 @@
         "analytics": "Phân tích",
         "overview": "Tổng quát",
         "tariff": "Giá",
-        "sessions": "Phiên"
+        "sessions": "Phiên",
+        "reportIssues": "Báo cáo vấn đề"
     },
     "login": {
         "login": "Đăng nhập",

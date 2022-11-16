@@ -117,14 +117,14 @@ let routes = [
                 ]
             },
             {
-                path: '/contact',
+                path: '/support',
                 iconCls: 'ic_support_o',
-                name: 'menu.contact',
+                name: 'menu.support',
                 hasChild: true,
                 component: () => import('@/components/data.vue'),
                 children: [
-                    { path: '/contactadmin', component: () => import('@/views/info/contact.vue'), name: 'Contact', hidden: false }
-
+                    { path: '/contactadmin', component: () => import('@/views/info/contact.vue'), name: 'menu.contact', hidden: false },
+                    { path: '/reportissues', component: () => import('@/views/info/reportIssues.vue'), name:'menu.reportIssues', hidden: false }
                 ]
             },
             // {

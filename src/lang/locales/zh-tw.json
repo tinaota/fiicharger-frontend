@@ -47,7 +47,8 @@
         "analytics": "分析",
         "overview": "概述",
         "tariff": "價格",
-        "sessions": "充電紀錄"
+        "sessions": "充電紀錄",
+        "reportIssues": "報告問題"
     },
     "login": {
         "login": "登入",

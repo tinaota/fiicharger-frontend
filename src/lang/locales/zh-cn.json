@@ -47,7 +47,8 @@
         "analytics": "分析",
         "overview": "概述",
         "tariff": "价格",
-        "sessions": "充电纪录"
+        "sessions": "充电纪录",
+        "reportIssues": "报告问题"
     },
     "login": {
         "login": "登入",

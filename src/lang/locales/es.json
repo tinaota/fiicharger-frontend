@@ -47,7 +47,8 @@
         "analytics": "Analítica",
         "overview": "Visión general",
         "tariff": "El Precio",
-        "sessions": "Sesiones"
+        "sessions": "Sesiones",
+        "reportIssues": "Informar problemas"
     },
     "login": {
         "login": "Acceso",

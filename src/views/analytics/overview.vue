@@ -1,5 +1,5 @@
 <template>
-    <div class="mainctrl location">
+    <div class="mainctrl">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item>{{ $t('menu.analytics') }}</el-breadcrumb-item>
             <el-breadcrumb-item>{{ $t('menu.overview') }}</el-breadcrumb-item>

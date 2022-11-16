@@ -317,23 +317,26 @@ export default {
                 .catch((e) => console.log(e));
         },
         menuShowCtrl: function (child) {
-            if (
-                (this.roleNameObj === "Admin" ||
-                    this.roleNameObj === "Super" ||
-                    this.roleNameObj === "Owner") &&
-                child.path === "/contact"
-            ) {
-                return false;
-            } else if (
-                this.roleNameObj === "Member" &&
-                child.path !== "/contact"
-            ) {
+            if (this.roleNameObj === "Member" && child.path !== "/support") {
                 return false;
             } else return !child.hidden;
         },
 
         subMenuShowCtrl: function (childPath, subChild) {
-            return !subChild.hidden;
+            // if not member hide contact form
+            if (
+                this.roleNameObj !== "Member" &&
+                subChild.path === "/contactadmin"
+            ) {
+                return false;
+            } else if (
+                this.roleNameObj === "Member" &&
+                subChild.path === "/reportissues"
+            ) {
+                return false;
+            } else {
+                return !subChild.hidden;
+            }
         },
         handleChangeLang(lang) {
             updateLangCookie(this.lang, lang);
