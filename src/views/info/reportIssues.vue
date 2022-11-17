@@ -25,7 +25,11 @@ export default {
             userName = userInfo.firstName + " " + userInfo.lastName;
             userEmail = userInfo.email;
         }
-        this.source = `http://207.110.228.24:8080/platform-support-form?userName=${userName}&email=${userEmail}`;
+        this.source = `http://207.110.228.24:8080/${
+            process.env.NODE_ENV === "production"
+                ? "platform-support-form"
+                : "platform-support-test"
+        }?userName=${userName}&email=${userEmail}`;
     }
 };
 </script>
