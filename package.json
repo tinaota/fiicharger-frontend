@@ -7,9 +7,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-dev": "vue-cli-service build --mode staging_dev",
+    "build-dev": "vue-cli-service build --mode staging_dev ",
     "build-test": "vue-cli-service build --mode staging_test",
-    "build-prod": "vue-cli-service build --mode production",
+    "build-prod": "NODE_ENV=production vue-cli-service build --mode production",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "test": "npm run unit",
     "semantic-release": "semantic-release",
