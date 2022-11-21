@@ -26,7 +26,8 @@ export default {
     emits: ["downloadCSVClicked"],
     data() {
         return {
-            downloadCSVClicked: false
+            downloadCSVClicked: false,
+            removeKeys: []
         };
     },
     watch: {
@@ -50,20 +51,27 @@ export default {
             let $API = null;
             if (this.dropdownSelected === "chargePoints") {
                 $API = $HTTP_getAllChargeBoxList;
+                this.removeKeys = ["id", "connectors", "coordinates"];
             } else if (this.dropdownSelected === "chargePointUsage") {
                 $API = $HTTP_getChargePointsUsage;
+                this.removeKeys = ["id"];
             } else if (this.dropdownSelected === "chargeStationSummary") {
                 $API = $HTTP_getChargeStationsSummary;
+                this.removeKeys = ["id"];
             } else if (
                 this.dropdownSelected === "chargeStationOverallSummary"
             ) {
                 $API = $HTTP_getChargeStationsOverallSummary;
+                this.removeKeys = [];
             } else if (this.dropdownSelected === "transactions") {
                 $API = $HTTP_getAllTransactions;
+                this.removeKeys = ["chargePointId"];
             } else if (this.dropdownSelected === "idTags") {
                 $API = $HTTP_getIdTagsList;
+                this.removeKeys = [];
             } else if (this.dropdownSelected === "reservations") {
                 $API = $HTTP_getReservation;
+                this.removeKeys = ["chargePointId"];
             }
             $API(params)
                 .then((res) => {
@@ -80,9 +88,25 @@ export default {
                     // get fields
                     // can localize fields from here
                     let fields = Object.keys(response[0]).map((item) => item);
+                    // remove keys with objects
+                    let removeKeysAtIndex = [];
+                    this.removeKeys.map((eachKey) => {
+                        fields = fields.filter((item, index) => {
+                            if (item != eachKey) {
+                                return item;
+                            } else {
+                                removeKeysAtIndex.push(index);
+                            }
+                        });
+                    });
                     let data = [];
                     response.map((item) => {
-                        data.push(Object.values(item));
+                        let values = Object.values(item);
+                        // remove values at removekeys index
+                        removeKeysAtIndex.map((eachKeyIndex) => {
+                            values.splice(eachKeyIndex, 1);
+                        });
+                        data.push(values);
                     });
                     let csv = Papa.unparse({
                         fields: fields,
