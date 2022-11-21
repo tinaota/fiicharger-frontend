@@ -19,5 +19,5 @@
 - [ ] I have verified my branch is based on the latest version of master
 
 #### Reviewers
-- @alexander.gangwish 
-- @louis.krueger
+- @alexander.gangwish
+- @eric.lin
