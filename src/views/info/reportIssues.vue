@@ -20,16 +20,18 @@ export default {
     mounted() {
         let userInfo = JSON.parse(localStorage.getItem("fiics-user")) || null;
         let userName = "",
-            userEmail = "";
+            userEmail = "",
+            phoneNumber = "";
         if (userInfo) {
             userName = userInfo.firstName + " " + userInfo.lastName;
-            userEmail = userInfo.email;
+            userEmail = userInfo.email + "";
+            phoneNumber = userInfo.phoneNumber;
         }
         this.source = `http://207.110.228.24:8080/${
             process.env.NODE_ENV === "production"
                 ? "platform-support-form"
                 : "platform-support-test"
-        }?userName=${userName}&email=${userEmail}`;
+        }?userName=${userName}&email=${userEmail}&phone=${encodeURIComponent(phoneNumber)}`;
     }
 };
 </script>
