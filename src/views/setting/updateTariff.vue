@@ -1,6 +1,6 @@
 <template>
     <el-dialog custom-class="tariff-dialog" :title="dialogType==='create'?$t('general.create'):$t('general.modify')" top="0" :width="isIpad?'60%': '31%'" :visible.sync="visible" :show-close="false" v-loading="isLoading" @close="closeDialog()">
-        <div class="right-form formVertical">
+        <div class="formVertical">
             <div class="price">
                 <h3>{{ $t('menu.tariff') }}</h3>
                 <el-form ref="tariffForm" :rules="rules" :model="formData">
@@ -73,9 +73,9 @@
                 <PricingSectionsMain :elements="elements" :currency="formData.currency" @emitPricingSectionDataFromMain="getPricingSectionData"></PricingSectionsMain>
             </div>
         </div>
-        <span slot="footer" class="dialog-footer">
-            <el-button size="small" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
-            <el-button size="small" type="primary" @click="updateTariff">{{ $t('general.ok') }}</el-button>
+        <span slot="footer" class="dialog-footer" style="position:absolute;bottom:10px;right:15px;">
+            <el-button size="small" style="margin-bottom:5px" @click="isUpdate = false; visible = false;">{{ $t('general.cancel') }}</el-button>
+            <el-button size="small" style="margin-bottom:5px" type="primary" @click="updateTariff">{{ $t('general.ok') }}</el-button>
         </span>
     </el-dialog>
 </template>
@@ -126,7 +126,12 @@ export default {
                 currency: [{ validator: validateIsEmpty }]
             },
             elements: [],
-            currencyCodesList: CurrencyCodes.filter(item=>item.code!=='XXX' && item.code!=='XTS')
+            currencyCodesList: CurrencyCodes.filter(
+                (item) =>
+                    item.code !== "XXX" &&
+                    item.code !== "XTS" &&
+                    item.code !== "USN"
+            )
         };
     },
     computed: {
@@ -375,8 +380,7 @@ export default {
 </script>
 <style lang = "scss" scoped>
 .formVertical {
-    height: 100%;
-    max-height: 100%;
+    height: inherit;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -402,15 +406,16 @@ export default {
             width: 100%;
             height: 40px;
         }
-        .priceType {
+        .customNameItem {
             display: flex;
             flex-direction: column;
             margin-bottom: 5px;
-            .label {
-                margin-bottom: 5px;
-            }
-            .info {
+            .label, .info {
+                line-height: initial;
                 display: flex;
+                align-items: center;
+                vertical-align: middle;
+                justify-content: center;
             }
         }
         .otherItems {

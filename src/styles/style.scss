@@ -1412,6 +1412,9 @@ input[type="number"] {
 
 // hide table headers in tariff page
 .tariff {
+    .formVertical {
+        max-height: calc(86vh - 75px);
+    }
     .el-table {
         .el-table {
             margin-bottom: 0px;
@@ -1451,7 +1454,7 @@ input[type="number"] {
         font-size: 16px;
         font-weight: 600;
         height: 30px;
-        line-height: 30px;
+        line-height: initial;
         background-color: #ffffff;
         padding: 0px 5px 0 15px;
     }
