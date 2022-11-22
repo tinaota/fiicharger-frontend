@@ -22,6 +22,14 @@
                     <el-input-number style="width:100%" v-model="param.duration" :step="10" :min="0" controls-position="right"></el-input-number>
                 </div>
             </div>
+            <div class="item">
+                <div class="label">{{ $t('chargingProfile.chargingRateUnit') }}</div>
+                <div class="info">
+                    <el-select class="select-small" v-model="chargingRateUnit">
+                        <el-option v-for="item in chargingRateUnitList.data" :label="item.name" :key="item.label" :value="item.label"></el-option>
+                    </el-select>
+                </div>
+            </div>
         </div>
         <p style="text-align:center;">
             <el-button size="small" type="primary" @click="getCompositeSchedule()">{{ $t('general.perform') }}</el-button>
@@ -59,6 +67,13 @@ export default {
             connectorData: {
                 isLoading: false,
                 data: []
+            },
+            chargingRateUnit: "W",
+            chargingRateUnitList: {
+                data: [
+                    { name: "Watt", label: "W" },
+                    { name: "Ampere", label: "A" }
+                ]
             }
         };
     },
@@ -104,7 +119,8 @@ export default {
             let params = {
                 chargePointId: that.data.chargePointId,
                 connectorId: that.param.connectorId,
-                duration: 0
+                duration: 0,
+                chargingRateUnit: that.chargingRateUnit
             };
             if (this.param.duration) {
                 params.duration = this.param.duration;
@@ -157,7 +173,7 @@ export default {
         },
         changeShowCompositeScheduleStatus() {
             this.showCompositeScheduleDialog.visible = false;
-            this.showCompositeScheduleDialog.data={}
+            this.showCompositeScheduleDialog.data = {};
         }
     }
 };
