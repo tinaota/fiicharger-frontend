@@ -12,7 +12,8 @@ import {
     $HTTP_getChargeStationsOverallSummary,
     $HTTP_getAllTransactions,
     $HTTP_getIdTagsList,
-    $HTTP_getReservation
+    $HTTP_getReservation,
+    $HTTP_getChargingProfilesRecord
 } from "@/api/api";
 import Papa from "papaparse";
 export default {
@@ -72,6 +73,9 @@ export default {
             } else if (this.dropdownSelected === "reservations") {
                 $API = $HTTP_getReservation;
                 this.removeKeys = ["chargePointId"];
+            } else if (this.dropdownSelected === "chargingProfiles") {
+                $API = $HTTP_getChargingProfilesRecord;
+                this.removeKeys = ["chargingSchedulePeriods"];
             }
             $API(params)
                 .then((res) => {

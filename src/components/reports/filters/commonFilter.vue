@@ -23,7 +23,7 @@
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <!-- uses text station name filter -->
-        <el-input v-if="stationNameFilter" :placeholder="$t('chargingStation.stationName')" v-model="filter.stationName" @change="updateParams" clearable>
+        <el-input v-if="nameFilter" :placeholder="getNamePlaceHolder" v-model="filter.name" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <!-- uses station id for filter, show station name -->
@@ -60,6 +60,9 @@
         <el-input v-if="stopReasonFilter" :placeholder="$t('chargingStation.stopReason')" v-model="filter.stopReason" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
+        <el-select v-if="chargingProfilePurposeFilter" class="select-small" v-model="filter.chargingProfilePurpose" :placeholder="$t('chargingProfile.chargingProfilePurpose')" @change="updateParams" clearable>
+            <el-option v-for="item in filter.chargingProfilePurposeList" :label="item" :key="item" :value="item"></el-option>
+        </el-select>
         <el-select v-if="isActiveFilter" class="select-small" v-model="filter.isActive" :placeholder="$t('general.active')" @change="updateParams" clearable>
             <el-option v-for="item in filter.booleanList" :label="item" :key="item" :value="item"></el-option>
         </el-select>
@@ -116,7 +119,7 @@ export default {
                     "chargeStationSummary",
                     "chargeStationOverallSummary",
                     // "chargingProfileTemplates",
-                    // "chargingProfiles",
+                    "chargingProfiles",
                     "idTags",
                     "reservations",
                     "transactions"
@@ -126,7 +129,7 @@ export default {
                 regularId: "",
                 chargePointId: "",
                 connectorId: "",
-                stationName: "",
+                name: "",
                 stationId: "",
                 zipCode: "",
                 keyWord: "",
@@ -178,11 +181,24 @@ export default {
                     "Occupied",
                     "Rejected",
                     "Unavailable"
+                ],
+                chargingProfilePurpose: "",
+                chargingProfilePurposeList: [
+                    "ChargePointMaxProfile",
+                    "TxDefaultProfile",
+                    "TxProfile"
                 ]
             }
         };
     },
     computed: {
+        getNamePlaceHolder() {
+            if (this.filter.dropdownSelected === "chargingProfiles") {
+                return i18n.t("general.name");
+            } else {
+                return i18n.t("chargingStation.stationName");
+            }
+        },
         addressFilter() {
             return (
                 this.filter.dropdownSelected === "chargeStationSummary" ||
@@ -205,13 +221,15 @@ export default {
                 this.filter.dropdownSelected === "chargePoints" ||
                 this.filter.dropdownSelected === "chargePointUsage" ||
                 this.filter.dropdownSelected === "transactions" ||
-                this.filter.dropdownSelected === "reservations"
+                this.filter.dropdownSelected === "reservations" ||
+                this.filter.dropdownSelected === "chargingProfiles"
             );
         },
         connectorIdFilter() {
             return (
                 this.filter.dropdownSelected === "transactions" ||
-                this.filter.dropdownSelected === "reservations"
+                this.filter.dropdownSelected === "reservations" ||
+                this.filter.dropdownSelected === "chargingProfiles"
             );
         },
         chargePointNameFilter() {
@@ -220,10 +238,12 @@ export default {
                 this.filter.dropdownSelected === "chargePointUsage"
             );
         },
-        stationNameFilter() {
+        nameFilter() {
             return (
                 this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected === "chargeStationOverallSummary"
+                this.filter.dropdownSelected ===
+                    "chargeStationOverallSummary" ||
+                this.filter.dropdownSelected === "chargingProfiles"
             );
         },
         stationIdFilter() {
@@ -285,10 +305,14 @@ export default {
         stopReasonFilter() {
             return this.filter.dropdownSelected === "transactions";
         },
+        chargingProfilePurposeFilter() {
+            return this.filter.dropdownSelected === "chargingProfiles";
+        },
         isActiveFilter() {
             return (
                 this.filter.dropdownSelected === "transactions" ||
-                this.filter.dropdownSelected === "reservations"
+                this.filter.dropdownSelected === "reservations" ||
+                this.filter.dropdownSelected === "chargingProfiles"
             );
         },
         isExpiredFilter() {
@@ -414,7 +438,7 @@ export default {
                 regularId: "",
                 chargePointId: "",
                 connectorId: "",
-                stationName: "",
+                name: "",
                 stationId: "",
                 zipCode: "",
                 keyWord: "",
@@ -438,7 +462,8 @@ export default {
                 createdBefore: null,
                 expiresAfter: null,
                 expiresBefore: null,
-                reservationStatus: ""
+                reservationStatus: "",
+                chargingProfilePurpose: ""
             };
             // set default dates
             this.mountDefaultDateRange();
@@ -466,11 +491,11 @@ export default {
                 }
             }
             if (this.filter.chargePointId) {
-                if (this.filter.dropdownSelected === "transactions") {
-                    params.OcppId = this.filter.chargePointId;
-                } else if (
+                if (
+                    this.filter.dropdownSelected === "transactions" ||
                     this.filter.dropdownSelected === "chargePoints" ||
-                    this.filter.dropdownSelected === "chargePointUsage"
+                    this.filter.dropdownSelected === "chargePointUsage" ||
+                    this.filter.dropdownSelected === "chargingProfiles"
                 ) {
                     params.OcppId = this.filter.chargePointId;
                 } else {
@@ -479,17 +504,21 @@ export default {
             }
 
             if (this.filter.connectorId) {
-                if (this.filter.dropdownSelected === "transactions") {
+                if (
+                    this.filter.dropdownSelected === "transactions" ||
+                    this.filter.dropdownSelected === "chargingProfiles"
+                ) {
                     params.ConnectorId = this.filter.connectorId;
                 }
             }
-            if (this.filter.stationName) {
+            if (this.filter.name) {
                 if (
                     this.filter.dropdownSelected === "chargeStationSummary" ||
                     this.filter.dropdownSelected ===
-                        "chargeStationOverallSummary"
+                        "chargeStationOverallSummary" ||
+                    this.filter.dropdownSelected === "chargingProfiles"
                 ) {
-                    params.Name = this.filter.stationName;
+                    params.Name = this.filter.name;
                 }
             }
             if (this.filter.stationId) {
@@ -533,10 +562,17 @@ export default {
                     params.StopReason = this.filter.stopReason;
                 }
             }
+            if (this.filter.chargingProfilePurpose) {
+                if (this.filter.dropdownSelected === "chargingProfiles") {
+                    params.ChargingProfilePurpose =
+                        this.filter.chargingProfilePurpose;
+                }
+            }
             if (this.filter.isActive) {
                 if (
                     this.filter.dropdownSelected === "transactions" ||
-                    this.filter.dropdownSelected === "reservations"
+                    this.filter.dropdownSelected === "reservations" ||
+                    this.filter.dropdownSelected === "chargingProfiles"
                 ) {
                     params.IsActive = this.filter.isActive === "true";
                 }

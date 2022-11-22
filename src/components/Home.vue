@@ -46,7 +46,7 @@
                         <!-- <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>-->
                     </div>
                     <el-col class="header-info">
-                        <div class="img-container">
+                        <div class="img-container" v-if="userAvatar">
                             <img :src="userAvatar" alt="userAvatar" />
                         </div>
                         <el-dropdown trigger="click">
