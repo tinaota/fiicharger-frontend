@@ -157,6 +157,7 @@ export default {
         },
         changeShowCompositeScheduleStatus() {
             this.showCompositeScheduleDialog.visible = false;
+            this.showCompositeScheduleDialog.data={}
         }
     }
 };
