@@ -2,6 +2,7 @@
     "app_name": "Sistema de carga Fii",
     "app_name_short": "Sistema de cargador",
     "error_network": "¡Error de solicitud de red!",
+    "error_geolocation": "El navegador no admite la geolocalización o el acceso a la ubicación está denegado",
     "emptyMessage": "No existen datos con los criterios de búsqueda especificados, ¡inténtalo de nuevo con nuevos criterios de filtro!",
     "noData": "Sin datos",
     "cannotDelete": "No se puede eliminar el elemento vinculado",
@@ -290,7 +291,8 @@
         "createdBefore": "Creado antes",
         "createdAfter": "Creado después",
         "expiresBefore": "Caduca antes",
-        "expiresAfter": "Expira después de"
+        "expiresAfter": "Expira después de",
+        "useCurrentLocation": "Usar ubicación actual"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

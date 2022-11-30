@@ -2,6 +2,7 @@
     "app_name": "Fii Charger System",
     "app_name_short": "Fiicharger System",
     "error_network": "Network request error!",
+    "error_geolocation": "Browser doesn't support geolocation or location access is denied",
     "emptyMessage": "No Data exists with specified search criteria, try again with new filter criteria!",
     "noData": "No Data",
     "cannotDelete": "Cannot delete binded item",
@@ -290,7 +291,8 @@
         "createdBefore": "Created Before",
         "createdAfter": "Created After",
         "expiresBefore": "Expires Before",
-        "expiresAfter": "Expires After"
+        "expiresAfter": "Expires After",
+        "useCurrentLocation": "Use Current Location"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

@@ -16,19 +16,23 @@
                     </el-form-item>
                 </div>
                 <div class="form-item">
-                    <el-form-item prop="loc.lng">
-                        <div class="label">{{ $t('general.lng') }}</div>
-                        <el-input v-model="editDialog.info.loc.lon" disabled></el-input>
-                    </el-form-item>
-                </div>
-                <div class="form-item">
                     <el-form-item prop="loc.lat">
                         <div class="label">{{ $t('general.lat') }}</div>
                         <el-input v-model="editDialog.info.loc.lat" disabled></el-input>
                     </el-form-item>
                 </div>
+                <div class="form-item">
+                    <el-form-item prop="loc.lng">
+                        <div class="label">{{ $t('general.lng') }}</div>
+                        <el-input v-model="editDialog.info.loc.lon" disabled></el-input>
+                    </el-form-item>
+                </div>
                 <div class="hint" v-if="mapInfo.marker === null">{{ $t('general.clickAddMarker') }}</div>
                 <div class="hint" v-else>{{ $t('general.dragMarker') }}</div>
+                <div class="use-current-location hint" @click="updateMarkerLocation">
+                    <i class="fa fa-location-arrow" aria-hidden="true"></i>
+                    <span>{{ $t('general.useCurrentLocation') }}</span>
+                </div>
                 <div class="form-item">
                     <div class="label">{{ $t('chargingStation.chargeType') }}</div>
                     <el-select class="select-small" v-model="editDialog.info.chargeType">
@@ -78,7 +82,7 @@ export default {
             visible: false,
             isLoading: false,
             isUpdate: false,
-            zoom: 16,
+            zoom: 15,
             maxZoom: 20,
             map: null,
             editDialog: {
@@ -99,7 +103,7 @@ export default {
             },
             mapInfo: {
                 initMap: true,
-                zoom: 17,
+                zoom: 15,
                 marker: null,
                 initCenter: {
                     lat: 42.677811124442854,
@@ -177,7 +181,7 @@ export default {
                     streetViewControl: false, //設定是否呈現右下角街景小人
                     mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
                     fullscreenControl: false,
-                    zoomControl: false,
+                    zoomControl: true,
                     styles: googleMapStyle
                 }
             );
@@ -189,6 +193,68 @@ export default {
                     that.drawMarker();
                 }
             });
+
+            // add current location option
+            const locationButton = document.createElement("button");
+            let currentLocationLogo = document.createElement("img");
+            currentLocationLogo.src = require("../../../public/imgs/my_location.png");
+            locationButton.appendChild(currentLocationLogo);
+            locationButton.classList.add("custom-map-control-button");
+            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+                locationButton
+            );
+
+            locationButton.addEventListener("click", () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            this.mapInfo.initCenter = pos;
+                            this.initMap();
+                            that.drawMarker();
+                        },
+                        () => {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("error_geolocation")
+                            });
+                        }
+                    );
+                } else {
+                    // Browser doesn't support Geolocation
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_geolocation")
+                    });
+                }
+            });
+        },
+        updateMarkerLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        this.mapInfo.initCenter = pos;
+                        this.initMap();
+                        // assign a central point to marker
+                        this.editDialog.info.loc = pos;
+                        this.editDialog.info.loc.lon = pos.lng;
+                        this.drawMarker();
+                    },
+                    () => {
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("error_geolocation")
+                        });
+                    }
+                );
+            }
         },
         drawMarker() {
             const that = this;
@@ -332,6 +398,16 @@ export default {
                 display: inline-block;
             }
         }
+        .use-current-location {
+            display: flex;
+            width: fit-content;
+            cursor: pointer;
+            .fa-location-arrow {
+                display: flex;
+                align-items: center;
+                margin-right: 5px;
+            }
+        }
     }
 }
 
@@ -340,10 +416,10 @@ export default {
 }
 
 @media only screen and (max-width: 1280px) {
-.formVertical{
-    .el-form{
-        width: 92% !important;
+    .formVertical {
+        .el-form {
+            width: 92% !important;
+        }
     }
-}
 }
 </style>

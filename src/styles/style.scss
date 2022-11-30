@@ -1485,3 +1485,19 @@ input[type="number"] {
         }
     }
 }
+
+.custom-map-control-button {
+    right: 11px !important;
+    padding: 0 !important;
+    height: 36px;
+    width: 36px;
+    box-shadow: #000 0px 1px 4px -1px;
+    border-radius: 2px;
+    background-color: rgb(255, 255, 255);
+    user-select: none;
+    border-width: 0px;
+    border-color: currentColor;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

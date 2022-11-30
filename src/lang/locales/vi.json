@@ -2,6 +2,7 @@
     "app_name": "Hệ thống quản lý trạm sạc điwwjn Fii",
     "app_name_short": "Hệ thống Fiicharger",
     "error_network": "Lỗi mạng",
+    "error_geolocation": "Trình duyệt không hỗ trợ định vị địa lý hoặc quyền truy cập vị trí bị từ chối",
     "emptyMessage": "Không có Dữ liệu nào tồn tại với tiêu chí tìm kiếm được chỉ định, hãy thử lại với tiêu chí lọc mới!",
     "noData": "Không có dữ liệu",
     "cannotDelete": "Không thể xóa mục liên kết",
@@ -290,7 +291,8 @@
         "createdBefore": "Được tạo trước",
         "createdAfter": "Được tạo sau",
         "expiresBefore": "Hết hạn trước",
-        "expiresAfter": "Hết hạn sau"
+        "expiresAfter": "Hết hạn sau",
+        "useCurrentLocation": "Sử dụng Vị trí Hiện tại"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
