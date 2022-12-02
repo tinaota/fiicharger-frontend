@@ -223,7 +223,6 @@ export default {
             `calc(50vw + 104px -  ${halfHintBarWidth}px)`
         );
         this.initMap();
-        this.fetchStationList();
         this.setTimer();
         setScrollBar(".chargeBox-drawer .drawer-body", that);
     },
@@ -240,7 +239,7 @@ export default {
         setTimer() {
             const that = this;
             this.timer = setInterval(() => {
-                that.fetchStationList();
+                that.fetchStationList(false);
             }, that.frequence);
         },
         initMap() {
@@ -248,7 +247,7 @@ export default {
                 document.getElementById("map-container"),
                 {
                     center: this.center,
-                    zoom: this.minZoomSize,
+                    zoom: this.defaultZoomSize,
                     minZoom: this.minZoomSize,
                     maxZoom: this.maxZoomSize,
                     streetViewControl: false, //設定是否呈現右下角街景小人
@@ -258,8 +257,46 @@ export default {
                     styles: googleMapStyle
                 }
             );
+            // add current location option
+            const locationButton = document.createElement("button");
+            let currentLocationLogo = document.createElement("img");
+            currentLocationLogo.src = require("../../../public/imgs/my_location.png");
+            locationButton.appendChild(currentLocationLogo);
+            locationButton.classList.add("custom-map-control-button");
+            locationButton.style.margin = "0 50px 80px 0";
+            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+                locationButton
+            );
+
+            locationButton.addEventListener("click", () => {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            this.center = pos;
+                            this.initMap();
+                        },
+                        () => {
+                            this.$message({
+                                type: "warning",
+                                message: i18n.t("error_geolocation")
+                            });
+                        }
+                    );
+                } else {
+                    // Browser doesn't support Geolocation
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_geolocation")
+                    });
+                }
+            });
+            this.fetchStationList(true);
         },
-        fetchStationList() {
+        fetchStationList(loadMapAgain) {
             const that = this;
             let $API;
             let param = {};
@@ -328,11 +365,45 @@ export default {
                             if (item.coordinates.latitude < minLat) {
                                 minLat = item.coordinates.latitude;
                             }
-
-                            if (responseLength === 1) {
+                        });
+                        if (loadMapAgain) {
+                            if (navigator.geolocation && responseLength !== 1) {
+                                navigator.geolocation.getCurrentPosition(
+                                    (position) => {
+                                        const pos = {
+                                            lat: position.coords.latitude,
+                                            lng: position.coords.longitude
+                                        };
+                                        that.map.setCenter(pos);
+                                    },
+                                    () => {
+                                        this.$message({
+                                            type: "warning",
+                                            message: i18n.t("error_geolocation")
+                                        });
+                                        // default to max ranges
+                                        const nePoint = new google.maps.LatLng(
+                                                maxLat,
+                                                maxLng
+                                            ),
+                                            swPoint = new google.maps.LatLng(
+                                                minLat,
+                                                minLng
+                                            ),
+                                            bounds =
+                                                new google.maps.LatLngBounds();
+                                        bounds.extend(swPoint);
+                                        bounds.extend(nePoint);
+                                        that.map.fitBounds(bounds);
+                                    }
+                                );
+                                // set zoom level default
+                                that.map.setZoom(11);
+                            } else if (responseLength === 1) {
                                 that.map.setCenter(response[0].location);
                                 that.map.setZoom(that.defaultZoomSize);
                             } else {
+                                // default
                                 const nePoint = new google.maps.LatLng(
                                         maxLat,
                                         maxLng
@@ -346,7 +417,7 @@ export default {
                                 bounds.extend(nePoint);
                                 that.map.fitBounds(bounds);
                             }
-                        });
+                        }
                     }
                 })
                 .catch((err) => {
@@ -440,13 +511,13 @@ export default {
         handleStationChanged() {
             this.removeAllMarkers();
             if (this.filter.stationId !== "") {
-                this.fetchStationList();
+                this.fetchStationList(true);
             } else {
                 this.statisticsInfo = {
                     connectedCount: 0,
                     disconnectedCount: 0
                 };
-                this.fetchStationList();
+                this.fetchStationList(true);
             }
             this.currentInfoWindow && this.currentInfoWindow.close();
             this.currentInfoWindow = null;
