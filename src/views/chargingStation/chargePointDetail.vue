@@ -150,7 +150,7 @@
                     <div class="header">
                         <div class="title">{{ $t('chargingStation.connectors') }}</div>
                     </div>
-                    <el-table :data="connectorStatuses.data" class="moreCol" v-loading="connectorStatuses.isLoading">
+                    <el-table :data="connectorStatuses.data" class="moreCol">
                         <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
                         <el-table-column :label="$t('chargingStation.lastStatus')" :min-width="8">
                             <template slot-scope="scope">
@@ -737,15 +737,12 @@ export default {
         getConnectorStatusesById(id) {
             let params = {};
             params.chargePointId = id;
-            this.connectorStatuses.isLoading = true;
             $HTTP_getConnectorStatusesById(params)
                 .then((res) => {
                     if (res.length > 0) {
-                        this.connectorStatuses.isLoading = false;
                         this.connectorStatuses.data = res;
                     } else {
                         this.connectorStatuses.data = [];
-                        this.connectorStatuses.isLoading = false;
                         this.$message({
                             type: "warning",
                             message: i18n.t("noData")
