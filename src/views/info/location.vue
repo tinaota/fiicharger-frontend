@@ -150,8 +150,8 @@ export default {
                 disconnectedCount: 0
             },
             center: {
-                lat: 0,
-                lng: 0
+                lat: 42.6,
+                lng: -87.9
             },
             defaultZoomSize: 16,
             minZoomSize: 2,
@@ -405,8 +405,6 @@ export default {
                                         that.map.fitBounds(bounds);
                                     }
                                 );
-                                // set zoom level default
-                                that.map.setZoom(11);
                             } else if (responseLength === 1) {
                                 that.map.setCenter(response[0].location);
                                 that.map.setZoom(that.defaultZoomSize);
@@ -525,7 +523,7 @@ export default {
                     connectedCount: 0,
                     disconnectedCount: 0
                 };
-                this.fetchStationList(true);
+                this.fetchStationList(false);
             }
             this.currentInfoWindow && this.currentInfoWindow.close();
             this.currentInfoWindow = null;
