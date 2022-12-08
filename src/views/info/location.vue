@@ -42,10 +42,17 @@
                                 <div class="label">{{ $t('chargingStation.power') }} : </div>
                                 <div class="msg">{{ item.powerKw }} KWH</div>
                             </div>
-                            <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
-                                <div class="label">{{ $t('chargingStation.connector') }} : </div>
-                                <div class="msg">
-                                    <Connector :dataObj="item.connectors" :chargerStatus="item.connectionStatus" :isBreak="true"></Connector>
+                            <div class="info-item connectionStatusMain">
+                                <div class="label">{{ $t('chargingStation.connectionStatus') }} : </div>
+                                <div class="msg connector-obj">
+                                     <div v-if="item.connectionStatus===`Connected`" class="connection-status">
+                                        <div class="circle-status color1"></div>
+                                        <div> {{ $t('general.connected') }}</div>
+                                    </div>
+                                    <div v-else class="connection-status">
+                                        <div class="circle-status color5"></div>
+                                        <div> {{ $t('general.disconnected') }}</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="info-item">
@@ -63,9 +70,10 @@
                                 <div class="msg">
                                     {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }} </div>
                             </div>
-                            <div class="info-item">
-                                <div class="label">{{ $t('general.status') }} : </div>
-                                <div class="msg">{{ item.status!==null? item.status:'-' }}
+                            <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
+                                <div class="label">{{ $t('chargingStation.connector') }} : </div>
+                                <div class="msg">
+                                    <Connector :dataObj="item.connectors" :chargerStatus="item.connectionStatus" :isBreak="true"></Connector>
                                 </div>
                             </div>
                         </div>
@@ -700,11 +708,26 @@ export default {
                     .msg {
                         display: inline;
                         margin-top: -3px;
+                        &.connector-obj{
+                            display: inline-block;
+                        .connection-status {
+                            display: flex;
+                            .circle-status {
+                                height: 16px;
+                                width: 16px;
+                                border-radius: 16px;
+                                margin-right: 5px;
+                            }
+                            div:nth-child(2){
+                                margin-top: 1px;
+                            }
+                        }
+                        }
                     }
                     + .info-item {
                         margin-top: 8px;
                     }
-                    &.connectorMain {
+                    &.connectorMain, &.connectionStatusMain {
                         height: auto;
                         padding: 6px 0 0 0;
                         margin-top: 0;
