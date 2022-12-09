@@ -295,7 +295,8 @@
         "createdAfter": "Created After",
         "expiresBefore": "Expires Before",
         "expiresAfter": "Expires After",
-        "useCurrentLocation": "Use Current Location"
+        "useCurrentLocation": "Use Current Location",
+        "view": "View"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

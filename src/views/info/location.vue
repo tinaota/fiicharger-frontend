@@ -45,7 +45,7 @@
                             <div class="info-item connectionStatusMain">
                                 <div class="label">{{ $t('chargingStation.connectionStatus') }} : </div>
                                 <div class="msg connector-obj">
-                                     <div v-if="item.connectionStatus===`Connected`" class="connection-status">
+                                    <div v-if="item.connectionStatus===`Connected`" class="connection-status">
                                         <div class="circle-status color1"></div>
                                         <div> {{ $t('general.connected') }}</div>
                                     </div>
@@ -56,6 +56,10 @@
                                 </div>
                             </div>
                             <div class="info-item">
+                                <div class="label">{{ $t('chargingStation.elecRate') }}</div>
+                                <div class="msg"><a class="view-link">{{$t('general.view')}}</a></div>
+                            </div>
+                            <!-- <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.onPeak') }} : </div>
                                 <div class="msg"> {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):$t('general.free') }}
                                 </div>
@@ -69,7 +73,7 @@
                                 <div class="label">{{ $t('chargingStation.parkingRate') }} : </div>
                                 <div class="msg">
                                     {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }} </div>
-                            </div>
+                            </div> -->
                             <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
                                 <div class="label">{{ $t('chargingStation.connector') }} : </div>
                                 <div class="msg">
@@ -706,26 +710,32 @@ export default {
                     .msg {
                         display: inline;
                         margin-top: -3px;
-                        &.connector-obj{
+                        &.connector-obj {
                             display: inline-block;
-                        .connection-status {
-                            display: flex;
-                            .circle-status {
-                                height: 16px;
-                                width: 16px;
-                                border-radius: 16px;
-                                margin-right: 5px;
-                            }
-                            div:nth-child(2){
-                                margin-top: 1px;
+                            .connection-status {
+                                display: flex;
+                                .circle-status {
+                                    height: 16px;
+                                    width: 16px;
+                                    border-radius: 16px;
+                                    margin-right: 5px;
+                                }
+                                div:nth-child(2) {
+                                    margin-top: 1px;
+                                }
                             }
                         }
+                        .view-link {
+                            color: #0056ff;
+                            text-decoration: underline;
+                            cursor: pointer;
                         }
                     }
                     + .info-item {
                         margin-top: 8px;
                     }
-                    &.connectorMain, &.connectionStatusMain {
+                    &.connectorMain,
+                    &.connectionStatusMain {
                         height: auto;
                         padding: 6px 0 0 0;
                         margin-top: 0;
