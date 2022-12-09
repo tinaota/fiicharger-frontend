@@ -5,57 +5,83 @@
                 <template slot-scope="scope">
                     <el-table :data="[tableData[scope.row.index]]">
                         <el-table-column :label="$t('menu.tariff')">
-                            <el-table-column prop="totalCost" :label="$t('general.totalCost')" width="130">
+                            <el-table-column :label="$t('general.totalCost')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalCost.excludingVat ?scope.row.totalCost.excludingVat.toFixed(2):''}}
+                                    {{scope.row.cost.total ? scope.row.cost.total.excludingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalCost" :label="$t('general.totalCostWithVat')" width="130">
+                            <el-table-column :label="$t('general.totalCostWithVat')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalCost.includingVat ?scope.row.totalCost.includingVat.toFixed(2):''}}
+                                    {{scope.row.cost.total ? scope.row.cost.total.includingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalFixedCost" :label="$t('general.totalFixedCost')" width="130">
+                            <el-table-column :label="$t('general.totalFixedCost')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalFixedCost.excludingVat ?scope.row.totalFixedCost.excludingVat.toFixed(2):''}}
+                                    {{scope.row.cost.fixed ?scope.row.cost.fixed.excludingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalFixedCost" :label="$t('general.totalFixedCostWithVat')" width="130">
+                            <el-table-column :label="$t('general.totalFixedCostWithVat')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalFixedCost.includingVat ?scope.row.totalFixedCost.includingVat.toFixed(2):''}}
+                                    {{scope.row.cost.fixed ?scope.row.cost.fixed.includingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalEnergyCost" :label="$t('general.totalEnergyCost')" width="130"></el-table-column>
-                            <el-table-column prop="totalTimeCost" :label="$t('general.totalTimeCost')" width="130">
+                            <el-table-column :label="$t('general.totalEnergyCost')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalTimeCost.excludingVat ?scope.row.totalTimeCost.excludingVat.toFixed(2):''}}
+                                    {{scope.row.cost.energy ?scope.row.cost.energy.excludingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalTimeCost" :label="$t('general.totalTimeCostWithVat')" width="130">
+                            <el-table-column :label="$t('general.totalEnergyCostWithVat')" width="130">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalTimeCost.includingVat ?scope.row.totalTimeCost.includingVat.toFixed(2):''}}
+                                    {{scope.row.cost.energy ?scope.row.cost.energy.includingVat.toFixed(2):''}}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="totalParkingCost" :label="$t('general.totalParkingCost')" width="150"></el-table-column>
-                            <el-table-column prop="totalReservationCost" :label="$t('general.totalReservationCost')" width="150">
+                            <el-table-column :label="$t('general.totalTimeCost')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.time ?scope.row.cost.time.excludingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.totalTimeCostWithVat')" width="130">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.time ?scope.row.cost.time.includingVat.toFixed(2):''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.totalParkingCost')" width="150">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.parking ? scope.row.cost.parking.excludingVat.toFixed(2) : ""}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.totalParkingCostWithVat')" width="150">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.parking ? scope.row.cost.parking.includingVat.toFixed(2) : ""}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.totalReservationCost')" width="150">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.reservation ? scope.row.cost.reservation.excludingVat :''}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.totalReservationCostWithVat')" width="220">
+                                <template slot-scope="scope">
+                                    {{scope.row.cost.reservation ? scope.row.cost.reservation.includingVat :''}}
+                                </template>
                             </el-table-column>
                         </el-table-column>
                     </el-table>
                     <el-table :data="[tableData[scope.row.index]]">
                         <el-table-column :label="$t('general.sessionDetails')">
-                            <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="200">
+                            <el-table-column prop="energyKwh" :label="$t('general.totalEnergy') + '(kWh)'" width="200">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalEnergy ? scope.row.totalEnergy.toFixed(2):''}}
+                                    {{scope.row.cost.energyKwh ? scope.row.cost.energyKwh.toFixed(2):''}}
                                 </template>
                             </el-table-column>
                             <el-table-column prop="totalTime" :label="$t('general.totalTime')" width="150">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalTime? getConvertedTime(scope.row.totalTime):''}}
+                                    {{scope.row.cost.totalTimeSec? getConvertedTime(scope.row.cost.totalTimeSec):''}}
                                 </template>
                             </el-table-column>
                             <el-table-column prop="totalParkingTime" :label="$t('general.totalParkingTime')" width="200">
                                 <template slot-scope="scope">
-                                    {{scope.row.totalParkingTime===0?'0s' :getConvertedTime(scope.row.totalParkingTime)}}
+                                    {{scope.row.cost.parkingTimeSec===0?'0s' :getConvertedTime(scope.row.cost.parkingTimeSec)}}
                                 </template>
                             </el-table-column>
                         </el-table-column>
@@ -134,17 +160,17 @@
             <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" width="180"></el-table-column>
             <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="130">
                 <template slot-scope="scope">
-                    {{scope.row.totalEnergy ? scope.row.totalEnergy.toFixed(2):''}}
+                    {{scope.row.cost.energyKwh ? scope.row.cost.energyKwh.toFixed(2):''}}
                 </template>
             </el-table-column>
-            <el-table-column prop="totalTime" :label="$t('general.totalTime')" width="150">
+            <el-table-column prop="totalTimeSec" :label="$t('general.totalTime')" width="150">
                 <template slot-scope="scope">
-                    {{scope.row.totalTime? getConvertedTime(scope.row.totalTime):''}}
+                    {{scope.row.cost.totalTimeSec? getConvertedTime(scope.row.cost.totalTimeSec):''}}
                 </template>
             </el-table-column>
             <el-table-column prop="totalCost" :label="$t('general.totalCostWithVat')" width="130">
                 <template slot-scope="scope">
-                    {{scope.row.totalCost.includingVat ?scope.row.totalCost.includingVat.toFixed(2):''}}
+                    {{scope.row.cost.total ?scope.row.cost.total.includingVat.toFixed(2):''}}
                 </template>
             </el-table-column>
             <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="200">
