@@ -292,7 +292,21 @@
         "createdAfter": "Được tạo sau",
         "expiresBefore": "Hết hạn trước",
         "expiresAfter": "Hết hạn sau",
-        "useCurrentLocation": "Sử dụng Vị trí Hiện tại"
+        "useCurrentLocation": "Sử dụng Vị trí Hiện tại",
+        "cdr": "CDR",
+        "remark": "Nhận xét",
+        "created": "Tạo",
+        "invoiceReferenceId": "ID hóa đơn",
+        "isHomeCharging": "Sạc tại nhà",
+        "cdrId": "ID CDR",
+        "receiptUrl": "Biên nhận",
+        "paymentStatus": "Tình trạng thanh toán",
+        "canceledAt": "Đã hủy",
+        "cardBrand": "Thẻ thương hiệu",
+        "cardLast4": "Thẻ cuối cùng 4",
+        "paymentMethod": "Phương thức thanh toán",
+        "payment": "Thanh toán",
+        "receipt": "Biên nhận"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

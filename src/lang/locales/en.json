@@ -296,7 +296,20 @@
         "expiresBefore": "Expires Before",
         "expiresAfter": "Expires After",
         "useCurrentLocation": "Use Current Location",
-        "view": "View"
+        "cdr": "CDR",
+        "remark": "Remark",
+        "created": "Created",
+        "invoiceReferenceId": "Invoice Id",
+        "isHomeCharging": "Home Charging",
+        "cdrId": "CDR ID",
+        "receiptUrl": "Receipt",
+        "paymentStatus": "Payment Status",
+        "canceledAt": "Canceled",
+        "cardBrand": "Card Brand",
+        "cardLast4": "Card Last 4",
+        "paymentMethod": "Payment Method",
+        "payment": "Payment",
+        "receipt": "Receipt"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

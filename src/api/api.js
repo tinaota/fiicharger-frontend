@@ -372,3 +372,9 @@ export const $HTTP_deleteChargeBoxTariff = (params) => { return del(`${base_char
 
 // sessions api
 export const $HTTP_getAllSessionsData = (params) => { return fetch(`${base_charger}/api/reports/sessions`, params) }
+
+// get CDR info
+export const $HTTP_getCDRInfoById = (params) => {
+    return fetch(`${base_charger}/api/reports/cdrs/${params.cdrId}`);
+};
+

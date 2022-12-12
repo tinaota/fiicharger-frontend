@@ -292,7 +292,21 @@
         "createdAfter": "創建於",
         "expiresBefore": "過期前",
         "expiresAfter": "過期後",
-        "useCurrentLocation": "使用當前位置"
+        "useCurrentLocation": "使用當前位置",
+        "cdr": "話單",
+        "remark": "評論",
+        "created": "創建",
+        "invoiceReferenceId": "發票編號",
+        "isHomeCharging": "家庭充電",
+        "cdrId": "話單編號",
+        "receiptUrl": "收據",
+        "paymentStatus": "支付狀態",
+        "canceledAt": "取消",
+        "cardBrand": "卡片品牌",
+        "cardLast4": "最後4張牌",
+        "paymentMethod": "付款方式",
+        "payment": "支付",
+        "receipt": "收據"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

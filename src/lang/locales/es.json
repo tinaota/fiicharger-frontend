@@ -292,7 +292,21 @@
         "createdAfter": "Creado después",
         "expiresBefore": "Caduca antes",
         "expiresAfter": "Expira después de",
-        "useCurrentLocation": "Usar ubicación actual"
+        "useCurrentLocation": "Usar ubicación actual",
+        "cdr": "CDR",
+        "remark": "Observación",
+        "created": "Creado",
+        "invoiceReferenceId": "Id. de factura",
+        "isHomeCharging": "Carga en casa",
+        "cdrId": "ID de CDR",
+        "receiptUrl": "Recibo",
+        "paymentStatus": "Estado de pago",
+        "canceledAt": "Cancelado",
+        "cardBrand": "Marca de carro",
+        "cardLast4": "Tarjeta Últimos 4",
+        "paymentMethod": "Método de pago",
+        "payment": "Pago",
+        "receipt": "Recibo"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

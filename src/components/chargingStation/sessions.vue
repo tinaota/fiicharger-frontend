@@ -151,6 +151,72 @@
                             </el-table-column>
                         </el-table-column>
                     </el-table>
+                    <el-table :data="cdrData[scope.row.index]" v-loading="cdrDataIsLoading">
+                        <el-table-column :label="$t('general.cdr')">
+                            <el-table-column prop="status" :label="$t('general.status')" width="80"></el-table-column>
+                            <!-- <el-table-column prop="remark" :label="$t('general.remark')" width="80"></el-table-column>
+                            <el-table-column prop="invoiceReferenceId" :label="$t('general.invoiceReferenceId')" width="150"></el-table-column> -->
+                            <el-table-column prop="isHomeCharging" :label="$t('general.isHomeCharging')" width="80">
+                                <template slot-scope="scope">
+                                    {{scope.row.isHomeCharging? 'true':'false'}}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="modified" :label="$t('general.modified')" width="170">
+                                <template slot-scope="scope">
+                                    {{ scope.row.modified!==null? getLocTime(scope.row.modified):'' }}
+                                </template>
+                            </el-table-column>
+                            <!-- <el-table-column :label="$t('general.payment')"> -->
+                                <el-table-column :label="$t('general.payment') + ' ID'" width="265">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment ?scope.row.payment.id:'' }}
+                                    </template>
+                                </el-table-column>
+                                <!-- <el-table-column :label="$t('general.cdrId')" width="190">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment ?scope.row.payment.cdrId:'' }}
+                                    </template>
+                                </el-table-column> -->
+                                <el-table-column :label="$t('general.receiptUrl')" width="80">
+                                    <template slot-scope="scope">
+                                        <a :href="scope.row.payment.receiptUrl" target="_blank">{{$t('general.receipt')}}</a>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column :label="$t('general.paymentStatus')" width="120">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment ?scope.row.payment.paymentStatus:'' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column :label="$t('general.canceledAt')" width="170">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment ? scope.row.payment.canceledAt? getLocTime(scope.row.payment.canceledAt):'':'' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column :label="$t('general.created')" width="170">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment ? scope.row.payment.created? getLocTime(scope.row.payment.created):'':'' }}
+                                    </template>
+                                </el-table-column>
+                            <!-- </el-table-column>
+                            <el-table-column :label="$t('general.paymentMethod')"> -->
+                                <el-table-column :label="$t('general.paymentMethod')+' ID'" width="260">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.id:'' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column :label="$t('general.cardBrand')" width="120">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardBrand:'' }}
+                                    </template>
+                                </el-table-column>
+                                <el-table-column :label="$t('general.cardLast4')" width="120">
+                                    <template slot-scope="scope">
+                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardLast4:'' }}
+                                    </template>
+                                </el-table-column>
+                            <!-- </el-table-column> -->
+                        </el-table-column>
+                    </el-table>
                 </template>
             </el-table-column>
             <el-table-column prop="id" label="ID" width="100"></el-table-column>
@@ -198,10 +264,10 @@ import {
 import {
     $HTTP_getAllSessionsData,
     $HTTP_getAllReservationById,
-    $HTTP_getAllTransactionsById
+    $HTTP_getAllTransactionsById,
+    $HTTP_getCDRInfoById
 } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-
 export default {
     props: {
         chargerId: String,
@@ -221,7 +287,9 @@ export default {
             reservationData: new Array($GLOBAL_PAGE_LIMIT).fill(null),
             reservationDataIsLoading: false,
             transactionData: new Array($GLOBAL_PAGE_LIMIT).fill(null),
-            transactionDataIsLoading: false
+            transactionDataIsLoading: false,
+            cdrData: new Array($GLOBAL_PAGE_LIMIT).fill(null),
+            cdrDataIsLoading: false
         };
     },
     computed: {
@@ -247,8 +315,6 @@ export default {
     },
     mounted() {
         this.getAllSessionsData();
-        // set empty values to reservation data
-        // this.reservationData =
     },
     methods: {
         expandChange(row, expanded) {
@@ -259,6 +325,7 @@ export default {
             ) {
                 this.getTransactionInfoById(row.transactionId);
                 this.getReservationInfoById(row.reservationId);
+                this.getCDRInfoById(row.cdrId);
             } else {
                 // if reservations is removed
                 let remainingReservations;
@@ -310,8 +377,53 @@ export default {
                         null
                     );
                 }
+
+                // if cdr is removed
+                let remainingCDR;
+                if (expanded.length > 0) {
+                    remainingCDR = this.tableData.filter((item) =>
+                        expanded.some(
+                            (expandedItem) => item.cdrId === expandedItem.cdrId
+                        )
+                    );
+                    let tempArr = new Array($GLOBAL_PAGE_LIMIT).fill(null);
+                    remainingCDR.map((eachCDR) => {
+                        let index = this.tableData.findIndex(
+                            (item) => item?.cdrId === eachCDR?.cdrId
+                        );
+                        tempArr[index] = this.cdrData[index];
+                    });
+                    this.cdrData = tempArr;
+                } else {
+                    this.cdrData = new Array($GLOBAL_PAGE_LIMIT).fill(null);
+                }
             }
             this.expandedRowsCount = expanded.length;
+        },
+        getCDRInfoById(id) {
+            if (id !== null) {
+                let params = { cdrId: id };
+                this.cdrDataIsLoading = true;
+                $HTTP_getCDRInfoById(params)
+                    .then((res) => {
+                        let index = this.tableData.findIndex(
+                            (item) => item.cdrId === id
+                        );
+                        let data = [...this.cdrData];
+                        data[index] = [res];
+                        this.cdrData = data;
+                        this.cdrDataIsLoading = false;
+                    })
+                    .catch((err) => {
+                        this.cdrData = [];
+                        this.cdrDataIsLoading = false;
+                        console.log(err);
+                        this.$message({
+                            type: "warning",
+                            message: i18n.t("error_network")
+                        });
+                    });
+            }
         },
         getTransactionInfoById(id) {
             if (id !== null) {
