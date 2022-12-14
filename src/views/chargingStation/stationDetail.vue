@@ -183,12 +183,15 @@
             </div>
             <div class="card-8">
                 <div class="header">
-                    <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')" @change="updateGraphSelection">
+                    <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')">
                         <el-option v-for="item in graphList" :label="$t(`graphs.${item}`)" :key="item" :value="item"></el-option>
                     </el-select>
                 </div>
                 <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
                     <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></TransactionTraffic>
+                </div>
+                <div class="graph" v-if="graphSelected==='revenueWaterfall' && dateRange.length>1 && curRouteParam.stationId">
+                    <RevenueWaterfall :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></RevenueWaterfall>
                 </div>
             </div>
             <div class="card-8 table-result">
@@ -333,13 +336,13 @@ import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+import RevenueWaterfall from "@/components/charts/config/RevenueWaterfall";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
 import { $POWER_TYPE_LIST } from "@/utils/global";
-
 export default {
     components: {
         ShowPostion,
@@ -347,6 +350,7 @@ export default {
         Connector,
         CommonPopup,
         TransactionTraffic,
+        RevenueWaterfall,
         UpdateFirmware,
         GetDiagnostics,
         AddChargingProfile,
@@ -532,7 +536,7 @@ export default {
                 ]
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic"],
+            graphList: ["transactionAndTraffic", "revenueWaterfall"],
             powerTypeList: $POWER_TYPE_LIST
         };
     },
@@ -699,26 +703,28 @@ export default {
                                 lat: data.coordinates.latitude
                             },
                             serviceStartTime:
-                                (data.openHour!==null && data.openHour < 10
+                                (data.openHour !== null && data.openHour < 10
                                     ? "0" + data.openHour + ":"
-                                    : data.openHour!==null
+                                    : data.openHour !== null
                                     ? data.openHour + ":"
                                     : "") +
-                                (data.openMinute!==null && data.openMinute < 10
+                                (data.openMinute !== null &&
+                                data.openMinute < 10
                                     ? "0" + data.openMinute + ":"
-                                    : data.openMinute!==null
-                                    ? data.openMinute+ ":"
+                                    : data.openMinute !== null
+                                    ? data.openMinute + ":"
                                     : ""),
                             serviceEndTime:
-                                (data.closeHour!==null && data.closeHour < 10
+                                (data.closeHour !== null && data.closeHour < 10
                                     ? "0" + data.closeHour + ":"
-                                    : data.closeHour!==null
+                                    : data.closeHour !== null
                                     ? data.closeHour + ":"
                                     : "") +
-                                (data.closeMinute!==null && data.closeMinute < 10
+                                (data.closeMinute !== null &&
+                                data.closeMinute < 10
                                     ? "0" + data.closeMinute + ":"
-                                    : data.closeMinute!==null
-                                    ? data.closeMinute+ ":"
+                                    : data.closeMinute !== null
+                                    ? data.closeMinute + ":"
                                     : ""),
                             phone: data.phoneNumber
                         };
@@ -902,9 +908,6 @@ export default {
         },
         getDataUsingDatepicker() {
             this.getStatistics(this.curRouteParam.stationId);
-        },
-        updateGraphSelection() {
-            console.log("get graph data");
         }
     }
 };
@@ -913,7 +916,6 @@ export default {
 .card-8 {
     .header,
     .graph {
-        color: #151e25;
         font-size: 1.25rem;
         display: flex;
         .title-value {

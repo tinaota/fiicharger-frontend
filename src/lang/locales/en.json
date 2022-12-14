@@ -309,7 +309,8 @@
         "cardLast4": "Card Last 4",
         "paymentMethod": "Payment Method",
         "payment": "Payment",
-        "receipt": "Receipt"
+        "receipt": "Receipt",
+        "maxBreakdowns": "Max breakdowns"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -758,7 +759,8 @@
         "transactions": "Transactions",
         "repeatUsers": "Repeated Users",
         "newUsers": "New Users",
-        "totalUsers": "Total Users"
+        "totalUsers": "Total Users",
+        "revenueWaterfall": "Revenue Waterfall"
     },
     "reports": {
         "chargePoints": "Charge Points",

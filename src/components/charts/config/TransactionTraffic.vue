@@ -23,8 +23,8 @@ export default {
     data() {
         return {
             chartData: {},
-            isDark: this.$store.state.darkTheme,
-            lang: moment.locale()
+            lang: moment.locale(),
+            responseData: []
         };
     },
     watch: {
@@ -32,6 +32,14 @@ export default {
             // check the length of the dates to verify
             // it has both start/end dates
             this.fetchTransactionTrafficGraphData(this.dateRange, this.id);
+        },
+        isDark: function () {
+            this.convertChartOptions(this.responseData);
+        }
+    },
+    computed: {
+        isDark() {
+            return this.$store.state.darkTheme;
         }
     },
     mounted() {
@@ -52,6 +60,7 @@ export default {
                 .then((res) => {
                     if (res.length > 0) {
                         // convert to chart data
+                        this.responseData = res;
                         this.convertChartOptions(res);
                     } else {
                         this.$message({

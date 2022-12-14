@@ -306,7 +306,8 @@
         "cardLast4": "最后4张牌",
         "paymentMethod": "付款方式",
         "payment": "支付",
-        "receipt": "收据"
+        "receipt": "收据",
+        "maxBreakdowns": "最大故障"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -755,7 +756,8 @@
         "transactions": "交易",
         "repeatUsers": "重复用户",
         "newUsers": "新用户",
-        "totalUsers": "总用户"
+        "totalUsers": "总用户",
+        "revenueWaterfall": "收入瀑布"
     },
     "reports": {
         "chargePoints": "充电点",

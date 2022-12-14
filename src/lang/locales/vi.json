@@ -306,7 +306,8 @@
         "cardLast4": "Thẻ cuối cùng 4",
         "paymentMethod": "Phương thức thanh toán",
         "payment": "Thanh toán",
-        "receipt": "Biên nhận"
+        "receipt": "Biên nhận",
+        "maxBreakdowns": "Sự cố tối đa"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -755,7 +756,8 @@
         "transactions": "Giao dịch",
         "repeatUsers": "Người dùng lặp lại",
         "newUsers": "Những người dùng mới",
-        "totalUsers": "Tổng số người dùng"
+        "totalUsers": "Tổng số người dùng",
+        "revenueWaterfall": "Thác doanh thu"
     },
     "reports": {
         "chargePoints": "Điểm tính phí",

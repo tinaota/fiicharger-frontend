@@ -306,7 +306,8 @@
         "cardLast4": "Tarjeta Últimos 4",
         "paymentMethod": "Método de pago",
         "payment": "Pago",
-        "receipt": "Recibo"
+        "receipt": "Recibo",
+        "maxBreakdowns": "Desglose máximo"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -755,7 +756,8 @@
         "transactions": "Actas",
         "repeatUsers": "Usuarios repetidos",
         "newUsers": "Usuarios nuevos",
-        "totalUsers": "Usuarios totales"
+        "totalUsers": "Usuarios totales",
+        "revenueWaterfall": "Cascada de ingresos"
     },
     "reports": {
         "chargePoints": "Puntos de recarga",

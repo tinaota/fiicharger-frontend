@@ -298,6 +298,12 @@ export const $HTTP_getFirmwareUploadUrl = params => { return fetch(`${base_charg
 // graph apis
 export const $HTTP_getTransactionTrafficGraphData = params => { return fetch(`${base_charger}/api/reports/transactions/graphs/traffic`, params) }
 
+export const $HTTP_getRevenueWaterfallGraphData = (params) => {
+    return fetch(
+        `${base_charger}/api/reports/charge-points/graphs/revenue-waterfall`,
+        params
+    );
+};
 //get charging rate uni
 export const $HTTP_getChargingRateUnit = () => { return fetch(`${base_charger}/api/ocpp/chargingrateunit-type-list`) }
 
