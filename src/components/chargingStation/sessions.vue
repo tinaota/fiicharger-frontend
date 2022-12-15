@@ -167,61 +167,61 @@
                                 </template>
                             </el-table-column>
                             <!-- <el-table-column :label="$t('general.payment')"> -->
-                                <el-table-column :label="$t('general.payment') + ' ID'" width="265">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment ?scope.row.payment.id:'' }}
-                                    </template>
-                                </el-table-column>
-                                <!-- <el-table-column :label="$t('general.cdrId')" width="190">
+                            <el-table-column :label="$t('general.payment') + ' ID'" width="265">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment ?scope.row.payment.id:'' }}
+                                </template>
+                            </el-table-column>
+                            <!-- <el-table-column :label="$t('general.cdrId')" width="190">
                                     <template slot-scope="scope">
                                         {{ scope.row.payment ?scope.row.payment.cdrId:'' }}
                                     </template>
                                 </el-table-column> -->
-                                <el-table-column :label="$t('general.receiptUrl')" width="80">
-                                    <template slot-scope="scope">
-                                        <a :href="scope.row.payment.receiptUrl" target="_blank">{{$t('general.receipt')}}</a>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.paymentStatus')" width="120">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment ?scope.row.payment.paymentStatus:'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.canceledAt')" width="170">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment ? scope.row.payment.canceledAt? getLocTime(scope.row.payment.canceledAt):'':'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.created')" width="170">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment ? scope.row.payment.created? getLocTime(scope.row.payment.created):'':'' }}
-                                    </template>
-                                </el-table-column>
+                            <el-table-column :label="$t('general.receiptUrl')" width="80">
+                                <template slot-scope="scope">
+                                    <a :href="scope.row.payment.receiptUrl" target="_blank">{{$t('general.receipt')}}</a>
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.paymentStatus')" width="120">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment ?scope.row.payment.paymentStatus:'' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.canceledAt')" width="170">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment ? scope.row.payment.canceledAt? getLocTime(scope.row.payment.canceledAt):'':'' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.created')" width="170">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment ? scope.row.payment.created? getLocTime(scope.row.payment.created):'':'' }}
+                                </template>
+                            </el-table-column>
                             <!-- </el-table-column>
                             <el-table-column :label="$t('general.paymentMethod')"> -->
-                                <el-table-column :label="$t('general.paymentMethod')+' ID'" width="260">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.id:'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.cardBrand')" width="120">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardBrand:'' }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column :label="$t('general.cardLast4')" width="120">
-                                    <template slot-scope="scope">
-                                        {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardLast4:'' }}
-                                    </template>
-                                </el-table-column>
+                            <el-table-column :label="$t('general.paymentMethod')+' ID'" width="260">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.id:'' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.cardBrand')" width="120">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardBrand:'' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column :label="$t('general.cardLast4')" width="120">
+                                <template slot-scope="scope">
+                                    {{ scope.row.payment  && scope.row.payment.paymentMethod?scope.row.payment.paymentMethod.cardLast4:'' }}
+                                </template>
+                            </el-table-column>
                             <!-- </el-table-column> -->
                         </el-table-column>
                     </el-table>
                 </template>
             </el-table-column>
-            <el-table-column prop="id" label="ID" width="100"></el-table-column>
-            <el-table-column prop="idTagValue" :label="$t('menu.idTag')" width="250"></el-table-column>
-            <el-table-column prop="authMethod" :label="$t('general.authMethod')" width="200"></el-table-column>
+            <el-table-column prop="id" label="ID" width="70"></el-table-column>
+            <el-table-column prop="idTagValue" :label="$t('menu.idTag')" width="220"></el-table-column>
+            <el-table-column prop="authMethod" :label="$t('general.authMethod')" width="190"></el-table-column>
             <el-table-column prop="status" :label="$t('general.status')" width="180"></el-table-column>
             <el-table-column prop="chargeStationName" :label="$t('chargingStation.stationName')" width="180"></el-table-column>
             <el-table-column prop="totalEnergy" :label="$t('general.totalEnergy') + '(kWh)'" width="130">
@@ -249,10 +249,16 @@
                     {{ scope.row.stopTimestamp!==null ? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
             </el-table-column>
+            <el-table-column :label="$t('general.status')" width="100">
+                <template slot-scope="scope">
+                    <el-button type="primary" @click="openDialog(scope.row)">Graph</el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="total">{{ $t("general.result", {item:total}) }}</div>
         <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
         </el-pagination>
+        <SessionsStatusPopup v-if="dialog.visible" :show="dialog.visible" :data="dialog.data" @close="closeDialog()"></SessionsStatusPopup>
     </div>
 </template>
 
@@ -268,6 +274,7 @@ import {
     $HTTP_getCDRInfoById
 } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import SessionsStatusPopup from "@/components/popup/sessionsStatusPopup.vue";
 export default {
     props: {
         chargerId: String,
@@ -276,6 +283,9 @@ export default {
         ocppId: String
     },
     emits: ["updated"],
+    components: {
+        SessionsStatusPopup
+    },
     data() {
         return {
             isLoading: false,
@@ -289,7 +299,12 @@ export default {
             transactionData: new Array($GLOBAL_PAGE_LIMIT).fill(null),
             transactionDataIsLoading: false,
             cdrData: new Array($GLOBAL_PAGE_LIMIT).fill(null),
-            cdrDataIsLoading: false
+            cdrDataIsLoading: false,
+            dialog: {
+                visible: false,
+                data: [],
+                isLoading: false
+            }
         };
     },
     computed: {
@@ -516,6 +531,14 @@ export default {
         changePage(page) {
             this.page = page;
             this.getAllSessionsData();
+        },
+        openDialog(data) {
+            this.dialog.visible = true;
+            this.dialog.data = data;
+        },
+        closeDialog() {
+            this.dialog.visible = false;
+            this.dialog.data = [];
         }
     }
 };

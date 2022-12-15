@@ -304,6 +304,12 @@ export const $HTTP_getRevenueWaterfallGraphData = (params) => {
         params
     );
 };
+
+export const $HTTP_getSessionStatusGraphDataById = (params) => {
+    return fetch(
+        `${base_charger}/api/reports/sessions/${params.sessionId}/graphs/statuses`
+    );
+};
 //get charging rate uni
 export const $HTTP_getChargingRateUnit = () => { return fetch(`${base_charger}/api/ocpp/chargingrateunit-type-list`) }
 

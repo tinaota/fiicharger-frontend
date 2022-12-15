@@ -316,7 +316,7 @@
                 </el-tabs>
                 <div v-if="active==='analysis'">
                     <div class="header">
-                        <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')" @change="updateGraphSelection">
+                        <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')">
                             <el-option v-for="item in graphList" :label="$t(`graphs.${item}`)" :key="item" :value="item"></el-option>
                         </el-select>
                     </div>
@@ -752,7 +752,6 @@ export default {
             };
             $HTTP_getChargeBoxTariff(params)
                 .then((res) => {
-                    console.log(res);
                     if (res && res.length > 0) {
                         this.tariffList = res;
                         this.tariffNames = res.map((item) => item.name);
@@ -988,9 +987,6 @@ export default {
         getDataUsingDatepicker() {
             this.isUpDateReservationData = true;
             this.getStatistics(this.curRouteParam.chargeBoxId);
-        },
-        updateGraphSelection() {
-            console.log("get graph data");
         }
     }
 };
