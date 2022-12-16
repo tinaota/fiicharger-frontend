@@ -57,7 +57,7 @@
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                                <div class="msg"><a class="view-link">{{$t('general.view')}}</a></div>
+                                <div class="msg"><a class="view-link" @click="openDialog('chargeRate', item)">{{item?.tariffNames?.toString()}}</a></div>
                             </div>
                             <!-- <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.onPeak') }} : </div>
@@ -85,6 +85,7 @@
                 </ul>
             </div>
         </div>
+        <TariffPopup v-if="chargeRate.visible" :show="chargeRate.visible" :data="chargeRate.data" @close="closeDialog('chargeRate')"></TariffPopup>
     </div>
 </template>
 
@@ -94,7 +95,8 @@ import {
     $HTTP_getStationList,
     $HTTP_getAllChargeBoxList,
     $HTTP_getStationListById,
-    $HTTP_getConnectionSummary
+    $HTTP_getConnectionSummary,
+    $HTTP_getChargeBoxTariff
 } from "@/api/api";
 import ic_info_green from "imgs/ic_info_green.png";
 import ic_info_brown from "imgs/ic_info_brown.png";
@@ -133,10 +135,12 @@ import $ from "jquery";
 import { MarkerWithLabel } from "@googlemaps/markerwithlabel";
 import Connector from "@/components/chargingStation/connector";
 import unknown from "imgs/help_icon.svg";
+import TariffPopup from "@/components/popup/tariffPopup";
 
 export default {
     components: {
-        Connector
+        Connector,
+        TariffPopup
     },
     data() {
         return {
@@ -213,13 +217,17 @@ export default {
                 isLoading: false,
                 isOpen: false,
                 data: [],
-                frequence: 5000 * 1.5
+                frequence: 10000 * 3
             },
             currentInfoWindowStationId: "",
             currentInfoWindow: null,
             timer: null,
             timerBox: null,
-            frequence: 10000 //1 min:1000*60
+            frequence: 10000, //1 min:1000*60
+            chargeRate: {
+                visible: false,
+                data: []
+            }
         };
     },
     computed: {
@@ -248,6 +256,20 @@ export default {
         this.removeAllMarkers();
     },
     methods: {
+        openDialog(type, data) {
+            if (type === "chargeRate") {
+                this.chargeRate.visible = true;
+                if (data.tariffList) {
+                    this.chargeRate.data = data.tariffList;
+                }
+            }
+        },
+        closeDialog(type, data) {
+            if (type === "chargeRate") {
+                this.chargeRate.visible = false;
+                this.chargeRate.data = [];
+            }
+        },
         setTimer() {
             const that = this;
             this.timer = setInterval(() => {
@@ -563,7 +585,31 @@ export default {
         getChargeBoxList(param, isVisible) {
             this.chargeBoxDrawer.isLoading = isVisible;
             $HTTP_getAllChargeBoxList(param).then((res) => {
-                this.chargeBoxDrawer.data = res.data;
+                let originalList = res.data;
+
+                // get tariff info
+                if (res.data.length > 0) {
+                    res.data.map((item, index) => {
+                        let params = {
+                            chargePointId: item.id
+                        };
+                        $HTTP_getChargeBoxTariff(params)
+                            .then((tariffRes) => {
+                                if (tariffRes) {
+                                    originalList[index].tariffList = tariffRes;
+                                    originalList[index].tariffNames =
+                                        tariffRes.map((item) => item.name);
+                                }
+                            })
+                            .catch((e) => {
+                                originalList[index].tariffList = [];
+                                originalList[index].tariffNames = "";
+                                console.log(e);
+                            });
+                    });
+                }
+                // update list with tariff
+                this.chargeBoxDrawer.data = originalList;
                 this.chargeBoxDrawer.isLoading = !isVisible;
             });
         },

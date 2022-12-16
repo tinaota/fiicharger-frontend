@@ -43,7 +43,10 @@
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.elecRate') }}</div>
-                        <div class="content"><a class="view-link">{{$t('general.view')}}</a></div>
+                        <div class="content">
+                            <a class="view-link" @click="openDialog(null, 'chargeRate', null)">{{tariffNames.toString()}}</a>
+                            <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(chargePointById[0],'modifyTariff', null)"></i>
+                        </div>
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('general.installationDate') }}</div>
@@ -341,6 +344,8 @@
             <ClearChargingProfile :show="clearChargingProfile.visible" :data="clearChargingProfile.data" @close="isUpdate => { closeDialog('clearChargingProfile', isUpdate) }"></ClearChargingProfile>
             <UploadFirmware :chargePointId="uploadFirmwareDialog.chargePointId" :show="uploadFirmwareDialog.visible" @close="closeDialog('uploadFirmwareDialog')"></UploadFirmware>
             <GetCompositeSchedule :show="getCompositeSchedule.visible" :data="getCompositeSchedule.data" @close="closeDialog('getCompositeSchedule')"></GetCompositeSchedule>
+            <TariffPopup v-if="chargeRate.visible" :show="chargeRate.visible" :data="chargeRate.data" @close="closeDialog('chargeRate')"></TariffPopup>
+            <ModifyChargeBoxTariff v-if="chargeBoxTariffDialog.visible" :show="chargeBoxTariffDialog.visible" :data="chargeBoxTariffDialog.data" @close="closeDialog('modifyTariff')"></ModifyChargeBoxTariff>
         </div>
     </div>
 </template>
@@ -363,7 +368,8 @@ import ClearChargingProfile from "@/components/chargingStation/clearChargingProf
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getConnectorStatusesById,
-    $HTTP_getTransactionsStatistics
+    $HTTP_getTransactionsStatistics,
+    $HTTP_getChargeBoxTariff
 } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
@@ -383,6 +389,8 @@ import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
 import UploadFirmware from "@/components/chargingStation/uploadFirmware";
 import GetCompositeSchedule from "@/components/chargingStation/getCompositeSchedule";
+import TariffPopup from "@/components/popup/tariffPopup";
+import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
 export default {
     components: {
         Connector,
@@ -405,7 +413,9 @@ export default {
         AddChargingProfile,
         ClearChargingProfile,
         UploadFirmware,
-        GetCompositeSchedule
+        GetCompositeSchedule,
+        TariffPopup,
+        ModifyChargeBoxTariff
     },
     data() {
         return {
@@ -585,7 +595,17 @@ export default {
             updateTransactions: false, //use this to hit other apis in components
             settingsInput: "",
             powerTypeList: $POWER_TYPE_LIST,
-            connectorTypeList: $CONNECTOR_TYPE_LIST
+            connectorTypeList: $CONNECTOR_TYPE_LIST,
+            tariffList: [],
+            tariffNames: "",
+            chargeRate: {
+                visible: false,
+                data: []
+            },
+            chargeBoxTariffDialog: {
+                visible: false,
+                data: {}
+            }
         };
     },
     computed: {
@@ -640,6 +660,7 @@ export default {
 
         this.getConnectorStatusesById(this.curRouteParam.chargeBoxId);
         this.getStatistics(this.curRouteParam.chargeBoxId);
+        this.getChargeBoxTariff(this.curRouteParam.chargeBoxId);
 
         // update connector statuses in certain interval
         this.connectorTimer = setInterval(() => {
@@ -724,6 +745,31 @@ export default {
                 this.getCompositeSchedule.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             }
+        },
+        getChargeBoxTariff(id) {
+            let params = {
+                chargePointId: id
+            };
+            $HTTP_getChargeBoxTariff(params)
+                .then((res) => {
+                    console.log(res);
+                    if (res && res.length > 0) {
+                        this.tariffList = res;
+                        this.tariffNames = res.map((item) => item.name);
+                    } else {
+                        this.tariffList = [];
+                        this.tariffNames = "";
+                    }
+                })
+                .catch((err) => {
+                    this.tariffList = [];
+                    this.tariffNames = "";
+                    console.log(err);
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
         },
         getConnectorStatusesById(id) {
             let params = {};
@@ -817,6 +863,14 @@ export default {
                 if (row) {
                     this.commonpopup.rowData = row;
                 }
+            } else if (type === "chargeRate") {
+                this.chargeRate.visible = true;
+                this.chargeRate.data = this.tariffList;
+            } else if (type === "modifyTariff") {
+                this.chargeBoxTariffDialog.visible = true;
+                this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
+                this.chargeBoxTariffDialog.data.name = row.name;
+                this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
             }
         },
         closeDialog(type, data) {
@@ -880,6 +934,16 @@ export default {
             } else if (type === "getCompositeSchedule") {
                 this.getCompositeSchedule.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
+            } else if (type === "chargeRate") {
+                this.chargeRate.visible = false;
+                this.chargeRate.data = [];
+            } else if (type === "modifyTariff") {
+                this.chargeBoxTariffDialog.visible = false;
+                this.chargeBoxTariffDialog.data = {};
+                // get new tariffs after a delay
+                setTimeout(() => {
+                    this.getChargeBoxTariff(this.curRouteParam.chargeBoxId);
+                }, 2000);
             }
             this.setTimerApiCall();
         },
@@ -1027,10 +1091,11 @@ export default {
                     margin-left: 5px;
                 }
             }
-            .view-link{
+            .view-link {
                 color: #0056ff;
                 text-decoration: underline;
                 cursor: pointer;
+                margin-right: 5px;
             }
         }
     }

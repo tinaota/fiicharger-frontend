@@ -64,6 +64,18 @@ $dark-background-color: #2d3855;
                 }
             }
         }
+        .tariffPopup, .updatesTable{
+            background-color: inherit;
+            &.el-dialog{
+                .el-table{
+                    border-radius: 0;
+                    background-color: inherit;
+                }
+            }
+        }
+        .el-table__expanded-cell{
+            background-color: inherit;
+        }
         .el-dialog {
             background: #323d5d !important;
             color: $dark-font-color !important;

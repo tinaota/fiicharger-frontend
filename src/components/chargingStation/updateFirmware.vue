@@ -21,7 +21,7 @@
         <br/>
         <div class="content-warp" v-loading="isLoading">
             <div class="result-content">
-                <el-table
+                <el-table class="updatesTable"
                     :data="firmwareList"
                     style="width: 100%">
                     <el-table-column

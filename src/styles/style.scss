@@ -1430,6 +1430,12 @@ input[type="number"] {
     }
 }
 
+.tariffPopup {
+    .el-table {
+        background: transparent;
+    }
+}
+
 .tableInfoTooltip {
     padding: 3px !important;
 }

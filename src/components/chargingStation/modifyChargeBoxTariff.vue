@@ -148,7 +148,7 @@ export default {
                             that.$message({
                                 type: "warning",
                                 message: i18n.t("general.typeConflict", {
-                                    item: this.data.chargeBoxId
+                                    item: this.data.ocppId
                                 })
                             });
                         }
