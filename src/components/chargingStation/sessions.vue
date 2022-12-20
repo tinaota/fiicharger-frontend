@@ -179,7 +179,7 @@
                                 </el-table-column> -->
                             <el-table-column :label="$t('general.receiptUrl')" width="80">
                                 <template slot-scope="scope">
-                                    <a :href="scope.row.payment.receiptUrl" target="_blank">{{$t('general.receipt')}}</a>
+                                    <a v-if="scope.row?.payment?.receiptUrl" :href="scope.row.payment.receiptUrl" target="_blank">{{$t('general.receipt')}}</a>
                                 </template>
                             </el-table-column>
                             <el-table-column :label="$t('general.paymentStatus')" width="120">
