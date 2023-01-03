@@ -40,7 +40,7 @@
                             </div>
                             <div class="info-item">
                                 <div class="label">{{ $t('chargingStation.power') }} : </div>
-                                <div class="msg">{{ item.powerKw }} KWH</div>
+                                <div class="msg">{{ item.powerKw }} kW</div>
                             </div>
                             <div class="info-item connectionStatusMain">
                                 <div class="label">{{ $t('chargingStation.connectionStatus') }} : </div>

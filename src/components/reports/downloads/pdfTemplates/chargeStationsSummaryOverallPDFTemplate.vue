@@ -152,7 +152,7 @@ export default {
                                         text:
                                             i18n.t(
                                                 "chargingStation.averageSessionPower"
-                                            ) + "( kW)",
+                                            ) + " (kW)",
                                         bold: true,
                                         margin: [0, 10, 0, 0],
                                         fontSize: 10

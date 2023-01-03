@@ -11,7 +11,7 @@
             </el-table-column>
             <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" width="200" sortable="custom"></el-table-column>
             <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" width="200" sortable="custom"></el-table-column>
-            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower')+ '(kW)'" width="250" sortable="custom">
+            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower')+ ' (kW)'" width="250" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageSessionPower.toFixed(2) }}
                 </template>

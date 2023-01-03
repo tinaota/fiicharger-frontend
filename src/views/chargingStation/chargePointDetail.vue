@@ -20,7 +20,7 @@
                     </div>
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.power') }}</div>
-                        <div class="content">{{ chargePointById[0].powerKw }} KWH</div>
+                        <div class="content">{{ chargePointById[0].powerKw }} kW</div>
 
                     </div>
                     <div class="item">

@@ -4,7 +4,7 @@
         <el-table :data="tableData" v-loading="isLoading" @sort-change="updateSorting">
             <el-table-column prop="dcFastChargers" :label="$t('chargingStation.dcFastChargers')" :min-width="1" sortable="custom"></el-table-column>
             <el-table-column prop="weeklyUtilization" :label="$t('chargingStation.weeklyUtilization')" :min-width="1" sortable="custom"></el-table-column>
-            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower') + '(kW)'" :min-width="1" sortable="custom">
+            <el-table-column prop="averageSessionPower" :label="$t('chargingStation.averageSessionPower') + ' (kW)'" :min-width="1" sortable="custom">
                 <template slot-scope="scope">
                     {{ scope.row.averageSessionPower.toFixed(2) }}
                 </template>

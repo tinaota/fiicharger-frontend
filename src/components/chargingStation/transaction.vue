@@ -10,7 +10,7 @@
             <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="120"></el-table-column>
             <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200"></el-table-column>
             <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200"></el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStart')+'(KWH)'" width="120">
+            <el-table-column :label="$t('chargingStation.meterStart')+' (kWh)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                 </template>
@@ -21,7 +21,7 @@
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStop')+'(KWH)'" width="120">
+            <el-table-column :label="$t('chargingStation.meterStop')+' (kWh)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                 </template>
@@ -32,7 +32,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="stopReason" :label="$t('chargingStation.stopReason')" width="120"></el-table-column>
-            <el-table-column :label="$t('chargingStation.meterTotal')+'(KWH)'" width="120">
+            <el-table-column :label="$t('chargingStation.meterTotal')+' (kWh)'" width="120">
                 <template slot-scope="scope">
                     {{ scope.row.meterTotal!==null? scope.row.meterTotal.toFixed(2) :'' }}
                 </template>

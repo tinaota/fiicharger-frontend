@@ -189,14 +189,14 @@ export default {
                                         text:
                                             i18n.t(
                                                 "chargingStation.meterStart"
-                                            ) + " (KWH)",
+                                            ) + " (kWh)",
                                         bold: true
                                     },
                                     {
                                         text:
                                             i18n.t(
                                                 "chargingStation.meterStop"
-                                            ) + " (KWH)",
+                                            ) + " (kWh)",
                                         bold: true
                                     },
                                     {
@@ -209,7 +209,7 @@ export default {
                                         text:
                                             i18n.t(
                                                 "chargingStation.meterTotal"
-                                            ) + " (KWH)",
+                                            ) + " (kWh)",
                                         bold: true
                                     }
                                 ],

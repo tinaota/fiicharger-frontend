@@ -57,7 +57,7 @@ export const transformToSymbols = function (name) {
             symbol = "$";
             break;
         case "PerKilowattHour":
-            symbol = "KWH";
+            symbol = "kWh";
             break;
         case "PerMinute":
             symbol = "min";
