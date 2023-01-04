@@ -172,6 +172,10 @@
         }
     }
 }
+// remove whitespace from bottom right corner
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
 .mainctrl {
     padding: 2.4vh 1.6vw 2.4vh 1.6vw;
     .el-loading-mask {
@@ -1506,4 +1510,12 @@ input[type="number"] {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.session-dialog {
+    height: 85%;
+    overflow: scroll;
+    .el-dialog__header {
+        padding: 0 !important;
+    }
 }

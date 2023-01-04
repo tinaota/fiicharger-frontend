@@ -281,12 +281,15 @@
         "totalFixedCostWithVat": "交易费（含税）",
         "totalEnergy": "总电量",
         "totalEnergyCost": "电量费",
+        "totalEnergyCostWithVat": "能源成本（税）",
         "totalTime": "总时间",
         "totalTimeCost": "充电时间费",
         "totalTimeCostWithVat": "充电时间费（税）",
         "totalParkingTime": "总停车时间",
         "totalParkingCost": "停车费",
+        "totalParkingCostWithVat": "停车费（税）",
         "totalReservationCost": "预订费用",
+        "totalReservationCostWithVat": "预订成本（税）",
         "sessionDetails": "会议详情",
         "createdBefore": "之前创建",
         "createdAfter": "创建于",
@@ -307,7 +310,10 @@
         "paymentMethod": "付款方式",
         "payment": "支付",
         "receipt": "收据",
-        "maxBreakdowns": "最大故障"
+        "maxBreakdowns": "最大故障",
+        "view": "看法",
+        "cost": "成本",
+        "paymentDetails": "付款详情"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

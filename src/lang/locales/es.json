@@ -281,12 +281,15 @@
         "totalFixedCostWithVat": "Coste fijo (Impuesto)",
         "totalEnergy": "Energía Total",
         "totalEnergyCost": "Costo energético",
+        "totalEnergyCostWithVat": "Coste de energía (impuestos)",
         "totalTime": "Tiempo Total",
         "totalTimeCost": "Costo de tiempo",
         "totalTimeCostWithVat": "Costo de tiempo (impuestos)",
         "totalParkingTime": "Tiempo total de estacionamiento",
         "totalParkingCost": "Costo de estacionamiento",
+        "totalParkingCostWithVat": "Coste de estacionamiento (impuestos)",
         "totalReservationCost": "Costo de Reserva",
+        "totalReservationCostWithVat": "Coste de la reserva (impuestos)",
         "sessionDetails": "Detalles de la sesión",
         "createdBefore": "Creado antes",
         "createdAfter": "Creado después",
@@ -307,7 +310,10 @@
         "paymentMethod": "Método de pago",
         "payment": "Pago",
         "receipt": "Recibo",
-        "maxBreakdowns": "Desglose máximo"
+        "maxBreakdowns": "Desglose máximo",
+        "view": "Vista",
+        "cost": "Costo",
+        "paymentDetails": "Detalles del pago"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",

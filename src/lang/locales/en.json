@@ -310,7 +310,10 @@
         "paymentMethod": "Payment Method",
         "payment": "Payment",
         "receipt": "Receipt",
-        "maxBreakdowns": "Max breakdowns"
+        "maxBreakdowns": "Max breakdowns",
+        "view": "View",
+        "cost": "Cost",
+        "paymentDetails": "Payment Details"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

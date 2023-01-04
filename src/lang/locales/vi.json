@@ -281,12 +281,15 @@
         "totalFixedCostWithVat": "Chi phí cố định (Thuế)",
         "totalEnergy": "Tổng năng lượng",
         "totalEnergyCost": "Chi phí năng lượng",
+        "totalEnergyCostWithVat": "Chi phí năng lượng (Thuế)",
         "totalTime": "Tổng thời gian",
         "totalTimeCost": "Chi phí thời gian",
         "totalTimeCostWithVat": "Chi phí thời gian (Thuế)",
         "totalParkingTime": "Tổng thời gian đỗ xe",
         "totalParkingCost": "Chi phí đỗ xe",
+        "totalParkingCostWithVat": "Chi phí đỗ xe (Thuế)",
         "totalReservationCost": "Chi phí đặt trước",
+        "totalReservationCostWithVat": "Chi phí đặt trước (Thuế)",
         "sessionDetails": "Chi tiết phiên",
         "createdBefore": "Được tạo trước",
         "createdAfter": "Được tạo sau",
@@ -307,7 +310,10 @@
         "paymentMethod": "Phương thức thanh toán",
         "payment": "Thanh toán",
         "receipt": "Biên nhận",
-        "maxBreakdowns": "Sự cố tối đa"
+        "maxBreakdowns": "Sự cố tối đa",
+        "view": "Lượt xem",
+        "cost": "Trị giá",
+        "paymentDetails": "Chi tiết thanh toán"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

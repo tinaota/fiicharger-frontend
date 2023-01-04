@@ -1,9 +1,12 @@
 <template>
-    <el-dialog :title="$t(`general.status`)" width="80%" :visible.sync="visible" custom-class="" :show-close="false" @close="closeDialog()">
-        <div style="width:100%;height:350px">
-            <CommonChart v-if="chartData" :chartData="chartData"></CommonChart>
+    <div style="width:100%;height:350px">
+        <div v-if="Object.keys(chartData).length>0" class="statusBox">
+            <CommonChart :chartData="chartData"></CommonChart>
         </div>
-    </el-dialog>
+        <div v-else class="statusBox">
+            <span>{{$t('noData')}}</span>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -16,7 +19,6 @@ import {
 
 export default {
     props: {
-        show: Boolean,
         data: Object
     },
     emits: ["close"],
@@ -36,7 +38,6 @@ export default {
         };
     },
     mounted() {
-        this.visible = this.show;
         this.fetchSessionStatusGraphData(this.data.id);
     },
     methods: {
@@ -59,11 +60,6 @@ export default {
                         response.push(finalData);
                         this.responseData = response;
                         this.convertChartOptions(response);
-                    } else {
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("noData")
-                        });
                     }
                 })
                 .catch(() => {
@@ -224,7 +220,8 @@ export default {
                         formatter: function (val) {
                             return transformUtcToLocTimeForGraphs(val);
                         },
-                        color: this.isDark ? "#ffffff" : "#808080"
+                        color: this.isDark ? "#ffffff" : "#808080",
+                        hideOverlap: true
                     }
                 },
                 yAxis: {
@@ -241,31 +238,31 @@ export default {
                         top: "0%",
                         children: [
                             // available legend
-                            {
-                                type: "circle",
-                                shape: {
-                                    cx: 1,
-                                    cy: 1,
-                                    r: 10
-                                },
-                                right: 230,
-                                top: 0,
-                                style: {
-                                    fill: this.getColor("Available")
-                                }
-                            },
-                            {
-                                type: "text",
-                                z: 100,
-                                left: -220,
-                                top: 5,
-                                style: {
-                                    fill: this.isDark ? "#ffffff" : "#808080",
-                                    width: 400,
-                                    overflow: "break",
-                                    text: "Available"
-                                }
-                            },
+                            // {
+                            //     type: "circle",
+                            //     shape: {
+                            //         cx: 1,
+                            //         cy: 1,
+                            //         r: 10
+                            //     },
+                            //     right: 230,
+                            //     top: 0,
+                            //     style: {
+                            //         fill: this.getColor("Available")
+                            //     }
+                            // },
+                            // {
+                            //     type: "text",
+                            //     z: 100,
+                            //     left: -220,
+                            //     top: 5,
+                            //     style: {
+                            //         fill: this.isDark ? "#ffffff" : "#808080",
+                            //         width: 400,
+                            //         overflow: "break",
+                            //         text: "Available"
+                            //     }
+                            // },
                             {
                                 type: "circle",
                                 shape: {
@@ -423,10 +420,17 @@ export default {
                 ]
             };
             this.chartData = option;
-        },
-        closeDialog() {
-            this.$emit("close", true);
         }
     }
 };
 </script>
+
+<style lang="scss" scoped>
+.statusBox {
+    display: flex;
+    width: inherit;
+    height: inherit;
+    justify-content: center;
+    align-items: center;
+}
+</style>
