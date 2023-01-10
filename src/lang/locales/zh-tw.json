@@ -313,7 +313,10 @@
         "maxBreakdowns": "分解上限",
         "view": "檢視",
         "cost": "費用",
-        "paymentDetails": "付款詳情"
+        "paymentDetails": "付款詳情",
+        "accumulatedRevenue": "累計收入",
+        "chargerRevenue": "充電器收入",
+        "cumulative": "累計 %"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -763,7 +766,7 @@
         "repeatUsers": "重複用戶",
         "newUsers": "新用戶",
         "totalUsers": "總用戶",
-        "revenueWaterfall": "收入瀑布"
+        "revenueChart": "收入"
     },
     "reports": {
         "chargePoints": "充電點",

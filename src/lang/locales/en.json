@@ -313,7 +313,10 @@
         "maxBreakdowns": "Max breakdowns",
         "view": "View",
         "cost": "Cost",
-        "paymentDetails": "Payment Details"
+        "paymentDetails": "Payment Details",
+        "accumulatedRevenue": "Accumulated Revenue",
+        "chargerRevenue": "Charger Revenue",
+        "cumulative": "Cumulative %"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -763,7 +766,7 @@
         "repeatUsers": "Repeated Users",
         "newUsers": "New Users",
         "totalUsers": "Total Users",
-        "revenueWaterfall": "Revenue Waterfall"
+        "revenueChart": "Revenue"
     },
     "reports": {
         "chargePoints": "Charge Points",

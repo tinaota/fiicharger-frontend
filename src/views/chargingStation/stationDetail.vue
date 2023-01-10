@@ -190,8 +190,8 @@
                 <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
                     <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></TransactionTraffic>
                 </div>
-                <div class="graph" v-if="graphSelected==='revenueWaterfall' && dateRange.length>1 && curRouteParam.stationId">
-                    <RevenueWaterfall :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></RevenueWaterfall>
+                <div class="graph" v-if="graphSelected==='revenueChart' && dateRange.length>1 && curRouteParam.stationId">
+                    <RevenueChart :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></RevenueChart>
                 </div>
             </div>
             <div class="card-8 table-result">
@@ -336,7 +336,7 @@ import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
-import RevenueWaterfall from "@/components/charts/config/RevenueWaterfall";
+import RevenueChart from "@/components/charts/config/RevenueChart";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
@@ -350,7 +350,7 @@ export default {
         Connector,
         CommonPopup,
         TransactionTraffic,
-        RevenueWaterfall,
+        RevenueChart,
         UpdateFirmware,
         GetDiagnostics,
         AddChargingProfile,
@@ -536,7 +536,7 @@ export default {
                 ]
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic", "revenueWaterfall"],
+            graphList: ["transactionAndTraffic", "revenueChart"],
             powerTypeList: $POWER_TYPE_LIST
         };
     },
