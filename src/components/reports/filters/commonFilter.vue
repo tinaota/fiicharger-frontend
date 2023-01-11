@@ -75,23 +75,23 @@
         <el-input v-if="keyWordFilter" :placeholder="$t('general.keyWord')" v-model="filter.keyWord" @change="updateParams" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <el-date-picker v-if="dateRangeFilter" :default-time="['00:00:00', '23:59:59']" v-model="filter.dateRange" type="daterange" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="filter.pickerOptions" :clearable="false" class="" @change="updateParams">
+        <el-date-picker v-if="dateRangeFilter" :default-time="['00:00:00', '23:59:59']" v-model="filter.dateRange" type="daterange" format="MMM dd yyyy" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="filter.pickerOptions" :clearable="false" class="" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="startDateTimeAfterFilter" class="single-date-picker" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="updateParams">
+        <el-date-picker v-if="startDateTimeAfterFilter" class="single-date-picker" v-model="filter.startDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.startDateTimeAfter')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="startDateTimeBeforeFilter" class="single-date-picker" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="updateParams">
+        <el-date-picker v-if="startDateTimeBeforeFilter" class="single-date-picker" v-model="filter.startDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.startDateTimeBefore')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="endDateTimeAfterFilter" class="single-date-picker" v-model="filter.endDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeAfter')" @change="updateParams">
+        <el-date-picker v-if="endDateTimeAfterFilter" class="single-date-picker" v-model="filter.endDateTimeAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.endDateTimeAfter')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="endDateTimeBeforeFilter" class="single-date-picker" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="updateParams">
+        <el-date-picker v-if="endDateTimeBeforeFilter" class="single-date-picker" v-model="filter.endDateTimeBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.endDateTimeBefore')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="createdAfterFilter" class="single-date-picker" v-model="filter.createdAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.createdAfter')" @change="updateParams">
+        <el-date-picker v-if="createdAfterFilter" class="single-date-picker" v-model="filter.createdAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.createdAfter')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="createdBeforeFilter" class="single-date-picker" v-model="filter.createdBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.createdBefore')" @change="updateParams">
+        <el-date-picker v-if="createdBeforeFilter" class="single-date-picker" v-model="filter.createdBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.createdBefore')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="expiresAfterFilter" class="single-date-picker" v-model="filter.expiresAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.expiresAfter')" @change="updateParams">
+        <el-date-picker v-if="expiresAfterFilter" class="single-date-picker" v-model="filter.expiresAfter" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.expiresAfter')" @change="updateParams">
         </el-date-picker>
-        <el-date-picker v-if="expiresBeforeFilter" class="single-date-picker" v-model="filter.expiresBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :clearable="true" :placeholder="$t('general.expiresBefore')" @change="updateParams">
+        <el-date-picker v-if="expiresBeforeFilter" class="single-date-picker" v-model="filter.expiresBefore" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :clearable="true" :placeholder="$t('general.expiresBefore')" @change="updateParams">
         </el-date-picker>
     </div>
 </template>

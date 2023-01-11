@@ -39,7 +39,7 @@
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('general.businessHours') }}</span>
-                                <span class="num">{{ (stationInfo.serviceStartTime!==''?stationInfo.serviceStartTime + '00' +' - ':'') + (stationInfo.serviceEndTime!==''?stationInfo.serviceEndTime + '00':'') }}</span>
+                                <span class="num">{{ (stationInfo.serviceStartTime!==''?stationInfo.serviceStartTime +' - ':'') + (stationInfo.serviceEndTime!==''?stationInfo.serviceEndTime :'') }}</span>
                             </div>
                         </li>
                     </ul>
@@ -599,6 +599,21 @@ export default {
         window.sessionStorage.removeItem("fiics-stationInfo");
     },
     methods: {
+        getHour(hour) {
+            let formattedHour;
+            if (hour > 12) {
+                formattedHour = hour - 12 < 10 ? "0" + (hour - 12) : hour-12;
+            } else {
+                formattedHour = hour < 10 ? "0" + hour : hour;
+            }
+            return formattedHour;
+        },
+        getMinutes(minute) {
+            return minute < 10 ? "0" + minute : minute;
+        },
+        getAnteMeridiem(hour) {
+            return hour > 12 ? "PM" : "AM";
+        },
         getConnectorsSummary(id) {
             let params = {};
             params.StationId = id;
@@ -703,29 +718,17 @@ export default {
                                 lat: data.coordinates.latitude
                             },
                             serviceStartTime:
-                                (data.openHour !== null && data.openHour < 10
-                                    ? "0" + data.openHour + ":"
-                                    : data.openHour !== null
-                                    ? data.openHour + ":"
-                                    : "") +
-                                (data.openMinute !== null &&
-                                data.openMinute < 10
-                                    ? "0" + data.openMinute + ":"
-                                    : data.openMinute !== null
-                                    ? data.openMinute + ":"
-                                    : ""),
+                                this.getHour(data?.openHour) +
+                                ":" +
+                                this.getMinutes(data?.openMinute) +
+                                " " +
+                                this.getAnteMeridiem(data?.openHour),
                             serviceEndTime:
-                                (data.closeHour !== null && data.closeHour < 10
-                                    ? "0" + data.closeHour + ":"
-                                    : data.closeHour !== null
-                                    ? data.closeHour + ":"
-                                    : "") +
-                                (data.closeMinute !== null &&
-                                data.closeMinute < 10
-                                    ? "0" + data.closeMinute + ":"
-                                    : data.closeMinute !== null
-                                    ? data.closeMinute + ":"
-                                    : ""),
+                                this.getHour(data?.closeHour) +
+                                ":" +
+                                this.getMinutes(data?.closeMinute) +
+                                " " +
+                                this.getAnteMeridiem(data?.closeHour),
                             phone: data.phoneNumber
                         };
                         this.chargerCount = {

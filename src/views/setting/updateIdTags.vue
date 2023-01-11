@@ -25,7 +25,7 @@
                 <div class="form-item">
                     <el-form-item prop="expiryDate">
                         <div class="label">{{ $t('idTags.expiryDate') }}</div>
-                        <el-date-picker v-model="dialog.expiryDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions" :clearable="false">
+                        <el-date-picker v-model="dialog.expiryDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions" :clearable="false">
                         </el-date-picker>
                     </el-form-item>
                 </div>

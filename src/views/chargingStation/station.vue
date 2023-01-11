@@ -185,12 +185,12 @@
                         <div class="form-item">
                             <div class="label">{{ $t('general.businessHours') }}</div>
                             <div class="timeRange">
-                                <el-time-picker :placeholder="$t('general.startTime')" v-model="dialog.info.serviceStartTime" format="HH:mm" value-format="HH:mm" :picker-options="{
+                                <el-time-picker :placeholder="$t('general.startTime')" v-model="dialog.info.serviceStartTime" format="hh:mm A" value-format="HH:mm" :picker-options="{
                                     selectableRange:`00:00:00-${dialog.info.serviceEndTime ? dialog.info.serviceEndTime+':00' : '23:59:00'}`
                                 }">
                                 </el-time-picker>
                                 <span> ~ </span>
-                                <el-time-picker :placeholder="$t('general.endTime')" v-model="dialog.info.serviceEndTime" format="HH:mm" value-format="HH:mm" :picker-options="{
+                                <el-time-picker :placeholder="$t('general.endTime')" v-model="dialog.info.serviceEndTime" format="hh:mm A" value-format="HH:mm" :picker-options="{
                                     selectableRange:`${dialog.info.serviceStartTime ? dialog.info.serviceStartTime+':00' : '00:00:00'}-23:59:00`
                                 }">
                                 </el-time-picker>

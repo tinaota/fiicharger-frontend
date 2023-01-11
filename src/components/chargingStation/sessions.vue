@@ -21,12 +21,12 @@
                     {{scope.row.cost.total ?scope.row.cost.total.includingVat.toFixed(2):''}}
                 </template>
             </el-table-column>
-            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="200">
+            <el-table-column prop="startTimestamp" :label="$t('chargingStation.startTimestamp')" width="210">
                 <template slot-scope="scope">
                     {{ scope.row.startTimestamp!==null ?getLocTime(scope.row.startTimestamp):'' }}
                 </template>
             </el-table-column>
-            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" width="200">
+            <el-table-column prop="stopTimestamp" :label="$t('chargingStation.stopTimestamp')" width="210">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null ? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
@@ -80,7 +80,8 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item) => transformUtcToLocTime(item);
+            return (item, format = "ll hh:mm:ss A") =>
+                transformUtcToLocTime(item,format);
         },
         getConvertedTime() {
             return (item) => transformSecondsToReadableForm(item);

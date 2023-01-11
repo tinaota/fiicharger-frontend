@@ -383,7 +383,7 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item) => transformUtcToLocTime(item);
+            return (item,format="ll hh:mm:ss A") => transformUtcToLocTime(item,format);
         },
         getConvertedTime() {
             return (item) => transformSecondsToReadableForm(item);

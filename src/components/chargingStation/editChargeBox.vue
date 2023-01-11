@@ -47,11 +47,10 @@
                     <div class="label">{{ $t('chargingStation.power') + ' (kW)' }}</div>
                     <el-input-number v-model="editDialog.info.power" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
                 </div>
-
                 <div class="form-item">
                     <el-form-item prop="installationDate">
                         <div class="label">{{ $t('general.installationDate') }}</div>
-                        <el-date-picker v-model="editDialog.info.installationDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions" :clearable="false">
+                        <el-date-picker :disabled="dialog.type===1"  v-model="editDialog.info.installationDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions" :clearable="false">
                         </el-date-picker>
                     </el-form-item>
                 </div>
@@ -297,7 +296,6 @@ export default {
                     var installationDate = new Date(
                         that.editDialog.info.installationDate
                     );
-                    console.log(that.editDialog);
                     let $API,
                         params = {
                             powerType: that.editDialog.info.chargeType,

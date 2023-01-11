@@ -105,7 +105,7 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item) => transformUtcToLocTime(item, "YYYY-MM-DD HH:mm");
+            return (item) => transformUtcToLocTime(item, "lll");
         },
         getTime() {
             return (second, format) => {

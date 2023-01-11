@@ -8,25 +8,25 @@
         <el-table :data="allTransactions" v-loading="isLoading">
             <el-table-column prop="id" label="ID" width="40"></el-table-column>
             <el-table-column prop="connectorId" :label="$t('chargingStation.connector') + ' ID'" width="120"></el-table-column>
-            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="200"></el-table-column>
-            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="200"></el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStart')+' (kWh)'" width="120">
+            <el-table-column prop="startIdTag" :label="$t('chargingStation.startIdTag')" width="180"></el-table-column>
+            <el-table-column prop="stopIdTag" :label="$t('chargingStation.stopIdTag')" width="180"></el-table-column>
+            <el-table-column :label="$t('chargingStation.meterStart')+' (kWh)'" width="110">
                 <template slot-scope="scope">
                     {{ scope.row.meterStart!==null? scope.row.meterStart.toFixed(2) :'' }}
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="reservationId" label="Reservation Id" width="200"></el-table-column> -->
-            <el-table-column :label="$t('chargingStation.startTimestamp')" width="180">
+            <el-table-column :label="$t('chargingStation.startTimestamp')" width="210">
                 <template slot-scope="scope">
                     {{ getLocTime(scope.row.startTimestamp) }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.meterStop')+' (kWh)'" width="120">
+            <el-table-column :label="$t('chargingStation.meterStop')+' (kWh)'" width="110">
                 <template slot-scope="scope">
                     {{ scope.row.meterStop!==null? scope.row.meterStop.toFixed(2):'' }}
                 </template>
             </el-table-column>
-            <el-table-column :label="$t('chargingStation.stopTimestamp')" width="180">
+            <el-table-column :label="$t('chargingStation.stopTimestamp')" width="210">
                 <template slot-scope="scope">
                     {{ scope.row.stopTimestamp!==null? getLocTime(scope.row.stopTimestamp):'' }}
                 </template>
@@ -108,7 +108,8 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item) => transformUtcToLocTime(item);
+            return (item, format = "ll hh:mm:ss A") =>
+                transformUtcToLocTime(item, format);
         }
     },
     watch: {

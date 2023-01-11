@@ -98,7 +98,7 @@ export default {
                             color: this.isDark ? "#ffffff" : "#525e69"
                         },
                         label: {
-                            width: 80
+                            width: 136
                         }
                     },
                     backgroundColor: this.isDark ? "#ffffff" : "#e6eef8"

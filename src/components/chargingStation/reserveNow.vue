@@ -24,7 +24,7 @@
             </div>
             <div class="item">
                 <div class="label">{{ $t('idTags.expiryDate') }}</div>
-                <el-date-picker v-model="param.expiryDate" type="datetime" popper-class="notNow" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions" :clearable="false">
+                <el-date-picker v-model="param.expiryDate" type="datetime" popper-class="notNow" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions" :clearable="false">
                 </el-date-picker>
             </div>
         </div>

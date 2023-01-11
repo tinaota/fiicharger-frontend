@@ -163,7 +163,7 @@ export default {
                                                             ? transformUtcToLocTimeForGraphs(
                                                                   params
                                                                       .value[1],
-                                                                  "MMM Do HH:mm:ss"
+                                                                  "ll hh:mm:ss A"
                                                               )
                                                             : ""
                                                     }</b></span>
@@ -175,7 +175,7 @@ export default {
                                                             ? transformUtcToLocTimeForGraphs(
                                                                   params
                                                                       .value[2],
-                                                                  "MMM Do HH:mm:ss"
+                                                                  "ll hh:mm:ss A"
                                                               )
                                                             : ""
                                                     }</b></span>
@@ -218,7 +218,7 @@ export default {
                     scale: true,
                     axisLabel: {
                         formatter: function (val) {
-                            return transformUtcToLocTimeForGraphs(val);
+                            return transformUtcToLocTimeForGraphs(val,'hh:mm:ss A');
                         },
                         color: this.isDark ? "#ffffff" : "#808080",
                         hideOverlap: true

@@ -26,15 +26,15 @@ export const setScrollBar = function (ele, that) {
 export const transformLocTimeToUtc = function (time, format = "YYYY-MM-DD HH:mm:ss") {
     return moment(time).utc().format(format);
 }
-export const transformUtcToLocTime = function (date, format = "YYYY-MM-DD HH:mm:ss") {
+export const transformUtcToLocTime = function (date, format = "lll") {
     var utcDate = moment.utc(date).toDate();
     return moment(utcDate).local().format(format);
-}
+};
 
-export const transformUtcToLocTimeForGraphs = function (date, format = "MMM DD HH:mm") {
+export const transformUtcToLocTimeForGraphs = function (date, format = "lll") {
     var utcDate = moment.utc(date).toDate();
     return moment(utcDate).local().format(format);
-}
+};
 
 export const transformSecondsToReadableForm = function (timeInSeconds) {
     timeInSeconds = Number(timeInSeconds);

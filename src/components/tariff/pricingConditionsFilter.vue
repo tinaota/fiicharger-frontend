@@ -9,7 +9,7 @@
             </div>
         </div>
         <div v-if="tabSelected==='time' || tabSelected==='all'" class="datePicker">
-            <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="yyyy-MM-dd" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="true" class="datePickerFilter" @change="updatePricingConditions">
+            <el-date-picker :default-time="['00:00:00', '23:59:59']" v-model="dateRange" type="daterange" format="MMM dd yyyy" range-separator="-" :start-placeholder="$t('general.startDate')" :end-placeholder="$t('general.endDate')" :picker-options="pickerOptions" :clearable="true" class="datePickerFilter" @change="updatePricingConditions">
             </el-date-picker>
         </div>
         <div v-if="tabSelected==='time' || tabSelected==='all'" class="timePicker">

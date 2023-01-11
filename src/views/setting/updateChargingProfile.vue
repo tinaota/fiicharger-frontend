@@ -47,7 +47,7 @@
                 <div class="form-item">
                     <el-form-item prop="startSchedule">
                         <div class="label">{{ $t('chargingProfile.startSchedule') }}</div>
-                        <el-date-picker v-model="dialog.startSchedule" type="datetime" value-format="yyyy-MM-dd HH:mm" format="yyyy-MM-dd HH:mm" :picker-options="pickerOptions">
+                        <el-date-picker v-model="dialog.startSchedule" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions">
                         </el-date-picker>
                     </el-form-item>
                 </div>

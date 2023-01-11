@@ -8,7 +8,7 @@
             v-model="logTimeRange"
             type="datetimerange"
             value-format="yyyy-MM-dd HH:mm"
-            format="yyyy-MM-dd HH:mm"
+            format="MMM dd hh:mm A"
             range-separator="-"
             :start-placeholder="$t('general.startDate')"
             :end-placeholder="$t('general.endDate')"
