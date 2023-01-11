@@ -191,6 +191,18 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <div class="label">{{$t('chargingStation.power')}}</div>
+                                <div class="info">
+                                    {{data?.chargePointPowerKw}} kW
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="label">{{$t('general.powerType')}}</div>
+                                <div class="info">
+                                    {{data?.chargePointPowerType}}
+                                </div>
+                            </div>
+                            <div class="item">
                                 <div class="label">{{$t('menu.location')}}</div>
                                 <div class="info">
                                     {{data?.address?.street + ', ' +data?.address?.city+', '+data?.address?.state+', '+data?.address?.country+', '+data?.address?.zipCode}}
