@@ -3,7 +3,7 @@
         <div class="mainctrl">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>{{ $t('menu.account') }}</el-breadcrumb-item>
-                <el-breadcrumb-item>{{ $t('menu.operator') }}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ $t('general.user') }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div v-if="accPermissionType !== 3">
                 <SuperUser></SuperUser>

@@ -2,19 +2,19 @@
     <div class="operator">
         <div class="container">
             <div class="filter">
-                <el-select class="select-small" :placeholder="$t('general.operator')" v-model="filter.roles" @change="fetchData('o')">
+                <el-select class="select-small" :placeholder="$t('general.user')" v-model="filter.roles" @change="fetchData('o')">
                     <el-option v-for="(item, key) in operatorList" :label="key" :key="key" :value="item"></el-option>
                 </el-select>
                 <el-input :placeholder="$t('userAccount.email')" v-model="filter.tmpEmail" @change="fetchData('e')" clearable>
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
-                <el-input :placeholder="$t('userAccount.operatorName')" v-model="filter.tmpContactPersion" @change="fetchData('c')" clearable>
+                <el-input :placeholder="$t('general.name')" v-model="filter.tmpContactPersion" @change="fetchData('c')" clearable>
                     <i slot="prefix" class="el-input__icon el-icon-search"></i>
                 </el-input>
                 <el-button class="right" aria-label="plus icon" icon="el-icon-plus" @click="openDialog(0)"></el-button>
             </div>
             <el-table :data="tableData" class="moreCol" v-loading="isLoading" style="width: 100%">
-                <el-table-column :label="$t('userAccount.operatorName')" width="300">
+                <el-table-column :label="$t('general.name')" width="300">
                     <template slot-scope="scope">
                         {{ clientName(scope.row) }}
                     </template>
