@@ -1,4 +1,3 @@
-import { $GLOBAL_PROJECT } from '@/utils/global'
 import { v4 as uuidv4 } from "uuid"
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -155,7 +154,6 @@ let routes = [
     }]
 
 const router = new Router({
-    base: `/${$GLOBAL_PROJECT}/`,
     mode: 'history',
     routes
 })

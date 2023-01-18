@@ -1,11 +1,8 @@
 
 const webpack = require('webpack')
 const path = require('path')
-const outputDir = 'FiiCharger'
 process.env.VUE_APP_VERSION = require('./package.json').version
 module.exports = {
-    publicPath: `/${outputDir}/`,
-    outputDir: outputDir,
     assetsDir: "static",
     configureWebpack: {
         plugins: [
