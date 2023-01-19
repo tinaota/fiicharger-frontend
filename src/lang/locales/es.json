@@ -49,7 +49,8 @@
         "overview": "Visión general",
         "tariff": "El Precio",
         "sessions": "Sesiones",
-        "reportIssues": "Informar problemas"
+        "reportIssues": "Informar problemas",
+        "organization": "Organización"
     },
     "login": {
         "login": "Acceso",
@@ -316,7 +317,10 @@
         "paymentDetails": "Detalles del pago",
         "accumulatedRevenue": "Ingresos acumulados",
         "chargerRevenue": "Ingresos del cargador",
-        "cumulative": "Acumulativo %"
+        "cumulative": "Acumulativo %",
+        "nTariffs": "Número de Precios",
+        "website": "Sitio web",
+        "organizationName": "Nombre de la Organización"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -523,6 +527,7 @@
         "creditCard": "Tarjeta de crédito",
         "operatorName": "Nombre del operador",
         "logo": "Imagen",
+        "realLogo": "Logo",
         "contactPerson": "Persona de contacto",
         "mobile": "Móvil",
         "mobileVerification": "Móvil verificado",

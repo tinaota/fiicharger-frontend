@@ -865,6 +865,7 @@ button:disabled {
     }
     .el-dialog__footer {
         padding: 0 2vw 2vh 2vw;
+        min-height: 70px;
         .el-button {
             font-size: 1rem;
             width: 130px;

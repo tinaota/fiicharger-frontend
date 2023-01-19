@@ -49,7 +49,8 @@
         "overview": "概述",
         "tariff": "價格",
         "sessions": "充電紀錄",
-        "reportIssues": "報告問題"
+        "reportIssues": "報告問題",
+        "organization": "組織"
     },
     "login": {
         "login": "登入",
@@ -316,7 +317,10 @@
         "paymentDetails": "付款詳情",
         "accumulatedRevenue": "累計收入",
         "chargerRevenue": "充電器收入",
-        "cumulative": "累計 %"
+        "cumulative": "累計 %",
+        "nTariffs": "價格數量",
+        "website": "網站",
+        "organizationName": "機構名稱"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -523,6 +527,7 @@
         "creditCard": "信用卡",
         "operatorName": "運營商名稱",
         "logo": "圖片",
+        "realLogo": "商標",
         "contactPerson": "聯繫人",
         "mobile": "手機",
         "mobileVerification": "手機已驗證",

@@ -49,7 +49,8 @@
         "overview": "Overview",
         "tariff": "Price",
         "sessions": "Sessions",
-        "reportIssues": "Report Issues"
+        "reportIssues": "Report Issues",
+        "organization": "Organization"
     },
     "login": {
         "login": "Login",
@@ -316,13 +317,16 @@
         "paymentDetails": "Payment Details",
         "accumulatedRevenue": "Accumulated Revenue",
         "chargerRevenue": "Charger Revenue",
-        "cumulative": "Cumulative %"
+        "cumulative": "Cumulative %",
+        "nTariffs": "Number of Prices",
+        "website": "Website",
+        "organizationName": "Organization Name"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
         "nAccount": "Number of New Account",
-        "nStation": "Number of Station",
-        "nSession": "Number of Session",
+        "nStation": "Number of Stations",
+        "nSession": "Number of Sessions",
         "nConnector": "Number of New Connector",
         "powerUsedTop10": "Energy Consumed Top 10(kWh)",
         "revenueTop10": "Revenue Top 10(USD)",
@@ -523,6 +527,7 @@
         "creditCard": "Credit Card",
         "operatorName": "Operator Name",
         "logo": "Picture",
+        "realLogo": "Logo",
         "contactPerson": "Contact Person",
         "mobile": "Mobile",
         "mobileVerification": "Mobile Verified",

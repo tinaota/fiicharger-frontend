@@ -244,7 +244,9 @@ export function patch(url, params = {}) {
         axios.patch(url, params)
             .then(response => {
                 if (response) {
-                    resolve(response.data)
+                    if (response.status === 204) {
+                        resolve(response);
+                    } else resolve(response.data);
                 } else {
                     reject(response)
                 }

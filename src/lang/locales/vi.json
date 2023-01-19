@@ -49,7 +49,8 @@
         "overview": "Tổng quát",
         "tariff": "Giá",
         "sessions": "Phiên",
-        "reportIssues": "Báo cáo vấn đề"
+        "reportIssues": "Báo cáo vấn đề",
+        "organization": "Tổ chức"
     },
     "login": {
         "login": "Đăng nhập",
@@ -316,7 +317,10 @@
         "paymentDetails": "Chi tiết thanh toán",
         "accumulatedRevenue": "Doanh thu lũy kế",
         "chargerRevenue": "Doanh thu bộ sạc",
-        "cumulative": "Tích lũy %"
+        "cumulative": "Tích lũy %",
+        "nTariffs": "Số lượng giá",
+        "website": "Trang mạng",
+        "organizationName": "tên tổ chức"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -523,6 +527,7 @@
         "creditCard": "Thẻ tín dụng",
         "operatorName": "Tên nhà vận hành ",
         "logo": "Bức ảnh",
+        "realLogo": "Logo",
         "contactPerson": "Người liên lạc",
         "mobile": "Didejn thoại",
         "mobileVerification": "xác minh di động",

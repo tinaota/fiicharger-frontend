@@ -193,6 +193,14 @@ let routes = [
                 children: [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     {
+                        path: "/organization",
+                        component: () =>
+                            import("@/views/account/organization.vue"),
+                        name: "Organization",
+                        menuName: "menu.organization",
+                        hidden: false
+                    },
+                    {
                         path: "/user",
                         component: () => import("@/views/account/user.vue"),
                         name: "User",

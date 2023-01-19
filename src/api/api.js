@@ -390,3 +390,67 @@ export const $HTTP_getCDRInfoById = (params) => {
     return fetch(`${base_charger}/api/reports/cdrs/${params.cdrId}`);
 };
 
+// organization apis
+export const $HTTP_addOrganizations = (params) => {
+    return post(`${base_charger}/api/operators`, params);
+};
+
+export const $HTTP_getOrganizations = (params) => {
+    return fetch(`${base_charger}/api/reports/operators`, params);
+};
+
+export const $HTTP_modifyOrganizationsById = (params) => {
+    return put(`${base_charger}/api/operators/${params.operatorId}`, params);
+};
+
+export const $HTTP_deleteOrganizationsById = (params) => {
+    return del(`${base_charger}/api/operators/${params.operatorId}`);
+};
+
+export const $HTTP_bindChargersByOrganizationId = (params) => {
+    return patch(
+        `${base_charger}/api/operators/${params.operatorId}/charge-points`,
+        params.chargerData
+    );
+};
+
+export const $HTTP_getBoundedChargersByOrganizationId = (params) => {
+    return fetch(
+        `${base_charger}/api/operators/${params.operatorId}/charge-points`
+    );
+};
+
+export const $HTTP_bindUsersByOrganizationId = (params) => {
+    return patch(
+        `${base_charger}/api/operators/${params.operatorId}/users`,
+        params.userData
+    );
+};
+
+export const $HTTP_getBoundedUsersByOrganizationId = (params) => {
+    return fetch(`${base_charger}/api/operators/${params.operatorId}/users`);
+};
+
+export const $HTTP_bindTariffsByOrganizationId = (params) => {
+    return patch(
+        `${base_charger}/api/operators/${params.operatorId}/tariffs`,
+        params.tariffData
+    );
+};
+
+export const $HTTP_getBoundedTariffsByOrganizationId = (params) => {
+    return fetch(`${base_charger}/api/operators/${params.operatorId}/tariffs`);
+};
+
+export const $HTTP_bindStationsByOrganizationId = (params) => {
+    return patch(
+        `${base_charger}/api/operators/${params.operatorId}/charge-stations`,
+        params.stationData
+    );
+};
+
+export const $HTTP_getBoundedStationsByOrganizationId = (params) => {
+    return fetch(
+        `${base_charger}/api/operators/${params.operatorId}/charge-stations`
+    );
+};
