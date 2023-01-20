@@ -16,15 +16,15 @@
                                     <template v-for="child in item.children">
                                         <template v-if="menuShowCtrl(child)">
                                             <el-menu-item v-if="!child.hasChild" :key="child.path" :index="child.path">
-                                                <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.name) }}</span>
+                                                <img :src="getImgUrl(child.iconCls)" style="margin-right:6px;width:21px"><span slot="title">{{ $t(child.menuName) }}</span>
                                             </el-menu-item>
                                             <el-submenu v-else :key="child.path" :index="child.path">
                                                 <template slot="title">
                                                     <div style="margin-right:6px;width:21px;display: inline-block;text-align: center;"><img :src="getImgUrl(child.iconCls)"></div>
-                                                    <span>{{ $t(child.name) }}</span>
+                                                    <span>{{ $t(child.menuName) }}</span>
                                                 </template>
                                                 <template v-for="subChild in child.children">
-                                                    <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}" @click="closeNavigation">{{ $t(subChild.name) }}</el-menu-item>
+                                                    <el-menu-item v-if="subMenuShowCtrl(child.path, subChild)" :key="subChild.path" :index="subChild.path" style="padding-left:38px;padding-right: 20px;" :class="{menuEn:lang =='en', subMenu: true}" @click="closeNavigation">{{ $t(subChild.menuName) }}</el-menu-item>
                                                 </template>
                                             </el-submenu>
                                         </template>

@@ -524,7 +524,7 @@ export default {
                     JSON.stringify(stationData)
                 );
                 this.$router
-                    .push({ name: "stationDetail", params: stationData })
+                    .push({ name: "Station Detail", params: stationData })
                     .catch();
             }
         },

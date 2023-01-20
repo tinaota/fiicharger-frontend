@@ -563,7 +563,7 @@ export default {
                 chargeBoxStatus: chargeBoxStatus,
                 stationId: this.filter.stationId
             };
-            this.$router.push({ name: "menu.chargePoint", params: params });
+            this.$router.push({ name: "ChargePoint", params: params });
         },
         changeChargeBoxDrawerData(isVisible, stationId) {
             this.chargeBoxDrawer.visible = isVisible;

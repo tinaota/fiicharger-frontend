@@ -766,7 +766,7 @@ export default {
             const params = {
                 chargeBoxId: chargeBoxId
             };
-            this.$router.push({ name: "chargePointDetail", params: params });
+            this.$router.push({ name: "ChargePoint Detail", params: params });
         },
         handleLinkClick(row) {
             if (row) {
@@ -776,7 +776,7 @@ export default {
                     JSON.stringify(data)
                 );
                 this.$router
-                    .push({ name: "chargePointDetail", params: data })
+                    .push({ name: "ChargePoint Detail", params: data })
                     .catch();
             }
         },

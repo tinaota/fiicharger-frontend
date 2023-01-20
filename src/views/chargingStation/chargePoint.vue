@@ -652,7 +652,7 @@ export default {
                     JSON.stringify(data)
                 );
                 this.$router
-                    .push({ name: "chargePointDetail", params: data })
+                    .push({ name:"ChargePoint Detail", params: data })
                     .catch();
             }
         },
