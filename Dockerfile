@@ -1,5 +1,5 @@
 ARG BUILD_MODE=prod
-FROM node:16.13.2 AS build
+FROM node:18.13.0 AS build
 ARG BUILD_MODE
 WORKDIR /app
 COPY package.json package-lock.json ./

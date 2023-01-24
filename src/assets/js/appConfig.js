@@ -1,6 +1,4 @@
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 import _ from 'lodash';
-import turf from 'turf';
 
 export const buildingsIn3D = {
     id: '3d-buildings',
@@ -132,26 +130,6 @@ export const getLastLayerId = (map) => {
         }
     }
     return labelLayerId
-}
-
-export const getPointsInMapBounds = (map, pointArr) => {
-    const bounds = map.getBounds();
-    const { lat: nwLat, lng: nwLng } = bounds.getNorthWest()
-    const { lat: neLat, lng: neLng } = bounds.getNorthEast()
-    const { lat: seLat, lng: seLng } = bounds.getSouthEast()
-    const { lat: swLat, lng: swLng } = bounds.getSouthWest()
-    const arr = [[
-        [nwLng, nwLat], [neLng, neLat],
-        [seLng, seLat], [swLng, swLat], [nwLng, nwLat]
-    ]]
-    const polygon = turf.polygon(arr)
-    const newArr = []
-    pointArr.map(coordinate => {
-        const point = turf.point(coordinate) // [lng, lat]
-        const bool = booleanPointInPolygon(point, polygon)
-        if (bool) newArr.push(coordinate)
-    })
-    return newArr
 }
 
 export const removeDuplicateCoordinate = (arr) => {
