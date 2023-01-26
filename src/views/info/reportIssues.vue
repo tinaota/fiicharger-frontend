@@ -27,7 +27,7 @@ export default {
             userEmail = userInfo.email + "";
             phoneNumber = userInfo.phoneNumber;
         }
-        this.source = `http://207.110.228.24:8080/${
+        this.source = `https://www.evucharging.com/${
             process.env.NODE_ENV === "production"
                 ? "platform-support-form"
                 : "platform-support-test"
