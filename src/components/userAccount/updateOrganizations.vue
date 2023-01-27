@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, getNewlyAddedItems,getNewlyRemovedItems } from "@/utils/function";
 import { $ALL_DATA_COUNT } from "@/utils/global";
 import {
     $HTTP_addOrganizations,
@@ -331,32 +331,6 @@ export default {
                 });
             }
         },
-        getNewlyAddedItems(selectedList, originalList) {
-            let addedItems = selectedList?.filter((item) => !originalList?.includes(item));
-            let updatedItems = [];
-            if (addedItems?.length > 0) {
-                addedItems.map((eachId) => {
-                    updatedItems.push({
-                        type: "Add",
-                        value: eachId
-                    });
-                });
-            }
-            return updatedItems;
-        },
-        getNewlyRemovedItems(selectedList, originalList) {
-            let removedItems = originalList?.filter((item) => !selectedList?.includes(item));
-            let updatedItems = [];
-            if (removedItems?.length > 0) {
-                removedItems.map((eachId) => {
-                    updatedItems.push({
-                        type: "Remove",
-                        value: eachId
-                    });
-                });
-            }
-            return updatedItems;
-        },
         updateOrganization() {
             this.$refs.updateOrganizationForm.validate((valid) => {
                 // [addOrganizationApi, bindChargers, addUsers,addStations,addTarifs]
@@ -389,7 +363,7 @@ export default {
                                     this.checkStatusMessage(this.changedApiList.length, changedApiListStatusTrue.length);
                                 }
                                 params.operatorId = data.id;
-                                params.chargerData = this.getNewlyAddedItems(
+                                params.chargerData = getNewlyAddedItems(
                                     this.dialogInfo.selectedChargerList,
                                     this.dialogInfo.originalSelectedChargerList
                                 );
@@ -410,7 +384,7 @@ export default {
                                         });
                                 }
 
-                                params.userData = this.getNewlyAddedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList);
+                                params.userData = getNewlyAddedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList);
                                 if (params.userData.length > 0) {
                                     $HTTP_bindUsersByOrganizationId(params)
                                         .then((res) => {
@@ -428,7 +402,7 @@ export default {
                                         });
                                 }
 
-                                params.stationData = this.getNewlyAddedItems(
+                                params.stationData = getNewlyAddedItems(
                                     this.dialogInfo.selectedStationList,
                                     this.dialogInfo.originalSelectedStationList
                                 );
@@ -449,7 +423,7 @@ export default {
                                         });
                                 }
 
-                                params.tariffData = this.getNewlyAddedItems(
+                                params.tariffData = getNewlyAddedItems(
                                     this.dialogInfo.selectedTariffList,
                                     this.dialogInfo.originalSelectedTariffList
                                 );
@@ -491,8 +465,8 @@ export default {
 
                         if (this.changedApiList.includes("chargerApi")) {
                             params.chargerData = [
-                                ...this.getNewlyAddedItems(this.dialogInfo.selectedChargerList, this.dialogInfo.originalSelectedChargerList),
-                                ...this.getNewlyRemovedItems(this.dialogInfo.selectedChargerList, this.dialogInfo.originalSelectedChargerList)
+                                ...getNewlyAddedItems(this.dialogInfo.selectedChargerList, this.dialogInfo.originalSelectedChargerList),
+                                ...getNewlyRemovedItems(this.dialogInfo.selectedChargerList, this.dialogInfo.originalSelectedChargerList)
                             ];
                             $HTTP_bindChargersByOrganizationId(params)
                                 .then((res) => {
@@ -512,8 +486,8 @@ export default {
 
                         if (this.changedApiList.includes("userApi")) {
                             params.userData = [
-                                ...this.getNewlyAddedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList),
-                                ...this.getNewlyRemovedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList)
+                                ...getNewlyAddedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList),
+                                ...getNewlyRemovedItems(this.dialogInfo.selectedUserList, this.dialogInfo.originalSelectedUserList)
                             ];
                             $HTTP_bindUsersByOrganizationId(params)
                                 .then((res) => {
@@ -533,8 +507,8 @@ export default {
 
                         if (this.changedApiList.includes("stationApi")) {
                             params.stationData = [
-                                ...this.getNewlyAddedItems(this.dialogInfo.selectedStationList, this.dialogInfo.originalSelectedStationList),
-                                ...this.getNewlyRemovedItems(this.dialogInfo.selectedStationList, this.dialogInfo.originalSelectedStationList)
+                                ...getNewlyAddedItems(this.dialogInfo.selectedStationList, this.dialogInfo.originalSelectedStationList),
+                                ...getNewlyRemovedItems(this.dialogInfo.selectedStationList, this.dialogInfo.originalSelectedStationList)
                             ];
                             $HTTP_bindStationsByOrganizationId(params)
                                 .then((res) => {
@@ -553,8 +527,8 @@ export default {
                         }
                         if (this.changedApiList.includes("tariffApi")) {
                             params.tariffData = [
-                                ...this.getNewlyAddedItems(this.dialogInfo.selectedTariffList, this.dialogInfo.originalSelectedTariffList),
-                                ...this.getNewlyRemovedItems(this.dialogInfo.selectedTariffList, this.dialogInfo.originalSelectedTariffList)
+                                ...getNewlyAddedItems(this.dialogInfo.selectedTariffList, this.dialogInfo.originalSelectedTariffList),
+                                ...getNewlyRemovedItems(this.dialogInfo.selectedTariffList, this.dialogInfo.originalSelectedTariffList)
                             ];
                             $HTTP_bindTariffsByOrganizationId(params)
                                 .then((res) => {

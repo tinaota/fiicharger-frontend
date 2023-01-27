@@ -9,23 +9,20 @@ export const resizeCharts = function (chartsId, echarts) {
         var chart = document.getElementById(chartsId[i]);
         echarts && chart && echarts.getInstanceByDom(chart).resize();
     }
-}
+};
 
 export const setScrollBar = function (ele, that) {
-    that.$jQuery(ele)
-        .mCustomScrollbar({
-            theme: "dark",
-            scrollAmount: 50,
-            mouseWheelPixels: 200
-        });
-    that.$jQuery(ele)
-        .find(".mCSB_inside > .mCSB_container")
-        .css("margin-right", "0");
-}
+    that.$jQuery(ele).mCustomScrollbar({
+        theme: "dark",
+        scrollAmount: 50,
+        mouseWheelPixels: 200
+    });
+    that.$jQuery(ele).find(".mCSB_inside > .mCSB_container").css("margin-right", "0");
+};
 
 export const transformLocTimeToUtc = function (time, format = "YYYY-MM-DD HH:mm:ss") {
     return moment(time).utc().format(format);
-}
+};
 export const transformUtcToLocTime = function (date, format = "lll") {
     var utcDate = moment.utc(date).toDate();
     return moment(utcDate).local().format(format);
@@ -39,16 +36,16 @@ export const transformUtcToLocTimeForGraphs = function (date, format = "lll") {
 export const transformSecondsToReadableForm = function (timeInSeconds) {
     timeInSeconds = Number(timeInSeconds);
     var days = Math.floor(timeInSeconds / (3600 * 24));
-    var hours = Math.floor(timeInSeconds % (3600 * 24) / 3600);
-    var minutes = Math.floor(timeInSeconds % 3600 / 60);
+    var hours = Math.floor((timeInSeconds % (3600 * 24)) / 3600);
+    var minutes = Math.floor((timeInSeconds % 3600) / 60);
     var seconds = Math.floor(timeInSeconds % 60);
 
     var dayDisplay = days > 0 ? days + "d " : "";
     var hourDisplay = hours > 0 ? hours + "h " : "";
     var minuteDisplay = minutes > 0 ? minutes + "m " : "";
     var secondDisplay = seconds > 0 ? seconds + "s" : "";
-    return (dayDisplay + hourDisplay + minuteDisplay + secondDisplay).replace(/,\s*$/, "")
-}
+    return (dayDisplay + hourDisplay + minuteDisplay + secondDisplay).replace(/,\s*$/, "");
+};
 
 export const transformToSymbols = function (name) {
     let symbol;
@@ -65,85 +62,81 @@ export const transformToSymbols = function (name) {
         default:
             symbol = name;
     }
-    return symbol
-}
+    return symbol;
+};
 
 export const transformLangCookieToSymbol = function (languageCookie) {
     let localLanguage;
-    if (languageCookie.includes('zh-Hans') || languageCookie.includes('zh-hans')) {
-        localLanguage = "zh-cn"
-    } else if (languageCookie.includes('zh-Hant') || languageCookie.includes('zh-hant')) {
-        localLanguage = "zh-tw"
-    } else if (languageCookie.includes('vi-VN') || languageCookie.includes('vi-vn')) {
-        localLanguage = "vi"
-    } else if (languageCookie.includes('en-US') || languageCookie.includes('en-us')) {
-        localLanguage = "en"
-    } else if (languageCookie.includes('es') || languageCookie.includes('eS')) {
-        localLanguage = "es"
+    if (languageCookie.includes("zh-Hans") || languageCookie.includes("zh-hans")) {
+        localLanguage = "zh-cn";
+    } else if (languageCookie.includes("zh-Hant") || languageCookie.includes("zh-hant")) {
+        localLanguage = "zh-tw";
+    } else if (languageCookie.includes("vi-VN") || languageCookie.includes("vi-vn")) {
+        localLanguage = "vi";
+    } else if (languageCookie.includes("en-US") || languageCookie.includes("en-us")) {
+        localLanguage = "en";
+    } else if (languageCookie.includes("es") || languageCookie.includes("eS")) {
+        localLanguage = "es";
+    } else {
+        localLanguage = "en";
     }
-    else {
-        localLanguage = "en"
-    }
-    return localLanguage
-}
+    return localLanguage;
+};
 
 export const updateLangCookie = function (oldLang, newLang) {
     const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
     let cookieSymbol;
     switch (newLang) {
         case "en":
-            cookieSymbol = "en-US"
+            cookieSymbol = "en-US";
             break;
         case "vi":
-            cookieSymbol = "vi-VN"
+            cookieSymbol = "vi-VN";
             break;
         case "zh-cn":
-            cookieSymbol = "zh-Hans"
+            cookieSymbol = "zh-Hans";
             break;
         case "zh-tw":
-            cookieSymbol = "zh-Hant"
+            cookieSymbol = "zh-Hant";
             break;
         case "es":
-            cookieSymbol = "es"
+            cookieSymbol = "es";
             break;
         default:
-            cookieSymbol = "en-US"
+            cookieSymbol = "en-US";
             break;
     }
 
     let newCookie;
     if (oldLang === "vi") {
-        newCookie = languageCookie.replaceAll("vi-VN", cookieSymbol)
+        newCookie = languageCookie.replaceAll("vi-VN", cookieSymbol);
     } else if (oldLang === "en") {
-        newCookie = languageCookie.replaceAll("en-US", cookieSymbol)
+        newCookie = languageCookie.replaceAll("en-US", cookieSymbol);
     } else if (oldLang === "zh-cn") {
-        newCookie = languageCookie.replaceAll("zh-Hans", cookieSymbol)
+        newCookie = languageCookie.replaceAll("zh-Hans", cookieSymbol);
     } else if (oldLang === "zh-tw") {
-        newCookie = languageCookie.replaceAll("zh-Hant", cookieSymbol)
+        newCookie = languageCookie.replaceAll("zh-Hant", cookieSymbol);
     } else if (oldLang === "es") {
-        newCookie = languageCookie.replaceAll("es", cookieSymbol)
+        newCookie = languageCookie.replaceAll("es", cookieSymbol);
     }
 
-    let expiryDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1))
+    let expiryDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
 
-    document.cookie = `fii.culture=${newCookie};expires=${expiryDate};path=/;`
-}
+    document.cookie = `fii.culture=${newCookie};expires=${expiryDate};path=/;`;
+};
 
 export const getDefaultFont = () => {
-    const languageCookie = ("; " + document.cookie)
-        .split(`; fii.culture=`)
-        .pop()
-        .split(";")[0];
+    const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
     let defaultFont;
     if (languageCookie.includes("Hant")) {
         defaultFont = "NotoSansTC";
     } else if (languageCookie.includes("Hans")) {
         defaultFont = "NotoSansSC";
     } else {
-        defaultFont = "Roboto"
+        defaultFont = "Roboto";
     }
-    return defaultFont
-}
+    return defaultFont;
+};
 
 export const getCurrencySymbolsFromCurrencyCode = (currencyCode) => {
     let currencySymbol;
@@ -178,5 +171,33 @@ export const getCurrencySymbolsFromCurrencyCode = (currencyCode) => {
         default:
             currencySymbol = currencyCode;
     }
-    return currencySymbol
-}
+    return currencySymbol;
+};
+
+export const getNewlyAddedItems = (selectedList, originalList) => {
+    let addedItems = selectedList?.filter((item) => !originalList?.includes(item));
+    let updatedItems = [];
+    if (addedItems?.length > 0) {
+        addedItems.map((eachId) => {
+            updatedItems.push({
+                type: "Add",
+                value: eachId
+            });
+        });
+    }
+    return updatedItems;
+};
+
+export const getNewlyRemovedItems = (selectedList, originalList) => {
+    let removedItems = originalList?.filter((item) => !selectedList?.includes(item));
+    let updatedItems = [];
+    if (removedItems?.length > 0) {
+        removedItems.map((eachId) => {
+            updatedItems.push({
+                type: "Remove",
+                value: eachId
+            });
+        });
+    }
+    return updatedItems;
+};
