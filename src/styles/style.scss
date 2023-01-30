@@ -1520,3 +1520,29 @@ input[type="number"] {
         padding: 0 !important;
     }
 }
+
+// home page organization
+.organization{
+    .homeOrganizationSelect{
+        margin-left: 5px;
+        .el-input{
+            input{
+                border: none;
+                font-size: 1rem;
+                font-weight: 600;
+                background: transparent;
+                color: #000013;
+            }
+            .el-input__suffix{
+                .el-input__suffix-inner{
+                    i{
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: #000013;
+                    }
+                    }
+            }
+        }
+    }
+}
+

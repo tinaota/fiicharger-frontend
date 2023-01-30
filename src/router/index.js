@@ -53,12 +53,12 @@ let routes = [
                 name: "Management",
                 menuName: "menu.management",
                 hasChild: true,
+                hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
                     {
                         path: "/station",
-                        component: () =>
-                            import("@/views/chargingStation/station.vue"),
+                        component: () => import("@/views/chargingStation/station.vue"),
                         name: "Station",
                         menuName: "menu.station",
                         hidden: false
@@ -67,16 +67,14 @@ let routes = [
                     // { path: '/kiosk/kioskDetail', component: () => import('@/views/chargingStation/kioskDetail.vue'), name: 'kioskDetail', hidden: true },
                     {
                         path: "/station/stationDetail",
-                        component: () =>
-                            import("@/views/chargingStation/stationDetail.vue"),
+                        component: () => import("@/views/chargingStation/stationDetail.vue"),
                         name: "Station Detail",
                         menuName: "stationDetail",
                         hidden: true
                     },
                     {
                         path: "/chargePoint",
-                        component: () =>
-                            import("@/views/chargingStation/chargePoint.vue"),
+                        component: () => import("@/views/chargingStation/chargePoint.vue"),
                         name: "ChargePoint",
                         menuName: "menu.chargePoint",
                         hidden: false
@@ -86,10 +84,7 @@ let routes = [
                     // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     {
                         path: "/chargePoint/chargePointDetail",
-                        component: () =>
-                            import(
-                                "@/views/chargingStation/chargePointDetail.vue"
-                            ),
+                        component: () => import("@/views/chargingStation/chargePointDetail.vue"),
                         name: "ChargePoint Detail",
                         menuName: "chargePointDetail",
                         hidden: true
@@ -118,8 +113,7 @@ let routes = [
                     },
                     {
                         path: "/chargingProfile",
-                        component: () =>
-                            import("@/views/setting/chargingProfile.vue"),
+                        component: () => import("@/views/setting/chargingProfile.vue"),
                         name: "Charging Profile",
                         menuName: "chargingStation.chargingProfile",
                         hidden: false
@@ -132,15 +126,14 @@ let routes = [
                 name: "Analytics",
                 menuName: "menu.analytics",
                 hasChild: true,
+                hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
                     {
                         path: "/analytics",
-                        component: () =>
-                            import("@/views/analytics/overview.vue"),
+                        component: () => import("@/views/analytics/overview.vue"),
                         name: "Analytics Overview",
                         menuName: "menu.overview",
-
                         hidden: false
                     }
                 ]
@@ -172,6 +165,7 @@ let routes = [
                 name: "Report",
                 menuName: "menu.report",
                 hasChild: true,
+                hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
                     {
@@ -189,13 +183,13 @@ let routes = [
                 name: "Account",
                 menuName: "menu.account",
                 hasChild: true,
+                hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
                     // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     {
                         path: "/organization",
-                        component: () =>
-                            import("@/views/account/organization.vue"),
+                        component: () => import("@/views/account/organization.vue"),
                         name: "Organization",
                         menuName: "menu.organization",
                         hidden: false
@@ -218,6 +212,7 @@ let routes = [
                 name: "Support",
                 menuName: "menu.support",
                 hasChild: true,
+                hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
                     {
@@ -229,8 +224,7 @@ let routes = [
                     },
                     {
                         path: "/reportissues",
-                        component: () =>
-                            import("@/views/info/reportIssues.vue"),
+                        component: () => import("@/views/info/reportIssues.vue"),
                         name: "Report Issues",
                         menuName: "menu.reportIssues",
 

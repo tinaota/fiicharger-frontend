@@ -1,7 +1,7 @@
+import { $GLOBAL_CLIENT_ID, $GLOBAL_REDIRECT_URL } from "@/utils/global"
+import router from '../router/index'
 import store from '../store/store'
 import * as types from '../store/types'
-import router from '../router/index'
-import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID } from "@/utils/global"
 const redirect = () => {
     let fiics_auth = JSON.parse(window.localStorage.getItem('fiics-auth'));
     let uuid = window.localStorage.getItem('fiics-uuid')
@@ -12,16 +12,21 @@ const redirect = () => {
         store.commit(types.LOGOUT);
         window.location.replace(url);
     } else {
-        let fiics_user = JSON.parse(window.localStorage.getItem('fiics-user'));
+        let fiics_user = JSON.parse(window.localStorage.getItem("fiics-user"));
         store.dispatch("setUser", fiics_user);
         let userRole = fiics_user.roles;
-        if (userRole.indexOf("Super") !== -1 || userRole.indexOf("Admin") !== -1 || userRole.indexOf("Owner") !== -1) {
-            router.push('/location');
+        // for admin
+        if (userRole.indexOf("Super") !== -1 || userRole.indexOf("Admin") !== -1) {
+            router.push("/location");
         } else {
-            router.push('/contactadmin');
-
+            // for other users
+            let fiics_organization = JSON.parse(window.localStorage.getItem("fiics-organizationList"));
+            if (fiics_organization.length >= 1) {
+                router.push("/location");
+            } else {
+                router.push("/contactadmin");
+            }
         }
-
     }
 }
 

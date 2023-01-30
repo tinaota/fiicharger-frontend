@@ -39,11 +39,17 @@
             </div>
             <div class="body_section">
                 <div class="header_section">
-                    <div class="left_header_info" v-if="!navigationDrawer.isOpen">
+                    <div class="left_header_info">
                         <button class="drawer-closeBtn hidden hamburgerOpen" :class="{ 'open': (navigationDrawer.isOpen)}" @click="navigationDrawer.isOpen = true">
                             {{ navigationDrawer.isOpen ? `&#8801; ` : `&#8801;` }}
                         </button>
-                        <!-- <div class="header_breadcrumb"> {{ $t(`menu.${breadcrumb}`) }}</div>-->
+                    </div>
+                    <div class="organization" v-loading="organizationListIsLoading" v-if="selectedOrganizationList">
+                        <img :src="selectedOrganizationLogo" style="width:inherit;height:inherit" :alt="$t('userAccount.logo')" />
+                        <el-select class="homeOrganizationSelect" v-model="selectedOrganizationList" :placeholder="$t('general.select')" filterable @change="updateOrganizationLogo(selectedOrganizationList)">
+                            <el-option v-for="item in organizationList" :key="item.id" :label="item.name" :value="item.id">
+                            </el-option>
+                        </el-select>
                     </div>
                     <el-col class="header-info">
                         <div class="img-container" v-if="userAvatar">
@@ -95,19 +101,10 @@
 
 <script>
 import * as types from "../store/types";
-import {
-    $GLOBAL_LANG,
-    $GLOBAL_VERSION,
-    $GLOBAL_AUTH,
-    $GLOBAL_BASE_URL
-} from "@/utils/global";
+import { $GLOBAL_LANG, $GLOBAL_VERSION, $GLOBAL_AUTH, $GLOBAL_BASE_URL, $ALL_DATA_COUNT } from "@/utils/global";
 import { $HTTP_logout, $HTTP_getUserInfo } from "@/api/api";
 import { $GLOBAL_CLIENT_ID } from "@/utils/global";
-import {
-    setScrollBar,
-    updateLangCookie,
-    transformLangCookieToSymbol
-} from "@/utils/function";
+import { setScrollBar, updateLangCookie, transformLangCookieToSymbol } from "@/utils/function";
 import fiics_logo from "imgs/fiics_logo.png";
 import fiics_logo_dark from "imgs/darkVersion/fiics_logo.png";
 import app_icon from "imgs/app_icon.png";
@@ -143,7 +140,11 @@ export default {
             globalAuth: $GLOBAL_AUTH,
             globalBaseUrl: $GLOBAL_BASE_URL,
             isDark: false,
-            isActiveLang: ""
+            isActiveLang: "",
+            organizationList: [],
+            organizationListIsLoading: false,
+            selectedOrganizationList: null,
+            selectedOrganizationLogo: ""
         };
     },
     computed: {
@@ -159,11 +160,7 @@ export default {
                 !userData?.picture.includes("http") &&
                 userData?.picture !== ""
             ) {
-                final_url =
-                    this.globalBaseUrl +
-                    this.globalAuth +
-                    "/" +
-                    userData?.picture;
+                final_url = this.globalBaseUrl + this.globalAuth + "/" + userData?.picture;
             } else {
                 final_url = userData?.picture;
             }
@@ -179,25 +176,18 @@ export default {
             };
         },
         isActiveTheme() {
-            return this.$store.state.darkTheme
-                ? `${i18n.t("general.dark")}`
-                : `${i18n.t("general.light")}`;
+            return this.$store.state.darkTheme ? `${i18n.t("general.dark")}` : `${i18n.t("general.light")}`;
         }
     },
     watch: {
         "$route.path": function () {
             this.breadcrumb = window.location.pathname.substring(12);
             if (
-                (this.routerName !== this.$route.path &&
-                    this.routerName === "/location") ||
-                (this.routerName === "/station" &&
-                    this.$route.path === "/chargePoint") ||
+                (this.routerName !== this.$route.path && this.routerName === "/location") ||
+                (this.routerName === "/station" && this.$route.path === "/chargePoint") ||
                 this.$route.path === "/chargePoint/chargePointDetail"
             ) {
-                this.handleMenuSelect("/chargePoint", [
-                    "/chargingStation",
-                    "/chargePoint"
-                ]);
+                this.handleMenuSelect("/chargePoint", ["/chargingStation", "/chargePoint"]);
             }
         }
     },
@@ -212,10 +202,7 @@ export default {
             this.$router.push("/login");
         }
 
-        const languageCookie = ("; " + document.cookie)
-            .split(`; fii.culture=`)
-            .pop()
-            .split(";")[0];
+        const languageCookie = ("; " + document.cookie).split(`; fii.culture=`).pop().split(";")[0];
         let language = transformLangCookieToSymbol(languageCookie);
         this.lang = language;
         this.isActiveLang = language;
@@ -245,10 +232,7 @@ export default {
             }
             this.routerParent = "";
             for (var key in this.menuList) {
-                if (
-                    this.menuList[key].hasChild &&
-                    this.menuList[key].children2[this.routerName]
-                ) {
+                if (this.menuList[key].hasChild && this.menuList[key].children2[this.routerName]) {
                     this.routerParent = key;
                 }
             }
@@ -258,18 +242,14 @@ export default {
                 this.menuList[this.routerParent].iconCls &&
                 !this.menuList[this.routerParent].iconCls.includes("_p")
             ) {
-                this.menuList[this.routerParent].iconCls = this.menuList[
-                    this.routerParent
-                ].iconCls.replace("_o", "_p");
+                this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace("_o", "_p");
             } else if (
                 this.routerName !== "/" &&
                 this.menuList[this.routerName] &&
                 this.menuList[this.routerName].iconCls &&
                 !this.menuList[this.routerName].iconCls.includes("_p")
             ) {
-                this.menuList[this.routerName].iconCls = this.menuList[
-                    this.routerName
-                ].iconCls.replace("_o", "_p");
+                this.menuList[this.routerName].iconCls = this.menuList[this.routerName].iconCls.replace("_o", "_p");
                 this.routerParent = this.routerName;
             }
         }
@@ -284,31 +264,36 @@ export default {
     activated() {},
     mounted() {
         setScrollBar(".home-menu", this);
+        //set organizations
+        if (this.$store.state.organizationList.length >= 1) {
+            this.organizationList = this.$store.state.organizationList;
+            this.selectedOrganizationList = this.$store.state.organizationList[0].id;
+            this.selectedOrganizationLogo = this.$store.state.organizationList[0].logo;
+            this.$store.commit(types.UPDATE_SELECTED_ORGANIZATION, this.$store.state.organizationList[0]);
+        }
     },
     methods: {
+        updateOrganizationLogo(selectedOrganization) {
+            let selected = this.organizationList.filter((item) => item.id === selectedOrganization);
+            this.selectedOrganizationLogo = selected[0].logo;
+            this.$store.commit(types.UPDATE_SELECTED_ORGANIZATION, selected);
+        },
         closeNavigation() {
             this.navigationDrawer.isOpen = false;
         },
         setRoles(userData) {
             // set role(highest one)
-            if (userData?.roles?.indexOf("Super") != -1) {
-                this.roleNameObj = "Super";
-            } else if (userData?.roles?.indexOf("Admin") != -1) {
+            if ((userData?.roles?.indexOf("Super") || userData?.roles?.indexOf("Admin")) != -1) {
                 this.roleNameObj = "Admin";
-            } else if (userData?.roles?.indexOf("Owner") != -1) {
-                this.roleNameObj = "Owner";
             } else {
-                this.roleNameObj = "Member";
+                this.roleNameObj = "Other";
             }
         },
         getUserInfo() {
             $HTTP_getUserInfo()
                 .then((res) => {
                     // do not update user info if it is same
-                    if (
-                        JSON.stringify(res) !==
-                        JSON.stringify(this.$store.state.userInfo)
-                    ) {
+                    if (JSON.stringify(res) !== JSON.stringify(this.$store.state.userInfo)) {
                         this.$store.dispatch("setUser", res);
                         const userData = res;
                         this.setRoles(userData);
@@ -317,22 +302,30 @@ export default {
                 .catch((e) => console.log(e));
         },
         menuShowCtrl: function (child) {
-            if (this.roleNameObj === "Member" && child.path !== "/support") {
-                return false;
+            if (this.roleNameObj === "Other") {
+                if (this.$store.state.organizationList.length >= 1) {
+                    return true;
+                } else if (this.$store.state.organizationList.length < 1) {
+                    if (child.path !== "/support") {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
             } else return !child.hidden;
         },
 
         subMenuShowCtrl: function (childPath, subChild) {
-            // if not member hide contact form
-            if (
-                this.roleNameObj !== "Member" &&
-                subChild.path === "/contactadmin"
-            ) {
-                return false;
-            } else if (
-                this.roleNameObj === "Member" &&
-                subChild.path === "/reportissues"
-            ) {
+            if (this.roleNameObj === "Other") {
+                if (this.$store.state.organizationList.length < 1 && subChild.path === "/contactadmin") {
+                    return true;
+                } else if (this.$store.state.organizationList.length >= 1 && subChild.path === "/reportissues") {
+                    return true;
+                }
+                if (subChild.path !== "/contactadmin" && subChild.path !== "/reportissues") {
+                    return true;
+                }
+            } else if (this.roleNameObj === "Admin" && subChild.path === "/contactadmin") {
                 return false;
             } else {
                 return !subChild.hidden;
@@ -351,17 +344,13 @@ export default {
         handleMenuSelect(index, indexPath) {
             // this.$jQuery(".home-menu").length > 0 && this.$jQuery(".home-menu").mCustomScrollbar('destroy');
             if (this.routerParent !== indexPath[0]) {
-                if (
-                    this.menuList[this.routerParent] &&
-                    this.menuList[this.routerParent].iconCls
-                ) {
-                    this.menuList[this.routerParent].iconCls = this.menuList[
-                        this.routerParent
-                    ].iconCls.replace("_p", "_o");
+                if (this.menuList[this.routerParent] && this.menuList[this.routerParent].iconCls) {
+                    this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace(
+                        "_p",
+                        "_o"
+                    );
                 }
-                this.menuList[indexPath[0]].iconCls = this.menuList[
-                    indexPath[0]
-                ].iconCls.replace("_o", "_p");
+                this.menuList[indexPath[0]].iconCls = this.menuList[indexPath[0]].iconCls.replace("_o", "_p");
                 this.routerParent = indexPath[0];
             }
             // setScrollBar('.home-menu', this);
@@ -375,14 +364,10 @@ export default {
         logout: function () {
             this.$confirm(i18n.t("login.hint_logout"), i18n.t("login.logout"), {
                 showClose: false,
-                customClass: `custom ${
-                    this.isDark ? "dark-theme" : "light-theme"
-                }`
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
             })
                 .then(() => {
-                    let _token = JSON.parse(
-                        localStorage.getItem("fiics-auth")
-                    )?.access_token;
+                    let _token = JSON.parse(localStorage.getItem("fiics-auth"))?.access_token;
                     let params = {
                         client_id: $GLOBAL_CLIENT_ID,
                         token: _token,
@@ -429,11 +414,20 @@ export default {
 }
 .left_header_info {
     display: flex;
-    width: 100%;
+    max-width: 30px;
     align-items: center;
     .hamburgerOpen {
         padding: 0;
         color: inherit;
+    }
+}
+.organization {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    height: 100%;
+    img {
+        max-height: 40px;
     }
 }
 .header-info {

@@ -284,7 +284,8 @@ export default {
         getUsersList() {
             let params = {
                 page: 1,
-                limit: $ALL_DATA_COUNT
+                limit: $ALL_DATA_COUNT,
+                role: '*'
             };
             this.userListIsLoading = true;
             $HTTP_getOperatorList(params)

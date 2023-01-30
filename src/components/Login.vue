@@ -2,10 +2,10 @@
     <div><i class="fa fa-spinner fa-spin"></i> Redirecting</div>
 </template>
 <script type="text/javascript">
-import { $HTTP_login_auth, $HTTP_getUserInfo } from "@/api/api";
+import { $HTTP_login_auth, $HTTP_getUserInfo, $HTTP_getOrganizations } from "@/api/api";
 import * as types from "@/store/types";
 import redirect from "../router/redirect";
-import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID } from "@/utils/global";
+import { $GLOBAL_REDIRECT_URL, $GLOBAL_CLIENT_ID, $ALL_DATA_COUNT } from "@/utils/global";
 
 export default {
     name: "Login",
@@ -14,7 +14,7 @@ export default {
             code: "",
             isLoading: true,
             uuid: "",
-            globalRedirectUrl: $GLOBAL_REDIRECT_URL,
+            globalRedirectUrl: $GLOBAL_REDIRECT_URL
         };
     },
     beforeMount() {
@@ -32,7 +32,7 @@ export default {
             client_id: $GLOBAL_CLIENT_ID,
             code: this.code.trim(),
             redirect_uri: this.globalRedirectUrl,
-            device_id: this.uuid,
+            device_id: this.uuid
         };
 
         var formBody = [];
@@ -45,8 +45,8 @@ export default {
         formBody = formBody.join("&");
         let config = {
             header: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            },
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            }
         };
         $HTTP_login_auth(formBody, config)
             .then((res) => {
@@ -59,22 +59,43 @@ export default {
                     .then((res) => {
                         let _data = res;
                         this.$store.dispatch("setUser", res);
-                        // localStorage.setItem("fiics-user", JSON.stringify(_data));
-                        if (
-                            _data.roles.indexOf("Super") !== -1 ||
-                            _data.roles.indexOf("Owner") !== -1 ||
-                            _data.roles.indexOf("Admin") !== -1
-                        ) {
-                            this.$store.commit(types.ROLE, "Super");
-                            this.$store.commit(types.UPDATE_PERMISSION, true);
-                            this.$router.push({ path: "/location" });
-
-                        } else {
-                            this.$store.commit(types.ROLE, "Member");
-                            this.$store.commit(types.UPDATE_PERMISSION, false);
-                            this.$router.push({ path: "/contactadmin" });
-
+                        // get organizations
+                        let orgParams = {
+                            page: 1,
+                            limit: $ALL_DATA_COUNT
+                        };
+                        if (_data.roles.indexOf("Admin") === -1 || _data.roles.indexOf("Super") === -1) {
+                            orgParams.userId = res.id;
                         }
+                        $HTTP_getOrganizations(orgParams)
+                            .then((res) => {
+                                let organizationList = res.data;
+                                if (_data.roles.indexOf("Super") !== -1 || _data.roles.indexOf("Admin") !== -1) {
+                                    this.$store.commit(types.ROLE, "Admin");
+                                    this.$store.commit(types.UPDATE_PERMISSION, true);
+                                    this.$router.push({ path: "/location" });
+                                    this.$store.commit(types.UPDATE_ORGANIZATIONS, organizationList);
+                                } else {
+                                    if (organizationList.length >= 1) {
+                                        this.$store.commit(types.ROLE, "Other");
+                                        this.$store.commit(types.UPDATE_PERMISSION, true);
+                                        this.$router.push({ path: "/location" });
+                                        this.$store.commit(types.UPDATE_ORGANIZATIONS, organizationList);
+                                    } else {
+                                        this.$store.commit(types.ROLE, "Other");
+                                        this.$store.commit(types.UPDATE_PERMISSION, false);
+                                        this.$router.push({ path: "/contactadmin" });
+                                        this.$store.commit(types.UPDATE_ORGANIZATIONS, organizationList);
+                                    }
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("organizationListErr", err);
+                                this.$message({
+                                    type: "warning",
+                                    message: i18n.t("error_network")
+                                });
+                            });
                     })
                     .catch((e) => console.log(e));
             })
@@ -94,7 +115,7 @@ export default {
         if (this.redirectTimeout) {
             clearTimeout(this.redirectTimeout);
         }
-    },
+    }
 };
 </script>
 
