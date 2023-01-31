@@ -64,16 +64,20 @@ export default {
                             page: 1,
                             limit: $ALL_DATA_COUNT
                         };
-                        if (_data.roles.indexOf("Admin") === -1 || _data.roles.indexOf("Super") === -1) {
+                        // if is not admin
+                        if (_data.roles.indexOf("Admin") === -1 && _data.roles.indexOf("Super") === -1) {
                             orgParams.userId = res.id;
                         }
                         $HTTP_getOrganizations(orgParams)
                             .then((res) => {
                                 let organizationList = res.data;
+                                // if is admin
                                 if (_data.roles.indexOf("Super") !== -1 || _data.roles.indexOf("Admin") !== -1) {
                                     this.$store.commit(types.ROLE, "Admin");
                                     this.$store.commit(types.UPDATE_PERMISSION, true);
                                     this.$router.push({ path: "/location" });
+                                    // add all if is admin
+                                    organizationList.unshift({ name: "All", id: '0', logo: null });
                                     this.$store.commit(types.UPDATE_ORGANIZATIONS, organizationList);
                                 } else {
                                     if (organizationList.length >= 1) {

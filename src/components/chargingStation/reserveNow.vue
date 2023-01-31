@@ -99,6 +99,7 @@ export default {
             handler() {
                 this.visible = this.show;
                 if (this.visible) {
+                    this.fetchIdTags()
                     const date = new Date();
                     date.setTime(date.getTime() + 30 * 60 * 1000);
                     this.param.expiryDate = date;
@@ -110,9 +111,6 @@ export default {
                 }
             }
         }
-    },
-    mounted() {
-        this.fetchIdTags();
     },
     methods: {
         fetchIdTags() {

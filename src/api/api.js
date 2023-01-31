@@ -454,3 +454,7 @@ export const $HTTP_getBoundedStationsByOrganizationId = (params) => {
         `${base_charger}/api/operators/${params.operatorId}/charge-stations`
     );
 };
+
+export const $HTTP_getOperatorUsersList = params => {
+    return fetch(`${base_charger}/api/reports/operators/users`, params)
+}

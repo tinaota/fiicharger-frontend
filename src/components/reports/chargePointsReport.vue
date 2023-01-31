@@ -58,6 +58,12 @@ export default {
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     watch: {
@@ -71,6 +77,9 @@ export default {
             if (Object.keys(this.sortingParams).length > 0) {
                 this.fetchData();
             }
+        },
+        selectedOrganization: function () {
+            this.fetchData();
         }
     },
     mounted() {},
@@ -97,6 +106,9 @@ export default {
                 params = { ...params, ...this.sortingParams };
             }
             this.isLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getAllChargeBoxList(params)
                 .then((res) => {
                     this.isLoading = false;

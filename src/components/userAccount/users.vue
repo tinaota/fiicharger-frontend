@@ -134,10 +134,11 @@
 <script>
 import {
     $HTTP_getOperatorList,
+    $HTTP_getOperatorUsersList,
     $HTTP_updateOperator,
     $HTTP_registerOperator,
     $HTTP_updateImage,
-    $HTTP_getUserInfo,
+    $HTTP_getUserInfo
 } from "@/api/api";
 import { $GLOBAL_AUTH, $GLOBAL_BASE_URL, $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { setScrollBar } from "@/utils/function";
@@ -149,7 +150,7 @@ export default {
     components: {
         ChangePwd,
         DeleteUser,
-        AddRoles,
+        AddRoles
     },
     data() {
         var validateConfirmedNewPassword = (rule, value, callback) => {
@@ -171,7 +172,7 @@ export default {
                 tmpEmail: "",
                 emailSearch: "",
                 tmpContactPersion: "",
-                personSearch: "",
+                personSearch: ""
             },
             isLoading: false,
             tableData: [],
@@ -191,34 +192,34 @@ export default {
                     email: "",
                     password: "",
                     confirmPassword: "",
-                    originalImg: "",
+                    originalImg: ""
                 },
                 uploadParams: {},
-                $Api: "",
+                $Api: ""
             },
             pwdDialog: {
                 id: "",
                 name: "",
-                show: false,
+                show: false
             },
             deleteDialog: {
                 id: "",
                 email: "",
-                show: false,
+                show: false
             },
             addRolesDialog: {
                 id: "",
-                show: false,
+                show: false
             },
             rules: {
                 email: [{ validator: validateEmail }],
                 password: [{ validator: validatePassword }],
                 confirmPassword: [{ validator: validateConfirmedNewPassword }],
-                originalImg: [{ validator: validateImageUrl }],
+                originalImg: [{ validator: validateImageUrl }]
             },
             showPasswordStatus: {
                 showPassword: false,
-                showConfirmPassword: false,
+                showConfirmPassword: false
             },
             globalAuth: $GLOBAL_AUTH,
             globalBaseUrl: $GLOBAL_BASE_URL,
@@ -232,6 +233,17 @@ export default {
         convertBooleanToString() {
             return (value) => value.toString();
         },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.fetchData();
+        }
     },
     created() {
         let fiics_user = this.$store.state.userInfo;
@@ -265,7 +277,7 @@ export default {
         fetchData(type) {
             let param = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
             if (type === "e") {
                 this.filter.emailSearch = this.filter.tmpEmail;
@@ -283,24 +295,44 @@ export default {
             param.email = this.filter.emailSearch;
             param.name = this.filter.personSearch;
             param.role = this.filter.roles;
-            $HTTP_getOperatorList(param)
+            let operatorUserParam = {};
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                operatorUserParam.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
+
+            $HTTP_getOperatorUsersList(operatorUserParam)
                 .then((res) => {
-                    this.isLoading = false;
+                    let userIds;
                     if (res?.data?.length > 0) {
-                        this.tableData = res.data;
-                        this.total = res.metadata.totalRows;
+                        userIds = res.data.map((item) => item.id);
+                        param.Ids = userIds;
+                        $HTTP_getOperatorList(param)
+                            .then((res) => {
+                                this.isLoading = false;
+                                if (res?.data?.length > 0) {
+                                    this.tableData = res.data;
+                                    this.total = res.metadata.totalRows;
+                                } else {
+                                    this.tableData = [];
+                                    this.total = 0;
+                                    if (this.filter.roles || this.filter.tmpEmail || this.filter.tmpContactPersion) {
+                                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                                    }
+                                }
+                            })
+                            .catch((err) => {
+                                this.tableData = [];
+                                this.total = 0;
+                                console.log(err);
+                                this.$message({ type: "warning", message: err?.data });
+                            });
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        if(this.filter.roles || this.filter.tmpEmail || this.filter.tmpContactPersion){
-                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
-                        }
                     }
                 })
                 .catch((err) => {
-                    this.tableData = [];
-                    this.total = 0;
-                    console.log(err)
+                    console.log(err);
                     this.$message({ type: "warning", message: i18n.t("error_network") });
                 });
         },
@@ -321,7 +353,7 @@ export default {
                     email: "",
                     password: "",
                     confirmPassword: "",
-                    originalImg: "",
+                    originalImg: ""
                 };
             } else {
                 const imgFileName = data.picture.split("images/operator/")[1];
@@ -332,12 +364,12 @@ export default {
                     file: [
                         {
                             name: imgFileName,
-                            url: data.picture,
-                        },
+                            url: data.picture
+                        }
                     ],
                     phoneNumber: data.phoneNumber,
                     email: data.email,
-                    originalImg: data.picture.includes("http") ? data.picture : "",
+                    originalImg: data.picture.includes("http") ? data.picture : ""
                 };
             }
             this.dialog.uploadParams = {};
@@ -371,7 +403,7 @@ export default {
             if (response.success == 1) {
                 this.$message({
                     type: "success",
-                    message: this.dialog.type ? i18n.t("general.sucAddMsg") : i18n.t("general.sucUpdateMsg"),
+                    message: this.dialog.type ? i18n.t("general.sucAddMsg") : i18n.t("general.sucUpdateMsg")
                 });
                 this.fetchData();
                 this.dialog.isLoading = false;
@@ -397,7 +429,7 @@ export default {
                             id: this.dialog.info.id,
                             firstName: this.dialog.info.firstName,
                             lastName: this.dialog.info.lastName,
-                            phoneNumber: this.dialog.info.phoneNumber,
+                            phoneNumber: this.dialog.info.phoneNumber
                         };
                         if (this.dialog.info.phoneNumber === "") {
                             delete params["phoneNumber"];
@@ -425,14 +457,14 @@ export default {
                                     }
                                     let config = {
                                         headers: {
-                                            "Content-Type": "multipart/form-data",
-                                        },
+                                            "Content-Type": "multipart/form-data"
+                                        }
                                     };
 
                                     let params = {
                                         id: id,
                                         formData: formData,
-                                        config: config,
+                                        config: config
                                     };
                                     return $HTTP_updateImage(params)
                                         .then((res) => {
@@ -440,7 +472,7 @@ export default {
                                                 this.imageUpdatedId = params.id;
                                                 that.$message({
                                                     type: "success",
-                                                    message: i18n.t("general.sucUpdateMsg"),
+                                                    message: i18n.t("general.sucUpdateMsg")
                                                 });
                                                 that.imagesArray = null;
 
@@ -449,9 +481,7 @@ export default {
                                             }
                                         })
                                         .catch((err) => {
-                                            let _errors = err?.data?.errors
-                                                ? Object.values(err?.data?.errors)
-                                                : err?.data;
+                                            let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
                                             that.$message({ type: "warning", message: _errors?.toString() });
                                             that.fetchData();
                                         });
@@ -487,7 +517,7 @@ export default {
                             lastName: this.dialog.info.lastName,
                             email: this.dialog.info.email,
                             password: this.dialog.info.password,
-                            confirmPassword: this.dialog.info.confirmPassword,
+                            confirmPassword: this.dialog.info.confirmPassword
                         };
                         that.dialog.isLoading = true;
                         $HTTP_registerOperator(params)
@@ -534,7 +564,7 @@ export default {
             this.dialog.info = {
                 email: "",
                 password: "",
-                confirmPassword: "",
+                confirmPassword: ""
             };
             this.$nextTick(() => {
                 this.$refs?.operatorForm?.clearValidate("email");
@@ -560,8 +590,8 @@ export default {
             this.addRolesDialog.id = data.id;
             this.addRolesDialog.show = true;
             this.$jQuery(".scroll").mCustomScrollbar("disable");
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" >

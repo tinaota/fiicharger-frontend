@@ -62,6 +62,14 @@ export default {
             isLoading: false
         };
     },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
     watch: {
         downloadClicked: function () {
             if (this.downloadClicked) {
@@ -73,6 +81,9 @@ export default {
             if (Object.keys(this.sortingParams).length > 0) {
                 this.fetchData();
             }
+        },
+        selectedOrganization: function () {
+            this.fetchData();
         }
     },
     mounted() {},
@@ -99,6 +110,9 @@ export default {
                 params = { ...params, ...this.sortingParams };
             }
             this.isLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getChargePointsUsage(params)
                 .then((res) => {
                     this.isLoading = false;

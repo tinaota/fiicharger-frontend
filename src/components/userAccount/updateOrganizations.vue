@@ -42,7 +42,7 @@
                             <el-input class="inputLabel" v-model="dialogInfo.logo" @change="updateStatus('baseApi')"></el-input>
                         </el-form-item>
                     </div>
-                    <div class="form-item">
+                    <div class="form-item" v-if="userRole===`Admin`">
                         <div class="label">{{ $t('general.user') }}</div>
                         <el-select class="organizationSelect" v-model="dialogInfo.selectedUserList" v-loading="userListIsLoading" multiple :placeholder="$t('general.select')" filterable @change="updateStatus('userApi')">
                             <el-option v-for="item in userList" :key="item.id" :label="item.email" :value="item.id">
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { setScrollBar, getNewlyAddedItems,getNewlyRemovedItems } from "@/utils/function";
+import { setScrollBar, getNewlyAddedItems, getNewlyRemovedItems } from "@/utils/function";
 import { $ALL_DATA_COUNT } from "@/utils/global";
 import {
     $HTTP_addOrganizations,
@@ -128,6 +128,14 @@ export default {
             }
         };
     },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
     mounted() {
         this.visible = this.show;
         const that = this;
@@ -148,8 +156,10 @@ export default {
         });
         // get all charger list
         this.getChargerList();
-        // get all user list
-        this.getUsersList();
+        // get all user list only if admin
+        if (this.userRole === "Admin") {
+            this.getUsersList();
+        }
         //get all station list
         this.getStationList();
         //get all tariff list
@@ -157,7 +167,9 @@ export default {
         // get bounded chargers, users only for edit
         if (this.dialogType === "edit") {
             this.getBoundedChargersByOrganizationId(this.data.id);
-            this.getBoundedUsersByOrganizationId(this.data.id);
+            if (this.userRole === "Admin") {
+                this.getBoundedUsersByOrganizationId(this.data.id);
+            }
             this.getBoundedStationsByOrganizationid(this.data.id);
             this.getBoundedTariffsByOrganizationid(this.data.id);
         }
@@ -249,6 +261,9 @@ export default {
                 limit: $ALL_DATA_COUNT
             };
             this.stationListIsLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getStationList(params)
                 .then((res) => {
                     this.stationListIsLoading = false;
@@ -268,6 +283,9 @@ export default {
                 limit: $ALL_DATA_COUNT
             };
             this.tariffListIsLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getTarrifs(params)
                 .then((res) => {
                     this.tariffListIsLoading = false;
@@ -285,7 +303,7 @@ export default {
             let params = {
                 page: 1,
                 limit: $ALL_DATA_COUNT,
-                role: '*'
+                role: "*"
             };
             this.userListIsLoading = true;
             $HTTP_getOperatorList(params)
@@ -447,6 +465,11 @@ export default {
                             }
                         });
                     } else if (this.dialogType === "edit") {
+                        // close dialog if nth changed
+                        if (this.changedApiList.length === 0) {
+                            this.isLoading = false;
+                            this.isUpdate = true;
+                        }
                         if (this.changedApiList.includes("baseApi")) {
                             this.$Api(params)
                                 .then((data) => {

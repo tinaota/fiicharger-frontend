@@ -173,21 +173,11 @@
 </template>
 
 <script>
-import {
-    setScrollBar,
-    transformUtcToLocTime,
-    transformToSymbols
-} from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
-import {
-    $GLOBAL_CURRENCY,
-    $GLOBAL_PAGE_LIMIT,
-    $ALL_DATA_COUNT,
-    $GLOBAL_REFRESH,
-    $POWER_TYPE_LIST
-} from "@/utils/global";
+import { $GLOBAL_CURRENCY, $GLOBAL_PAGE_LIMIT, $ALL_DATA_COUNT, $GLOBAL_REFRESH, $POWER_TYPE_LIST } from "@/utils/global";
 import {
     $HTTP_getAllChargeBoxList,
     $HTTP_getZipCodeListForSelect,
@@ -318,17 +308,26 @@ export default {
         },
         getPowerType() {
             return (item) => {
-                let convertedValue = this.powerTypeList.filter(
-                    (powerType) => powerType.value === item
-                );
+                let convertedValue = this.powerTypeList.filter((powerType) => powerType.value === item);
                 return convertedValue[0].name;
             };
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.fetchData();
+            this.getStationList();
         }
     },
     mounted() {
         if (this.$router.currentRoute.params.chargeBoxStatus) {
-            this.filter.chargeBoxStatus =
-                this.$router.currentRoute.params.chargeBoxStatus;
+            this.filter.chargeBoxStatus = this.$router.currentRoute.params.chargeBoxStatus;
         }
         setScrollBar(".scroll", this);
         this.fetchData();
@@ -339,8 +338,7 @@ export default {
     beforeDestroy() {
         clearInterval(this.polling);
         clearTimeout(this.timeOut);
-        this.dialog.map &&
-            google.maps.event.clearListeners(this.dialog.map, "click");
+        this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
         runAction(data, action) {
@@ -432,10 +430,7 @@ export default {
             if (this.filter.zipCode) {
                 param.zipCode = this.filter.zipCode;
             }
-            if (
-                this.filter.chargeBoxStatus &&
-                this.filter.chargeBoxStatus !== "all"
-            ) {
+            if (this.filter.chargeBoxStatus && this.filter.chargeBoxStatus !== "all") {
                 param.Status = this.filter.chargeBoxStatus;
             }
             if (this.filter.tmpSearch) {
@@ -457,6 +452,9 @@ export default {
                 this.page = 1;
                 param["page"] = 1;
             }
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             this.getAllChargeBoxList(param);
 
             this.polling = setInterval(() => {
@@ -468,6 +466,9 @@ export default {
                 page: this.page,
                 limit: $ALL_DATA_COUNT
             };
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             this.stationList.isLoading = true;
             $HTTP_getStationList(params)
                 .then((res) => {
@@ -576,16 +577,10 @@ export default {
         },
         deleteCheckBox(id, ocppId) {
             const that = this;
-            this.$confirm(
-                i18n.t("general.deleteItem", { item: ocppId }),
-                i18n.t("general.hint"),
-                {
-                    showClose: false,
-                    customClass: `custom ${
-                        this.isDark ? "dark-theme" : "light-theme"
-                    }`
-                }
-            ).then(() => {
+            this.$confirm(i18n.t("general.deleteItem", { item: ocppId }), i18n.t("general.hint"), {
+                showClose: false,
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
+            }).then(() => {
                 $HTTP_deleteChargeBox({ chargePointId: id })
                     .then((data) => {
                         if (data?.status === 204) {
@@ -647,13 +642,8 @@ export default {
         handleRowClick(row) {
             if (row) {
                 const data = Object.assign({}, row);
-                window.sessionStorage.setItem(
-                    "fiics-chargePointInfo",
-                    JSON.stringify(data)
-                );
-                this.$router
-                    .push({ name:"ChargePoint Detail", params: data })
-                    .catch();
+                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
+                this.$router.push({ name: "ChargePoint Detail", params: data }).catch();
             }
         },
         renderTipsHeader(h, { column }, isOnPeak) {
@@ -664,9 +654,7 @@ export default {
                     {
                         props: {
                             effect: "light",
-                            content: isOnPeak
-                                ? i18n.t("chargingStation.onPeakHint")
-                                : i18n.t("chargingStation.offPeakHint"),
+                            content: isOnPeak ? i18n.t("chargingStation.onPeakHint") : i18n.t("chargingStation.offPeakHint"),
                             placement: "bottom",
                             "popper-class": "custom"
                         }
@@ -682,9 +670,7 @@ export default {
         },
         getStatusList() {
             let that = this;
-            $HTTP_getStatusListChargeBoxes().then(
-                (res) => (that.chargeBoxStatusList = res)
-            );
+            $HTTP_getStatusListChargeBoxes().then((res) => (that.chargeBoxStatusList = res));
         }
     }
 };

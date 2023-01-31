@@ -92,7 +92,9 @@ export default {
                 isLoading: false,
                 isVisible: false,
                 type: ""
-            }
+            },
+            userId: this.$store.state.userInfo.id,
+            userRole: this.$store.state.role
         };
     },
     created() {},
@@ -120,6 +122,9 @@ export default {
                 params.page = 1;
             }
 
+            if (this.userRole !== "Admin") {
+                params.UserId = this.userId;
+            }
             $HTTP_getOrganizations(params)
                 .then((res) => {
                     if (res?.data?.length > 0) {

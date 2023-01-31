@@ -233,15 +233,23 @@ export default {
     computed: {
         getSymbols() {
             return (item) => transformToSymbols(item);
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.handleStationChanged();
         }
     },
     mounted() {
         const that = this;
         let halfHintBarWidth = this.$jQuery(".hint-bar").width();
-        this.$jQuery(".hint-bar").css(
-            "left",
-            `calc(50vw + 104px -  ${halfHintBarWidth}px)`
-        );
+        this.$jQuery(".hint-bar").css("left", `calc(50vw + 104px -  ${halfHintBarWidth}px)`);
         this.initMap();
         this.setTimer();
         setScrollBar(".chargeBox-drawer .drawer-body", that);
@@ -277,20 +285,17 @@ export default {
             }, that.frequence);
         },
         initMap() {
-            this.map = new google.maps.Map(
-                document.getElementById("map-container"),
-                {
-                    center: this.center,
-                    zoom: this.defaultZoomSize,
-                    minZoom: this.minZoomSize,
-                    maxZoom: this.maxZoomSize,
-                    streetViewControl: false, //設定是否呈現右下角街景小人
-                    mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                    fullscreenControl: false,
-                    zoomControl: false,
-                    styles: googleMapStyle
-                }
-            );
+            this.map = new google.maps.Map(document.getElementById("map-container"), {
+                center: this.center,
+                zoom: this.defaultZoomSize,
+                minZoom: this.minZoomSize,
+                maxZoom: this.maxZoomSize,
+                streetViewControl: false, //設定是否呈現右下角街景小人
+                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                fullscreenControl: false,
+                zoomControl: false,
+                styles: googleMapStyle
+            });
             // add current location option
             const locationButton = document.createElement("button");
             let currentLocationLogo = document.createElement("img");
@@ -298,9 +303,7 @@ export default {
             locationButton.appendChild(currentLocationLogo);
             locationButton.classList.add("custom-map-control-button");
             locationButton.style.margin = "0 50px 80px 0";
-            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
-                locationButton
-            );
+            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
 
             locationButton.addEventListener("click", () => {
                 if (navigator.geolocation) {
@@ -328,7 +331,7 @@ export default {
                     });
                 }
             });
-            this.fetchStationList(true);
+            // this.fetchStationList(true);
         },
         fetchStationList(loadMapAgain) {
             const that = this;
@@ -341,11 +344,15 @@ export default {
                     chargeStationId: this.filter.stationId
                 };
                 paramsConnectionSummary.StationId = this.filter.stationId;
-
                 $API = $HTTP_getStationListById;
             } else {
                 $API = $HTTP_getStationList;
                 this.stationSearchList.isLoading = true;
+            }
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                let operators = this.selectedOrganization.map((organization) => organization.id);
+                param.OperatorIds = operators;
+                paramsConnectionSummary.OperatorIds = operators;
             }
 
             $API(param)
@@ -368,10 +375,8 @@ export default {
                         // get connected count
                         $HTTP_getConnectionSummary(paramsConnectionSummary)
                             .then((res) => {
-                                that.statisticsInfo.connectedCount =
-                                    res.connected;
-                                that.statisticsInfo.disconnectedCount =
-                                    res.disconnected;
+                                that.statisticsInfo.connectedCount = res.connected;
+                                that.statisticsInfo.disconnectedCount = res.disconnected;
                             })
                             .catch((err) => console.log(err));
 
@@ -416,16 +421,9 @@ export default {
                                             message: i18n.t("error_geolocation")
                                         });
                                         // default to max ranges
-                                        const nePoint = new google.maps.LatLng(
-                                                maxLat,
-                                                maxLng
-                                            ),
-                                            swPoint = new google.maps.LatLng(
-                                                minLat,
-                                                minLng
-                                            ),
-                                            bounds =
-                                                new google.maps.LatLngBounds();
+                                        const nePoint = new google.maps.LatLng(maxLat, maxLng),
+                                            swPoint = new google.maps.LatLng(minLat, minLng),
+                                            bounds = new google.maps.LatLngBounds();
                                         bounds.extend(swPoint);
                                         bounds.extend(nePoint);
                                         that.map.fitBounds(bounds);
@@ -436,14 +434,8 @@ export default {
                                 that.map.setZoom(that.defaultZoomSize);
                             } else {
                                 // default
-                                const nePoint = new google.maps.LatLng(
-                                        maxLat,
-                                        maxLng
-                                    ),
-                                    swPoint = new google.maps.LatLng(
-                                        minLat,
-                                        minLng
-                                    ),
+                                const nePoint = new google.maps.LatLng(maxLat, maxLng),
+                                    swPoint = new google.maps.LatLng(minLat, minLng),
                                     bounds = new google.maps.LatLngBounds();
                                 bounds.extend(swPoint);
                                 bounds.extend(nePoint);
@@ -464,7 +456,6 @@ export default {
             const that = this;
             var markerStyle, markerImage;
             let noOfChargers = item.acCount + item.dcCount;
-
             if (noOfChargers < 10) {
                 markerStyle = this.markerImgStyle.small;
             } else if (noOfChargers > 99) {
@@ -482,10 +473,7 @@ export default {
                 draggable: false,
                 map: that.map,
                 labelContent: noOfChargers.toString(),
-                labelAnchor: new google.maps.Point(
-                    markerStyle.labelAnchor[0],
-                    markerStyle.labelAnchor[1]
-                ),
+                labelAnchor: new google.maps.Point(markerStyle.labelAnchor[0], markerStyle.labelAnchor[1]),
                 labelClass: markerStyle.labelClass, // the CSS class for the label
                 labelStyle: { opacity: 1.0 },
                 icon: markerImage
@@ -571,6 +559,9 @@ export default {
             let param = {
                 StationId: stationId
             };
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             if (isVisible) {
                 this.getChargeBoxList(param, isVisible);
                 this.timerBox = setInterval(() => {
@@ -597,8 +588,7 @@ export default {
                             .then((tariffRes) => {
                                 if (tariffRes) {
                                     originalList[index].tariffList = tariffRes;
-                                    originalList[index].tariffNames =
-                                        tariffRes.map((item) => item.name);
+                                    originalList[index].tariffNames = tariffRes.map((item) => item.name);
                                 }
                             })
                             .catch((e) => {

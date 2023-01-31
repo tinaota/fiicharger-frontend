@@ -351,11 +351,7 @@
 </template>
 
 <script>
-import {
-    setScrollBar,
-    transformUtcToLocTime,
-    transformToSymbols
-} from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import Transaction from "@/components/chargingStation/transaction";
 import Sessions from "@/components/chargingStation/sessions";
@@ -365,12 +361,7 @@ import CancelReservation from "@/components/chargingStation/cancelReservation";
 import ChargingProfile from "@/components/chargingStation/chargingProfile";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
-import {
-    $HTTP_getAllChargeBoxList,
-    $HTTP_getConnectorStatusesById,
-    $HTTP_getTransactionsStatistics,
-    $HTTP_getChargeBoxTariff
-} from "@/api/api";
+import { $HTTP_getAllChargeBoxList, $HTTP_getConnectorStatusesById, $HTTP_getTransactionsStatistics, $HTTP_getChargeBoxTariff } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import SetConfiguration from "@/views/setting/setConfigurationDialog";
@@ -379,11 +370,7 @@ import RemoteTrigger from "@/components/chargingStation/remoteTrigger";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import GetLocalAuthListVersion from "@/components/chargingStation/getLocalAuthListVersion";
 import SendLocalAutList from "@/components/chargingStation/sendLocalAutList";
-import {
-    $GLOBAL_REFRESH,
-    $POWER_TYPE_LIST,
-    $CONNECTOR_TYPE_LIST
-} from "@/utils/global";
+import { $GLOBAL_REFRESH, $POWER_TYPE_LIST, $CONNECTOR_TYPE_LIST } from "@/utils/global";
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
@@ -456,70 +443,45 @@ export default {
                         text: i18n.t("chargingStation.timeOpt.7days"),
                         onClick(picker) {
                             // 7 days including today
-                            const startOfDay = moment()
-                                .subtract(6, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(6, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.30days"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(29, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(29, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.90days"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(89, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(89, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.6months"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(6, "months")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(6, "months").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.1year"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(1, "years")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(1, "years").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     }
@@ -617,25 +579,30 @@ export default {
         },
         getPowerType() {
             return (item) => {
-                let convertedValue = this.powerTypeList.filter(
-                    (powerType) => powerType.value === item
-                );
+                let convertedValue = this.powerTypeList.filter((powerType) => powerType.value === item);
                 return convertedValue[0].name;
             };
         },
         getConnectorType() {
             return (item) => {
-                let convertedValue = this.connectorTypeList.filter(
-                    (powerType) => powerType.value === item
-                );
+                let convertedValue = this.connectorTypeList.filter((powerType) => powerType.value === item);
                 return convertedValue[0].name;
             };
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.$router.go(-1);
         }
     },
     created() {
-        let chargePointInfo = JSON.parse(
-            window.sessionStorage.getItem("fiics-chargePointInfo")
-        );
+        let chargePointInfo = JSON.parse(window.sessionStorage.getItem("fiics-chargePointInfo"));
         if (chargePointInfo) {
             this.curRouteParam = {
                 chargeBoxId: chargePointInfo.id,
@@ -719,8 +686,7 @@ export default {
                 this.clearChargingProfile.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "getLocalAuthListVersion") {
-                this.getAuthVersionDialog.chargePointId =
-                    this.chargePointById[0].id;
+                this.getAuthVersionDialog.chargePointId = this.chargePointById[0].id;
                 this.getAuthVersionDialog.visible = true;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "sendLocalAuthList") {
@@ -729,13 +695,11 @@ export default {
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "getDiagnostics") {
                 this.diagnosticsDialog.visible = true;
-                this.diagnosticsDialog.chargePointId =
-                    this.chargePointById[0].id;
+                this.diagnosticsDialog.chargePointId = this.chargePointById[0].id;
                 this.$jQuery(".scroll").mCustomScrollbar("disable");
             } else if (action === "uploadFirmware") {
                 this.uploadFirmwareDialog.visible = true;
-                this.uploadFirmwareDialog.chargePointId =
-                    this.chargePointById[0].id;
+                this.uploadFirmwareDialog.chargePointId = this.chargePointById[0].id;
             } else if (action === "getCompositeSchedule") {
                 this.getCompositeSchedule.data = {
                     chargePointId: this.chargePointById[0].id,
@@ -798,6 +762,9 @@ export default {
             let params = {};
             params.ocppId = id;
             this.isLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getAllChargeBoxList(params)
                 .then((res) => {
                     if (res?.data?.length > 0) {
@@ -837,8 +804,7 @@ export default {
             if (type === "connectorType") {
                 this.changeConnectorType.show = true;
                 this.changeConnectorType.connectorId = row.id;
-                this.changeConnectorType.chargePointId =
-                    this.chargePointById[0].id;
+                this.changeConnectorType.chargePointId = this.chargePointById[0].id;
                 this.changeConnectorType.connectorType = row.type;
                 this.changeConnectorType.ocppId = this.curRouteParam.ocppId;
             } else if (type === "configuration") {
@@ -851,8 +817,7 @@ export default {
                 }
             } else if (type === "setConfiguration") {
                 this.setConfiguration.show = true;
-                this.setConfiguration.chargePointId =
-                    this.chargePointById[0].id;
+                this.setConfiguration.chargePointId = this.chargePointById[0].id;
                 this.setConfiguration.selectedKey = this.settingsInput;
             } else if (type === "commonpopup") {
                 this.commonpopup.show = true;

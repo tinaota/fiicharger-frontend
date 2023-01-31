@@ -31,6 +31,14 @@ export default {
             removeKeys: []
         };
     },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
     watch: {
         // update after only table data loads and clicking download
         fetchDataComplete: function () {
@@ -53,17 +61,27 @@ export default {
             if (this.dropdownSelected === "chargePoints") {
                 $API = $HTTP_getAllChargeBoxList;
                 this.removeKeys = ["id", "connectors", "coordinates"];
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "chargePointUsage") {
                 $API = $HTTP_getChargePointsUsage;
                 this.removeKeys = ["id"];
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "chargeStationSummary") {
                 $API = $HTTP_getChargeStationsSummary;
                 this.removeKeys = ["id"];
-            } else if (
-                this.dropdownSelected === "chargeStationOverallSummary"
-            ) {
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
+            } else if (this.dropdownSelected === "chargeStationOverallSummary") {
                 $API = $HTTP_getChargeStationsOverallSummary;
                 this.removeKeys = [];
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "transactions") {
                 $API = $HTTP_getAllTransactions;
                 this.removeKeys = ["chargePointId"];
@@ -82,9 +100,7 @@ export default {
                     let response;
                     // check this since the response is an object in this api
                     // other apis returns array of objects
-                    if (
-                        this.dropdownSelected === "chargeStationOverallSummary"
-                    ) {
+                    if (this.dropdownSelected === "chargeStationOverallSummary") {
                         response = [res];
                     } else {
                         response = res.data;
@@ -120,18 +136,13 @@ export default {
                     var blob = new Blob([csv]);
                     if (window.navigator.msSaveOrOpenBlob)
                         // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
-                        window.navigator.msSaveBlob(
-                            blob,
-                            `${i18n.t(`reports.${this.dropdownSelected}`)}.csv`
-                        );
+                        window.navigator.msSaveBlob(blob, `${i18n.t(`reports.${this.dropdownSelected}`)}.csv`);
                     else {
                         var a = window.document.createElement("a");
                         a.href = window.URL.createObjectURL(blob, {
                             type: "text/plain"
                         });
-                        a.download = `${i18n.t(
-                            `reports.${this.dropdownSelected}`
-                        )}.csv`;
+                        a.download = `${i18n.t(`reports.${this.dropdownSelected}`)}.csv`;
 
                         document.body.appendChild(a);
                         a.click(); // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access

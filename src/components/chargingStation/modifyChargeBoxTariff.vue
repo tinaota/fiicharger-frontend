@@ -17,12 +17,7 @@
 </template>
 
 <script>
-import {
-    $HTTP_getChargeBoxTariff,
-    $HTTP_updateChargeBoxTariff,
-    $HTTP_getTarrifs,
-    $HTTP_deleteChargeBoxTariff
-} from "@/api/api";
+import { $HTTP_getChargeBoxTariff, $HTTP_updateChargeBoxTariff, $HTTP_getTarrifs, $HTTP_deleteChargeBoxTariff } from "@/api/api";
 import { $ALL_DATA_COUNT } from "@/utils/global";
 export default {
     props: { show: Boolean, data: Object },
@@ -41,6 +36,14 @@ export default {
     },
     beforeMount() {
         this.getSpecificTariff();
+    },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
     },
     mounted() {
         const that = this;
@@ -69,6 +72,9 @@ export default {
                 limit: $ALL_DATA_COUNT,
                 IsDeprecated: false
             };
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getTarrifs(params)
                 .then((res) => {
                     if (res?.data.length > 0) {
@@ -114,9 +120,7 @@ export default {
                         that.isLoading = false;
                         that.visible = false;
                         deleteTariff = false;
-                        let _errors = err?.data?.errors
-                            ? Object.values(err?.data?.errors)
-                            : err?.data;
+                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
                         that.$message({
                             type: "warning",
                             message: _errors.toString()
@@ -159,13 +163,9 @@ export default {
             const that = this;
             that.isLoading = true;
 
-            let newAddedTariffId = this.tariffId.filter(
-                (item) => this.originalSelectedTariffId.indexOf(item) === -1
-            );
+            let newAddedTariffId = this.tariffId.filter((item) => this.originalSelectedTariffId.indexOf(item) === -1);
 
-            let deletedTariffId = this.originalSelectedTariffId.filter(
-                (item) => this.tariffId.indexOf(item) === -1
-            );
+            let deletedTariffId = this.originalSelectedTariffId.filter((item) => this.tariffId.indexOf(item) === -1);
             let params = {
                 chargePointId: that.data.chargeBoxId
             };

@@ -368,14 +368,26 @@ export default {
             }
         };
     },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.fetchData();
+        }
+    },
     mounted() {
         setScrollBar(".scroll", this);
         this.fetchLocationList();
         this.fetchData();
     },
     beforeDestroy() {
-        this.dialog.map &&
-            google.maps.event.clearListeners(this.dialog.map, "click");
+        this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
         runAction(data, action) {
@@ -427,28 +439,23 @@ export default {
                 this.page = 1;
                 param["page"] = 1;
             }
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getStationList(param)
                 .then((res) => {
                     this.isLoading = false;
                     if (res?.data?.length > 0) {
                         this.total = res.metadata.totalRows;
                         this.tableData = res.data.map((item) => {
-                            item["modified"] = transformUtcToLocTime(
-                                item.modified
-                            );
-                            item["publish"] = item.publish
-                                ? "Enabled"
-                                : "Disabled";
+                            item["modified"] = transformUtcToLocTime(item.modified);
+                            item["publish"] = item.publish ? "Enabled" : "Disabled";
                             return item;
                         });
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        if (
-                            this.filter.stationName ||
-                            this.filter.zipCode ||
-                            this.filter.status
-                        ) {
+                        if (this.filter.stationName || this.filter.zipCode || this.filter.status) {
                             this.$message({
                                 type: "warning",
                                 message: i18n.t("emptyMessage")
@@ -480,14 +487,16 @@ export default {
             this.bindDialog.info.selectedChargeBoxNameArr = [];
             this.bindDialog.info.originalSelectedChargeBoxNameArr = [];
             this.bindDialog.isLoading = true;
-
-            $HTTP_getAllChargeBoxList()
+            let allListParams = {};
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                allListParams.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
+            $HTTP_getAllChargeBoxList(allListParams)
                 .then((res) => {
                     let allChargeBoxes = res?.data;
                     if (allChargeBoxes?.length > 0) {
                         allChargeBoxes.forEach((item) => {
-                            that.bindDialog.oriChargePointList[item.name] =
-                                item.id;
+                            that.bindDialog.oriChargePointList[item.name] = item.id;
                             that.bindDialog.chargeBoxNameArr.push(item.name);
                         });
                     }
@@ -495,12 +504,8 @@ export default {
                         let allBindedBoxes = res;
                         // push only if it is binded
                         allBindedBoxes.map((bindedBox) => {
-                            that.bindDialog.info.selectedChargeBoxNameArr.push(
-                                bindedBox.name
-                            );
-                            that.bindDialog.info.originalSelectedChargeBoxNameArr.push(
-                                bindedBox.name
-                            );
+                            that.bindDialog.info.selectedChargeBoxNameArr.push(bindedBox.name);
+                            that.bindDialog.info.originalSelectedChargeBoxNameArr.push(bindedBox.name);
                         });
                         that.bindDialog.isLoading = false;
                     });
@@ -519,13 +524,8 @@ export default {
                     stationId: row.id,
                     stationName: row.name
                 };
-                window.sessionStorage.setItem(
-                    "fiics-stationInfo",
-                    JSON.stringify(stationData)
-                );
-                this.$router
-                    .push({ name: "Station Detail", params: stationData })
-                    .catch();
+                window.sessionStorage.setItem("fiics-stationInfo", JSON.stringify(stationData));
+                this.$router.push({ name: "Station Detail", params: stationData }).catch();
             }
         },
         openDialog(type, data) {
@@ -534,14 +534,8 @@ export default {
                 let stationId = data.id;
                 $HTTP_getIndividualStationData(stationId)
                     .then((res) => {
-                        let serviceStartTime =
-                            this.computeTime(res.openHour) +
-                            ":" +
-                            this.computeTime(res.openMinute);
-                        let serviceEndTime =
-                            this.computeTime(res.closeHour) +
-                            ":" +
-                            this.computeTime(res.closeMinute);
+                        let serviceStartTime = this.computeTime(res.openHour) + ":" + this.computeTime(res.openMinute);
+                        let serviceEndTime = this.computeTime(res.closeHour) + ":" + this.computeTime(res.closeMinute);
 
                         this.dialog.info = {
                             stationId: res.id,
@@ -580,31 +574,24 @@ export default {
         },
         initMap() {
             const that = this;
-            this.dialog.map = new google.maps.Map(
-                document.getElementById("map-container"),
-                {
-                    center: this.dialog.mapInfo.initCenter,
-                    zoom: this.dialog.mapInfo.zoom,
-                    maxZoom: this.dialog.mapInfo.maxZoom,
-                    streetViewControl: false, //設定是否呈現右下角街景小人
-                    mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                    fullscreenControl: false,
-                    zoomControl: true,
-                    styles: googleMapStyle
+            this.dialog.map = new google.maps.Map(document.getElementById("map-container"), {
+                center: this.dialog.mapInfo.initCenter,
+                zoom: this.dialog.mapInfo.zoom,
+                maxZoom: this.dialog.mapInfo.maxZoom,
+                streetViewControl: false, //設定是否呈現右下角街景小人
+                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                fullscreenControl: false,
+                zoomControl: true,
+                styles: googleMapStyle
+            });
+            google.maps.event.addListener(this.dialog.map, "click", function (event) {
+                if (!that.dialog.type) {
+                    that.removeMarker();
+                    that.dialog.info.loc = event.latLng.toJSON();
+                    that.dialog.info.loc.lon = that.dialog.info.loc.lng;
+                    that.drawMarker();
                 }
-            );
-            google.maps.event.addListener(
-                this.dialog.map,
-                "click",
-                function (event) {
-                    if (!that.dialog.type) {
-                        that.removeMarker();
-                        that.dialog.info.loc = event.latLng.toJSON();
-                        that.dialog.info.loc.lon = that.dialog.info.loc.lng;
-                        that.drawMarker();
-                    }
-                }
-            );
+            });
 
             // add current location option
             const locationButton = document.createElement("button");
@@ -612,9 +599,7 @@ export default {
             currentLocationLogo.src = require("../../../public/imgs/my_location.png");
             locationButton.appendChild(currentLocationLogo);
             locationButton.classList.add("custom-map-control-button");
-            this.dialog.map.controls[
-                google.maps.ControlPosition.RIGHT_BOTTOM
-            ].push(locationButton);
+            this.dialog.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
 
             locationButton.addEventListener("click", () => {
                 if (navigator.geolocation) {
@@ -626,7 +611,7 @@ export default {
                             };
                             this.dialog.mapInfo.initCenter = pos;
                             this.initMap();
-                            this.drawMarker()
+                            this.drawMarker();
                         },
                         () => {
                             this.$message({
@@ -670,10 +655,7 @@ export default {
         },
         drawMarker() {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(
-                this.dialog.mapInfo.icon,
-                new google.maps.Size(36, 55)
-            ); //size  預設位子圖案中間底
+            var markerImage = new google.maps.MarkerImage(this.dialog.mapInfo.icon, new google.maps.Size(36, 55)); //size  預設位子圖案中間底
             // new google.maps.Point(0, 0), //origin point
             // new google.maps.Point(18, 55)); // offset point
             let marker = new google.maps.Marker({
@@ -683,21 +665,14 @@ export default {
                 draggable: true
             });
             this.dialog.mapInfo.marker = marker;
-            google.maps.event.addListener(
-                this.dialog.mapInfo.marker,
-                "dragend",
-                function (event) {
-                    that.dialog.info.loc = event.latLng.toJSON();
-                    that.dialog.info.loc.lon = that.dialog.info.loc.lng;
-                }
-            );
+            google.maps.event.addListener(this.dialog.mapInfo.marker, "dragend", function (event) {
+                that.dialog.info.loc = event.latLng.toJSON();
+                that.dialog.info.loc.lon = that.dialog.info.loc.lng;
+            });
         },
         removeMarker() {
             if (this.dialog.mapInfo.marker) {
-                google.maps.event.clearListeners(
-                    this.dialog.mapInfo.marker,
-                    "dragend"
-                );
+                google.maps.event.clearListeners(this.dialog.mapInfo.marker, "dragend");
                 this.dialog.mapInfo.marker.setMap();
                 this.dialog.mapInfo.marker = null;
             }
@@ -727,18 +702,13 @@ export default {
                     "Content-Type": "application/json"
                 }
             };
-            let newBindedArray =
-                that.bindDialog.info.selectedChargeBoxNameArr.filter(
-                    (item) =>
-                        that.bindDialog.info.originalSelectedChargeBoxNameArr.indexOf(
-                            item
-                        ) === -1
-                );
+            let newBindedArray = that.bindDialog.info.selectedChargeBoxNameArr.filter(
+                (item) => that.bindDialog.info.originalSelectedChargeBoxNameArr.indexOf(item) === -1
+            );
             if (newBindedArray.length > 0) {
                 newBindedArray.map((item) => {
                     let params = {
-                        chargePointId:
-                            this.bindDialog.oriChargePointList[`${item}`],
+                        chargePointId: this.bindDialog.oriChargePointList[`${item}`],
                         config: config,
                         stationId: that.bindDialog.info.stationId
                     };
@@ -759,18 +729,13 @@ export default {
                 });
             }
 
-            let unbindedArray =
-                that.bindDialog.info.originalSelectedChargeBoxNameArr.filter(
-                    (item) =>
-                        that.bindDialog.info.selectedChargeBoxNameArr.indexOf(
-                            item
-                        ) === -1
-                );
+            let unbindedArray = that.bindDialog.info.originalSelectedChargeBoxNameArr.filter(
+                (item) => that.bindDialog.info.selectedChargeBoxNameArr.indexOf(item) === -1
+            );
             if (unbindedArray.length > 0) {
                 unbindedArray.map((item) => {
                     let params = {
-                        chargePointId:
-                            this.bindDialog.oriChargePointList[`${item}`]
+                        chargePointId: this.bindDialog.oriChargePointList[`${item}`]
                     };
                     $HTTP_removeBoundingToStation(params).then((res) => {
                         if (res) {
@@ -792,16 +757,10 @@ export default {
         },
         deleteStation(id, name) {
             const that = this;
-            this.$confirm(
-                i18n.t("general.deleteItem", { item: name }),
-                i18n.t("general.hint"),
-                {
-                    showClose: false,
-                    customClass: `custom ${
-                        this.isDark ? "dark-theme" : "light-theme"
-                    }`
-                }
-            ).then(() => {
+            this.$confirm(i18n.t("general.deleteItem", { item: name }), i18n.t("general.hint"), {
+                showClose: false,
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
+            }).then(() => {
                 $HTTP_deleteStation({ stationId: id }).then((data) => {
                     if (data.status === 204) {
                         that.$message({
@@ -829,8 +788,7 @@ export default {
             this.$refs.stationForm.validate((valid) => {
                 if (valid) {
                     const that = this;
-                    let startTime =
-                        that.dialog.info.serviceStartTime.split(":");
+                    let startTime = that.dialog.info.serviceStartTime.split(":");
                     let endTime = that.dialog.info.serviceEndTime.split(":");
                     let $API,
                         params = {
@@ -890,15 +848,9 @@ export default {
         },
         closeDialog(isEdit) {
             if (isEdit) {
-                this.$jQuery(".right-form.formVertical").length > 0 &&
-                    this.$jQuery(".right-form.formVertical").mCustomScrollbar(
-                        "destroy"
-                    );
+                this.$jQuery(".right-form.formVertical").length > 0 && this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
             } else {
-                this.$jQuery(".vertial.formVertical").length > 0 &&
-                    this.$jQuery(".vertial.formVertical").mCustomScrollbar(
-                        "destroy"
-                    );
+                this.$jQuery(".vertial.formVertical").length > 0 && this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
             this.dialog.info = {

@@ -75,6 +75,14 @@ export default {
             isDataDownloadComplete: false
         };
     },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
     watch: {
         // update after only table data loads and clicking download
         fetchDataComplete: function () {
@@ -102,14 +110,24 @@ export default {
             let $API = null;
             if (this.dropdownSelected === "chargePoints") {
                 $API = $HTTP_getAllChargeBoxList;
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "chargePointUsage") {
                 $API = $HTTP_getChargePointsUsage;
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "chargeStationSummary") {
                 $API = $HTTP_getChargeStationsSummary;
-            } else if (
-                this.dropdownSelected === "chargeStationOverallSummary"
-            ) {
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
+            } else if (this.dropdownSelected === "chargeStationOverallSummary") {
                 $API = $HTTP_getChargeStationsOverallSummary;
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
             } else if (this.dropdownSelected === "transactions") {
                 $API = $HTTP_getAllTransactions;
             } else if (this.dropdownSelected === "idTags") {
@@ -123,9 +141,7 @@ export default {
                 .then((res) => {
                     // check this since the response is an object in this api
                     // other apis returns array of objects
-                    if (
-                        this.dropdownSelected === "chargeStationOverallSummary"
-                    ) {
+                    if (this.dropdownSelected === "chargeStationOverallSummary") {
                         this.tableData = [res];
                     } else {
                         this.tableData = res.data;

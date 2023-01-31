@@ -33,6 +33,12 @@ export default {
     computed: {
         isDark() {
             return this.$store.state.darkTheme;
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     watch: {
@@ -46,6 +52,9 @@ export default {
         },
         isDark: function () {
             this.convertChartOptions(this.responseData);
+        },
+        selectedOrganization: function () {
+            this.fetchRevenueWaterfallGraphData(this.dateRange, this.id);
         }
     },
     methods: {
@@ -55,6 +64,9 @@ export default {
             params.Before = dateRange[1];
             if (this.type === "station") {
                 params.StationId = id;
+            }
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getRevenueWaterfallGraphData(params)
                 .then((res) => {
@@ -67,10 +79,7 @@ export default {
                             dataLength = 16;
                         }
                         this.noofChargers = dataLength;
-                        this.noofChargersList = Array.from(
-                            { length: dataLength },
-                            (_, i) => i + 1
-                        );
+                        this.noofChargersList = Array.from({ length: dataLength }, (_, i) => i + 1);
                         // convert to chart data
                         this.responseData = res;
                         this.convertChartOptions(res);
@@ -97,10 +106,7 @@ export default {
             });
             // first data.length and after XAxisLabels.length as the value is changed
             // remove undefined labels
-            XAxisLabels.splice(
-                this.noofChargers,
-                data.length - this.noofChargers
-            );
+            XAxisLabels.splice(this.noofChargers, data.length - this.noofChargers);
 
             // insert others label in last posiiton
             if (this.noofChargers < this.responseData.data.length) {
@@ -115,10 +121,7 @@ export default {
                 }
             });
             // remove undefined waterfall data
-            graphData.splice(
-                this.noofChargers,
-                data.length - this.noofChargers
-            );
+            graphData.splice(this.noofChargers, data.length - this.noofChargers);
 
             //insert others value in last position
             if (this.noofChargers < this.responseData.data.length) {
@@ -128,9 +131,7 @@ export default {
             let lineChartData = graphData;
             let total = res.total;
             let sum = 0;
-            let convertedLineChartData = lineChartData.map((item) =>
-                parseFloat((((sum += item) / total) * 100).toFixed(2))
-            );
+            let convertedLineChartData = lineChartData.map((item) => parseFloat((((sum += item) / total) * 100).toFixed(2)));
             let noofChargers = this.noofChargers;
 
             let option = {
@@ -147,28 +148,17 @@ export default {
                             if (params?.seriesType === "bar") {
                                 formatterHtml = `<div style=" width:fit-content;">
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="font-size:16px">${
-                                                            params.name
-                                                        }</span>
+                                                        <span style="font-size:16px">${params.name}</span>
                                                     </div>
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="margin-right:6px;min-width:80px;">${i18n.t(
-                                                            "dashboard.revenue"
-                                                        )}</span>
-                                                        <span><b>$${params?.value?.toFixed(
-                                                            2
-                                                        )}</b></span>
+                                                        <span style="margin-right:6px;min-width:80px;">${i18n.t("dashboard.revenue")}</span>
+                                                        <span><b>$${params?.value?.toFixed(2)}</b></span>
                                                     </div>
                                                 </div>`;
                             } else {
                                 return `<div style="display:flex;margin-top:6px">
-                                            <span style="margin-right:6px;min-width:160px;">${i18n.t(
-                                                "general.accumulatedRevenue"
-                                            )}</span>
-                                            <span><b>$${(
-                                                (total * params?.data) /
-                                                100
-                                            ).toFixed(2)}</b></span>
+                                            <span style="margin-right:6px;min-width:160px;">${i18n.t("general.accumulatedRevenue")}</span>
+                                            <span><b>$${((total * params?.data) / 100).toFixed(2)}</b></span>
                                         </div>`;
                             }
                         }
@@ -184,43 +174,25 @@ export default {
                                                                 "chargingStation.chargePointName"
                                                             )}</span>
                                                             <span style="font-size:16px"><b>
-                                                            ${
-                                                                hoveredData.x
-                                                                    .name
-                                                            }</span></b>
+                                                            ${hoveredData.x.name}</span></b>
                                                     </div>
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t(
-                                                            "dashboard.revenue"
-                                                        )}</span>
-                                                        <span><b>$${hoveredData?.y?.toFixed(
-                                                            2
-                                                        )}</b></span>
+                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t("dashboard.revenue")}</span>
+                                                        <span><b>$${hoveredData?.y?.toFixed(2)}</b></span>
                                                     </div>
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t('general.type')}</span>
-                                                        <span><b>${
-                                                            hoveredData.x
-                                                                .powerType
-                                                        }</b></span>
+                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t("general.type")}</span>
+                                                        <span><b>${hoveredData.x.powerType}</b></span>
                                                     </div>
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t('chargingStation.power')} </span>
-                                                        <span><b>${
-                                                            hoveredData.x
-                                                                .powerKw + " kW"
-                                                        }</b></span>
+                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t("chargingStation.power")} </span>
+                                                        <span><b>${hoveredData.x.powerKw + " kW"}</b></span>
                                                     </div>
                                                 </div>`;
                             } else {
                                 return `<div style="display:flex;margin-top:6px">
-                                            <span style="margin-right:6px;min-width:160px;">${i18n.t(
-                                                "general.accumulatedRevenue"
-                                            )}</span>
-                                            <span><b>$${(
-                                                (total * params?.data) /
-                                                100
-                                            ).toFixed(2)}</b></span>
+                                            <span style="margin-right:6px;min-width:160px;">${i18n.t("general.accumulatedRevenue")}</span>
+                                            <span><b>$${((total * params?.data) / 100).toFixed(2)}</b></span>
                                         </div>`;
                             }
                         }
@@ -229,10 +201,7 @@ export default {
                 },
                 legend: {
                     show: true,
-                    data: [
-                        i18n.t("general.chargerRevenue"),
-                        i18n.t("general.cumulative")
-                    ],
+                    data: [i18n.t("general.chargerRevenue"), i18n.t("general.cumulative")],
                     right: 70,
                     icon: "roundRect",
                     itemGap: 20

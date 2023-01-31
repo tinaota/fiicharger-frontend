@@ -45,9 +45,9 @@
                         </button>
                     </div>
                     <div class="organization" v-loading="organizationListIsLoading" v-if="selectedOrganizationList">
-                        <img :src="selectedOrganizationLogo" style="width:inherit;height:inherit" :alt="$t('userAccount.logo')" />
+                        <img v-if="selectedOrganizationLogo" :src="selectedOrganizationLogo" style="width:inherit;height:inherit" :alt="$t('userAccount.logo')" />
                         <el-select class="homeOrganizationSelect" v-model="selectedOrganizationList" :placeholder="$t('general.select')" filterable @change="updateOrganizationLogo(selectedOrganizationList)">
-                            <el-option v-for="item in organizationList" :key="item.id" :label="item.name" :value="item.id">
+                            <el-option v-for="item in organizationList" :key="item?.id" :label="item.name" :value="item?.id">
                             </el-option>
                         </el-select>
                     </div>
@@ -155,11 +155,7 @@ export default {
         userAvatar() {
             let userData = this.$store.state.userInfo;
             let final_url;
-            if (
-                !userData?.picture.includes("https") &&
-                !userData?.picture.includes("http") &&
-                userData?.picture !== ""
-            ) {
+            if (!userData?.picture.includes("https") && !userData?.picture.includes("http") && userData?.picture !== "") {
                 final_url = this.globalBaseUrl + this.globalAuth + "/" + userData?.picture;
             } else {
                 final_url = userData?.picture;
@@ -177,6 +173,12 @@ export default {
         },
         isActiveTheme() {
             return this.$store.state.darkTheme ? `${i18n.t("general.dark")}` : `${i18n.t("general.light")}`;
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     watch: {
@@ -265,11 +267,16 @@ export default {
     mounted() {
         setScrollBar(".home-menu", this);
         //set organizations
-        if (this.$store.state.organizationList.length >= 1) {
+        // if organization is selected before
+        if (this.selectedOrganization.length >= 1) {
             this.organizationList = this.$store.state.organizationList;
-            this.selectedOrganizationList = this.$store.state.organizationList[0].id;
-            this.selectedOrganizationLogo = this.$store.state.organizationList[0].logo;
-            this.$store.commit(types.UPDATE_SELECTED_ORGANIZATION, this.$store.state.organizationList[0]);
+            this.selectedOrganizationList = this.$store.state.selectedOrganization[0]?.id;
+            this.selectedOrganizationLogo = this.$store.state.selectedOrganization[0]?.logo;
+        } else {
+            this.organizationList = this.$store.state.organizationList;
+            this.selectedOrganizationList = this.$store.state.organizationList[0]?.id;
+            this.selectedOrganizationLogo = this.$store.state.organizationList[0]?.logo;
+            this.$store.commit(types.UPDATE_SELECTED_ORGANIZATION, [this.$store.state.organizationList[0]]);
         }
     },
     methods: {
@@ -283,7 +290,8 @@ export default {
         },
         setRoles(userData) {
             // set role(highest one)
-            if ((userData?.roles?.indexOf("Super") || userData?.roles?.indexOf("Admin")) != -1) {
+            // if is admin
+            if (userData?.roles?.indexOf("Super") !== -1 || userData?.roles?.indexOf("Admin") !== -1) {
                 this.roleNameObj = "Admin";
             } else {
                 this.roleNameObj = "Other";
@@ -303,7 +311,7 @@ export default {
         },
         menuShowCtrl: function (child) {
             if (this.roleNameObj === "Other") {
-                if (this.$store.state.organizationList.length >= 1) {
+                if (this.$store.state.organizationList.length >= 1 && !child.hidden) {
                     return true;
                 } else if (this.$store.state.organizationList.length < 1) {
                     if (child.path !== "/support") {
@@ -317,12 +325,12 @@ export default {
 
         subMenuShowCtrl: function (childPath, subChild) {
             if (this.roleNameObj === "Other") {
-                if (this.$store.state.organizationList.length < 1 && subChild.path === "/contactadmin") {
+                if (this.$store.state.organizationList.length < 1 && subChild.path === "/contactadmin" && !subChild.hidden) {
                     return true;
-                } else if (this.$store.state.organizationList.length >= 1 && subChild.path === "/reportissues") {
+                } else if (this.$store.state.organizationList.length >= 1 && subChild.path === "/reportissues" && !subChild.hidden) {
                     return true;
                 }
-                if (subChild.path !== "/contactadmin" && subChild.path !== "/reportissues") {
+                if (subChild.path !== "/contactadmin" && subChild.path !== "/reportissues" && !subChild.hidden) {
                     return true;
                 }
             } else if (this.roleNameObj === "Admin" && subChild.path === "/contactadmin") {
@@ -345,10 +353,7 @@ export default {
             // this.$jQuery(".home-menu").length > 0 && this.$jQuery(".home-menu").mCustomScrollbar('destroy');
             if (this.routerParent !== indexPath[0]) {
                 if (this.menuList[this.routerParent] && this.menuList[this.routerParent].iconCls) {
-                    this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace(
-                        "_p",
-                        "_o"
-                    );
+                    this.menuList[this.routerParent].iconCls = this.menuList[this.routerParent].iconCls.replace("_p", "_o");
                 }
                 this.menuList[indexPath[0]].iconCls = this.menuList[indexPath[0]].iconCls.replace("_o", "_p");
                 this.routerParent = indexPath[0];
@@ -357,9 +362,7 @@ export default {
             this.routerName = index;
         },
         getImgUrl(iconName) {
-            return this.isDark
-                ? require("imgs/darkVersion/" + iconName + ".png")
-                : require("imgs/" + iconName + ".png");
+            return this.isDark ? require("imgs/darkVersion/" + iconName + ".png") : require("imgs/" + iconName + ".png");
         },
         logout: function () {
             this.$confirm(i18n.t("login.hint_logout"), i18n.t("login.logout"), {

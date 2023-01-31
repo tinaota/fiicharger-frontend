@@ -20,11 +20,11 @@ export default new Vuex.Store({
         organizationList:
             localStorage.getItem("fiics-organizationList") !== null
                 ? JSON.parse(localStorage.getItem("fiics-organizationList"))
-                : false,
+                : [],
         selectedOrganization:
             localStorage.getItem("fiics-selectedOrganization") !== null
                 ? JSON.parse(localStorage.getItem("fiics-selectedOrganization"))
-                : false
+                : []
     },
     mutations: {
         [types.LOGIN]: (state, data) => {
@@ -41,6 +41,8 @@ export default new Vuex.Store({
             state.token = null;
             state.lang = "en";
             state.role = "";
+            state.organizationList = [];
+            state.selectedOrganization = [];
         },
         [types.ROLE]: (state, data) => {
             state.role = data;

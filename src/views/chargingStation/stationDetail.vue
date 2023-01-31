@@ -466,70 +466,45 @@ export default {
                         text: i18n.t("chargingStation.timeOpt.7days"),
                         onClick(picker) {
                             // 7 days including today
-                            const startOfDay = moment()
-                                .subtract(6, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(6, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.30days"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(29, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(29, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.90days"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(89, "days")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(89, "days").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.6months"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(6, "months")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(6, "months").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     },
                     {
                         text: i18n.t("chargingStation.timeOpt.1year"),
                         onClick(picker) {
-                            const startOfDay = moment()
-                                .subtract(1, "years")
-                                .startOf("day");
+                            const startOfDay = moment().subtract(1, "years").startOf("day");
                             const endOfDay = moment().endOf("day");
-                            let _dateRange = [
-                                new Date(startOfDay),
-                                new Date(endOfDay)
-                            ];
+                            let _dateRange = [new Date(startOfDay), new Date(endOfDay)];
                             picker.$emit("pick", _dateRange);
                         }
                     }
@@ -556,19 +531,26 @@ export default {
         },
         getPowerType() {
             return (item) => {
-                let convertedValue = this.powerTypeList.filter(
-                    (powerType) => powerType.value === item
-                );
+                let convertedValue = this.powerTypeList.filter((powerType) => powerType.value === item);
                 return convertedValue[0].name;
             };
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.$router.go(-1);
         }
     },
     created() {
         this.curRouteParam = this.$router.currentRoute.params;
         if (!this.curRouteParam.stationId) {
-            let temp = window.sessionStorage.getItem("fiics-stationInfo")
-                ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo"))
-                : null;
+            let temp = window.sessionStorage.getItem("fiics-stationInfo") ? JSON.parse(window.sessionStorage.getItem("fiics-stationInfo")) : null;
             if (!(temp && temp.stationId && temp.stationName)) {
                 this.$router.go(-1);
             } else {
@@ -589,6 +571,9 @@ export default {
         if (this.curRouteParam.stationId) {
             params.stationId = this.curRouteParam.stationId;
         }
+        if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+        }
         this.getChargersList(params);
         this.getConnectorsSummary(this.curRouteParam.stationId);
         this.getStatistics(this.curRouteParam.stationId);
@@ -602,7 +587,7 @@ export default {
         getHour(hour) {
             let formattedHour;
             if (hour > 12) {
-                formattedHour = hour - 12 < 10 ? "0" + (hour - 12) : hour-12;
+                formattedHour = hour - 12 < 10 ? "0" + (hour - 12) : hour - 12;
             } else {
                 formattedHour = hour < 10 ? "0" + hour : hour;
             }
@@ -617,6 +602,9 @@ export default {
         getConnectorsSummary(id) {
             let params = {};
             params.StationId = id;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getConnectorSummary(params)
                 .then((res) => {
                     if (res) {
@@ -704,25 +692,14 @@ export default {
                             stationId: data.id,
                             stationName: data.name,
                             zipCode: data.address.zipCode,
-                            address:
-                                data.address.street +
-                                ", " +
-                                data.address.city +
-                                ", " +
-                                data.address.state +
-                                ", " +
-                                data.address.zipCode,
+                            address: data.address.street + ", " + data.address.city + ", " + data.address.state + ", " + data.address.zipCode,
                             loc: {
                                 lng: data.coordinates.longitude,
                                 lon: data.coordinates.longitude,
                                 lat: data.coordinates.latitude
                             },
                             serviceStartTime:
-                                this.getHour(data?.openHour) +
-                                ":" +
-                                this.getMinutes(data?.openMinute) +
-                                " " +
-                                this.getAnteMeridiem(data?.openHour),
+                                this.getHour(data?.openHour) + ":" + this.getMinutes(data?.openMinute) + " " + this.getAnteMeridiem(data?.openHour),
                             serviceEndTime:
                                 this.getHour(data?.closeHour) +
                                 ":" +
@@ -738,8 +715,7 @@ export default {
                     } else {
                         this.$message({
                             type: "warning",
-                            message:
-                                that.lang === "en" ? data.message : data.reason
+                            message: that.lang === "en" ? data.message : data.reason
                         });
                     }
                     this.isLoading = false;
@@ -771,13 +747,8 @@ export default {
         handleLinkClick(row) {
             if (row) {
                 const data = Object.assign({}, row);
-                window.sessionStorage.setItem(
-                    "fiics-chargePointInfo",
-                    JSON.stringify(data)
-                );
-                this.$router
-                    .push({ name: "ChargePoint Detail", params: data })
-                    .catch();
+                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
+                this.$router.push({ name: "ChargePoint Detail", params: data }).catch();
             }
         },
         openDialog(data) {
@@ -839,6 +810,9 @@ export default {
                 if (this.curRouteParam.stationId) {
                     params.stationId = this.curRouteParam.stationId;
                 }
+                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                    params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+                }
                 this.getChargersList(params);
             }, 2000);
         },
@@ -865,16 +839,10 @@ export default {
         },
         deleteChargers(id, ocppId) {
             const that = this;
-            this.$confirm(
-                i18n.t("general.deleteItem", { item: ocppId }),
-                i18n.t("general.hint"),
-                {
-                    showClose: false,
-                    customClass: `custom ${
-                        this.isDark ? "dark-theme" : "light-theme"
-                    }`
-                }
-            ).then(() => {
+            this.$confirm(i18n.t("general.deleteItem", { item: ocppId }), i18n.t("general.hint"), {
+                showClose: false,
+                customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
+            }).then(() => {
                 $HTTP_deleteChargeBox({ chargePointId: id })
                     .then((data) => {
                         if (data?.status === 204) {
@@ -889,9 +857,14 @@ export default {
                                     this.page = 1;
                                 }
                             }
-                            that.getChargersList({
-                                stationId: this.curRouteParam.stationId
-                            });
+                            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                                that.getChargersList({
+                                    stationId: this.curRouteParam.stationId,
+                                    OperatorIds: that.selectedOrganization.map((organization) => organization.id)
+                                });
+                            } else {
+                                this.getChargersList({ stationId: this.curRouteParam.stationId });
+                            }
                         } else {
                             this.$message({
                                 type: "warning",

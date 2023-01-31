@@ -245,6 +245,17 @@ export default {
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
+        }
+    },
+    watch: {
+        selectedOrganization: function () {
+            this.fetchData();
         }
     },
     mounted() {
@@ -279,24 +290,19 @@ export default {
                 params.Type = this.filter.tariffType;
             }
             if (this.filter.startDateTimeAfter) {
-                params.StartDateTimeAfter = new Date(
-                    this.filter.startDateTimeAfter
-                ).toISOString();
+                params.StartDateTimeAfter = new Date(this.filter.startDateTimeAfter).toISOString();
             }
             if (this.filter.startDateTimeBefore) {
-                params.StartDateTimeBefore = new Date(
-                    this.filter.startDateTimeBefore
-                ).toISOString();
+                params.StartDateTimeBefore = new Date(this.filter.startDateTimeBefore).toISOString();
             }
             if (this.filter.endDateTimeAfter) {
-                params.EndDateTimeAfter = new Date(
-                    this.filter.endDateTimeAfter
-                ).toISOString();
+                params.EndDateTimeAfter = new Date(this.filter.endDateTimeAfter).toISOString();
             }
             if (this.filter.endDateTimeBefore) {
-                params.EndDateTimeBefore = new Date(
-                    this.filter.endDateTimeBefore
-                ).toISOString();
+                params.EndDateTimeBefore = new Date(this.filter.endDateTimeBefore).toISOString();
+            }
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getTarrifs(params)
                 .then((res) => {

@@ -98,11 +98,7 @@
 
 <script>
 import moment from "moment";
-import {
-    $GLOBAL_PAGE_LIMIT,
-    $POWER_TYPE_LIST,
-    $CONNECTOR_TYPE_LIST
-} from "@/utils/global";
+import { $GLOBAL_PAGE_LIMIT, $POWER_TYPE_LIST, $CONNECTOR_TYPE_LIST } from "@/utils/global";
 import { $HTTP_getIdTagsList, $HTTP_getStationList } from "@/api/api";
 export default {
     emits: ["updateDropdown", "updateParams"],
@@ -175,19 +171,9 @@ export default {
                 expiresAfter: null,
                 expiresBefore: null,
                 reservationStatus: "",
-                reservationStatusList: [
-                    "Accepted",
-                    "Faulted",
-                    "Occupied",
-                    "Rejected",
-                    "Unavailable"
-                ],
+                reservationStatusList: ["Accepted", "Faulted", "Occupied", "Rejected", "Unavailable"],
                 chargingProfilePurpose: "",
-                chargingProfilePurposeList: [
-                    "ChargePointMaxProfile",
-                    "TxDefaultProfile",
-                    "TxProfile"
-                ]
+                chargingProfilePurposeList: ["ChargePointMaxProfile", "TxDefaultProfile", "TxProfile"]
             }
         };
     },
@@ -200,10 +186,7 @@ export default {
             }
         },
         addressFilter() {
-            return (
-                this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected === "chargeStationOverallSummary"
-            );
+            return this.filter.dropdownSelected === "chargeStationSummary" || this.filter.dropdownSelected === "chargeStationOverallSummary";
         },
         zipCodeFilter() {
             return (
@@ -233,45 +216,29 @@ export default {
             );
         },
         chargePointNameFilter() {
-            return (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
-            );
+            return this.filter.dropdownSelected === "chargePoints" || this.filter.dropdownSelected === "chargePointUsage";
         },
         nameFilter() {
             return (
                 this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected ===
-                    "chargeStationOverallSummary" ||
+                this.filter.dropdownSelected === "chargeStationOverallSummary" ||
                 this.filter.dropdownSelected === "chargingProfiles"
             );
         },
         stationIdFilter() {
-            return (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
-            );
+            return this.filter.dropdownSelected === "chargePoints" || this.filter.dropdownSelected === "chargePointUsage";
         },
         isBoundToStationFilter() {
-            return (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
-            );
+            return this.filter.dropdownSelected === "chargePoints" || this.filter.dropdownSelected === "chargePointUsage";
         },
         reservationStatusFilter() {
             return this.filter.dropdownSelected === "reservations";
         },
         connectionStatusFilter() {
-            return (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
-            );
+            return this.filter.dropdownSelected === "chargePoints" || this.filter.dropdownSelected === "chargePointUsage";
         },
         stationStatusFilter() {
-            return (
-                this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected === "chargeStationOverallSummary"
-            );
+            return this.filter.dropdownSelected === "chargeStationSummary" || this.filter.dropdownSelected === "chargeStationOverallSummary";
         },
         powerTypeFilter() {
             return (
@@ -282,22 +249,13 @@ export default {
             );
         },
         connectorTypeFilter() {
-            return (
-                this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected === "chargeStationOverallSummary"
-            );
+            return this.filter.dropdownSelected === "chargeStationSummary" || this.filter.dropdownSelected === "chargeStationOverallSummary";
         },
         keyWordFilter() {
-            return (
-                this.filter.dropdownSelected === "chargeStationSummary" ||
-                this.filter.dropdownSelected === "chargeStationOverallSummary"
-            );
+            return this.filter.dropdownSelected === "chargeStationSummary" || this.filter.dropdownSelected === "chargeStationOverallSummary";
         },
         startIdTagFilter() {
-            return (
-                this.filter.dropdownSelected === "transactions" ||
-                this.filter.dropdownSelected === "reservations"
-            );
+            return this.filter.dropdownSelected === "transactions" || this.filter.dropdownSelected === "reservations";
         },
         stopIdTagFilter() {
             return this.filter.dropdownSelected === "transactions";
@@ -354,21 +312,20 @@ export default {
                 this.filter.dropdownSelected === "chargeStationSummary" ||
                 this.filter.dropdownSelected === "chargeStationOverallSummary"
             );
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     watch: {
         filter: function () {
-            // get id tag filters
-            if (this.filter.dropdownSelected === "idTags") {
-                this.getParentIdTagList();
-            }
-            // get station id filters
-            if (
-                this.filter.dropdownSelected === "chargePoints" ||
-                this.filter.dropdownSelected === "chargePointUsage"
-            ) {
-                this.getStationList();
-            }
+            this.getFiltersList();
+        },
+        selectedOrganization: function () {
+            this.getFiltersList();
         }
     },
     mounted() {
@@ -379,6 +336,16 @@ export default {
         this.updateParams();
     },
     methods: {
+        getFiltersList() {
+            // get id tag filters
+            if (this.filter.dropdownSelected === "idTags") {
+                this.getParentIdTagList();
+            }
+            // get station id filters
+            if (this.filter.dropdownSelected === "chargePoints" || this.filter.dropdownSelected === "chargePointUsage") {
+                this.getStationList();
+            }
+        },
         getParentIdTagList() {
             this.filter.parentIdTagIdList.isLoading = true;
             let params = {
@@ -407,6 +374,9 @@ export default {
                 limit: this.limit
             };
             this.filter.stationList.isLoading = true;
+            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
+            }
             $HTTP_getStationList(params)
                 .then((res) => {
                     this.filter.stationList.isLoading = false;
@@ -478,8 +448,7 @@ export default {
                 params.Address = this.filter.address;
             }
             if (this.filter.isBoundToStation) {
-                params.IsBoundToStation =
-                    this.filter.isBoundToStation === "true";
+                params.IsBoundToStation = this.filter.isBoundToStation === "true";
             }
             if (this.filter.chargePointName) {
                 params.Name = this.filter.chargePointName;
@@ -504,18 +473,14 @@ export default {
             }
 
             if (this.filter.connectorId) {
-                if (
-                    this.filter.dropdownSelected === "transactions" ||
-                    this.filter.dropdownSelected === "chargingProfiles"
-                ) {
+                if (this.filter.dropdownSelected === "transactions" || this.filter.dropdownSelected === "chargingProfiles") {
                     params.ConnectorId = this.filter.connectorId;
                 }
             }
             if (this.filter.name) {
                 if (
                     this.filter.dropdownSelected === "chargeStationSummary" ||
-                    this.filter.dropdownSelected ===
-                        "chargeStationOverallSummary" ||
+                    this.filter.dropdownSelected === "chargeStationOverallSummary" ||
                     this.filter.dropdownSelected === "chargingProfiles"
                 ) {
                     params.Name = this.filter.name;
@@ -564,8 +529,7 @@ export default {
             }
             if (this.filter.chargingProfilePurpose) {
                 if (this.filter.dropdownSelected === "chargingProfiles") {
-                    params.ChargingProfilePurpose =
-                        this.filter.chargingProfilePurpose;
+                    params.ChargingProfilePurpose = this.filter.chargingProfilePurpose;
                 }
             }
             if (this.filter.isActive) {
@@ -592,8 +556,7 @@ export default {
                 if (
                     this.filter.dropdownSelected === "chargePointUsage" ||
                     this.filter.dropdownSelected === "chargeStationSummary" ||
-                    this.filter.dropdownSelected ===
-                        "chargeStationOverallSummary"
+                    this.filter.dropdownSelected === "chargeStationOverallSummary"
                 ) {
                     params.Before = this.filter.dateRange[1];
                     params.After = this.filter.dateRange[0];
