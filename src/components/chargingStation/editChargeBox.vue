@@ -50,8 +50,16 @@
                 <div class="form-item">
                     <el-form-item prop="installationDate">
                         <div class="label">{{ $t('general.installationDate') }}</div>
-                        <el-date-picker :disabled="dialog.type===1"  v-model="editDialog.info.installationDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions" :clearable="false">
+                        <el-date-picker :disabled="dialog.type===1" v-model="editDialog.info.installationDate" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions" :clearable="false">
                         </el-date-picker>
+                    </el-form-item>
+                </div>
+                <div class="form-item">
+                    <el-form-item prop="">
+                        <div class="label">{{ $t('menu.organization') }}</div>
+                        <el-select class="select-small info" v-model="dialog.info.selectedOrganizationInForm" filterable clearable>
+                            <el-option v-for="item in organizationList" :label="item.name" :key="item.id" :value="item.id"></el-option>
+                        </el-select>
                     </el-form-item>
                 </div>
             </el-form>
@@ -65,11 +73,11 @@
 
 <script>
 import { setScrollBar } from "@/utils/function";
-import { $HTTP_addChargeBox, $HTTP_updateChargeBox } from "@/api/api";
+import { $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_getOrganizations } from "@/api/api";
 import ic_green_dot from "imgs/ic_green_dot.png";
 import googleMapStyle from "@/assets/js/googleMapStyle_normal";
 import { validateIsEmpty } from "@/utils/validation";
-
+import { $ALL_DATA_COUNT } from "@/utils/global";
 export default {
     props: {
         name: String,
@@ -97,7 +105,8 @@ export default {
                     zipCode: "",
                     chargeType: "",
                     installationDate: "",
-                    ocppId: ""
+                    ocppId: "",
+                    selectedOrganizationInForm: ""
                 }
             },
             mapInfo: {
@@ -110,11 +119,7 @@ export default {
                 },
                 icon: ic_green_dot
             },
-            serviceStatusList: [
-                i18n.t("general.unactive"),
-                i18n.t("general.active"),
-                i18n.t("general.repair")
-            ],
+            serviceStatusList: [i18n.t("general.unactive"), i18n.t("general.active"), i18n.t("general.repair")],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
@@ -126,8 +131,15 @@ export default {
                 "loc.lng": [{ validator: validateIsEmpty }],
                 "loc.lat": [{ validator: validateIsEmpty }],
                 installationDate: [{ validator: validateIsEmpty }]
-            }
+            },
+            userId: this.$store.state.userInfo.id,
+            organizationList: []
         };
+    },
+    computed: {
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
+        }
     },
     watch: {
         show: {
@@ -137,9 +149,10 @@ export default {
                 that.visible = that.show;
                 that.isUpdate = false;
                 if (that.visible) {
+                    // get organizations list
+                    this.getOrganizations();
                     this.editDialog = { ...this.dialog };
-                    that.$jQuery(".right-form").length > 0 &&
-                        this.$jQuery(".right-form").mCustomScrollbar("destroy");
+                    that.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar("destroy");
                     that.$nextTick(() => {
                         setScrollBar(".right-form", this);
                         if (that.mapInfo.initMap) {
@@ -153,10 +166,7 @@ export default {
                         } else if (that.dialog.info.loc.lat) {
                             that.drawMarker();
                             that.map.setCenter(that.dialog.info.loc);
-                        } else if (
-                            !this.dialog.info.loc ||
-                            !this.dialog.info.loc.lat
-                        ) {
+                        } else if (!this.dialog.info.loc || !this.dialog.info.loc.lat) {
                             that.map.setCenter(that.mapInfo.initCenter);
                         }
                     });
@@ -169,21 +179,50 @@ export default {
         this.map && google.maps.event.clearListeners(this.map, "click");
     },
     methods: {
+        getOrganizations() {
+            // set default every time
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
+                this.dialog.info.selectedOrganizationInForm = this.selectedOrganization[0].id;
+            }
+            let params = {
+                page: 1,
+                limit: $ALL_DATA_COUNT
+            };
+            if (this.userRole !== "Admin") {
+                params.UserId = this.userId;
+            }
+            $HTTP_getOrganizations(params)
+                .then((res) => {
+                    if (res?.data?.length > 0) {
+                        this.organizationList = res.data;
+                    } else {
+                        this.organizationList = [];
+                    }
+                })
+                .catch((err) => {
+                    console.log("organizationListErr", err);
+                    this.organizationList = [];
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
         initMap() {
             const that = this;
-            this.map = new google.maps.Map(
-                document.getElementById("map-container"),
-                {
-                    center: this.mapInfo.initCenter,
-                    zoom: this.mapInfo.zoom,
-                    maxZoom: this.maxZoom,
-                    streetViewControl: false, //設定是否呈現右下角街景小人
-                    mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
-                    fullscreenControl: false,
-                    zoomControl: true,
-                    styles: googleMapStyle
-                }
-            );
+            this.map = new google.maps.Map(document.getElementById("map-container"), {
+                center: this.mapInfo.initCenter,
+                zoom: this.mapInfo.zoom,
+                maxZoom: this.maxZoom,
+                streetViewControl: false, //設定是否呈現右下角街景小人
+                mapTypeControl: false, //切換地圖樣式：一般、衛星圖等,
+                fullscreenControl: false,
+                zoomControl: true,
+                styles: googleMapStyle
+            });
             google.maps.event.addListener(this.map, "click", function (event) {
                 if (!that.dialog.type) {
                     that.removeMarker();
@@ -199,9 +238,7 @@ export default {
             currentLocationLogo.src = require("../../../public/imgs/my_location.png");
             locationButton.appendChild(currentLocationLogo);
             locationButton.classList.add("custom-map-control-button");
-            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
-                locationButton
-            );
+            this.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
 
             locationButton.addEventListener("click", () => {
                 if (navigator.geolocation) {
@@ -257,10 +294,7 @@ export default {
         },
         drawMarker() {
             const that = this;
-            var markerImage = new google.maps.MarkerImage(
-                this.mapInfo.icon,
-                new google.maps.Size(36, 55)
-            ); //size  預設位子圖案中間底
+            var markerImage = new google.maps.MarkerImage(this.mapInfo.icon, new google.maps.Size(36, 55)); //size  預設位子圖案中間底
             // new google.maps.Point(0, 0), //origin point
             // new google.maps.Point(18, 55)); // offset point
             let marker = new google.maps.Marker({
@@ -270,21 +304,14 @@ export default {
                 draggable: true
             });
             this.mapInfo.marker = marker;
-            google.maps.event.addListener(
-                this.mapInfo.marker,
-                "dragend",
-                function (event) {
-                    that.editDialog.info.loc = event.latLng.toJSON();
-                    that.editDialog.info.loc.lon = that.dialog.info.loc.lng;
-                }
-            );
+            google.maps.event.addListener(this.mapInfo.marker, "dragend", function (event) {
+                that.editDialog.info.loc = event.latLng.toJSON();
+                that.editDialog.info.loc.lon = that.dialog.info.loc.lng;
+            });
         },
         removeMarker() {
             if (this.mapInfo.marker) {
-                google.maps.event.clearListeners(
-                    this.mapInfo.marker,
-                    "dragend"
-                );
+                google.maps.event.clearListeners(this.mapInfo.marker, "dragend");
                 this.mapInfo.marker.setMap();
                 this.mapInfo.marker = null;
             }
@@ -293,9 +320,7 @@ export default {
             this.$refs.chargeBoxForm.validate((valid) => {
                 if (valid) {
                     const that = this;
-                    var installationDate = new Date(
-                        that.editDialog.info.installationDate
-                    );
+                    var installationDate = new Date(that.editDialog.info.installationDate);
                     let $API,
                         params = {
                             powerType: that.editDialog.info.chargeType,
@@ -310,6 +335,9 @@ export default {
                             ocppId: that.editDialog.info.ocppId
                         },
                         sucMsg = "";
+                    if (this.dialog.info.selectedOrganizationInForm.length > 0) {
+                        params.operatorId = this.dialog.info.selectedOrganizationInForm;
+                    }
                     if (!that.dialog.type) {
                         $API = $HTTP_addChargeBox;
                         sucMsg = i18n.t("general.sucAddMsg");
@@ -361,7 +389,8 @@ export default {
                 zipCode: "",
                 chargeType: "",
                 installationDate: "",
-                ocppId: ""
+                ocppId: "",
+                selectedOrganizationInForm: ""
             };
             this.$nextTick(() => {
                 this.$refs?.chargeBoxForm?.clearValidate("chargeBoxName");

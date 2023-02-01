@@ -202,6 +202,14 @@
                                 <el-input v-model="dialog.info.phone" type="number"></el-input>
                             </el-form-item>
                         </div>
+                        <div class="form-item">
+                            <el-form-item prop="">
+                                <div class="label">{{ $t('menu.organization') }}</div>
+                                <el-select class="select-small info" v-model="dialog.info.selectedOrganizationInForm" filterable clearable>
+                                    <el-option v-for="item in organizationList" :label="item.name" :key="item.id" :value="item.id"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </div>
                     </el-form>
                 </div>
                 <span slot="footer" class="dialog-footer">
@@ -238,7 +246,7 @@
 </template>
 
 <script>
-import { $GLOBAL_CURRENCY, $GLOBAL_PAGE_LIMIT } from "@/utils/global";
+import { $GLOBAL_CURRENCY, $GLOBAL_PAGE_LIMIT, $ALL_DATA_COUNT } from "@/utils/global";
 import {
     $HTTP_getZipCodeListForSelect,
     $HTTP_getStationList,
@@ -247,10 +255,11 @@ import {
     $HTTP_deleteStation,
     $HTTP_getChargeBoxListById,
     $HTTP_addBoundingToStation,
-    $HTTP_getIndividualStationData,
+    $HTTP_getStationListById,
     $HTTP_getAllChargeBoxList,
     $HTTP_removeBoundingToStation,
-    $HTTP_updateStatusStation
+    $HTTP_updateStatusStation,
+    $HTTP_getOrganizations
 } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 import ic_green_dot from "imgs/ic_green_dot.png";
@@ -317,7 +326,8 @@ export default {
                         lng: "",
                         lon: "",
                         lat: ""
-                    }
+                    },
+                    selectedOrganizationInForm: ""
                 },
                 map: null,
                 mapInfo: {
@@ -365,7 +375,9 @@ export default {
                 serviceStartTime: [{ validator: validateIsEmpty }],
                 serviceEndTime: [{ validator: validateIsEmpty }],
                 phone: [{ validator: validateIsEmpty }]
-            }
+            },
+            userId: this.$store.state.userInfo.id,
+            organizationList: []
         };
     },
     computed: {
@@ -439,7 +451,10 @@ export default {
                 this.page = 1;
                 param["page"] = 1;
             }
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getStationList(param)
@@ -488,7 +503,10 @@ export default {
             this.bindDialog.info.originalSelectedChargeBoxNameArr = [];
             this.bindDialog.isLoading = true;
             let allListParams = {};
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 allListParams.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getAllChargeBoxList(allListParams)
@@ -528,15 +546,48 @@ export default {
                 this.$router.push({ name: "Station Detail", params: stationData }).catch();
             }
         },
+        getOrganizations() {
+            // set default every time
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
+                this.dialog.info.selectedOrganizationInForm = this.selectedOrganization[0].id;
+            }
+            let params = {
+                page: 1,
+                limit: $ALL_DATA_COUNT
+            };
+            if (this.userRole !== "Admin") {
+                params.UserId = this.userId;
+            }
+            $HTTP_getOrganizations(params)
+                .then((res) => {
+                    if (res?.data?.length > 0) {
+                        this.organizationList = res.data;
+                    } else {
+                        this.organizationList = [];
+                    }
+                })
+                .catch((err) => {
+                    console.log("organizationListErr", err);
+                    this.organizationList = [];
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
         openDialog(type, data) {
+            // get organizations list
+            this.getOrganizations();
             this.dialog.type = type;
             if (type === 1) {
-                let stationId = data.id;
-                $HTTP_getIndividualStationData(stationId)
+                let params = { chargeStationId: data.id };
+                $HTTP_getStationListById(params)
                     .then((res) => {
                         let serviceStartTime = this.computeTime(res.openHour) + ":" + this.computeTime(res.openMinute);
                         let serviceEndTime = this.computeTime(res.closeHour) + ":" + this.computeTime(res.closeMinute);
-
                         this.dialog.info = {
                             stationId: res.id,
                             stationName: res.name,
@@ -556,7 +607,8 @@ export default {
                             phone: res.phoneNumber,
                             serviceStartTime: serviceStartTime,
                             serviceEndTime: serviceEndTime,
-                            publish: data.publish === "Enabled"
+                            publish: data.publish === "Enabled",
+                            selectedOrganizationInForm: res?.operator?.id
                         };
 
                         this.drawMap();
@@ -774,7 +826,9 @@ export default {
                                 this.page = 1;
                             }
                         }
-                        that.fetchData();
+                        setTimeout(() => {
+                            that.fetchData();
+                        }, 2000);
                     } else {
                         that.$message({
                             type: "warning",
@@ -816,6 +870,10 @@ export default {
                         sucMsg = i18n.t("general.sucUpdateMsg");
                     }
 
+                    if (this.dialog.info.selectedOrganizationInForm.length > 0) {
+                        params.operatorId = this.dialog.info.selectedOrganizationInForm;
+                    }
+
                     that.dialog.isLoading = true;
                     $API(params)
                         .then((data) => {
@@ -848,9 +906,11 @@ export default {
         },
         closeDialog(isEdit) {
             if (isEdit) {
-                this.$jQuery(".right-form.formVertical").length > 0 && this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
+                this.$jQuery(".right-form.formVertical").length > 0 &&
+                    this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
             } else {
-                this.$jQuery(".vertial.formVertical").length > 0 && this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
+                this.$jQuery(".vertial.formVertical").length > 0 &&
+                    this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
             this.dialog.info = {
@@ -870,7 +930,8 @@ export default {
                 },
                 phone: "",
                 serviceStartTime: "",
-                serviceEndTime: ""
+                serviceEndTime: "",
+                selectedOrganizationInForm: ""
             };
 
             this.$nextTick(() => {

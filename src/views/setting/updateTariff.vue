@@ -23,6 +23,16 @@
                             </div>
                         </el-form-item>
                     </div>
+                    <div class="customName">
+                        <el-form-item prop="" class="customNameItem">
+                            <div class="label">{{ $t('menu.organization') }}</div>
+                            <div class="info">
+                                <el-select class="select-small info" v-model="formData.selectedOrganizationInForm" filterable clearable>
+                                    <el-option v-for="item in organizationList" :label="item.name" :key="item.id" :value="item.id"></el-option>
+                                </el-select>
+                            </div>
+                        </el-form-item>
+                    </div>
                     <!-- <div class="priceType">
                         <div class="label">{{ $t('general.priceType') }}</div>
                         <div class="info">
@@ -81,10 +91,11 @@
 </template>
 <script>
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
-import { $HTTP_addTariffs, $HTTP_updateTariffs } from "@/api/api";
+import { $HTTP_addTariffs, $HTTP_updateTariffs, $HTTP_getOrganizations } from "@/api/api";
 import PricingSectionsMain from "@/components/tariff/pricingSectionsMain.vue";
 import { validateIsEmpty } from "@/utils/validation";
 import CurrencyCodes from "currency-codes/data";
+import { $ALL_DATA_COUNT } from "@/utils/global";
 export default {
     components: { PricingSectionsMain },
     props: { show: Boolean, dialogType: String, data: Object },
@@ -108,7 +119,8 @@ export default {
                     excludingVat: 0,
                     includingVat: 0
                 },
-                dateTimeRange: []
+                dateTimeRange: [],
+                selectedOrganizationInForm: ""
             },
             id: "",
             priceTypeList: [
@@ -127,11 +139,10 @@ export default {
             },
             elements: [],
             currencyCodesList: CurrencyCodes.filter(
-                (item) =>
-                    item.code !== "XXX" &&
-                    item.code !== "XTS" &&
-                    item.code !== "USN"
-            )
+                (item) => item.code !== "XXX" && item.code !== "XTS" && item.code !== "USN"
+            ),
+            userId: this.$store.state.userInfo.id,
+            organizationList: []
         };
     },
     computed: {
@@ -146,11 +157,16 @@ export default {
         isIpad() {
             // check if it is ipad or not
             return screen.width <= 1280;
+        },
+        selectedOrganization: function () {
+            return this.$store.state.selectedOrganization;
         }
     },
     mounted() {
         this.visible = this.show;
         this.isUpdate = false;
+        // get organizations
+        this.getOrganizations();
         if (this.dialogType === "create") {
             this.$API = $HTTP_addTariffs;
         } else if (this.dialogType === "edit") {
@@ -166,9 +182,9 @@ export default {
                 maxPrice: {
                     excludingVat: this.data.maxPrice.excludingVat,
                     includingVat: this.data.maxPrice.includingVat
-                }
+                },
+                selectedOrganizationInForm: this.data?.operator?.id
             };
-
             if (this.data.startDateTime && this.data.endDateTime) {
                 this.formData = {
                     ...this.formData,
@@ -186,10 +202,7 @@ export default {
                 let tempPriceComponents = item.priceComponents;
                 let priceComponentArray = [];
                 tempPriceComponents.map((eachPriceComponent) => {
-                    if (
-                        item.restrictions.reservation &&
-                        item.restrictions.reservation === "RESERVATION"
-                    ) {
+                    if (item.restrictions.reservation && item.restrictions.reservation === "RESERVATION") {
                         let tempObj = { ...eachPriceComponent };
                         tempObj.isReservationTypePresent = true;
                         tempObj.reservationType = "RESERVATION";
@@ -215,13 +228,44 @@ export default {
             finalModifiedObject.priceComponents = modifiedData;
             this.elements = [finalModifiedObject];
         }
-        this.$jQuery(".formVertical").length > 0 &&
-            this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+        this.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
         this.$nextTick(() => {
             setScrollBar(".formVertical", this);
         });
     },
     methods: {
+        getOrganizations() {
+            // set default every time
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
+                this.formData.selectedOrganizationInForm = this.selectedOrganization[0].id;
+            }
+            let params = {
+                page: 1,
+                limit: $ALL_DATA_COUNT
+            };
+            if (this.userRole !== "Admin") {
+                params.UserId = this.userId;
+            }
+            $HTTP_getOrganizations(params)
+                .then((res) => {
+                    if (res?.data?.length > 0) {
+                        this.organizationList = res.data;
+                    } else {
+                        this.organizationList = [];
+                    }
+                })
+                .catch((err) => {
+                    console.log("organizationListErr", err);
+                    this.organizationList = [];
+                    this.$message({
+                        type: "warning",
+                        message: i18n.t("error_network")
+                    });
+                });
+        },
         getPricingSectionData(pricingSectionData) {
             let modifiedData = [];
             pricingSectionData.map((item) => {
@@ -243,8 +287,7 @@ export default {
                         reservationArray.push(tempObj);
                     } else if (
                         eachPriceComponent.isReservationTypePresent &&
-                        eachPriceComponent.reservationType ===
-                            "RESERVATION_EXPIRES"
+                        eachPriceComponent.reservationType === "RESERVATION_EXPIRES"
                     ) {
                         let tempObj = { ...eachPriceComponent };
                         delete tempObj["isReservationTypePresent"];
@@ -267,8 +310,7 @@ export default {
                     modifiedData.push(noReservationObject);
                 }
                 if (reservationExpiresArray.length > 0) {
-                    reservationExpiresObject.priceComponents =
-                        reservationExpiresArray;
+                    reservationExpiresObject.priceComponents = reservationExpiresArray;
                     reservationExpiresObject.restrictions = {
                         reservation: "RESERVATION_EXPIRES"
                     };
@@ -307,6 +349,9 @@ export default {
                         ? new Date(this.formData.dateTimeRange[1]).toISOString()
                         : null
             };
+            if (this.formData.selectedOrganizationInForm.length > 0) {
+                params.operatorId = this.formData.selectedOrganizationInForm;
+            }
             // for edit
             if (this.dialogType === "edit") {
                 params.id = this.id;
@@ -368,7 +413,8 @@ export default {
                     excludingVat: 0,
                     includingVat: 0
                 },
-                dateTimeRange: []
+                dateTimeRange: [],
+                selectedOrganizationInForm: ""
             };
             this.id = "";
             this.pricingSectionData = [];
@@ -410,7 +456,8 @@ export default {
             display: flex;
             flex-direction: column;
             margin-bottom: 5px;
-            .label, .info {
+            .label,
+            .info {
                 line-height: initial;
                 display: flex;
                 align-items: center;

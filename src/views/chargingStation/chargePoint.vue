@@ -595,7 +595,9 @@ export default {
                                     this.page = 1;
                                 }
                             }
-                            that.fetchData();
+                            setTimeout(()=>{
+                                that.fetchData();
+                            },2000)
                         } else {
                             this.$message({
                                 type: "warning",
