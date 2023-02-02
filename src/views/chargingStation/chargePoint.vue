@@ -49,20 +49,6 @@
                             <el-tooltip v-if="scope.row.connectionStatus===`Connected`" :content="$t('general.connected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color1"></span>
                             </el-tooltip>
-                            <!-- <el-tooltip v-else-if="scope.row.status===`Maintenance`" :content="$t('general.maintenance')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color3"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.status===`Alert`" :content="$t('general.alert')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color4"></span>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.status===`Unknown`" :content="$t('general.unknown')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status unknown">
-                                    <img :src="unknown">
-                                </span>
-                            </el-tooltip>
-                            <el-tooltip v-else-if="scope.row.status===`ConnectionLost`" :content="$t('general.connectionLost')" placement="bottom" effect="light" popper-class="custom">
-                                <span class="circle-status color7"></span>
-                            </el-tooltip> -->
                             <el-tooltip v-else :content="$t('general.disconnected')" placement="bottom" effect="light" popper-class="custom">
                                 <span class="circle-status color5"></span>
                             </el-tooltip>
@@ -70,7 +56,6 @@
                     </el-table-column>
                     <el-table-column :label="$t('chargingStation.connector')" width="250">
                         <template slot-scope="scope">
-                            <!-- {{scope.row.connectors.length}} -->
                             <Connector :dataObj="scope.row.connectors" :chargerStatus="scope.row.connectionStatus" :isBreak="true"></Connector>
                         </template>
                     </el-table-column>
@@ -91,66 +76,16 @@
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.addChargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.clearChargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.diagnostics') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'getDiagnostics')">{{ $t('general.start') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.updates') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.clearCache') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.softReset') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'softReset')">{{ $t('general.reset') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.hardReset') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'hardReset')">{{ $t('general.reset') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.modifyCharger') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.deleteCharger') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('menu.tariff') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, 'modifyTariff')">{{ $t('general.modify') }}</el-button>
-                                    </el-dropdown-item>
+                                    <ActionItem isDropdown buttonName="general.add" actionName="chargingStation.chargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.clear" actionName="chargingStation.chargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.clear" actionName="chargingStation.clearCache" action="clearCache" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.reset" actionName="chargingStation.softReset" action="softReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.reset" actionName="chargingStation.hardReset" action="hardReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.modify" actionName="chargingStation.modifyCharger" action="edit" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType, action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.delete" actionName="chargingStation.deleteCharger" action="delete" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.modify" actionName="menu.tariff" action="modifyTariff" @runAction="(action, dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -192,6 +127,7 @@ import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
+import ActionItem from "@/components/htmlComponents/actions/actionItem";
 export default {
     components: {
         EditChargeBox,
@@ -202,7 +138,8 @@ export default {
         GetDiagnostics,
         UpdateFirmware,
         AddChargingProfile,
-        ClearChargingProfile
+        ClearChargingProfile,
+        ActionItem
     },
     data() {
         return {
@@ -341,46 +278,45 @@ export default {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
-        runAction(data, action) {
-            if (action === "edit") {
-                this.openDialog(1, data);
-            } else if (action === "delete") {
-                this.deleteCheckBox(data.id, data.ocppId);
-            } else if (action === "getDiagnostics") {
-                this.diagnosticsDialog.visible = true;
-                this.diagnosticsDialog.chargePointId = data.id;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "run") {
-                this.updateDialog.visible = true;
-                this.updateDialog.chargePointId = data.id;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            }
-        },
         openActionDialog(row, type, action = "") {
             if (type === "commonpopup") {
                 this.commonpopup.show = true;
                 this.commonpopup.chargePointId = row;
                 this.commonpopup.action = action;
-            } else if (type === "addChargingProfile") {
-                this.addChargingProfile.data = {
-                    chargePointId: row.id,
-                    name: row.name,
-                    ocppId: row.ocppId
-                };
-                this.addChargingProfile.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (type === "clearChargingProfile") {
-                this.clearChargingProfile.data = {
-                    chargePointId: row.id,
-                    name: row.name
-                };
-                this.clearChargingProfile.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if ((type = "modifyTariff")) {
-                this.chargeBoxTariffDialog.visible = true;
-                this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
-                this.chargeBoxTariffDialog.data.name = row.name;
-                this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
+            } else {
+                if (action === "addChargingProfile") {
+                    this.addChargingProfile.data = {
+                        chargePointId: row.id,
+                        name: row.name,
+                        ocppId: row.ocppId
+                    };
+                    this.addChargingProfile.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "clearChargingProfile") {
+                    this.clearChargingProfile.data = {
+                        chargePointId: row.id,
+                        name: row.name
+                    };
+                    this.clearChargingProfile.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "modifyTariff") {
+                    this.chargeBoxTariffDialog.visible = true;
+                    this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
+                    this.chargeBoxTariffDialog.data.name = row.name;
+                    this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
+                } else if (action === "edit") {
+                    this.openDialog(1, row);
+                } else if (action === "delete") {
+                    this.deleteCheckBox(row.id, row.ocppId);
+                } else if (action === "getDiagnostics") {
+                    this.diagnosticsDialog.visible = true;
+                    this.diagnosticsDialog.chargePointId = row.id;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "updatesFirmware") {
+                    this.updateDialog.visible = true;
+                    this.updateDialog.chargePointId = row.id;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                }
             }
         },
         closeActionDialog(type) {
@@ -452,7 +388,10 @@ export default {
                 this.page = 1;
                 param["page"] = 1;
             }
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             this.getAllChargeBoxList(param);
@@ -466,7 +405,10 @@ export default {
                 page: this.page,
                 limit: $ALL_DATA_COUNT
             };
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             this.stationList.isLoading = true;
@@ -580,40 +522,42 @@ export default {
             this.$confirm(i18n.t("general.deleteItem", { item: ocppId }), i18n.t("general.hint"), {
                 showClose: false,
                 customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
-            }).then(() => {
-                $HTTP_deleteChargeBox({ chargePointId: id })
-                    .then((data) => {
-                        if (data?.status === 204) {
-                            that.$message({
-                                type: "success",
-                                message: i18n.t("general.sucDelMsg")
-                            });
-                            if (this.tableData.length === 1) {
-                                if (this.page >= 2) {
-                                    this.page = this.page - 1;
-                                } else {
-                                    this.page = 1;
+            })
+                .then(() => {
+                    $HTTP_deleteChargeBox({ chargePointId: id })
+                        .then((data) => {
+                            if (data?.status === 204) {
+                                that.$message({
+                                    type: "success",
+                                    message: i18n.t("general.sucDelMsg")
+                                });
+                                if (this.tableData.length === 1) {
+                                    if (this.page >= 2) {
+                                        this.page = this.page - 1;
+                                    } else {
+                                        this.page = 1;
+                                    }
                                 }
+                                setTimeout(() => {
+                                    that.fetchData();
+                                }, 2000);
+                            } else {
+                                this.$message({
+                                    type: "warning",
+                                    message: i18n.t("error_network")
+                                });
                             }
-                            setTimeout(()=>{
-                                that.fetchData();
-                            },2000)
-                        } else {
-                            this.$message({
-                                type: "warning",
-                                message: i18n.t("error_network")
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.status === 500) {
-                            that.$message({
-                                type: "warning",
-                                message: i18n.t("cannotDelete")
-                            });
-                        }
-                    });
-            });
+                        })
+                        .catch((err) => {
+                            if (err.status === 500) {
+                                that.$message({
+                                    type: "warning",
+                                    message: i18n.t("cannotDelete")
+                                });
+                            }
+                        });
+                })
+                .catch(() => {});
         },
         closeDialog(e, dialog) {
             if (dialog === "map") {

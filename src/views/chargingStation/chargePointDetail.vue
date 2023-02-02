@@ -44,8 +44,8 @@
                     <div class="item">
                         <div class="label">{{ $t('chargingStation.elecRate') }}</div>
                         <div class="content">
-                            <a class="view-link" @click="openDialog(null, 'chargeRate', null)">{{tariffNames.toString()}}</a>
-                            <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(chargePointById[0],'modifyTariff', null)"></i>
+                            <a class="view-link" @click="openActionDialog(null, 'chargeRate', null)">{{tariffNames.toString()}}</a>
+                            <i class="fa fa-pencil" aria-hidden="true" @click="openActionDialog(chargePointById[0],'modifyTariff', null)"></i>
                         </div>
                     </div>
                     <div class="item">
@@ -63,80 +63,28 @@
                 </div>
                 <div class="card-8 rank-area">
                     <div class="settings">
-                        <el-button size="medium" type="primary" @click="openDialog(chargePointById[0].id, 'configuration', 'getAllSettings')"> {{ $t('general.settings') }}</el-button>
+                        <el-button size="medium" type="primary" @click="openActionDialog(chargePointById[0].id, 'configuration', 'getAllSettings')"> {{ $t('general.settings') }}</el-button>
                         <el-input class="settingsInput" :placeholder="$t('general.key')" v-model="settingsInput"></el-input>
-                        <el-button size="mini" type="primary" style="padding:8px" @click="openDialog(chargePointById[0].id, 'configuration', null)" :disabled="settingsInput.length===0"> {{ $t('general.get') }}</el-button>
-                        <el-button size="mini" type="primary" style="padding:8px" @click="openDialog(chargePointById[0].id, 'setConfiguration', null)" :disabled="settingsInput.length===0"> {{ $t('general.modify') }}</el-button>
+                        <el-button size="mini" type="primary" style="padding:8px" @click="openActionDialog(chargePointById[0].id, 'configuration', null)" :disabled="settingsInput.length===0"> {{ $t('general.get') }}</el-button>
+                        <el-button size="mini" type="primary" style="padding:8px" @click="openActionDialog(chargePointById[0].id, 'setConfiguration', null)" :disabled="settingsInput.length===0"> {{ $t('general.modify') }}</el-button>
                     </div>
                     <div class="header">
                         <div class="title">{{ $t('general.action') }}</div>
                     </div>
                     <ul class="rank actions">
-                        <li>
-                            <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
-                        </li>
-                        <li>
-                            <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
-                        </li>
-                        <li>
-                            <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'getDiagnostics')">{{ $t('general.start') }}</el-button>
-                        </li>
-                        <li>
-                            <span>{{ $t('chargingStation.updates') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'updatesFirmware')">{{ $t('general.run') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.clearCache') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="openDialog(null,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.softReset') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="openDialog(null,'commonpopup','softReset')">{{ $t('general.reset') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.hardReset') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="openDialog(null,'commonpopup','hardReset')">{{ $t('general.reset') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.remoteTrigger') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'remoteTrigger')">{{ $t('general.run') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.startReservation') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'reserveNow')">{{ $t('general.start') }}</el-button>
-                        </li>
-                        <li>
-                            <span>{{ $t('chargingStation.getLocalAuthListVersion') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( null, 'getLocalAuthListVersion')">{{ $t('general.get') }}</el-button>
-                        </li>
-                        <li>
-                            <span>{{ $t('chargingStation.sendLocalAuthList') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction( null, 'sendLocalAuthList')">{{ $t('general.send') }}</el-button>
-                        </li>
-                        <li>
-                            <span>
-                                {{ $t('chargingStation.uploadFirmware') }}
-                            </span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'uploadFirmware')">{{ $t('general.upload') }}</el-button>
-                        </li>
-
-                        <li>
-                            <span>{{ $t('chargingStation.getCompositeSchedule') }}</span>
-                            <el-button type="primary" class="actionFunction" @click="runAction(null, 'getCompositeSchedule')">{{ $t('general.run') }}</el-button>
-                        </li>
+                        <ActionItem buttonName="general.add" actionName="chargingStation.addChargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.clear" actionName="chargingStation.clearChargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.clear" dialogType="commonpopup" actionName="chargingStation.clearCache" action="clearCache" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.reset" dialogType="commonpopup" actionName="chargingStation.softReset" action="softReset" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.reset" dialogType="commonpopup" actionName="chargingStation.hardReset" action="hardReset" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.run" actionName="chargingStation.remoteTrigger" action="remoteTrigger" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.start" actionName="chargingStation.startReservation" action="reserveNow" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.get" actionName="chargingStation.getLocalAuthListVersion" action="getLocalAuthListVersion" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.send" actionName="chargingStation.sendLocalAuthList" action="sendLocalAuthList" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.upload" actionName="chargingStation.uploadFirmware" action="uploadFirmware" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.run" actionName="chargingStation.getCompositeSchedule" action="getCompositeSchedule" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
                     </ul>
                 </div>
 
@@ -148,7 +96,7 @@
                         <el-table-column prop="id" label="ID" :min-width="2"></el-table-column>
                         <el-table-column :label="$t('chargingStation.lastStatus')" :min-width="8">
                             <template slot-scope="scope">
-                                <el-tooltip v-if="scope.row.status==='Available'" :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
+                                <el-tooltip v-if="scope.row.status==='Available'" :content="'Available'" placement="bottom" effect="light" popper-class="custom">
                                     <span class="circle-status available"></span>
                                 </el-tooltip>
                                 <el-tooltip v-if="scope.row.status==='Preparing'" :content="'Preparing'" placement="bottom" effect="light" popper-class="custom">
@@ -181,7 +129,7 @@
                         <el-table-column :label="$t('general.type')" :min-width="7">
                             <template slot-scope="scope">
                                 {{ scope.row.type? getConnectorType(scope.row.type):''}}
-                                <i class="fa fa-pencil" aria-hidden="true" @click="openDialog(scope.row,'connectorType')"></i>
+                                <i class="fa fa-pencil" aria-hidden="true" @click="openActionDialog(scope.row,'connectorType')"></i>
                             </template>
                         </el-table-column>
                         <!-- <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column> -->
@@ -192,42 +140,12 @@
                                         {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                     </el-button>
                                     <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-play" aria-hidden="true" style="color:#61b061"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'startConnectorTransaction')">{{ $t('general.start') }}</span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-stop" aria-hidden="true" style="color:#fc2e56"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'stopConnectorTransaction')">{{ $t('general.stop') }}</span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-unlock" aria-hidden="true"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'unlockConnector')">{{ $t('general.unlock') }}</span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-toggle-on" aria-hidden="true" style="color:#61b061"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="openDialog(scope.row, 'commonpopup', 'enableConnector')">{{ $t('general.enable') }}</span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-toggle-off" aria-hidden="true" style="color:#fc2e56"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="openDialog(scope.row,'commonpopup', 'disableConnector')">{{ $t('general.disable') }}</span>
-                                        </el-dropdown-item>
-                                        <el-dropdown-item>
-                                            <span>
-                                                <i class="fa fa-ban" aria-hidden="true" style="color:#1E5EFF"></i>
-                                            </span>
-                                            <span class="actionFunction" @click="runAction(scope.row, 'cancelReservation')">{{ $t('chargingStation.cancelReservation') }}</span>
-                                        </el-dropdown-item>
+                                        <ActionItem hasIcon isDropdown buttonName="general.start" className="fa fa-play" color="#61b061" action="startConnectorTransaction" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                        <ActionItem hasIcon isDropdown buttonName="general.stop" className="fa fa-stop" color="#fc2e56" action="stopConnectorTransaction" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                        <ActionItem hasIcon isDropdown buttonName="general.unlock" className="fa fa-unlock" color="" action="unlockConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                        <ActionItem hasIcon isDropdown buttonName="general.enable" className="fa fa-toggle-on" color="#61b061" action="enableConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                        <ActionItem hasIcon isDropdown buttonName="general.disable" className="fa fa-toggle-off" color="#fc2e56" action="disableConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                        <ActionItem hasIcon isDropdown buttonName="chargingStation.cancelReservation" className="fa fa-ban" color="#1E5EFF" action="cancelReservation" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                     </el-dropdown-menu>
                                 </el-dropdown>
                             </template>
@@ -244,61 +162,11 @@
                 </span>
             </div>
             <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.powerConsumption') }} (kWh)</span>
-                    <div class="num_stats" v-if="statistics.data.totalEnergy">
-                        <span class="num">{{ statistics.data.totalEnergy.value }}</span>
-                        <span v-if="statistics.data.totalEnergy.trend!==0" :class="statistics.data.totalEnergy.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.totalEnergy.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.totalEnergy.trend.toFixed(2)) }} %
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                    <div class="num_stats" v-if="statistics.data.transactions">
-                        <span class="num">{{ statistics.data.transactions.value }}</span>
-                        <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.transactions.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.transactions.trend.toFixed(2)) }} %
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.totalUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.users">
-                        <span class="num">{{ statistics.data.users.value }}</span>
-                        <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.users.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.users.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.newUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.newUsers">
-                        <span class="num">{{ statistics.data.newUsers.value }}</span>
-                        <span v-if="statistics.data.newUsers.trend!==0" :class="statistics.data.newUsers.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.newUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs( statistics.data.newUsers.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.repeatUsers">
-                        <span class="num">{{ statistics.data.repeatUsers.value }}</span>
-                        <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.repeatUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.repeatUsers.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
+                <StatisticsCard name="chargingStation.powerConsumption" :data="statistics.data.totalEnergy"></StatisticsCard>
+                <StatisticsCard name="chargingStation.totalTransaction" :data="statistics.data.transactions"></StatisticsCard>
+                <StatisticsCard name="chargingStation.totalUsers" :data="statistics.data.users"></StatisticsCard>
+                <StatisticsCard name="chargingStation.newUsers" :data="statistics.data.newUsers"></StatisticsCard>
+                <StatisticsCard name="chargingStation.repeatedUsers" :data="statistics.data.repeatUsers"></StatisticsCard>
             </div>
 
             <div class=" card-8 tabs-contain">
@@ -378,6 +246,8 @@ import UploadFirmware from "@/components/chargingStation/uploadFirmware";
 import GetCompositeSchedule from "@/components/chargingStation/getCompositeSchedule";
 import TariffPopup from "@/components/popup/tariffPopup";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
+import StatisticsCard from "@/components/htmlComponents/stationDetail/statisticsCard";
+import ActionItem from "@/components/htmlComponents/actions/actionItem";
 export default {
     components: {
         Connector,
@@ -402,7 +272,9 @@ export default {
         UploadFirmware,
         GetCompositeSchedule,
         TariffPopup,
-        ModifyChargeBoxTariff
+        ModifyChargeBoxTariff,
+        StatisticsCard,
+        ActionItem
     },
     data() {
         return {
@@ -642,72 +514,109 @@ export default {
         clearInterval(this.connectorTimer);
     },
     methods: {
-        runAction(data, action) {
-            let params = { ...data };
-            if (action === "reserveNow") {
-                this.reserveNow.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name,
-                    ocppId: this.chargePointById[0].ocppId
-                };
-                this.reserveNow.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "cancelReservation") {
-                this.cancelReservation.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    connectorId: params.id
-                };
-                this.cancelReservation.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "updatesFirmware") {
-                this.updateDialog.visible = true;
-                this.updateDialog.chargePointId = this.chargePointById[0].id;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "remoteTrigger") {
-                this.remoteTrigger.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name,
-                    ocppId: this.chargePointById[0].ocppId
-                };
-                this.remoteTrigger.visible = true;
-            } else if (action === "addChargingProfile") {
-                this.addChargingProfile.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name,
-                    ocppId: this.chargePointById[0].ocppId
-                };
-                this.addChargingProfile.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "clearChargingProfile") {
-                this.clearChargingProfile.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name
-                };
-                this.clearChargingProfile.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "getLocalAuthListVersion") {
-                this.getAuthVersionDialog.chargePointId = this.chargePointById[0].id;
-                this.getAuthVersionDialog.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "sendLocalAuthList") {
-                this.sendAutDialog.chargePointId = this.chargePointById[0].id;
-                this.sendAutDialog.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "getDiagnostics") {
-                this.diagnosticsDialog.visible = true;
-                this.diagnosticsDialog.chargePointId = this.chargePointById[0].id;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
-            } else if (action === "uploadFirmware") {
-                this.uploadFirmwareDialog.visible = true;
-                this.uploadFirmwareDialog.chargePointId = this.chargePointById[0].id;
-            } else if (action === "getCompositeSchedule") {
-                this.getCompositeSchedule.data = {
-                    chargePointId: this.chargePointById[0].id,
-                    name: this.chargePointById[0].name,
-                    ocppId: this.chargePointById[0].ocppId
-                };
-                this.getCompositeSchedule.visible = true;
-                this.$jQuery(".scroll").mCustomScrollbar("disable");
+        openActionDialog(row, type, action = "") {
+            let data = row;
+            if (type === "commonpopup") {
+                this.commonpopup.show = true;
+                this.commonpopup.chargePointId = this.chargePointById[0].id;
+                this.commonpopup.ocppId = this.chargePointById[0].ocppId;
+                this.commonpopup.action = action;
+                if (row) {
+                    this.commonpopup.rowData = row;
+                }
+            } else if (type === "connectorType") {
+                this.changeConnectorType.show = true;
+                this.changeConnectorType.connectorId = row.id;
+                this.changeConnectorType.chargePointId = this.chargePointById[0].id;
+                this.changeConnectorType.connectorType = row.type;
+                this.changeConnectorType.ocppId = this.curRouteParam.ocppId;
+            } else if (type === "configuration") {
+                this.configuration.show = true;
+                this.configuration.chargePointId = this.chargePointById[0].id;
+                if (action === "getAllSettings") {
+                    this.configuration.selectedKey = null;
+                } else {
+                    this.configuration.selectedKey = this.settingsInput;
+                }
+            } else if (type === "setConfiguration") {
+                this.setConfiguration.show = true;
+                this.setConfiguration.chargePointId = this.chargePointById[0].id;
+                this.setConfiguration.selectedKey = this.settingsInput;
+            } else if (type === "chargeRate") {
+                this.chargeRate.visible = true;
+                this.chargeRate.data = this.tariffList;
+            } else if (type === "modifyTariff") {
+                this.chargeBoxTariffDialog.visible = true;
+                this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
+                this.chargeBoxTariffDialog.data.name = row.name;
+                this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
+            } else {
+                let params = { ...data };
+                if (action === "reserveNow") {
+                    this.reserveNow.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        name: this.chargePointById[0].name,
+                        ocppId: this.chargePointById[0].ocppId
+                    };
+                    this.reserveNow.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "cancelReservation") {
+                    this.cancelReservation.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        connectorId: params.id
+                    };
+                    this.cancelReservation.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "updatesFirmware") {
+                    this.updateDialog.visible = true;
+                    this.updateDialog.chargePointId = this.chargePointById[0].id;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "remoteTrigger") {
+                    this.remoteTrigger.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        name: this.chargePointById[0].name,
+                        ocppId: this.chargePointById[0].ocppId
+                    };
+                    this.remoteTrigger.visible = true;
+                } else if (action === "addChargingProfile") {
+                    this.addChargingProfile.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        name: this.chargePointById[0].name,
+                        ocppId: this.chargePointById[0].ocppId
+                    };
+                    this.addChargingProfile.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "clearChargingProfile") {
+                    this.clearChargingProfile.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        name: this.chargePointById[0].name
+                    };
+                    this.clearChargingProfile.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "getLocalAuthListVersion") {
+                    this.getAuthVersionDialog.chargePointId = this.chargePointById[0].id;
+                    this.getAuthVersionDialog.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "sendLocalAuthList") {
+                    this.sendAutDialog.chargePointId = this.chargePointById[0].id;
+                    this.sendAutDialog.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "getDiagnostics") {
+                    this.diagnosticsDialog.visible = true;
+                    this.diagnosticsDialog.chargePointId = this.chargePointById[0].id;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                } else if (action === "uploadFirmware") {
+                    this.uploadFirmwareDialog.visible = true;
+                    this.uploadFirmwareDialog.chargePointId = this.chargePointById[0].id;
+                } else if (action === "getCompositeSchedule") {
+                    this.getCompositeSchedule.data = {
+                        chargePointId: this.chargePointById[0].id,
+                        name: this.chargePointById[0].name,
+                        ocppId: this.chargePointById[0].ocppId
+                    };
+                    this.getCompositeSchedule.visible = true;
+                    this.$jQuery(".scroll").mCustomScrollbar("disable");
+                }
             }
         },
         getChargeBoxTariff(id) {
@@ -762,7 +671,10 @@ export default {
             let params = {};
             params.ocppId = id;
             this.isLoading = true;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getAllChargeBoxList(params)
@@ -799,43 +711,6 @@ export default {
         },
         closeShowPosDialog() {
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-        openDialog(row, type, action = "") {
-            if (type === "connectorType") {
-                this.changeConnectorType.show = true;
-                this.changeConnectorType.connectorId = row.id;
-                this.changeConnectorType.chargePointId = this.chargePointById[0].id;
-                this.changeConnectorType.connectorType = row.type;
-                this.changeConnectorType.ocppId = this.curRouteParam.ocppId;
-            } else if (type === "configuration") {
-                this.configuration.show = true;
-                this.configuration.chargePointId = this.chargePointById[0].id;
-                if (action === "getAllSettings") {
-                    this.configuration.selectedKey = null;
-                } else {
-                    this.configuration.selectedKey = this.settingsInput;
-                }
-            } else if (type === "setConfiguration") {
-                this.setConfiguration.show = true;
-                this.setConfiguration.chargePointId = this.chargePointById[0].id;
-                this.setConfiguration.selectedKey = this.settingsInput;
-            } else if (type === "commonpopup") {
-                this.commonpopup.show = true;
-                this.commonpopup.chargePointId = this.chargePointById[0].id;
-                this.commonpopup.ocppId = this.chargePointById[0].ocppId;
-                this.commonpopup.action = action;
-                if (row) {
-                    this.commonpopup.rowData = row;
-                }
-            } else if (type === "chargeRate") {
-                this.chargeRate.visible = true;
-                this.chargeRate.data = this.tariffList;
-            } else if (type === "modifyTariff") {
-                this.chargeBoxTariffDialog.visible = true;
-                this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
-                this.chargeBoxTariffDialog.data.name = row.name;
-                this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
-            }
         },
         closeDialog(type, data) {
             if (type === "connectorType") {

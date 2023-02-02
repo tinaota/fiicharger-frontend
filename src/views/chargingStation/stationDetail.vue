@@ -12,12 +12,6 @@
                         <div class="title">{{ $t('chargingStation.stationInfo') }} </div>
                     </div>
                     <ul class="rank">
-                        <!-- <li>
-                            <div class="label">
-                                <span class="name">{{ $t('chargingStation.stationID') }}</span>
-                                <span class="num">{{ stationInfo.stationId }}</span>
-                            </div>
-                        </li> -->
                         <li>
                             <div class="label">
                                 <span class="name">{{ $t('chargingStation.stationName') }}</span>
@@ -44,38 +38,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <!-- <div class="card-8 rank-area">
-                    <div class="header">
-                        <div class="title">{{ $t('general.action') }}</div>
-                    </div>
-                    <ul class="rank">
-                        <li>
-                            <div class="label">
-                                <span class="name">{{ $t('chargingStation.updateChargers') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'run')" :disabled="true">{{ $t('general.run') }}</el-button>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="label">
-                                <span class="name">{{ $t('chargingStation.diagnostics') }}</span>
-                                <el-button type="primary" class="actionFunction " @click="runAction( 'start')" :disabled="true">{{ $t('general.start') }}</el-button>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="label">
-                                <span class="name">{{ $t('chargingStation.addChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'add')" :disabled="true">{{ $t('general.add') }}</el-button>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="label">
-                                <span class="name">{{ $t('chargingStation.clearChargingProfile') }}</span>
-                                <el-button type="primary" class="actionFunction" @click="runAction( 'clear')" :disabled="true">{{ $t('general.clear') }}</el-button>
-                            </div>
-                        </li>
-                    </ul>
-                </div> -->
                 <div class="card-8 rank-area">
                     <div class="header">
                         <div class="title">{{ $t('chargingStation.connectors') }}</div>
@@ -83,36 +45,16 @@
                     </div>
                     <ul class="rank">
                         <li>
-                            <div class="connectors">
-                                <el-tooltip :content="$t('general.available')" placement="bottom" effect="light" popper-class="custom">
-                                    <span class="circle-status color1"></span>
-                                </el-tooltip>
-                                <span class="name">{{ connectorSummary.available }} {{ $t('chargingStation.connector').toLowerCase() }} {{ lang==='en'? 's' : '' }} {{ $t('general.available').toLowerCase() }}</span>
-                            </div>
+                            <ConnectorStatus contentName="general.available" className="color1" :value="connectorSummary.available"></ConnectorStatus>
                         </li>
                         <li>
-                            <div class="connectors">
-                                <el-tooltip :content="$t('general.inUse')" placement="bottom" effect="light" popper-class="custom">
-                                    <span class="circle-status color8"></span>
-                                </el-tooltip>
-                                <span class="name">{{ connectorSummary.inUse }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.inUse').toLowerCase() }}</span>
-                            </div>
+                            <ConnectorStatus contentName="general.inUse" className="color8" :value="connectorSummary.inUse"></ConnectorStatus>
                         </li>
                         <li>
-                            <div class="connectors">
-                                <el-tooltip :content="$t('general.unavailable')" placement="bottom" effect="light" popper-class="custom">
-                                    <span class="circle-status color4"></span>
-                                </el-tooltip>
-                                <span class="name">{{ connectorSummary.unavailable }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.unavailable').toLowerCase() }}</span>
-                            </div>
+                            <ConnectorStatus contentName="general.unavailable" className="color4" :value="connectorSummary.unavailable"></ConnectorStatus>
                         </li>
                         <li>
-                            <div class="connectors">
-                                <el-tooltip content="offline" placement="bottom" effect="light" popper-class="custom">
-                                    <span class="circle-status color10"></span>
-                                </el-tooltip>
-                                <span class="name">{{ connectorSummary.offline }} {{ $t('chargingStation.connector').toLowerCase() }}{{ lang==='en'? 's' : '' }} {{ $t('general.offline').toLowerCase() }}</span>
-                            </div>
+                            <ConnectorStatus contentName="general.offline" className="color10" :value="connectorSummary.offline"></ConnectorStatus>
                         </li>
                     </ul>
                 </div>
@@ -125,61 +67,11 @@
                 </span>
             </div>
             <div class="card-alt" v-loading="statistics.isLoading" v-if="statistics.data">
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.powerConsumption') }} (kWh)</span>
-                    <div class="num_stats" v-if="statistics.data.totalEnergy">
-                        <span class="num">{{ statistics.data.totalEnergy.value }}</span>
-                        <span v-if="statistics.data.totalEnergy.trend!==0" :class="statistics.data.totalEnergy.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.totalEnergy.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.totalEnergy.trend.toFixed(2)) }} %
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.totalTransaction') }}</span>
-                    <div class="num_stats" v-if="statistics.data.transactions">
-                        <span class="num">{{ statistics.data.transactions.value }}</span>
-                        <span v-if="statistics.data.transactions.trend!==0" :class="statistics.data.transactions.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.transactions.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.transactions.trend.toFixed(2)) }} %
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.totalUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.users">
-                        <span class="num">{{ statistics.data.users.value }}</span>
-                        <span v-if="statistics.data.users.trend!==0" :class="statistics.data.users.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.users.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.users.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.newUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.newUsers">
-                        <span class="num">{{ statistics.data.newUsers.value }}</span>
-                        <span v-if="statistics.data.newUsers.trend!==0" :class="statistics.data.newUsers.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.newUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs( statistics.data.newUsers.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
-                <div class="card-8 stats_area">
-                    <span class="name">{{ $t('chargingStation.repeatedUsers') }}</span>
-                    <div class="num_stats" v-if="statistics.data.repeatUsers">
-                        <span class="num">{{ statistics.data.repeatUsers.value }}</span>
-                        <span v-if="statistics.data.repeatUsers.trend!==0" :class="statistics.data.repeatUsers.trend>0?'positive num_trend':'negative num_trend'">
-                            <i v-if="statistics.data.repeatUsers.trend>0" class="fa fa-arrow-up" aria-hidden="true"></i>
-                            <i v-else class="fa fa-arrow-down" aria-hidden="true"></i>
-                            {{ Math.abs(statistics.data.repeatUsers.trend.toFixed(2)) }}%
-                        </span>
-                    </div>
-                </div>
+                <StatisticsCard name="chargingStation.powerConsumption" :data="statistics.data.totalEnergy"></StatisticsCard>
+                <StatisticsCard name="chargingStation.totalTransaction" :data="statistics.data.transactions"></StatisticsCard>
+                <StatisticsCard name="chargingStation.totalUsers" :data="statistics.data.users"></StatisticsCard>
+                <StatisticsCard name="chargingStation.newUsers" :data="statistics.data.newUsers"></StatisticsCard>
+                <StatisticsCard name="chargingStation.repeatedUsers" :data="statistics.data.repeatUsers"></StatisticsCard>
             </div>
             <div class="card-8">
                 <div class="header">
@@ -202,7 +94,6 @@
                             <el-link type="primary" underline @click="()=>handleLinkClick(scope.row)">#{{ scope.row.ocppId }}</el-link>
                         </template>
                     </el-table-column>
-
                     <el-table-column prop="name" :label="$t('general.name')" width="320"></el-table-column>
                     <el-table-column :label="$t('chargingStation.power')" width="200">
                         <template slot-scope="scope">
@@ -242,67 +133,16 @@
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" :class="isDark? 'dark-theme actions' : 'actions'">
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row,null, 'addChargingProfile')">{{ $t('general.add') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'clearChargingProfile')">{{ $t('general.clear') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.diagnostics') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,null, 'getDiagnostics')">{{ $t('general.start') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.updates') }}
-
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id, null,'updatesFirmware')">{{ $t('general.run') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.clearCache') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'clearCache')">{{ $t('general.clear') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.softReset') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'softReset')">{{ $t('general.reset') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.hardReset') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row.id,'commonpopup', 'hardReset')">{{ $t('general.reset') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('general.modify') }} {{ $t('chargingStation.charger') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('general.delete') }} {{ $t('chargingStation.charger') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('menu.tariff') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="openActionDialog(scope.row, null,'modifyTariff')">{{ $t('general.modify') }}</el-button>
-                                    </el-dropdown-item>
+                                    <ActionItem isDropdown  buttonName="general.add" actionName="chargingStation.chargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.clear" actionName="chargingStation.chargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.clear" actionName="chargingStation.clearCache" action="clearCache" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.reset" actionName="chargingStation.softReset" action="softReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.reset" actionName="chargingStation.hardReset" action="hardReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.modify" actionName="chargingStation.modifyCharger" action="edit" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType, action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.delete" actionName="chargingStation.deleteCharger" action="delete" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown  buttonName="general.modify" actionName="menu.tariff" action="modifyTariff" @runAction="(action, dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -343,6 +183,9 @@ import ClearChargingProfile from "@/components/chargingStation/clearChargingProf
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
 import { $POWER_TYPE_LIST } from "@/utils/global";
+import ConnectorStatus from "@/components/htmlComponents/stationDetail/connectorStatus";
+import StatisticsCard from "@/components/htmlComponents/stationDetail/statisticsCard";
+import ActionItem from "@/components/htmlComponents/actions/actionItem";
 export default {
     components: {
         ShowPostion,
@@ -355,7 +198,10 @@ export default {
         GetDiagnostics,
         AddChargingProfile,
         ClearChargingProfile,
-        ModifyChargeBoxTariff
+        ModifyChargeBoxTariff,
+        ConnectorStatus,
+        StatisticsCard,
+        ActionItem
     },
     data() {
         return {
@@ -571,7 +417,10 @@ export default {
         if (this.curRouteParam.stationId) {
             params.stationId = this.curRouteParam.stationId;
         }
-        if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+        if (
+            (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+            (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+        ) {
             params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
         }
         this.getChargersList(params);
@@ -602,7 +451,10 @@ export default {
         getConnectorsSummary(id) {
             let params = {};
             params.StationId = id;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getConnectorSummary(params)
@@ -645,13 +497,6 @@ export default {
         closeDialog() {
             this.dialog.isVisible = false;
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-        runAction(data, action) {
-            if (action === "edit") {
-                this.openDialog(data);
-            } else if (action === "delete") {
-                this.deleteChargers(data.id, data.ocppId);
-            }
         },
         getChargersList(params) {
             $HTTP_getAllChargeBoxList(params)
@@ -799,6 +644,10 @@ export default {
                     this.chargeBoxTariffDialog.data.chargeBoxId = row.id;
                     this.chargeBoxTariffDialog.data.name = row.name;
                     this.chargeBoxTariffDialog.data.ocppId = row.ocppId;
+                } else if (action === "edit") {
+                    this.openDialog(row);
+                } else if (action === "delete") {
+                    this.deleteChargers(row.id, row.ocppId);
                 }
             }
             this.setTimerApiCall();
@@ -810,7 +659,10 @@ export default {
                 if (this.curRouteParam.stationId) {
                     params.stationId = this.curRouteParam.stationId;
                 }
-                if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+                if (
+                    (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                    (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+                ) {
                     params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
                 }
                 this.getChargersList(params);
@@ -842,45 +694,50 @@ export default {
             this.$confirm(i18n.t("general.deleteItem", { item: ocppId }), i18n.t("general.hint"), {
                 showClose: false,
                 customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
-            }).then(() => {
-                $HTTP_deleteChargeBox({ chargePointId: id })
-                    .then((data) => {
-                        if (data?.status === 204) {
-                            that.$message({
-                                type: "success",
-                                message: i18n.t("general.sucDelMsg")
-                            });
-                            if (this.tableData.length === 1) {
-                                if (this.page >= 2) {
-                                    this.page = this.page - 1;
-                                } else {
-                                    this.page = 1;
-                                }
-                            }
-                            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
-                                that.getChargersList({
-                                    stationId: this.curRouteParam.stationId,
-                                    OperatorIds: that.selectedOrganization.map((organization) => organization.id)
+            })
+                .then(() => {
+                    $HTTP_deleteChargeBox({ chargePointId: id })
+                        .then((data) => {
+                            if (data?.status === 204) {
+                                that.$message({
+                                    type: "success",
+                                    message: i18n.t("general.sucDelMsg")
                                 });
+                                if (this.tableData.length === 1) {
+                                    if (this.page >= 2) {
+                                        this.page = this.page - 1;
+                                    } else {
+                                        this.page = 1;
+                                    }
+                                }
+                                if (
+                                    (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                                    (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+                                ) {
+                                    that.getChargersList({
+                                        stationId: this.curRouteParam.stationId,
+                                        OperatorIds: that.selectedOrganization.map((organization) => organization.id)
+                                    });
+                                } else {
+                                    this.getChargersList({ stationId: this.curRouteParam.stationId });
+                                }
                             } else {
-                                this.getChargersList({ stationId: this.curRouteParam.stationId });
+                                this.$message({
+                                    type: "warning",
+                                    message: i18n.t("error_network")
+                                });
                             }
-                        } else {
-                            this.$message({
-                                type: "warning",
-                                message: i18n.t("error_network")
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.status === 500) {
-                            that.$message({
-                                type: "warning",
-                                message: i18n.t("cannotDelete")
-                            });
-                        }
-                    });
-            });
+                        })
+                        .catch((err) => {
+                            if (err.status === 500) {
+                                that.$message({
+                                    type: "warning",
+                                    message: i18n.t("cannotDelete")
+                                });
+                            }
+                        });
+                })
+                .catch(() => {});
         },
         getDataUsingDatepicker() {
             this.getStatistics(this.curRouteParam.stationId);
@@ -942,43 +799,7 @@ export default {
     color: #409eff;
     font-weight: 600;
 }
-.stats_area {
-    width: calc(20% - 32px);
-    margin-right: 12px;
-    height: 47px;
-    position: relative;
-    vertical-align: top;
-    padding-bottom: 48px;
-    .name {
-        color: #525e69;
-    }
-}
-.stats_area:nth-child(5) {
-    margin-right: 0px;
-}
-.num_stats {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.25rem;
-    .num {
-        font-weight: bold;
-        margin: 10px 0px 5px;
-    }
-    .num_trend {
-        font-size: 1rem;
-        font-weight: 700;
-        &.positive {
-            color: #33c85a;
-        }
-        &.negative {
-            color: #fc2e56;
-        }
-        /* using webstroke to make the icon thinner  */
-        .fa {
-            -webkit-text-stroke: 1.5px #e6eef8;
-        }
-    }
-}
+
 .card-alt {
     display: flex;
     width: 100%;
@@ -1025,13 +846,6 @@ export default {
                     min-width: 85px;
                 }
             }
-            .connectors {
-                display: flex;
-                text-align: center;
-                justify-content: space-between;
-                flex-direction: row;
-                align-items: center;
-            }
         }
     }
 }
@@ -1069,14 +883,8 @@ export default {
     .card-alt {
         flex-wrap: wrap;
     }
-    .stats_area {
-        flex: 25%;
-    }
     .rank-area {
         width: calc(32.8% - 32px);
-    }
-    .stats_area:nth-child(3) {
-        margin-right: 0px;
     }
 }
 
@@ -1084,17 +892,11 @@ export default {
     .rank-area {
         flex: 100%;
     }
-    .stats_area:nth-child(3) {
-        margin-right: 12px;
-    }
     .rank-area:nth-child(3) {
         margin-right: 12px;
     }
     .graph_time {
         padding: 0px 12px 19px;
-    }
-    .stats_area:nth-child(5) {
-        margin-right: 12px;
     }
 }
 </style>

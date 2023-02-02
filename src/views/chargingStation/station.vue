@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/valid-v-model -->
 <template>
     <div class="scroll">
         <div class="mainctrl">
@@ -28,7 +27,6 @@
                             <el-link type="primary" underline @click="()=>handleRowClick(scope.row)">#{{ scope.row.name }}</el-link>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column prop="name" :label="$t('chargingStation.stationName')" width="3"></el-table-column> -->
                     <el-table-column prop="address.zipCode" :label="$t('general.zipCode')" width="200"></el-table-column>
                     <el-table-column :label="$t('general.address')" width="500">
                         <template slot-scope="scope">
@@ -52,13 +50,6 @@
                             <el-radio v-for="(item, idx) in statusList.data" v-model="scope.row.publish" :label="item" :key="idx" @change="updateStatusStation(scope.row)">{{ $t(`general.${item.toLowerCase()}`) }}</el-radio>
                         </template>
                     </el-table-column>
-                    <!-- <el-table-column v-if="permissionEditAble" :label="$t('general.action')" :width="146">
-                        <template slot-scope="scope">
-                            <el-button class="no-bg bind" @click="openBindDialog(scope.row)"></el-button>
-                            <el-button class="no-bg edit" @click="openDialog(1, scope.row)"></el-button>
-                            <el-button class="no-bg delete" @click="deleteStation(scope.row.id, scope.row.name)"></el-button>
-                        </template>
-                    </el-table-column> -->
                     <el-table-column v-if="permissionEditAble" :label="$t('general.action')" width="146">
                         <template slot-scope="scope">
                             <el-dropdown trigger="click">
@@ -66,48 +57,9 @@
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" :class="isDark ? 'dark-theme actions':'actions'">
-                                    <!-- <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'add')">{{ $t('general.add') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.chargingProfile') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'clear')">{{ $t('general.clear') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.diagnostics') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'start')">{{ $t('general.start') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.updates') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'run')">{{ $t('general.run') }}</el-button>
-                                    </el-dropdown-item> -->
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.bindCharger') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'bind')">{{ $t('general.bind') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.modifyStation') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'edit')">{{ $t('general.modify') }}</el-button>
-                                    </el-dropdown-item>
-                                    <el-dropdown-item>
-                                        <span>
-                                            {{ $t('chargingStation.deleteStation') }}
-                                        </span>
-                                        <el-button type="primary" class="actionFunction" @click="runAction(scope.row, 'delete')">{{ $t('general.delete') }}</el-button>
-                                    </el-dropdown-item>
+                                    <ActionItem isDropdown buttonName="general.bind" actionName="chargingStation.bindCharger" action="bind" @runAction="(action)=>openActionDialog(scope.row,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.modify" actionName="chargingStation.modifyStation" action="edit" @runAction="(action)=>openActionDialog(scope.row,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.delete" actionName="chargingStation.deleteStation" action="delete" @runAction="(action)=>openActionDialog(scope.row,action)"></ActionItem>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -121,10 +73,6 @@
                 <div id="map-container" class="google-map"></div>
                 <div class="right-form formVertical">
                     <el-form ref="stationForm" :rules="rules" :model="dialog.info" style="width:98%">
-                        <!-- <div class="form-item" v-if="dialog.type">
-                            <div class="label">{{ $t('chargingStation.stationID') }}</div>
-                            <el-input v-model="dialog.info.stationId" disabled></el-input>
-                        </div> -->
                         <div class="form-item">
                             <el-form-item prop="stationName">
                                 <div class="label">{{ $t('chargingStation.stationName') }}</div>
@@ -219,10 +167,6 @@
             </el-dialog>
             <el-dialog :title="$t('general.bind')" width="400px" :visible.sync="bindDialog.visible" :show-close="false" v-loading="bindDialog.isLoading" @close="closeDialog(false)">
                 <div class="vertial formVertical">
-                    <!-- <div class="form-item">
-                        <div class="label">{{ $t('chargingStation.stationID') }}</div>
-                        <el-input v-model="bindDialog.info.stationId" disabled></el-input>
-                    </div> -->
                     <div class="form-item">
                         <div class="label">{{ $t('chargingStation.stationName') }}</div>
                         <el-input v-model="bindDialog.info.stationName" disabled></el-input>
@@ -267,9 +211,11 @@ import googleMapStyle from "@/assets/js/googleMapStyle_normal";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import { SELECT_NOW_TAB } from "@/store/types";
 import { validateIsEmpty } from "@/utils/validation";
+import ActionItem from "@/components/htmlComponents/actions/actionItem";
 export default {
     components: {
-        ShowPostion
+        ShowPostion,
+        ActionItem
     },
     data() {
         return {
@@ -402,7 +348,7 @@ export default {
         this.dialog.map && google.maps.event.clearListeners(this.dialog.map, "click");
     },
     methods: {
-        runAction(data, action) {
+        openActionDialog(data, action) {
             if (action === "bind") {
                 this.openBindDialog(data);
             } else if (action === "edit") {
@@ -836,7 +782,7 @@ export default {
                         });
                     }
                 });
-            });
+            }).catch(()=>{})
         },
         updateStation() {
             this.$refs.stationForm.validate((valid) => {
@@ -906,11 +852,9 @@ export default {
         },
         closeDialog(isEdit) {
             if (isEdit) {
-                this.$jQuery(".right-form.formVertical").length > 0 &&
-                    this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
+                this.$jQuery(".right-form.formVertical").length > 0 && this.$jQuery(".right-form.formVertical").mCustomScrollbar("destroy");
             } else {
-                this.$jQuery(".vertial.formVertical").length > 0 &&
-                    this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
+                this.$jQuery(".vertial.formVertical").length > 0 && this.$jQuery(".vertial.formVertical").mCustomScrollbar("destroy");
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
             this.dialog.info = {
@@ -1046,7 +990,6 @@ export default {
         width: 65%;
         height: calc(65vh - 75px);
         display: inline-block;
-        float: left;
     }
     .right-form {
         width: calc(35% - 30px);
@@ -1095,9 +1038,6 @@ ul {
 .actions {
     padding: 10px 0px;
     margin: 0px;
-}
-.actionFunction {
-    margin-left: 10px;
 }
 
 .el-form .form-item {

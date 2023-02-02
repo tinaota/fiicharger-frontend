@@ -59,21 +59,6 @@
                                 <div class="label">{{ $t('chargingStation.elecRate') }}</div>
                                 <div class="msg"><a class="view-link" @click="openDialog('chargeRate', item)">{{item?.tariffNames?.toString()}}</a></div>
                             </div>
-                            <!-- <div class="info-item">
-                                <div class="label">{{ $t('chargingStation.onPeak') }} : </div>
-                                <div class="msg"> {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.onPeak.rate) + '/' + getSymbols(item.chargePrice.onPeak.type):$t('general.free') }}
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="label">{{ $t('chargingStation.offPeak') }} : </div>
-                                <div class="msg"> {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.offPeak.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }}
-                                </div>
-                            </div>
-                            <div class="info-item">
-                                <div class="label">{{ $t('chargingStation.parkingRate') }} : </div>
-                                <div class="msg">
-                                    {{ item.chargePrice? getSymbols(item.chargePrice.currencyType) + getSymbols(item.chargePrice.occupancy.rate) + '/' + getSymbols(item.chargePrice.offPeak.type):$t('general.free') }} </div>
-                            </div> -->
                             <div class="info-item connectorMain" :class="{ 'doubleHeight': item.connectors.length > 3}">
                                 <div class="label">{{ $t('chargingStation.connector') }} : </div>
                                 <div class="msg">
@@ -110,10 +95,6 @@ import ic_revenue from "imgs/ic_revenue.png";
 import ic_info_green_b from "imgs/ic_green_b_dot_number.png";
 import ic_info_green_m from "imgs/ic_green_m_dot_number.png";
 import ic_info_green_s from "imgs/ic_green_s_dot_number.png";
-
-// import ic_info_brown_b from "imgs/ic_brown_b_dot_number.png";
-// import ic_info_brown_m from "imgs/ic_brown_m_dot_number.png";
-// import ic_info_brown_s from "imgs/ic_brown_s_dot_number.png";
 
 import ic_info_red_b from "imgs/ic_red_b_dot_number.png";
 import ic_info_red_m from "imgs/ic_red_m_dot_number.png";
