@@ -43,8 +43,6 @@ let routes = [
                         menuName: "menu.location",
                         hidden: false
                     }
-                    // { path: '/statistics', component: () => import('@/views/info/statistics.vue'), name: 'menu.statistics', hidden: true },
-                    // { path: '/report', component: () => import('@/views/info/report.vue'), name: 'menu.report', hidden: true },
                 ]
             },
             {
@@ -63,8 +61,6 @@ let routes = [
                         menuName: "menu.station",
                         hidden: false
                     },
-                    // { path: '/kiosk', component: () => import('@/views/chargingStation/kiosk.vue'), name: 'menu.kiosk', hidden: true },
-                    // { path: '/kiosk/kioskDetail', component: () => import('@/views/chargingStation/kioskDetail.vue'), name: 'kioskDetail', hidden: true },
                     {
                         path: "/station/stationDetail",
                         component: () => import("@/views/chargingStation/stationDetail.vue"),
@@ -79,9 +75,6 @@ let routes = [
                         menuName: "menu.chargePoint",
                         hidden: false
                     },
-                    // { path: '/chargingSession', component: () => import('@/views/chargingStation/chargingSession.vue'), name: 'menu.chargingSession', hidden: true },
-                    // { path: '/chargePointAlert', component: () => import('@/views/chargingStation/chargePointAlert.vue'), name: 'menu.chargePointAlert', hidden: true },
-                    // { path: '/setting', component: () => import('@/views/chargingStation/setting.vue'), name: 'menu.setting', hidden: false }
                     {
                         path: "/chargePoint/chargePointDetail",
                         component: () => import("@/views/chargingStation/chargePointDetail.vue"),
@@ -138,27 +131,6 @@ let routes = [
                     }
                 ]
             },
-            // {
-            //     path: '/billing',
-            //     iconCls: 'ic_billing_o',
-            //     name: 'menu.billing',
-            //     hasChild: true,
-            //     component: () => import('@/components/data.vue'),
-            //     children: [
-            //         { path: '/billingLog', component: () => import('@/views/billing/billingLog.vue'), name: 'menu.billingLog', hidden: false },
-            //     ]
-            // },
-            // {
-            //     path: '/support',
-            //     iconCls: 'ic_support_o',
-            //     name: 'menu.support',
-            //     hasChild: true,
-            //     component: () => import('@/components/data.vue'),
-            //     children: [
-            //         { path: '/workOrder/summary', component: () => import('@/views/support/workOrderSum.vue'), name: 'menu.workOrder', hidden: false },
-            //         { path: '/workOrder/history', component: () => import('@/views/support/workOrderHistory.vue'), hidden: true }
-            //     ]
-            // },
             {
                 path: "/reportInfo",
                 iconCls: "ic_report_o",
@@ -186,7 +158,6 @@ let routes = [
                 hidden: false,
                 component: () => import("@/components/data.vue"),
                 children: [
-                    // { path: '/account', component: () => import('@/views/account/account1.vue'), name: 'menu.account', hidden: false },
                     {
                         path: "/organization",
                         component: () => import("@/views/account/organization.vue"),
@@ -201,9 +172,6 @@ let routes = [
                         menuName: "general.user",
                         hidden: false
                     }
-                    // { path: '/member', component: () => import('@/views/account/endUser.vue'), name: 'menu.member', hidden: true },
-                    // { path: '/member/memberDetail', component: () => import('@/views/account/accountDetail.vue'), name: 'accountDetail', hidden: true },
-                    // { path: '/member/idTagDetail', component: () => import('@/views/account/idTagDetail.vue'), name: 'idTagDetail', hidden: true },
                 ]
             },
             {
@@ -232,16 +200,6 @@ let routes = [
                     }
                 ]
             }
-            // {
-            //     path: '/setting',
-            //     iconCls: 'ic_setting_o',
-            //     name: 'menu.setting',
-            //     hasChild: true,
-            //     component: () => import('@/components/data.vue'),
-            //     children: [
-            //         { path: '/cars', component: () => import('@/views/setting/cars.vue'), name: 'menu.cars', hidden: false }
-            //     ]
-            // },
         ]
     },
     {
