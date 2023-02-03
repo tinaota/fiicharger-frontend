@@ -1,6 +1,6 @@
 {
-    "app_name": "Sistema de carga Fii",
-    "app_name_short": "Sistema de cargador",
+    "app_name": "Plataforma EVU",
+    "app_name_short": "EVU",
     "error_network": "¡Error de solicitud de red!",
     "error_geolocation": "El navegador no admite la geolocalización o el acceso a la ubicación está denegado",
     "emptyMessage": "No existen datos con los criterios de búsqueda especificados, ¡inténtalo de nuevo con nuevos criterios de filtro!",

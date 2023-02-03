@@ -1,6 +1,6 @@
 {
-    "app_name": "Fii Charger System",
-    "app_name_short": "Fiicharger System",
+    "app_name": "EVU Platform",
+    "app_name_short": "EVU",
     "error_network": "Network request error!",
     "error_geolocation": "Browser doesn't support geolocation or location access is denied",
     "emptyMessage": "No Data exists with specified search criteria, try again with new filter criteria!",

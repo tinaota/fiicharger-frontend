@@ -1,6 +1,6 @@
 {
-    "app_name": "Fii充电站管理系统",
-    "app_name_short": "Fiicharger系统",
+    "app_name": "EVU平台",
+    "app_name_short": "EVU",
     "error_network": "网路异常!",
     "error_geolocation": "浏览器不支持地理定位或位置访问被拒绝",
     "emptyMessage": "不存在指定搜索条件的数据，请使用新的过滤条件重试！",

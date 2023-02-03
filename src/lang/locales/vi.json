@@ -1,6 +1,6 @@
 {
-    "app_name": "Hệ thống quản lý trạm sạc điwwjn Fii",
-    "app_name_short": "Hệ thống Fiicharger",
+    "app_name": "Nền tảng EVU",
+    "app_name_short": "EVU",
     "error_network": "Lỗi mạng",
     "error_geolocation": "Trình duyệt không hỗ trợ định vị địa lý hoặc quyền truy cập vị trí bị từ chối",
     "emptyMessage": "Không có Dữ liệu nào tồn tại với tiêu chí tìm kiếm được chỉ định, hãy thử lại với tiêu chí lọc mới!",
