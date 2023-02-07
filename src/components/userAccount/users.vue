@@ -274,6 +274,28 @@ export default {
             }
             return final_url;
         },
+        getOperatorList(param) {
+            $HTTP_getOperatorList(param)
+                .then((res) => {
+                    this.isLoading = false;
+                    if (res?.data?.length > 0) {
+                        this.tableData = res.data;
+                        this.total = res.metadata.totalRows;
+                    } else {
+                        this.tableData = [];
+                        this.total = 0;
+                        if (this.filter.roles || this.filter.tmpEmail || this.filter.tmpContactPersion) {
+                            this.$message({ type: "warning", message: i18n.t("emptyMessage") });
+                        }
+                    }
+                })
+                .catch((err) => {
+                    this.tableData = [];
+                    this.total = 0;
+                    console.log(err);
+                    this.$message({ type: "warning", message: err?.data });
+                });
+        },
         fetchData(type) {
             let param = {
                 page: this.page,
@@ -296,45 +318,32 @@ export default {
             param.name = this.filter.personSearch;
             param.role = this.filter.roles;
             let operatorUserParam = {};
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 operatorUserParam.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
-
-            $HTTP_getOperatorUsersList(operatorUserParam)
-                .then((res) => {
-                    let userIds;
-                    if (res?.data?.length > 0) {
-                        userIds = res.data.map((item) => item.id);
-                        param.Ids = userIds;
-                        $HTTP_getOperatorList(param)
-                            .then((res) => {
-                                this.isLoading = false;
-                                if (res?.data?.length > 0) {
-                                    this.tableData = res.data;
-                                    this.total = res.metadata.totalRows;
-                                } else {
-                                    this.tableData = [];
-                                    this.total = 0;
-                                    if (this.filter.roles || this.filter.tmpEmail || this.filter.tmpContactPersion) {
-                                        this.$message({ type: "warning", message: i18n.t("emptyMessage") });
-                                    }
-                                }
-                            })
-                            .catch((err) => {
-                                this.tableData = [];
-                                this.total = 0;
-                                console.log(err);
-                                this.$message({ type: "warning", message: err?.data });
-                            });
-                    } else {
-                        this.tableData = [];
-                        this.total = 0;
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
-                });
+            if (this.selectedOrganization[0]?.name === "All") {
+                this.getOperatorList(param);
+            } else {
+                $HTTP_getOperatorUsersList(operatorUserParam)
+                    .then((res) => {
+                        let userIds;
+                        if (res?.data?.length > 0) {
+                            userIds = res.data.map((item) => item.id);
+                            param.Ids = userIds;
+                            this.getOperatorList(param);
+                        } else {
+                            this.tableData = [];
+                            this.total = 0;
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        this.$message({ type: "warning", message: i18n.t("error_network") });
+                    });
+            }
         },
         changePage(page) {
             this.page = page;
