@@ -816,7 +816,7 @@ export default {
                         sucMsg = i18n.t("general.sucUpdateMsg");
                     }
 
-                    if (this.dialog.info.selectedOrganizationInForm.length > 0) {
+                    if (this.dialog.info?.selectedOrganizationInForm?.length > 0) {
                         params.operatorId = this.dialog.info.selectedOrganizationInForm;
                     }
 

@@ -57,7 +57,7 @@
                 <div class="form-item">
                     <el-form-item prop="">
                         <div class="label">{{ $t('menu.organization') }}</div>
-                        <el-select class="select-small info" v-model="dialog.info.selectedOrganizationInForm" filterable clearable>
+                        <el-select class="select-small info" v-model="editDialog.info.selectedOrganizationInForm" filterable clearable>
                             <el-option v-for="item in organizationList" :label="item.name" :key="item.id" :value="item.id"></el-option>
                         </el-select>
                     </el-form-item>
@@ -139,6 +139,9 @@ export default {
     computed: {
         selectedOrganization: function () {
             return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     watch: {
@@ -150,8 +153,16 @@ export default {
                 that.isUpdate = false;
                 if (that.visible) {
                     // get organizations list
+                    if (this.dialog.type !== 0) {
+                        this.editDialog = {
+                            ...this.dialog,
+                            info: { ...this.dialog.info, selectedOrganizationInForm: this.dialog?.info?.operator?.id }
+                        };
+                    } else {
+                        this.editDialog = { ...this.dialog };
+                    }
                     this.getOrganizations();
-                    this.editDialog = { ...this.dialog };
+
                     that.$jQuery(".right-form").length > 0 && this.$jQuery(".right-form").mCustomScrollbar("destroy");
                     that.$nextTick(() => {
                         setScrollBar(".right-form", this);
@@ -185,7 +196,7 @@ export default {
                 (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
                 (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
             ) {
-                this.dialog.info.selectedOrganizationInForm = this.selectedOrganization[0].id;
+                this.editDialog.info.selectedOrganizationInForm = this.selectedOrganization[0].id;
             }
             let params = {
                 page: 1,
@@ -335,8 +346,8 @@ export default {
                             ocppId: that.editDialog.info.ocppId
                         },
                         sucMsg = "";
-                    if (this.dialog.info.selectedOrganizationInForm.length > 0) {
-                        params.operatorId = this.dialog.info.selectedOrganizationInForm;
+                    if (this.editDialog.info?.selectedOrganizationInForm?.length > 0) {
+                        params.operatorId = this.editDialog.info.selectedOrganizationInForm;
                     }
                     if (!that.dialog.type) {
                         $API = $HTTP_addChargeBox;

@@ -138,9 +138,7 @@ export default {
                 currency: [{ validator: validateIsEmpty }]
             },
             elements: [],
-            currencyCodesList: CurrencyCodes.filter(
-                (item) => item.code !== "XXX" && item.code !== "XTS" && item.code !== "USN"
-            ),
+            currencyCodesList: CurrencyCodes.filter((item) => item.code !== "XXX" && item.code !== "XTS" && item.code !== "USN"),
             userId: this.$store.state.userInfo.id,
             organizationList: []
         };
@@ -160,6 +158,9 @@ export default {
         },
         selectedOrganization: function () {
             return this.$store.state.selectedOrganization;
+        },
+        userRole: function () {
+            return this.$store.state.role;
         }
     },
     mounted() {
@@ -188,10 +189,7 @@ export default {
             if (this.data.startDateTime && this.data.endDateTime) {
                 this.formData = {
                     ...this.formData,
-                    dateTimeRange: [
-                        transformUtcToLocTime(this.data.startDateTime),
-                        transformUtcToLocTime(this.data.endDateTime)
-                    ]
+                    dateTimeRange: [transformUtcToLocTime(this.data.startDateTime), transformUtcToLocTime(this.data.endDateTime)]
                 };
             }
             this.id = this.data.id;
@@ -207,10 +205,7 @@ export default {
                         tempObj.isReservationTypePresent = true;
                         tempObj.reservationType = "RESERVATION";
                         priceComponentArray.push(tempObj);
-                    } else if (
-                        item.restrictions.reservation &&
-                        item.restrictions.reservation === "RESERVATION_EXPIRES"
-                    ) {
+                    } else if (item.restrictions.reservation && item.restrictions.reservation === "RESERVATION_EXPIRES") {
                         let tempObj = { ...eachPriceComponent };
                         tempObj.isReservationTypePresent = true;
                         tempObj.reservationType = "RESERVATION_EXPIRES";
@@ -276,19 +271,13 @@ export default {
                 let reservationArray = [];
 
                 tempPriceComponents.map((eachPriceComponent) => {
-                    if (
-                        eachPriceComponent.isReservationTypePresent &&
-                        eachPriceComponent.reservationType === "RESERVATION"
-                    ) {
+                    if (eachPriceComponent.isReservationTypePresent && eachPriceComponent.reservationType === "RESERVATION") {
                         // remove after getting types and dont mutate an obj
                         let tempObj = { ...eachPriceComponent };
                         delete tempObj["isReservationTypePresent"];
                         delete tempObj["reservationType"];
                         reservationArray.push(tempObj);
-                    } else if (
-                        eachPriceComponent.isReservationTypePresent &&
-                        eachPriceComponent.reservationType === "RESERVATION_EXPIRES"
-                    ) {
+                    } else if (eachPriceComponent.isReservationTypePresent && eachPriceComponent.reservationType === "RESERVATION_EXPIRES") {
                         let tempObj = { ...eachPriceComponent };
                         delete tempObj["isReservationTypePresent"];
                         delete tempObj["reservationType"];
@@ -340,14 +329,8 @@ export default {
                     excludingVat: this.formData.maxPrice.excludingVat,
                     includingVat: this.formData.maxPrice.includingVat
                 },
-                startDateTime:
-                    this.formData?.dateTimeRange?.length > 1
-                        ? new Date(this.formData.dateTimeRange[0]).toISOString()
-                        : null,
-                endDateTime:
-                    this.formData?.dateTimeRange?.length > 1
-                        ? new Date(this.formData.dateTimeRange[1]).toISOString()
-                        : null
+                startDateTime: this.formData?.dateTimeRange?.length > 1 ? new Date(this.formData.dateTimeRange[0]).toISOString() : null,
+                endDateTime: this.formData?.dateTimeRange?.length > 1 ? new Date(this.formData.dateTimeRange[1]).toISOString() : null
             };
             if (this.formData.selectedOrganizationInForm.length > 0) {
                 params.operatorId = this.formData.selectedOrganizationInForm;
@@ -363,10 +346,7 @@ export default {
                             if (res) {
                                 this.$message({
                                     type: "success",
-                                    message:
-                                        this.dialogType === "create"
-                                            ? i18n.t("general.sucAddMsg")
-                                            : i18n.t("general.sucUpdateMsg")
+                                    message: this.dialogType === "create" ? i18n.t("general.sucAddMsg") : i18n.t("general.sucUpdateMsg")
                                 });
                                 this.isUpdate = true;
                                 this.visible = false;

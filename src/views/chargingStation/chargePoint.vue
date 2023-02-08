@@ -497,7 +497,8 @@ export default {
                     chargeBoxName: data.name,
                     id: data.id,
                     power: data.powerKw,
-                    ocppId: data.ocppId
+                    ocppId: data.ocppId,
+                    operator: data.operator
                 };
             } else {
                 this.dialog.info = {
@@ -511,7 +512,9 @@ export default {
                     installationDate: "",
                     chargeBoxName: "",
                     id: "",
-                    power: 0
+                    power: 0,
+                    operator: null,
+                    selectedOrganizationInForm: ""
                 };
             }
             this.dialogVisible = true;
