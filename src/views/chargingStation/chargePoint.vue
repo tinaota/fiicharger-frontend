@@ -493,7 +493,7 @@ export default {
                         lat: data.coordinates.latitude
                     },
                     chargeType: data.powerType,
-                    installationDate: data.installed,
+                    installationDate: new Date(data.installed),
                     chargeBoxName: data.name,
                     id: data.id,
                     power: data.powerKw,

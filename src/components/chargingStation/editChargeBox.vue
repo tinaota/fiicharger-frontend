@@ -380,6 +380,9 @@ export default {
                                 type: "warning",
                                 message: i18n.t("error_network")
                             });
+                            that.isUpdate = true;
+                            that.visible = false;
+                            that.isLoading =false
                         });
                 } else {
                     console.log("error submit!!");
