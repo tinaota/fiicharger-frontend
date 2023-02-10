@@ -3,13 +3,13 @@
         <el-divider></el-divider>
         <div class="label" v-if="chargingProfileKind==='Recurring'">{{ $t('chargingProfile.daily') }}</div>
         <div class="time" v-if="tableSize>0 && chargingProfileKind==='Recurring'"><span>00:00 AM</span><span style="float:right">11:59 PM</span></div>
-        <BarTimeChart class="barChart" v-if="tableSize>0 && chargingProfileKind==='Recurring'" :id="'profilePeriods'" :chartData="profilePeriods.data"></BarTimeChart>
+        <BarTimeChart class="barChart" v-if="tableSize>0 && chargingProfileKind==='Recurring'" :id="'profilePeriods'" :chartData="profilePeriods.data" :chargingRateUnit="chargingRateUnit"></BarTimeChart>
         <!-- if is not recurring, allow for one value for limit and number phases -->
         <el-button v-if="editable && ((tableSize<1 && chargingProfileKind!=='Recurring')|| chargingProfileKind==='Recurring')" class="right add" icon="el-icon-plus" style="color: #1e5eff;font-weight: bold;" :disabled="startSchedule===''" @click="openPeriodDialog('create')"></el-button>
         <el-table v-if="tableSize>0" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
             <el-table-column prop="limit" :label="$t('chargingProfile.limit')">
                 <template slot-scope="scope">
-                    {{scope.row.limit ? scope.row.limit + 'W' :''}}
+                    {{scope.row.limit ? scope.row.limit + `${chargingRateUnit}` :''}}
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column> -->
@@ -51,7 +51,8 @@ export default {
         isCreate: Boolean,
         startSchedule: String,
         chargingSchedulePeriods: Array,
-        chargingProfileKind: String
+        chargingProfileKind: String,
+        chargingRateUnit: String
     },
     data() {
         return {

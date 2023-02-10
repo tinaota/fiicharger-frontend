@@ -8,6 +8,7 @@ export default {
     name: "BarChart",
     props: {
         id: String,
+        chargingRateUnit: String,
         chartData: {
             type: Array,
             default: function () {
@@ -33,6 +34,9 @@ export default {
                 this.prePareData();
                 this.draw();
             }
+        },
+        chargingRateUnit() {
+            this.prePareData();
         }
     },
     mounted() {
@@ -53,6 +57,7 @@ export default {
             that.chartData.forEach((item, idx) => {
                 const length = that.chartData.length;
                 item.endTime = item.endTime.substring(0, 5) + "PM";
+                item.chargingRateUnit = this.chargingRateUnit;
                 let info = {
                     name: item.id,
                     type: "bar",
@@ -103,7 +108,7 @@ export default {
                                       <b>${params.seriesName}</b><br/>
                                       <div>${i18n.t("general.time")}: ${data.time + " ~ " + data.endTime} <div>
                                       <div>${i18n.t("chargingProfile.numberPhases")}: ${data.numberPhases} <div>
-                                      <div>${i18n.t("chargingProfile.limit")}: ${data.limit} W<div>
+                                      <div>${i18n.t("chargingProfile.limit")}: ${data.limit} ${data.chargingRateUnit}<div>
                                       `;
                         return result;
                     },

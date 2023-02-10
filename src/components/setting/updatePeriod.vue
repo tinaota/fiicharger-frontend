@@ -12,7 +12,7 @@
                 <div class="form-item">
                     <el-form-item prop="limit">
                         <div class="label">{{ $t('chargingProfile.limit') }}</div>
-                        <el-input-number v-model="dialog.limit" :precision="1" :step="1" :min="1" controls-position="right"></el-input-number>
+                        <el-input-number v-model="dialog.limit" :precision="1" :step="1" :min="0" controls-position="right"></el-input-number>
                     </el-form-item>
                 </div>
                 <div class="form-item">

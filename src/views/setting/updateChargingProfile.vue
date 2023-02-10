@@ -33,7 +33,7 @@
                 <div class="form-item">
                     <el-form-item prop="minChargingRate">
                         <div class="label">{{ $t('chargingStation.elecRateMin') }}</div>
-                            <el-input-number v-model="dialog.minChargingRate" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
+                            <el-input-number v-model="dialog.minChargingRate" :precision="1" :step="1" :min="0" controls-position="right"></el-input-number>
                     </el-form-item>
                 </div>
                 <div class="form-item">
@@ -60,6 +60,7 @@
                 :editable="true"
                 :isCreate="(data.type === 'create')"
                 :chargingProfileKind="dialog.chargingProfileKind"
+                :chargingRateUnit="dialog.chargingRateUnit"
                 @handleData="handlePeriodData">
             </GetPeriod>
         </div>
