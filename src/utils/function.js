@@ -33,6 +33,14 @@ export const transformUtcToLocTimeForGraphs = function (date, format = "lll") {
     return moment(utcDate).local().format(format);
 };
 
+export const convertSecondsToTime = (timeInSeconds, format) => {
+    const millisecond = timeInSeconds * 1000;
+    const hours = moment.duration(millisecond).hours();
+    const minutes = moment.duration(millisecond).minutes();
+    const seconds = moment.duration(millisecond).seconds();
+    return moment().set({ hour: hours, minute: minutes, second: seconds }).format(format);
+};
+
 export const transformSecondsToReadableForm = function (timeInSeconds) {
     timeInSeconds = Number(timeInSeconds);
     var days = Math.floor(timeInSeconds / (3600 * 24));

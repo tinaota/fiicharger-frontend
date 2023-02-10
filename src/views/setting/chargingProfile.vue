@@ -20,7 +20,11 @@
                                         </template>
                                     </el-table-column>
                                     <el-table-column prop="numberPhases" :label="$t('chargingProfile.numberPhases')" width="250"></el-table-column>
-                                    <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" width="250"></el-table-column>
+                                    <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" width="250">
+                                        <template slot-scope="scope">
+                                            {{getTimeFromSeconds(scope.row.startPeriod,'hh:mm A')}}
+                                        </template>
+                                    </el-table-column>
                                 </el-table-column>
                             </el-table>
                         </template>
@@ -50,13 +54,7 @@
                 <el-pagination background layout="prev, pager, next" :total="total" :pager-count="5" :page-size="limit" :current-page.sync="page" @current-change="changePage">
                 </el-pagination>
             </div>
-            <UpdateChargingProfile
-                :show="updateDialog.visible"
-                :data="updateDialog.data"
-                :profileKindList="profileKindList"
-                :profilePurposeList="profilePurposeList"
-                :chargingRateUnitList="chargingRateUnitList"
-                @close="(isUpdate) => closeDialog(isUpdate, 'update')">
+            <UpdateChargingProfile :show="updateDialog.visible" :data="updateDialog.data" :profileKindList="profileKindList" :profilePurposeList="profilePurposeList" :chargingRateUnitList="chargingRateUnitList" @close="(isUpdate) => closeDialog(isUpdate, 'update')">
             </UpdateChargingProfile>
             <DeleteChargingProfile :show="deleteDialog.visible" :data="deleteDialog.data" @close="(isUpdate) => closeDialog(isUpdate, 'delete')"></DeleteChargingProfile>
         </div>
@@ -64,12 +62,11 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, convertSecondsToTime } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { $HTTP_getChargingProfilesTemplate } from "@/api/api";
 import UpdateChargingProfile from "@/views/setting/updateChargingProfile";
 import DeleteChargingProfile from "@/views/setting/deleteChargingProfile";
-import moment from "moment";
 export default {
     components: {
         UpdateChargingProfile,
@@ -79,7 +76,7 @@ export default {
         return {
             permissionEditAble: this.$store.state.permissionEditable,
             filter: {
-                profilePurpose: "",
+                profilePurpose: ""
             },
             tableData: [],
             isLoading: false,
@@ -88,37 +85,34 @@ export default {
             total: 1,
             profileKindList: {
                 isLoading: false,
-                data: ['Absolute','Recurring', 'Relative']
+                data: ["Absolute", "Recurring", "Relative"]
             },
             profilePurposeList: {
                 isLoading: false,
-                data: ['ChargePointMaxProfile','TxDefaultProfile', 'TxProfile']
+                data: ["ChargePointMaxProfile", "TxDefaultProfile", "TxProfile"]
             },
-            chargingRateUnitList:{
-                data: [{name: 'Watt', label: "W"}, {name: "Ampere", label:"A"}]
+            chargingRateUnitList: {
+                data: [
+                    { name: "Watt", label: "W" },
+                    { name: "Ampere", label: "A" }
+                ]
             },
             updateDialog: {
                 visible: false,
-                data: {},
+                data: {}
             },
             deleteDialog: {
                 visible: false,
-                data: {},
-            },
+                data: {}
+            }
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item, "lll");
         },
-        getTime() {
-            return (second, format) => {
-                const millisecond = second * 1000;
-                const hours = moment.duration(millisecond).hours();
-                const minutes =  moment.duration(millisecond).minutes();
-                const seconds =  moment.duration(millisecond).seconds();
-                return moment().set({ "hour": hours, "minute": minutes, "second": seconds }).format(format)
-            };
+        getTimeFromSeconds() {
+            return (seconds, format) => convertSecondsToTime(seconds, format);
         }
     },
     mounted() {
@@ -130,7 +124,7 @@ export default {
         fetchData(type) {
             let params = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
 
             if (type === "filter") {
@@ -142,7 +136,7 @@ export default {
                 .then((res) => {
                     this.isLoading = false;
                     if (res?.data?.length > 0) {
-                        this.tableData = res.data
+                        this.tableData = res.data;
                         this.total = res.metadata.totalRows;
                     } else {
                         this.tableData = [];
@@ -168,14 +162,14 @@ export default {
         openDialog(type, data) {
             if (type === "delete") {
                 this.deleteDialog.visible = true;
-                this.deleteDialog.data = {...data};
+                this.deleteDialog.data = { ...data };
             } else {
                 this.updateDialog.data = {
                     type: type
                 };
                 this.updateDialog.visible = true;
                 if (type === "edit") {
-                    this.updateDialog.data.info = {...data};
+                    this.updateDialog.data.info = { ...data };
                 }
             }
             this.$jQuery(".scroll").mCustomScrollbar("disable");
@@ -184,7 +178,7 @@ export default {
             if (dialog === "delete") {
                 this.deleteDialog.visible = false;
                 // if final item is deleted take to previous page if present
-                if (isUpdate && (this.tableData.length -1) % $GLOBAL_PAGE_LIMIT === 0) {
+                if (isUpdate && (this.tableData.length - 1) % $GLOBAL_PAGE_LIMIT === 0) {
                     if (this.page >= 2) {
                         this.page = this.page - 1;
                     }
@@ -197,8 +191,8 @@ export default {
                 this.fetchData();
             }
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

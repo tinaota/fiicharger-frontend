@@ -35,7 +35,7 @@
 import BarTimeChart from "@/components/charts/barTimeChart";
 import UpdatePeriod from "@/components/setting/updatePeriod";
 import DeletePeriod from "@/components/setting/deletePeriod";
-import moment from "moment";
+import { convertSecondsToTime } from "@/utils/function";
 const DEFAULT_MAXSECONDS = 24 * 60 * 60;
 export default {
     components: {
@@ -70,18 +70,12 @@ export default {
         };
     },
     computed: {
-        getTime() {
-            return (second, format) => {
-                const millisecond = second * 1000;
-                const hours = moment.duration(millisecond).hours();
-                const minutes = moment.duration(millisecond).minutes();
-                const seconds = moment.duration(millisecond).seconds();
-                return moment().set({ hour: hours, minute: minutes, second: seconds }).format(format);
-            };
+        getTimeFromSeconds() {
+            return (seconds, format) => convertSecondsToTime(seconds, format);
         },
         tableSize() {
             return this.profilePeriods.data.length;
-        },
+        }
     },
     watch: {
         show: {
@@ -121,13 +115,13 @@ export default {
                 });
 
                 this.profilePeriods.data = res.map((item, idx) => {
-                    item.time = this.getTime(item.startPeriod, "hh:mm A");
+                    item.time = this.getTimeFromSeconds(item.startPeriod, "hh:mm A");
                     if (periodLength === idx + 1) {
                         item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
                         item.endTime = "11:59:59 PM";
                     } else {
                         item.endPeriodInSeconds = res[idx + 1].startPeriod - 1;
-                        item.endTime = this.getTime(item.endPeriodInSeconds, "hh:mm:ss A");
+                        item.endTime = this.getTimeFromSeconds(item.endPeriodInSeconds, "hh:mm:ss A");
                     }
                     item.duration = item.endPeriodInSeconds - item.startPeriod;
                     return item;
@@ -185,7 +179,7 @@ export default {
                         tableLength = table.length;
                     if (tableLength) {
                         table[tableLength - 1].endPeriodInSeconds = data.startPeriod - 1;
-                        table[tableLength - 1].endTime = this.getTime(data.startPeriod - 1, "hh:mm:ss A");
+                        table[tableLength - 1].endTime = this.getTimeFromSeconds(data.startPeriod - 1, "hh:mm:ss A");
                         table[tableLength - 1].duration = table[tableLength - 1].endPeriodInSeconds - table[tableLength - 1].startPeriod;
                     }
                     data.endPeriodInSeconds = DEFAULT_MAXSECONDS;

@@ -19,9 +19,8 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, convertSecondsToTime } from "@/utils/function";
 import GetPeriod from "@/components/setting/getPeriod";
-import moment from "moment";
 const DEFAULT_MAXSECONDS = 24 * 60 * 60;
 export default {
     components: {
@@ -46,16 +45,8 @@ export default {
         };
     },
     computed: {
-        getTime() {
-            return (second, format) => {
-                const millisecond = second * 1000;
-                const hours = moment.duration(millisecond).hours();
-                const minutes = moment.duration(millisecond).minutes();
-                const seconds = moment.duration(millisecond).seconds();
-                return moment()
-                    .set({ hour: hours, minute: minutes, second: seconds })
-                    .format(format);
-            };
+        getTimeFromSeconds() {
+            return (seconds, format) => convertSecondsToTime(seconds, format);
         }
     },
     watch: {
@@ -64,23 +55,12 @@ export default {
                 const that = this;
                 this.visible = this.show;
                 if (this.visible) {
-                    this.startSchedule = this.data?.scheduleStart
-                        ? transformUtcToLocTime(
-                              this.data?.scheduleStart,
-                              "YYYY-MM-DD HH:mm"
-                          )
-                        : "";
-                    this.periodData = this.data?.chargingSchedule
-                        ?.chargingSchedulePeriods
-                        ? this.prepareData(
-                              this.data.chargingSchedule.chargingSchedulePeriods
-                          )
+                    this.startSchedule = this.data?.scheduleStart ? transformUtcToLocTime(this.data?.scheduleStart, "YYYY-MM-DD HH:mm") : "";
+                    this.periodData = this.data?.chargingSchedule?.chargingSchedulePeriods
+                        ? this.prepareData(this.data.chargingSchedule.chargingSchedulePeriods)
                         : {};
                 }
-                that.$jQuery(".compositeSchedule").length > 0 &&
-                    that
-                        .$jQuery(".compositeSchedule")
-                        .mCustomScrollbar("destroy");
+                that.$jQuery(".compositeSchedule").length > 0 && that.$jQuery(".compositeSchedule").mCustomScrollbar("destroy");
                 that.$nextTick(() => {
                     setScrollBar(".compositeSchedule", that);
                 });
@@ -94,19 +74,15 @@ export default {
                 item.id = idx + 1;
                 // item.powerLimit = item.limit / 1000 || 0;
                 item.startPeriodInSeconds = item.startPeriod;
-                item.time = this.getTime(item.startPeriodInSeconds, "HH:mm:ss");
+                item.time = this.getTimeFromSeconds(item.startPeriodInSeconds, "HH:mm:ss");
                 if (periodLength === idx + 1) {
                     item.endPeriodInSeconds = DEFAULT_MAXSECONDS;
                     item.endTime = "23:59:59";
                 } else {
                     item.endPeriodInSeconds = data[idx + 1].startPeriod - 1;
-                    item.endTime = this.getTime(
-                        item.endPeriodInSeconds,
-                        "HH:mm:ss"
-                    );
+                    item.endTime = this.getTimeFromSeconds(item.endPeriodInSeconds, "HH:mm:ss");
                 }
-                item.duration =
-                    item.endPeriodInSeconds - item.startPeriodInSeconds;
+                item.duration = item.endPeriodInSeconds - item.startPeriodInSeconds;
                 return item;
             });
         },
