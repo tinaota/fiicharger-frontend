@@ -19,17 +19,17 @@
                 <div class="form-item">
                     <el-form-item prop="chargingProfileKind">
                         <div class="label">{{ $t('chargingProfile.chargingProfileKind') }}</div>
-                        <el-select class="select-small" v-model="dialog.chargingProfileKind" v-loading="profileKindList.isLoading">
+                        <el-select class="select-small" v-model="dialog.chargingProfileKind" v-loading="profileKindList.isLoading" @change="updateDuration(dialog.chargingProfileKind)">
                             <el-option v-for="item in profileKindList.data" :label="item" :key="item" :value="item"></el-option>
                         </el-select>
                     </el-form-item>
                 </div>
-                <div class="form-item">
+                <!-- <div class="form-item">
                     <el-form-item prop="scheduleDuration">
                         <div class="label">{{ $t('chargingProfile.scheduleDuration') }}</div>
                             <el-input-number v-model="dialog.scheduleDuration" :step="10" :min="0" controls-position="right"></el-input-number>
                     </el-form-item>
-                </div>
+                </div> -->
                 <div class="form-item">
                     <el-form-item prop="minChargingRate">
                         <div class="label">{{ $t('chargingStation.elecRateMin') }}</div>
@@ -47,7 +47,7 @@
                 <div class="form-item">
                     <el-form-item prop="startSchedule">
                         <div class="label">{{ $t('chargingProfile.startSchedule') }}</div>
-                        <el-date-picker v-model="dialog.startSchedule" type="datetime" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy hh:mm A" :picker-options="pickerOptions">
+                        <el-date-picker v-model="dialog.startSchedule" type="date" value-format="yyyy-MM-dd HH:mm" format="MMM dd yyyy" :picker-options="pickerOptions">
                         </el-date-picker>
                     </el-form-item>
                 </div>
@@ -59,6 +59,7 @@
                 :chargingSchedulePeriods="dialog.chargingSchedulePeriods"
                 :editable="true"
                 :isCreate="(data.type === 'create')"
+                :chargingProfileKind="dialog.chargingProfileKind"
                 @handleData="handlePeriodData">
             </GetPeriod>
         </div>
@@ -105,7 +106,7 @@ export default {
                 startSchedule: moment().startOf('day').format('YYYY-MM-DD HH:mm'),
                 chargingRateUnit: "W",
                 minChargingRate: null,
-                scheduleDuration: 86400
+                scheduleDuration: null
             },
             profilePeriodTableVisible: false,
             rules: {
@@ -142,6 +143,14 @@ export default {
     mounted() {
     },
     methods: {
+        updateDuration(selected){
+            if(selected==='Recurring'){
+                this.dialog.scheduleDuration = 86400
+            }else{
+                // for Absolute and relative
+                this.dialog.scheduleDuration = null
+            }
+        },
         checkForm() {
             const that = this;
             this.$refs.updateForm.validate((valid) => {

@@ -14,7 +14,11 @@
                         <template slot-scope="scope">
                             <el-table :data="scope.row.chargingSchedulePeriods">
                                 <el-table-column :label="$t('chargingProfile.chargingSchedulePeriods')">
-                                    <el-table-column prop="limit" :label="$t('chargingProfile.limit')" width="250"></el-table-column>
+                                    <el-table-column prop="limit" :label="$t('chargingProfile.limit')" width="250">
+                                        <template slot-scope="scope">
+                                            {{scope.row.limit>=0 ? scope.row.limit + ' W':''}}
+                                        </template>
+                                    </el-table-column>
                                     <el-table-column prop="numberPhases" :label="$t('chargingProfile.numberPhases')" width="250"></el-table-column>
                                     <el-table-column prop="startPeriod" :label="$t('chargingProfile.startPeriod')" width="250"></el-table-column>
                                 </el-table-column>
@@ -22,10 +26,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" width="200"></el-table-column>
-                    <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" width="200"></el-table-column>
+                    <!-- <el-table-column prop="scheduleDuration" :label="$t('chargingProfile.scheduleDuration')" width="200"></el-table-column> -->
                     <el-table-column prop="chargingProfileKind" :label="$t('chargingProfile.chargingProfileKind')" width="200"></el-table-column>
-                    <el-table-column prop="recurrencyKind" :label="$t('chargingProfile.recurrencyKind')" width="200"></el-table-column>
-                    <el-table-column :label="$t('chargingProfile.validFrom')" width="200">
+                    <!-- <el-table-column prop="recurrencyKind" :label="$t('chargingProfile.recurrencyKind')" width="200"></el-table-column> -->
+                    <el-table-column :label="$t('chargingProfile.startSchedule')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.startSchedule ? getLocTime(scope.row.startSchedule) : '' }}
                         </template>

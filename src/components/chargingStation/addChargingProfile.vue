@@ -14,9 +14,15 @@
                 <div class="info">{{ data.ocppId }}</div>
             </div>
             <div class="item">
+                <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
+                <el-select class="select-small info" v-model="chargingProfilePurpose" filterable>
+                    <el-option v-for="item in chargingProfilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
+                </el-select>
+            </div>
+            <div class="item" v-if="chargingProfilePurpose!=='ChargePointMaxProfile'">
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
                 <el-select class="select-small info" v-model="param.connectorId" v-loading="connectorData.isLoading">
-                    <el-option :value="0" :label="'0 ' + $t('general.default')"></el-option>
+                    <el-option :value="0" :label="'0 ' + $t('general.all')"></el-option>
                     <el-option v-for="item in connectorData.data" :label="item.id + ' ' + item.type" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
@@ -27,13 +33,6 @@
                     <el-option v-for="item in chargingProfileList.data" :label="item.name" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
-            <div class="item">
-                <div class="label">{{ $t('chargingProfile.chargingProfilePurpose') }}</div>
-                <el-select class="select-small info" v-model="chargingProfilePurpose" filterable>
-                    <el-option v-for="item in chargingProfilePurposeList.data" :label="item" :key="item" :value="item"></el-option>
-                </el-select>
-            </div>
-
             <div class="item">
                 <div class="label">{{ $t('chargingProfile.stackLevel') }}</div>
                 <el-input-number class="info" v-model="stackLevel" :step="1" :min="0"></el-input-number>
@@ -46,11 +45,7 @@
 </template>
 
 <script>
-import {
-    $HTTP_getChargingProfilesTemplate,
-    $HTTP_getConnectorStatusesById,
-    $HTTP_setChargingProfile
-} from "@/api/api";
+import { $HTTP_getChargingProfilesTemplate, $HTTP_getConnectorStatusesById, $HTTP_setChargingProfile } from "@/api/api";
 
 export default {
     props: {
@@ -76,8 +71,8 @@ export default {
                 isLoading: false,
                 data: []
             },
-            chargingProfilePurposeList:{
-                data: ['ChargePointMaxProfile', 'TxDefaultProfile']
+            chargingProfilePurposeList: {
+                data: ["ChargePointMaxProfile", "TxDefaultProfile"]
             },
             chargingProfilePurpose: "TxDefaultProfile",
             stackLevel: null
@@ -90,19 +85,19 @@ export default {
                 this.visible = this.show;
                 if (this.visible) {
                     // update chargingprofile purpose/ list if transactions
-                    if(this.data.transactionId){
-                        this.chargingProfilePurposeList.data = ['TxProfile']
-                        this.chargingProfilePurpose= 'TxProfile'
-                        this.param.connectorId = this.connectorIdFromTransactions
+                    if (this.data.transactionId) {
+                        this.chargingProfilePurposeList.data = ["TxProfile"];
+                        this.chargingProfilePurpose = "TxProfile";
+                        this.param.connectorId = this.connectorIdFromTransactions;
                     }
                     this.isUpdate = false;
-                    this.$nextTick(()=>{
+                    this.$nextTick(() => {
                         that.fetchConnectorStatus(that.data.chargePointId);
                         that.fetchProfileData();
                     });
                 }
             }
-        },
+        }
     },
     methods: {
         fetchConnectorStatus(id) {
@@ -153,8 +148,8 @@ export default {
                 let params = {
                     chargePointId: that.data.chargePointId,
                     connectorId: parseInt(that.param.connectorId),
-                    transactionId: this.data.transactionId? this.data.transactionId:null,
-                    templateId:  this.param.chargingProfileTemplateId,
+                    transactionId: this.data.transactionId ? this.data.transactionId : null,
+                    templateId: this.param.chargingProfileTemplateId,
                     chargingProfilePurpose: this.chargingProfilePurpose,
                     stackLevel: this.stackLevel
                 };
@@ -180,7 +175,7 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log("setChargingProfile", err)
+                        console.log("setChargingProfile", err);
                         that.visible = false;
                         that.isLoading = false;
                         that.isUpdate = true;

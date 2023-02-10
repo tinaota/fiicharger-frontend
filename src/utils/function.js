@@ -201,3 +201,17 @@ export const getNewlyRemovedItems = (selectedList, originalList) => {
     }
     return updatedItems;
 };
+
+export const convertToAMorPM = (time, format = "hh:mm:ss A") => {
+    // time should be in format HH:mm:ss
+    let hours = parseInt(time.substring(0, 2));
+    let minutes = parseInt(time.substring(3, 5));
+    let seconds = parseInt(time.substring(6, 8)) || 0;
+    let newTime;
+    if (hours === 0) {
+        newTime = "00:" + moment().startOf("day").add("minutes", minutes).add("seconds", seconds).format(format.substring(3));
+    } else {
+        newTime = moment().startOf("day").add("hours", hours).add("minutes", minutes).add("seconds", seconds).format(`${format}`);
+    }
+    return newTime;
+};
