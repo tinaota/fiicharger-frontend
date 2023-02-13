@@ -534,6 +534,9 @@ export default {
 .main_logo_img {
     padding: 16px;
     background: #f5f7fa;
+    img{
+        width: 130px;
+    }
 }
 .main-nav-fii {
     display: flex;
