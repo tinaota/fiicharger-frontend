@@ -110,7 +110,7 @@ export default {
             var docDefinition = {
                 pageOrientation: "landscape",
                 pageSize: "A4",
-                pageMargins: [40, 45, 40, 40],
+                pageMargins: [40, 60, 40, 40],
                 header: function () {
                     return [
                         {
