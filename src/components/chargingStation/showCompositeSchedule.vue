@@ -14,7 +14,7 @@
                 <div class="info">{{ startSchedule }}</div>
             </div>
         </div>
-        <GetPeriod :show="show" :editable="false" :data="periodData"></GetPeriod>
+        <GetPeriod :show="show" :editable="false" :data="periodData" :chargingRateUnit="data?.chargingSchedule?.chargingRateUnit"></GetPeriod>
     </el-dialog>
 </template>
 

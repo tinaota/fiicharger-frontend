@@ -9,7 +9,7 @@
         <el-table v-if="tableSize>0" :data="profilePeriods.data" class="moreCol" v-loading="profilePeriods.isLoading">
             <el-table-column prop="limit" :label="$t('chargingProfile.limit')">
                 <template slot-scope="scope">
-                    {{scope.row.limit ? scope.row.limit + `${chargingRateUnit}` :''}}
+                    {{scope.row.limit ? scope.row.limit + ` ${chargingRateUnit}` :''}}
                 </template>
             </el-table-column>
             <!-- <el-table-column prop="powerLimit" :label="$t('chargingProfile.maxPower')"></el-table-column> -->
