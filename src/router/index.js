@@ -119,7 +119,7 @@ let routes = [
                 name: "Analytics",
                 menuName: "menu.analytics",
                 hasChild: true,
-                hidden: false,
+                hidden: true,
                 component: () => import("@/components/data.vue"),
                 children: [
                     {
@@ -127,7 +127,7 @@ let routes = [
                         component: () => import("@/views/analytics/overview.vue"),
                         name: "Analytics Overview",
                         menuName: "menu.overview",
-                        hidden: false
+                        hidden: true
                     }
                 ]
             },
