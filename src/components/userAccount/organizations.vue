@@ -53,6 +53,7 @@
                     <template slot-scope="scope">
                         <el-button class="no-bg edit" aria-label="edit icon" @click="openDialog('edit',scope.row)"></el-button>
                         <el-button class="no-bg delete" aria-label="delete icon" @click="openDialog('delete',scope.row)"></el-button>
+                        <el-button class="no-bg fa fa-user-plus" style="color:#0263ff;margin-left:0" aria-label="invite icon" @click="openDialog('invite',scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,7 +62,8 @@
             </el-pagination>
         </div>
         <UpdateOrganizations v-if="dialog.isVisible && (dialog.type==='edit' || dialog.type=='create' || dialog.type==='delete')" :show="dialog.isVisible" :dialogType="dialog.type" :data="dialog.data" @close="closeDialog()"></UpdateOrganizations>
-        <ShowOrganizationData v-if="dialog.isVisible && (dialog.type!=='edit' && dialog.type!=='create' && dialog.type!=='delete')" :show="dialog.isVisible" :dialogType="dialog.type" :data="dialog.data" @close="closeDialog()"></ShowOrganizationData>
+        <ShowOrganizationData v-if="dialog.isVisible && (dialog.type!=='edit' && dialog.type!=='create' && dialog.type!=='delete') && dialog.type!=='invite'" :show="dialog.isVisible" :dialogType="dialog.type" :data="dialog.data" @close="closeDialog()"></ShowOrganizationData>
+        <InviteDialog v-if="dialog.isVisible && dialog.type==='invite'" :show="dialog.isVisible" :data="dialog.data" @close="closeDialog()"></InviteDialog>
     </div>
 </template>
 
@@ -69,12 +71,14 @@
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import UpdateOrganizations from "@/components/userAccount/updateOrganizations";
 import ShowOrganizationData from "@/components/userAccount/showOrganizationData";
+import InviteDialog from "@/components/userAccount/inviteDialog";
 import { $HTTP_getOrganizations } from "@/api/api";
 import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
 export default {
     components: {
         UpdateOrganizations,
-        ShowOrganizationData
+        ShowOrganizationData,
+        InviteDialog
     },
     data() {
         return {

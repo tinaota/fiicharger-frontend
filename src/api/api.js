@@ -458,3 +458,8 @@ export const $HTTP_getBoundedStationsByOrganizationId = (params) => {
 export const $HTTP_getOperatorUsersList = params => {
     return fetch(`${base_charger}/api/reports/operators/users`, params)
 }
+
+// invite users using an email
+export const $HTTP_inviteUsersByEmail = params => {
+    return post(`${base_charger}/api/operators/${params.operatorId}/invite`, `${params.email}`, { headers: { 'Content-Type': 'application/json' } })
+}

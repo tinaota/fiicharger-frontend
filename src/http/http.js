@@ -184,22 +184,24 @@ export function fetchImg(url) {
     })
 }
 
-export function post(url, params = {}) {
+export function post(url, params = {}, config) {
     return new Promise((resolve, reject) => {
-        axios.post(url, params)
-            .then(response => {
+        axios
+            .post(url, params, config)
+            .then((response) => {
                 if (response) {
-                    resolve(response.data)
+                    resolve(response.data);
                 } else {
-                    reject(response)
+                    reject(response);
                 }
-            }).catch(err => {
-                if (err.status === 403) {
-                    err['data'] = 'Permission denied.'
-                }
-                err.status && err.status !== 204 && reject(err)
             })
-    })
+            .catch((err) => {
+                if (err.status === 403) {
+                    err["data"] = "Permission denied.";
+                }
+                err.status && err.status !== 204 && reject(err);
+            });
+    });
 }
 
 
