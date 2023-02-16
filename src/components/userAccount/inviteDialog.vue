@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="$t('general.add')" width="30%" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
-        <el-form ref="inviteDialogForm" :rules="rules" :model="dialog" class="inviteDialog">
+        <el-form ref="inviteDialogForm" :rules="rules" :model="dialog" class="inviteDialog"  @submit.prevent.native="sendInvite">
             <div class="form-item">
                 <el-form-item prop="email" style="margin-bottom:0">
                     <div class="label">{{ $t('userAccount.email') }}<span style="color:red"><strong>* </strong></span></div>
@@ -44,7 +44,7 @@ export default {
                     params.email = this.dialog.email;
                     $HTTP_inviteUsersByEmail(params)
                         .then((res) => {
-                            if (res==="" || res) {
+                            if (res==="") {
                                 this.$message({
                                     type: "success",
                                     message: i18n.t("general.sucUpdateMsg")
@@ -57,7 +57,7 @@ export default {
                             console.log(err);
                             this.$message({
                                 type: "warning",
-                                message: i18n.t("error_network")
+                                message: err.data
                             });
                             this.closeDialog();
                             this.visible = false;
