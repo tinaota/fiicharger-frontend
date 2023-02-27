@@ -23,7 +23,7 @@
 <script>
 import { $HTTP_getChargeStationsOverallSummary } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         filterParams: Object,
@@ -89,7 +89,10 @@ export default {
                 params = { ...params, ...this.sortingParams };
             }
             this.isLoading = true;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getChargeStationsOverallSummary(params)
@@ -111,11 +114,8 @@ export default {
                     this.isLoading = false;
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("charge station report", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

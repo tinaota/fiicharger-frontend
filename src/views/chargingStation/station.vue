@@ -205,7 +205,7 @@ import {
     $HTTP_updateStatusStation,
     $HTTP_getOrganizations
 } from "@/api/api";
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 import ic_green_dot from "imgs/ic_green_dot.png";
 import googleMapStyle from "@/assets/js/googleMapStyle_normal";
 import ShowPostion from "@/components/chargingStation/showPostion";
@@ -367,11 +367,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("locationList", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("locationList", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchData(type) {
@@ -424,13 +421,11 @@ export default {
                         }
                     }
                 })
-                .catch(() => {
+                .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("station list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {
@@ -474,12 +469,10 @@ export default {
                         that.bindDialog.isLoading = false;
                     });
                 })
-                .catch(() => {
+                .catch((err) => {
                     that.bindDialog.isLoading = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("charge box list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         handleRowClick(row) {
@@ -758,31 +751,33 @@ export default {
             this.$confirm(i18n.t("general.deleteItem", { item: name }), i18n.t("general.hint"), {
                 showClose: false,
                 customClass: `custom ${this.isDark ? "dark-theme" : "light-theme"}`
-            }).then(() => {
-                $HTTP_deleteStation({ stationId: id }).then((data) => {
-                    if (data.status === 204) {
-                        that.$message({
-                            type: "success",
-                            message: i18n.t("general.sucDelMsg")
-                        });
-                        if (this.tableData.length === 1) {
-                            if (this.page >= 2) {
-                                this.page = this.page - 1;
-                            } else {
-                                this.page = 1;
+            })
+                .then(() => {
+                    $HTTP_deleteStation({ stationId: id }).then((data) => {
+                        if (data.status === 204) {
+                            that.$message({
+                                type: "success",
+                                message: i18n.t("general.sucDelMsg")
+                            });
+                            if (this.tableData.length === 1) {
+                                if (this.page >= 2) {
+                                    this.page = this.page - 1;
+                                } else {
+                                    this.page = 1;
+                                }
                             }
+                            setTimeout(() => {
+                                that.fetchData();
+                            }, 2000);
+                        } else {
+                            that.$message({
+                                type: "warning",
+                                message: i18n.t("error_network")
+                            });
                         }
-                        setTimeout(() => {
-                            that.fetchData();
-                        }, 2000);
-                    } else {
-                        that.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
-                    }
-                });
-            }).catch(()=>{})
+                    });
+                })
+                .catch(() => {});
         },
         updateStation() {
             this.$refs.stationForm.validate((valid) => {

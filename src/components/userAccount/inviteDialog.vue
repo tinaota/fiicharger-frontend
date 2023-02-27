@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="$t('general.add')" width="30%" :visible.sync="visible" custom-class="" :show-close="false" v-loading="isLoading" @close="closeDialog()">
-        <el-form ref="inviteDialogForm" :rules="rules" :model="dialog" class="inviteDialog"  @submit.prevent.native="sendInvite">
+        <el-form ref="inviteDialogForm" :rules="rules" :model="dialog" class="inviteDialog" @submit.prevent.native="sendInvite">
             <div class="form-item">
                 <el-form-item prop="email" style="margin-bottom:0">
                     <div class="label">{{ $t('userAccount.email') }}<span style="color:red"><strong>* </strong></span></div>
@@ -17,6 +17,7 @@
 <script>
 import { validateEmail } from "@/utils/validation";
 import { $HTTP_inviteUsersByEmail } from "@/api/api";
+import { catchErrors } from "@/utils/function";
 export default {
     props: { show: Boolean, data: Object },
     emits: ["close"],
@@ -44,7 +45,7 @@ export default {
                     params.email = this.dialog.email;
                     $HTTP_inviteUsersByEmail(params)
                         .then((res) => {
-                            if (res==="") {
+                            if (res === "") {
                                 this.$message({
                                     type: "success",
                                     message: i18n.t("general.sucUpdateMsg")
@@ -54,11 +55,8 @@ export default {
                             }
                         })
                         .catch((err) => {
-                            console.log(err);
-                            this.$message({
-                                type: "warning",
-                                message: err.data
-                            });
+                            let errorMessage = catchErrors("invite dialog", err);
+                            this.$message({ type: "warning", message: errorMessage });
                             this.closeDialog();
                             this.visible = false;
                         });

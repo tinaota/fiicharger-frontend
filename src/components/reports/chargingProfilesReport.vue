@@ -28,7 +28,7 @@
 <script>
 import { $HTTP_getChargingProfilesRecord } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-import { transformUtcToLocTime } from "@/utils/function";
+import { transformUtcToLocTime, catchErrors } from "@/utils/function";
 
 export default {
     props: {
@@ -108,11 +108,8 @@ export default {
                     this.isLoading = false;
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("charging profile", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

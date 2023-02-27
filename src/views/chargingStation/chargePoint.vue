@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformToSymbols, catchErrors } from "@/utils/function";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import ModifyChargeBoxTariff from "@/components/chargingStation/modifyChargeBoxTariff";
@@ -349,11 +349,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("loctionList", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("loctionList", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchData(type) {
@@ -436,11 +433,8 @@ export default {
                 })
                 .catch((err) => {
                     this.stationList.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("stationlist", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getAllChargeBoxList(param) {
@@ -471,11 +465,8 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("chargebox list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {
@@ -553,10 +544,8 @@ export default {
                         })
                         .catch((err) => {
                             if (err.status === 500) {
-                                that.$message({
-                                    type: "warning",
-                                    message: i18n.t("cannotDelete")
-                                });
+                                let errorMessage = catchErrors("delete charge box", err);
+                                that.$message({ type: "warning", message: errorMessage });
                             }
                         });
                 })

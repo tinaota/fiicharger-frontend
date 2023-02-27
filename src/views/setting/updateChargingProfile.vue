@@ -72,9 +72,7 @@
 </template>
 
 <script>
-import {
-    setScrollBar,
-} from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { validateIsEmpty } from "@/utils/validation";
 import {
     $HTTP_addChargingProfile,
@@ -199,12 +197,11 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("addProfile err", err);
                     that.isLoading = false;
                     that.visible = false;
                     that.isUpdate = false;
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({ type: "warning", message: _errors.toString() });
+                    let errorMessage = catchErrors("addProfile err", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         updateProfile(params) {
@@ -220,12 +217,11 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("updateProfile err", err);
                     that.isLoading = false;
                     that.visible = false;
                     that.isUpdate = false;
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({ type: "warning", message: _errors.toString() });
+                    let errorMessage = catchErrors("updateProfile err", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

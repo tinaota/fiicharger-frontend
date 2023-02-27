@@ -12,6 +12,7 @@
 
 <script>
 import { $HTTP_getLocalAuthListVersion } from "@/api/api";
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         chargePointId: String,
@@ -54,7 +55,8 @@ export default {
                 })
                 .catch( err => {
                     this.isLoading = false;
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("get local auth list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 })
             },
             closeDialog() {

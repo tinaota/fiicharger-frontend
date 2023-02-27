@@ -18,6 +18,7 @@ import {
     $HTTP_getReservation,
     $HTTP_getAllTransactions
 } from "@/api/api";
+import { catchErrors } from "@/utils/function";
 
 export default {
     props: {
@@ -93,11 +94,8 @@ export default {
                 })
                 .catch((err) => {
                     this.list.data = [];
-                    console.log("getListError", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("getListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         updateSelected() {

@@ -23,7 +23,7 @@
 
 <script>
 import { $HTTP_getRoles, $HTTP_addRoles } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar , catchErrors } from "@/utils/function";
 
 export default {
     props: {
@@ -58,13 +58,8 @@ export default {
                             that.value = res;
                         })
                         .catch((err) => {
-                            let _errors = err?.data?.errors
-                                ? Object.values(err?.data?.errors)
-                                : err?.data;
-                            that.$message({
-                                type: "warning",
-                                message: _errors.toString()
-                            });
+                            let errorMessage = catchErrors("add roles", err);
+                            that.$message({ type: "warning", message: errorMessage });
                         });
                 }
                 that.$jQuery(".formVertical").length > 0 &&
@@ -99,13 +94,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    let _errors = err?.data?.errors
-                        ? Object.values(err?.data?.errors)
-                        : err?.data;
-                    that.$message({
-                        type: "warning",
-                        message: _errors.toString()
-                    });
+                    let errorMessage = catchErrors("add roles", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

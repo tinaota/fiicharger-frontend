@@ -19,6 +19,7 @@
 <script>
 import { $HTTP_getChargeBoxTariff, $HTTP_updateChargeBoxTariff, $HTTP_getTarrifs, $HTTP_deleteChargeBoxTariff } from "@/api/api";
 import { $ALL_DATA_COUNT } from "@/utils/global";
+import { catchErrors } from "@/utils/function";
 export default {
     props: { show: Boolean, data: Object },
     data() {
@@ -72,7 +73,10 @@ export default {
                 limit: $ALL_DATA_COUNT,
                 IsDeprecated: false
             };
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getTarrifs(params)
@@ -91,11 +95,8 @@ export default {
                 })
                 .catch((err) => {
                     this.tariffList.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("get tariffs", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         deleteTariff(deletedTariffId, params, newAddedTariffId) {
@@ -116,15 +117,11 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log(err);
                         that.isLoading = false;
                         that.visible = false;
                         deleteTariff = false;
-                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                        that.$message({
-                            type: "warning",
-                            message: _errors.toString()
-                        });
+                        let errorMessage = catchErrors("modify chargebox tariff", err);
+                        that.$message({ type: "warning", message: errorMessage });
                     });
             });
         },

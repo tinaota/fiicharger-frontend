@@ -359,17 +359,10 @@
 </template>
 
 <script>
-import {
-    transformUtcToLocTime,
-    transformSecondsToReadableForm
-} from "@/utils/function";
-import {
-    $HTTP_getCDRInfoById,
-    $HTTP_getAllTransactionsById,
-    $HTTP_getAllReservationById
-} from "@/api/api";
+import { transformUtcToLocTime, transformSecondsToReadableForm } from "@/utils/function";
+import { $HTTP_getCDRInfoById, $HTTP_getAllTransactionsById, $HTTP_getAllReservationById } from "@/api/api";
 import SessionStatus from "@/components/charts/config/SessionStatus";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 
 export default {
     props: {
@@ -395,7 +388,7 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item,format="ll hh:mm:ss A") => transformUtcToLocTime(item,format);
+            return (item, format = "ll hh:mm:ss A") => transformUtcToLocTime(item, format);
         },
         getConvertedTime() {
             return (item) => transformSecondsToReadableForm(item);
@@ -424,11 +417,8 @@ export default {
                     .catch((err) => {
                         this.reservationData = [];
                         this.reservationDataIsLoading = false;
-                        console.log(err);
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("get reservation", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             }
         },
@@ -446,11 +436,8 @@ export default {
                         this.transactionData = [];
                         this.transactionDataIsLoading = false;
                         this.connectorId = "";
-                        console.log(err);
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("get transaction info", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             }
         },
@@ -466,11 +453,8 @@ export default {
                     .catch((err) => {
                         this.cdrData = {};
                         this.cdrDataIsLoading = false;
-                        console.log(err);
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("get cdr info", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             }
         },

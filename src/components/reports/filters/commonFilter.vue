@@ -360,12 +360,9 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("idTagListError", err);
                     this.filter.parentIdTagIdList.isLoading = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getStationList() {
@@ -374,7 +371,10 @@ export default {
                 limit: this.limit
             };
             this.filter.stationList.isLoading = true;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getStationList(params)
@@ -385,12 +385,9 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("idTagListError", err);
                     this.filter.stationList.isLoading = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         mountDefaultDateRange() {

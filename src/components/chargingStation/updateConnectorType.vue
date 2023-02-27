@@ -22,7 +22,7 @@
 <script>
 import { $HTTP_updateConnectorType } from "@/api/api";
 import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -77,10 +77,8 @@ export default {
                 })
                 .catch((err) => {
                     if (err.status === 500) {
-                        that.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("update connector type", err);
+                        that.$message({ type: "warning", message: errorMessage });
                         that.visible = false;
                         that.isLoading = false;
                     }

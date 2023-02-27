@@ -73,7 +73,7 @@ import UpdateOrganizations from "@/components/userAccount/updateOrganizations";
 import ShowOrganizationData from "@/components/userAccount/showOrganizationData";
 import InviteDialog from "@/components/userAccount/inviteDialog";
 import { $HTTP_getOrganizations } from "@/api/api";
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 export default {
     components: {
         UpdateOrganizations,
@@ -140,13 +140,10 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("organizationListErr", err);
                     this.tableData = [];
                     this.total = 0;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("organizationListErr", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

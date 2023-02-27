@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { setScrollBar, transformToSymbols } from "@/utils/function";
+import { setScrollBar, transformToSymbols, catchErrors } from "@/utils/function";
 import {
     $HTTP_getStationList,
     $HTTP_getAllChargeBoxList,
@@ -330,7 +330,10 @@ export default {
                 $API = $HTTP_getStationList;
                 this.stationSearchList.isLoading = true;
             }
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 let operators = this.selectedOrganization.map((organization) => organization.id);
                 param.OperatorIds = operators;
                 paramsConnectionSummary.OperatorIds = operators;
@@ -359,7 +362,10 @@ export default {
                                 that.statisticsInfo.connectedCount = res.connected;
                                 that.statisticsInfo.disconnectedCount = res.disconnected;
                             })
-                            .catch((err) => console.log(err));
+                            .catch((err) => {
+                                let errorMessage = catchErrors("connection summary", err);
+                                this.$message({ type: "warning", message: errorMessage });
+                            });
 
                         let maxLat = -85,
                             maxLng = -180,
@@ -426,11 +432,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("stationSearchList", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("stationSearchList", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         drawMarker(item, isRefresh = false) {
@@ -540,7 +543,10 @@ export default {
             let param = {
                 StationId: stationId
             };
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 param.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             if (isVisible) {
@@ -572,10 +578,11 @@ export default {
                                     originalList[index].tariffNames = tariffRes.map((item) => item.name);
                                 }
                             })
-                            .catch((e) => {
+                            .catch((err) => {
                                 originalList[index].tariffList = [];
                                 originalList[index].tariffNames = "";
-                                console.log(e);
+                                let errorMessage = catchErrors("tariff", err);
+                                this.$message({ type: "warning", message: errorMessage });
                             });
                     });
                 }

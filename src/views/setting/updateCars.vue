@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { $HTTP_addCars, $HTTP_updateCars } from "@/api/api";
 
 import { validateIsEmpty } from "@/utils/validation";
@@ -226,9 +226,8 @@ export default {
                             }
                         })
                         .catch((err) => {
-                            console.log(err);
-                            let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                            that.$message({ type: "warning", message: _errors.toString() });
+                            let errorMessage = catchErrors("update cars", err);
+                            that.$message({ type: "warning", message: errorMessage });
                         });
                 } else {
                     console.log("error submit!!");

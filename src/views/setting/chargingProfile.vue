@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, convertSecondsToTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, convertSecondsToTime, catchErrors } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { $HTTP_getChargingProfilesTemplate } from "@/api/api";
 import UpdateChargingProfile from "@/views/setting/updateChargingProfile";
@@ -151,8 +151,8 @@ export default {
                     this.isLoading = false;
                     this.tableData = [];
                     this.total = 0;
-                    console.log("ChargingProfiles Err", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("ChargingProfiles Err", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

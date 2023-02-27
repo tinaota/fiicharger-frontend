@@ -90,7 +90,7 @@
     </el-dialog>
 </template>
 <script>
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 import { $HTTP_addTariffs, $HTTP_updateTariffs, $HTTP_getOrganizations } from "@/api/api";
 import PricingSectionsMain from "@/components/tariff/pricingSectionsMain.vue";
 import { validateIsEmpty } from "@/utils/validation";
@@ -253,12 +253,9 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("organizationListErr", err);
                     this.organizationList = [];
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("organizationListErr", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getPricingSectionData(pricingSectionData) {

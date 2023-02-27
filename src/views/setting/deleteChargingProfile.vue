@@ -12,6 +12,7 @@
 
 <script>
 import { $HTTP_delChargingProfile } from "@/api/api";
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -31,15 +32,15 @@ export default {
                 const that = this;
                 that.visible = that.show;
                 that.isUpdate = false;
-            },
-        },
+            }
+        }
     },
     beforeDestroy() {},
     methods: {
         delChargingProfile() {
             const that = this;
             let params = {
-                chargingProfileId: that.data.id,
+                chargingProfileId: that.data.id
             };
 
             that.isLoading = true;
@@ -62,20 +63,17 @@ export default {
                     that.visible = false;
                 })
                 .catch((err) => {
-                    console.log("delete ChargingProfile", err);
                     that.isLoading = false;
                     that.isUpdate = false;
                     that.visible = false;
-                    that.$message({
-                        type: "warning",
-                        message: err?.data
-                    });
+                    let errorMessage = catchErrors("delete ChargingProfile", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {
             this.$emit("close", this.isUpdate);
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

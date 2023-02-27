@@ -26,7 +26,7 @@
 import {
     $HTTP_sendTriggerMessage
 } from "@/api/api";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -88,15 +88,10 @@ export default {
                         that.visible = false;
                     })
                     .catch((err) => {
-                        console.log('remoteTrigger', err)
                         that.isLoading = false;
                         that.visible = false;
-                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-
-                        that.$message({
-                                type: "warning",
-                                message: _errors.toString()
-                            });
+                        let errorMessage = catchErrors("remoteTrigger", err);
+                        that.$message({ type: "warning", message: errorMessage });
                     });
             }
         },

@@ -45,10 +45,7 @@
 </template>
 
 <script>
-import {
-    transformUtcToLocTime,
-    transformSecondsToReadableForm
-} from "@/utils/function";
+import { transformUtcToLocTime, transformSecondsToReadableForm, catchErrors } from "@/utils/function";
 import { $HTTP_getAllSessionsData } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import SessionsDetailsPopup from "@/components/popup/sessionsDetailsPopup.vue";
@@ -80,8 +77,7 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item, format = "ll hh:mm:ss A") =>
-                transformUtcToLocTime(item,format);
+            return (item, format = "ll hh:mm:ss A") => transformUtcToLocTime(item, format);
         },
         getConvertedTime() {
             return (item) => transformSecondsToReadableForm(item);
@@ -135,11 +131,8 @@ export default {
                     this.tableData = [];
                     this.total = 0;
                     this.$emit("updated");
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("get all sessions", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

@@ -15,7 +15,7 @@
 
 <script>
 import { $HTTP_updateConfiguration } from "@/api/api";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -59,10 +59,8 @@ export default {
                 .catch((err) => {
                     console.log(err);
                     this.visible = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("set configurations", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {
@@ -82,7 +80,7 @@ export default {
     margin-top: 5px;
     align-items: center;
     word-break: break-all;
-    .label{
+    .label {
         margin-right: 5px;
     }
 }

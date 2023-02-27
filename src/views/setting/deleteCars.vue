@@ -19,7 +19,7 @@
 <script>
 import { $HTTP_deleteVehicle } from "@/api/api";
 
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 export default {
     props: {
         id: Number,
@@ -72,9 +72,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({ type: "warning", message: _errors.toString() });
+                    let errorMessage = catchErrors("delete cars", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

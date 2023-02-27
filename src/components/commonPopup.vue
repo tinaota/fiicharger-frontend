@@ -37,6 +37,7 @@ import {
 } from "@/api/api";
 import StartTransactionPopup from "@/components/popup/startTransactionPopup";
 import CommonList from "@/components/commonList.vue";
+import { catchErrors } from "@/utils/function";
 export default {
     components: {
         StartTransactionPopup,
@@ -108,12 +109,9 @@ export default {
                     this.checkResponse(res);
                 })
                 .catch((err) => {
-                    console.log(err);
                     this.visible = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors(`${this.action}`, err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         checkResponse(res) {

@@ -47,7 +47,7 @@
 <script>
 import { $HTTP_getChargingProfilesTemplate, $HTTP_getConnectorStatusesById, $HTTP_setChargingProfile } from "@/api/api";
 import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -127,11 +127,8 @@ export default {
                 .catch((err) => {
                     this.connectorData.isLoading = false;
                     this.connectorData.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("HTTP_getConnectorStatusesById", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchProfileData() {
@@ -146,8 +143,8 @@ export default {
                 .catch((err) => {
                     this.chargingProfileList.isLoading = false;
                     this.chargingProfileList.data = [];
-                    console.log("ChargingProfiles Err", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("ChargingProfiles Err", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         setChargingProfile() {
@@ -185,16 +182,11 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log("setChargingProfile", err);
                         that.visible = false;
                         that.isLoading = false;
                         that.isUpdate = true;
-                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-
-                        that.$message({
-                            type: "warning",
-                            message: _errors.toString()
-                        });
+                        let errorMessage = catchErrors("setChargingProfile", err);
+                        that.$message({ type: "warning", message: errorMessage });
                     });
             }
         },

@@ -42,6 +42,7 @@
 import { $HTTP_getCompositeSchedule, $HTTP_getConnectorStatusesById } from "@/api/api";
 import ShowCompositeSchedule from "@/components/chargingStation/showCompositeSchedule";
 import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
+import { catchErrors } from "@/utils/function";
 export default {
     components: {
         ShowCompositeSchedule
@@ -114,11 +115,8 @@ export default {
                 .catch((err) => {
                     this.connectorData.isLoading = false;
                     this.connectorData.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("getCompositeSchedule", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getCompositeSchedule() {
@@ -153,15 +151,10 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("getCompositeSchedule", err);
                     that.visible = false;
                     that.isLoading = false;
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-
-                    that.$message({
-                        type: "warning",
-                        message: _errors.toString()
-                    });
+                    let errorMessage = catchErrors("getCompositeSchedule", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

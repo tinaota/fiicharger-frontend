@@ -141,7 +141,7 @@ import {
     $HTTP_getUserInfo
 } from "@/api/api";
 import { $GLOBAL_AUTH, $GLOBAL_BASE_URL, $GLOBAL_PAGE_LIMIT } from "@/utils/global";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import ChangePwd from "@/components/userAccount/changePwd";
 import DeleteUser from "@/components/userAccount/deleteUser";
 import AddRoles from "@/components/userAccount/addRoles";
@@ -292,8 +292,8 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({ type: "warning", message: err?.data });
+                    let errorMessage = catchErrors("get users list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchData(type) {
@@ -340,8 +340,8 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log(err);
-                        this.$message({ type: "warning", message: i18n.t("error_network") });
+                        let errorMessage = catchErrors("user list", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             }
         },
@@ -490,8 +490,8 @@ export default {
                                             }
                                         })
                                         .catch((err) => {
-                                            let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                                            that.$message({ type: "warning", message: _errors?.toString() });
+                                            let errorMessage = catchErrors("update image", err);
+                                            that.$message({ type: "warning", message: errorMessage });
                                             that.fetchData();
                                         });
                                 } else {
@@ -509,12 +509,15 @@ export default {
                                             let data = res;
                                             this.$store.dispatch("setUser", data);
                                         })
-                                        .catch((e) => console.log(e));
+                                        .catch((err) => {
+                                            let errorMessage = catchErrors("user info", err);
+                                            this.$message({ type: "warning", message: errorMessage });
+                                        });
                                 }
                             })
                             .catch((err) => {
-                                let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                                that.$message({ type: "warning", message: _errors?.toString() });
+                                let errorMessage = catchErrors("get user info", err);
+                                that.$message({ type: "warning", message: errorMessage });
                                 that.fetchData();
                                 that.dialog.visible = false;
                                 that.dialog.isLoading = false;
@@ -539,8 +542,8 @@ export default {
                                 }
                             })
                             .catch((err) => {
-                                let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                                that.$message({ type: "warning", message: _errors.toString() });
+                                let errorMessage = catchErrors("register user", err);
+                                that.$message({ type: "warning", message: errorMessage });
                                 that.dialog.isLoading = false;
                             });
                     }

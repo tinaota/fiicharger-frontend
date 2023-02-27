@@ -45,7 +45,7 @@
 
 <script>
 import { $HTTP_getCaptcha, $HTTP_updateOperatorPassword } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import {validatePassword} from "@/utils/validation"
 export default {
     props: {
@@ -134,9 +134,9 @@ export default {
                             }
                         })
                         .catch((err) => {
-                            let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                            that.$message({ type: "warning", message: _errors.toString() });
                             that.isLoading = false;
+                            let errorMessage = catchErrors("change password", err);
+                            that.$message({ type: "warning", message: errorMessage });
                         });
                 } else {
                     console.log("error submit!!");

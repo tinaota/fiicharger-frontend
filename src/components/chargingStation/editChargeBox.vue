@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { $HTTP_addChargeBox, $HTTP_updateChargeBox, $HTTP_getOrganizations } from "@/api/api";
 import ic_green_dot from "imgs/ic_green_dot.png";
 import googleMapStyle from "@/assets/js/googleMapStyle_normal";
@@ -214,12 +214,9 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("organizationListErr", err);
                     this.organizationList = [];
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("organizationListErr", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         initMap() {
@@ -375,14 +372,12 @@ export default {
                                 });
                             }
                         })
-                        .catch(() => {
-                            this.$message({
-                                type: "warning",
-                                message: i18n.t("error_network")
-                            });
+                        .catch((err) => {
                             that.isUpdate = true;
                             that.visible = false;
                             that.isLoading =false
+                            let errorMessage = catchErrors("edit charge box", err);
+                            that.$message({ type: "warning", message: errorMessage });
                         });
                 } else {
                     console.log("error submit!!");

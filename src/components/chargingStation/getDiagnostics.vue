@@ -91,7 +91,7 @@ import {
     $HTTP_getDiagnosticsStatus,
     $HTTP_sendTriggerMessage
 } from "@/api/api";
-
+import { catchErrors } from "@/utils/function";
 import moment from "moment";
 export default {
     props: {
@@ -318,9 +318,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log('remoteTrigger err:', err)
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({type: "warning", message: _errors.toString()});
+                    let errorMessage = catchErrors("remoteTrigger err", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 })
         }
     }

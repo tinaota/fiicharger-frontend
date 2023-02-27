@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime, transformToSymbols } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, transformToSymbols, catchErrors } from "@/utils/function";
 import Connector from "@/components/chargingStation/connector";
 import Transaction from "@/components/chargingStation/transaction";
 import Sessions from "@/components/chargingStation/sessions";
@@ -636,11 +636,8 @@ export default {
                 .catch((err) => {
                     this.tariffList = [];
                     this.tariffNames = "";
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("tariff", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getConnectorStatusesById(id) {
@@ -660,11 +657,8 @@ export default {
                 })
                 .catch((err) => {
                     this.connectorStatuses.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("connector status", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getChargePointsById(id) {
@@ -693,11 +687,8 @@ export default {
                 })
                 .catch((err) => {
                     this.chargePointById = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("charge box list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         setTimerApiCall() {
@@ -817,11 +808,8 @@ export default {
                 })
                 .catch((err) => {
                     this.statistics.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("statistics", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getDataUsingDatepicker() {

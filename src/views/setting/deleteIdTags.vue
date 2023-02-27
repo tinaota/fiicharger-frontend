@@ -21,7 +21,7 @@
 
 <script>
 import { $HTTP_deleteIdTags } from "@/api/api";
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime , catchErrors } from "@/utils/function";
 export default {
     props: { show: Boolean, data: Array },
     data() {
@@ -39,8 +39,7 @@ export default {
     mounted() {
         const that = this;
         that.visible = that.show;
-        that.$jQuery(".formVertical").length > 0 &&
-            this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+        that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
         that.$nextTick(() => {
             setScrollBar(".formVertical", that);
         });
@@ -67,10 +66,8 @@ export default {
                 })
                 .catch((err) => {
                     if (err.status === 500) {
-                        that.$message({
-                            type: "warning",
-                            message: i18n.t("cannotDelete")
-                        });
+                        let errorMessage = catchErrors("delete id tags", err);
+                        that.$message({ type: "warning", message: errorMessage });
                         that.visible = false;
                         that.isLoading = false;
                     }

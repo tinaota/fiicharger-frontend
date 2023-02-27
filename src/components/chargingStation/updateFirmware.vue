@@ -70,7 +70,7 @@ import {
     $HTTP_postUpdateFirmware,
     $HTTP_getUpdateFirmwareStatus
 } from "@/api/api";
-import { transformUtcToLocTime } from "@/utils/function";
+import { transformUtcToLocTime, catchErrors } from "@/utils/function";
 import moment from "moment";
 export default {
     props: {
@@ -138,7 +138,8 @@ export default {
                 })
                 .catch(err => {
                     that.isLoading = false;
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("update firmware", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         getChargePoint(id){
@@ -161,7 +162,8 @@ export default {
                     }
                 })
                 .catch( err => {
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("get chargepoint by id", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         installHandler(data){
@@ -189,8 +191,9 @@ export default {
                 })
                 .catch( err => {
                     that.isLoading = false;
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
-                })
+                    let errorMessage = catchErrors("update firmware", err);
+                    that.$message({ type: "warning", message: errorMessage });
+                    })
         },
         getStatus(id){
             const that = this;
@@ -221,8 +224,8 @@ export default {
                 .catch( err => {
                     that.stopLooping(that.loopingStatus);
                     that.updateStatus = "InstallationFailed";
-                    console.log("HTTP_getUpdateFirmwareStatus err: " , err)
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("HTTP_getUpdateFirmwareStatus err:", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         stopLooping(time){

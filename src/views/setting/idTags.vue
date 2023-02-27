@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT, $ALL_DATA_COUNT } from "@/utils/global";
 import { $HTTP_getIdTagsList } from "@/api/api";
 import UpdateIdTags from "@/views/setting/updateIdTags";
@@ -82,14 +82,14 @@ export default {
                 parentIdTagId: "",
                 id: "",
                 isExpired: null,
-                isBlocked: null,
+                isBlocked: null
             },
             tableData: [],
             isLoading: false,
             page: 1,
             limit: $GLOBAL_PAGE_LIMIT,
             filterLimit: $ALL_DATA_COUNT,
-            parentIdTagIdList:[],
+            parentIdTagIdList: [],
             total: 0,
             dialog: {
                 id: "",
@@ -97,28 +97,28 @@ export default {
                 isBlocked: "",
                 created: "",
                 modified: "",
-                parentIdTagId: "",
+                parentIdTagId: ""
             },
             createDialog: {
                 visible: false,
-                isLoading: false,
+                isLoading: false
             },
             editDialog: {
                 visible: false,
                 isLoading: false,
-                data: [],
+                data: []
             },
             deleteDialog: {
                 visible: false,
                 isLoading: false,
-                data: [],
-            },
+                data: []
+            }
         };
     },
     computed: {
         getLocTime() {
             return (item) => transformUtcToLocTime(item);
-        },
+        }
     },
     mounted() {
         setScrollBar(".scroll", this);
@@ -132,7 +132,7 @@ export default {
         getParentIdTagList() {
             let params = {
                 page: 1,
-                limit: this.filterLimit,
+                limit: this.filterLimit
             };
             $HTTP_getIdTagsList(params)
                 .then((res) => {
@@ -141,8 +141,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("idTagListError", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
 
@@ -151,7 +151,7 @@ export default {
             this.isLoading = true;
             let params = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
             if (this.filter.id) {
                 params.Value = this.filter.id;
@@ -161,11 +161,11 @@ export default {
                 params.ParentIdTagId = this.filter.parentIdTagId;
             }
 
-            if (this.filter.isExpired && this.filter.isExpired!=="all") {
+            if (this.filter.isExpired && this.filter.isExpired !== "all") {
                 params.IsExpired = this.filter.isExpired;
             }
 
-            if (this.filter.isBlocked && this.filter.isBlocked!=="all") {
+            if (this.filter.isBlocked && this.filter.isBlocked !== "all") {
                 params.IsBlocked = this.filter.isBlocked;
             }
 
@@ -184,7 +184,7 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        if(this.filter.id ||this.filter.isExpired || this.filter.isBlocked || this.filter.parentIdTagId){
+                        if (this.filter.id || this.filter.isExpired || this.filter.isBlocked || this.filter.parentIdTagId) {
                             this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                         }
                     }
@@ -192,8 +192,8 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log("idTagListError", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {
@@ -232,8 +232,8 @@ export default {
             this.fetchData();
             this.getParentIdTagList();
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

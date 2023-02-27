@@ -16,7 +16,7 @@
 
 <script>
 import { $HTTP_deleteOperatorPassword } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 export default {
     props: {
         email: String,
@@ -67,9 +67,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-                    that.$message({ type: "warning", message: _errors.toString() });
+                    let errorMessage = catchErrors("delete user", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

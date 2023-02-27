@@ -36,7 +36,7 @@
 
 <script>
 import { $HTTP_getIdTagsList, $HTTP_reserveNow } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
 
 export default {
@@ -139,11 +139,8 @@ export default {
                 })
                 .catch((err) => {
                     this.idTagList.data = [];
-                    console.log("idTagListError", err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         reserveNow() {
@@ -180,13 +177,10 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log("reserveNow", err);
                         that.visible = false;
                         that.isLoading = false;
-                        that.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("reserveNow", err);
+                        that.$message({ type: "warning", message: errorMessage });
                     });
             }
         },

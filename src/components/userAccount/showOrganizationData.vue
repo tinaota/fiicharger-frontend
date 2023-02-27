@@ -68,7 +68,7 @@ import {
     $HTTP_getBoundedTariffsByOrganizationId
 } from "@/api/api";
 import { $ALL_DATA_COUNT, $POWER_TYPE_LIST } from "@/utils/global";
-import { transformUtcToLocTime } from "@/utils/function";
+import { transformUtcToLocTime, catchErrors } from "@/utils/function";
 
 export default {
     props: { show: Boolean, dialogType: String, data: Object },
@@ -101,9 +101,7 @@ export default {
         },
         getPowerType() {
             return (item) => {
-                let convertedValue = this.powerTypeList.filter(
-                    (powerType) => powerType.value === item
-                );
+                let convertedValue = this.powerTypeList.filter((powerType) => powerType.value === item);
                 return convertedValue[0].name;
             };
         },
@@ -133,22 +131,12 @@ export default {
                     stationId: row.id,
                     stationName: row.name
                 };
-                window.sessionStorage.setItem(
-                    "fiics-stationInfo",
-                    JSON.stringify(stationData)
-                );
-                this.$router
-                    .push({ name: "Station Detail", params: stationData })
-                    .catch();
+                window.sessionStorage.setItem("fiics-stationInfo", JSON.stringify(stationData));
+                this.$router.push({ name: "Station Detail", params: stationData }).catch();
             } else if (row && type === "charger") {
                 const data = Object.assign({}, row);
-                window.sessionStorage.setItem(
-                    "fiics-chargePointInfo",
-                    JSON.stringify(data)
-                );
-                this.$router
-                    .push({ name: "ChargePoint Detail", params: data })
-                    .catch();
+                window.sessionStorage.setItem("fiics-chargePointInfo", JSON.stringify(data));
+                this.$router.push({ name: "ChargePoint Detail", params: data }).catch();
             }
         },
         getUsersList() {
@@ -168,11 +156,8 @@ export default {
                 })
                 .catch((err) => {
                     this.userList = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("get operator list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getBoundedStationsByOrganizationid(id) {
@@ -186,11 +171,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("bounded stations", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getBoundedTariffsByOrganizationid(id) {
@@ -204,11 +186,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("bounded tariffs", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getBoundedUsersByOrganizationId(id) {
@@ -220,22 +199,15 @@ export default {
                     .then((res) => {
                         if (res?.length > 0) {
                             let selected = res;
-                            let selectedUserListName = selected.map(
-                                (eachSelectedUser) => {
-                                    return this.userList.find(
-                                        (obj) => obj.id === eachSelectedUser
-                                    );
-                                }
-                            );
+                            let selectedUserListName = selected.map((eachSelectedUser) => {
+                                return this.userList.find((obj) => obj.id === eachSelectedUser);
+                            });
                             this.selectedUserList = selectedUserListName;
                         }
                     })
                     .catch((err) => {
-                        console.log(err);
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("bounded users", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             });
         },
@@ -250,11 +222,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("bounded chargers", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

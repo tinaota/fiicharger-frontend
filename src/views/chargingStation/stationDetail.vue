@@ -133,16 +133,16 @@
                                     {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                 </el-button>
                                 <el-dropdown-menu slot="dropdown" :class="isDark? 'dark-theme actions' : 'actions'">
-                                    <ActionItem isDropdown  buttonName="general.add" actionName="chargingStation.chargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.clear" actionName="chargingStation.chargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.clear" actionName="chargingStation.clearCache" action="clearCache" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.reset" actionName="chargingStation.softReset" action="softReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.reset" actionName="chargingStation.hardReset" action="hardReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.modify" actionName="chargingStation.modifyCharger" action="edit" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType, action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.delete" actionName="chargingStation.deleteCharger" action="delete" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
-                                    <ActionItem isDropdown  buttonName="general.modify" actionName="menu.tariff" action="modifyTariff" @runAction="(action, dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.add" actionName="chargingStation.chargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.clear" actionName="chargingStation.chargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.clear" actionName="chargingStation.clearCache" action="clearCache" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.reset" actionName="chargingStation.softReset" action="softReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.reset" actionName="chargingStation.hardReset" action="hardReset" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row.id,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.modify" actionName="chargingStation.modifyCharger" action="edit" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType, action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.delete" actionName="chargingStation.deleteCharger" action="delete" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                    <ActionItem isDropdown buttonName="general.modify" actionName="menu.tariff" action="modifyTariff" @runAction="(action, dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                 </el-dropdown-menu>
                             </el-dropdown>
                         </template>
@@ -169,7 +169,7 @@ import {
     $HTTP_getConnectorSummary,
     $HTTP_getTransactionsStatistics
 } from "@/api/api";
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 import ShowPostion from "@/components/chargingStation/showPostion";
 import EditChargeBox from "@/components/chargingStation/editChargeBox";
 import Connector from "@/components/chargingStation/connector";
@@ -465,11 +465,8 @@ export default {
                 })
                 .catch((err) => {
                     this.connectorSummary = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("connector summary", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getStatistics(id) {
@@ -487,11 +484,8 @@ export default {
                 })
                 .catch((err) => {
                     this.statistics.data = [];
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("statistics", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {
@@ -517,11 +511,8 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("charge box list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchStationDetail() {
@@ -566,11 +557,8 @@ export default {
                     this.isLoading = false;
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("station info", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         handleShowDialog() {

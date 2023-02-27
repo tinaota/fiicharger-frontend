@@ -23,7 +23,7 @@ import {
     $HTTP_getChargingProfilesRecord,
     $HTTP_clearChargingProfile
 } from "@/api/api";
-
+import { catchErrors } from "@/utils/function";
 export default {
     props: {
         show: Boolean,
@@ -81,8 +81,8 @@ export default {
                     this.chargingProfileList.isLoading = false;
                     this.chargingProfileList.data = {};
                     this.chargingProfileList.total = 0;
-                    console.log("ChargingProfiles Err", err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("ChargingProfiles Err", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         clearChargingProfile() {
@@ -115,16 +115,11 @@ export default {
                         }
                     })
                     .catch((err) => {
-                        console.log("clearChargingProfile", err);
                         that.visible = false;
                         that.isLoading = false;
                         that.isUpdate = true;
-                        let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
-
-                        that.$message({
-                            type: "warning",
-                            message: _errors.toString()
-                        });
+                        let errorMessage = catchErrors("ChargingProfiles Err", err);
+                        that.$message({ type: "warning", message: errorMessage });
                     });
             }
         },

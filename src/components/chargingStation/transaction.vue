@@ -57,11 +57,8 @@
 </template>
 
     <script>
-import { transformUtcToLocTime } from "@/utils/function";
-import {
-    $HTTP_getAllTransactionsReasonList,
-    $HTTP_getAllTransactions
-} from "@/api/api";
+import { transformUtcToLocTime, catchErrors } from "@/utils/function";
+import { $HTTP_getAllTransactionsReasonList, $HTTP_getAllTransactions } from "@/api/api";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import CommonPopup from "@/components/commonPopup";
@@ -108,8 +105,7 @@ export default {
     },
     computed: {
         getLocTime() {
-            return (item, format = "ll hh:mm:ss A") =>
-                transformUtcToLocTime(item, format);
+            return (item, format = "ll hh:mm:ss A") => transformUtcToLocTime(item, format);
         }
     },
     watch: {
@@ -188,12 +184,9 @@ export default {
                 .catch((err) => {
                     this.allTransactions = [];
                     this.total = 0;
-                    console.log(err);
                     this.$emit("updated");
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors(" get transactions", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         getTransactionsReasonList() {
@@ -204,7 +197,8 @@ export default {
                     this.allTransactionsReasonList.isLoading = false;
                 })
                 .catch((err) => {
-                    console.log(err);
+                    let errorMessage = catchErrors("get transaction reason list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

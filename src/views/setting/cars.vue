@@ -126,13 +126,8 @@
 </template>
 
 <script>
-import {
-    $HTTP_getCarBrandListForSelect,
-    $HTTP_getCarList,
-    $HTTP_getCarInfo,
-    $HTTP_getCarModelListForSelect,
-} from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { $HTTP_getCarBrandListForSelect, $HTTP_getCarList, $HTTP_getCarInfo, $HTTP_getCarModelListForSelect } from "@/api/api";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import UpdateCars from "@/views/setting/updateCars";
 import DeleteCars from "@/views/setting/deleteCars";
@@ -140,7 +135,7 @@ import DeleteCars from "@/views/setting/deleteCars";
 export default {
     components: {
         UpdateCars,
-        DeleteCars,
+        DeleteCars
     },
     data() {
         return {
@@ -149,15 +144,15 @@ export default {
             filter: {
                 carBrand: "",
                 carModel: "",
-                tmpSearch: "",
+                tmpSearch: ""
             },
             carBandList: {
                 isLoading: false,
-                data: {},
+                data: {}
             },
             carModelList: {
                 isLoading: false,
-                data: {},
+                data: {}
             },
             isLoading: false,
             tableData: [],
@@ -175,7 +170,7 @@ export default {
                         carModel: "",
                         trim: "",
                         year: "",
-                        imageUrl: "",
+                        imageUrl: ""
                     },
                     carBatteryInfo: {
                         acPlug: "",
@@ -185,13 +180,13 @@ export default {
                         dcPower: "",
                         chargePlugLocation: "",
                         chargeSpeed: "",
-                        chargeTime: "",
-                    },
-                },
+                        chargeTime: ""
+                    }
+                }
             },
             createCarsDialog: {
                 show: false,
-                isLoading: false,
+                isLoading: false
             },
             deleteCarsDialog: {
                 id: null,
@@ -199,13 +194,13 @@ export default {
                 model: "",
                 trim: "",
                 isLoading: false,
-                show: false,
+                show: false
             },
             editCarsDialog: {
                 show: false,
                 isLoading: false,
-                data: {},
-            },
+                data: {}
+            }
         };
     },
     mounted() {
@@ -218,7 +213,7 @@ export default {
             const that = this;
             this.carBandList.isLoading = true;
             let param = {
-                limit: 200,
+                limit: 200
             };
             $HTTP_getCarBrandListForSelect(param)
                 .then((res) => {
@@ -227,13 +222,13 @@ export default {
                         that.carBandList.data = res.data;
                     } else {
                         that.carBandList.data = {};
-                        this.$message({ type: "warning", message: i18n.t("noData") });
+                        that.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
-                    console.log("carBandList", err);
                     that.carBandList.data = {};
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("carBandList", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchCarModelList() {
@@ -250,20 +245,20 @@ export default {
                         that.carModelList.data = res.data;
                     } else {
                         that.carModelList.data = {};
-                        this.$message({ type: "warning", message: i18n.t("noData") });
+                        that.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
-                    console.log("carModelList", err);
                     that.carModelList.data = {};
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("carModelList", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchData(type) {
             this.isLoading = true;
             let param = {
                 page: this.page,
-                limit: this.limit,
+                limit: this.limit
             };
             if (this.filter.carBrand) {
                 param.make = this.filter.carBrand;
@@ -286,7 +281,7 @@ export default {
                     } else {
                         this.tableData = [];
                         this.total = 0;
-                        if(this.filter.carBrand || this.filter.carModel){
+                        if (this.filter.carBrand || this.filter.carModel) {
                             this.$message({ type: "warning", message: i18n.t("emptyMessage") });
                         }
                     }
@@ -294,14 +289,14 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("car list", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         fetchCarInfo() {
             const that = this;
             let param = {
-                carId: this.dialog.carId,
+                carId: this.dialog.carId
             };
             this.dialog.isLoading = true;
             $HTTP_getCarInfo(param)
@@ -327,12 +322,12 @@ export default {
                         that.dialog.info.carTypeInfo = Object.assign({}, _carTypeInfo);
                         that.dialog.info.carBatteryInfo = Object.assign({}, _carBatteryInfo);
                     } else {
-                        this.$message({ type: "warning", message: i18n.t("noData") });
+                        that.$message({ type: "warning", message: i18n.t("noData") });
                     }
                 })
                 .catch((err) => {
-                    console.log("chargeBoxList", err);
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
+                    let errorMessage = catchErrors("charge box list", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {
@@ -357,7 +352,7 @@ export default {
                     carModel: "",
                     trim: "",
                     year: "",
-                    imageUrl: "",
+                    imageUrl: ""
                 },
                 carBatteryInfo: {
                     acPlug: "",
@@ -367,8 +362,8 @@ export default {
                     dcPower: "",
                     chargePlugLocation: "",
                     chargeSpeed: "",
-                    chargeTime: "",
-                },
+                    chargeTime: ""
+                }
             };
             this.active = "carType";
             this.fetchCarInfo();
@@ -412,8 +407,8 @@ export default {
             this.fetchData();
 
             this.$jQuery(".scroll").mCustomScrollbar("update");
-        },
-    },
+        }
+    }
 };
 </script>
 <style lang = "scss" scoped>

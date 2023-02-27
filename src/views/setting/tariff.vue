@@ -150,7 +150,7 @@
 <script>
 import { $GLOBAL_PAGE_LIMIT } from "@/utils/global";
 import { $HTTP_getTarrifs } from "@/api/api";
-import { setScrollBar, transformUtcToLocTime } from "@/utils/function";
+import { setScrollBar, transformUtcToLocTime, catchErrors } from "@/utils/function";
 import DeleteTariff from "@/views/setting/deleteTariff";
 import UpdateTariff from "@/views/setting/updateTariff";
 import i18n from "../../lang/lang";
@@ -301,7 +301,10 @@ export default {
             if (this.filter.endDateTimeBefore) {
                 params.EndDateTimeBefore = new Date(this.filter.endDateTimeBefore).toISOString();
             }
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getTarrifs(params)
@@ -336,11 +339,8 @@ export default {
                 .catch((err) => {
                     this.tableData = [];
                     this.total = 0;
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("tariff", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         changePage(page) {

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { setScrollBar, getNewlyAddedItems, getNewlyRemovedItems } from "@/utils/function";
+import { setScrollBar, getNewlyAddedItems, getNewlyRemovedItems, catchErrors } from "@/utils/function";
 import { $ALL_DATA_COUNT } from "@/utils/global";
 import {
     $HTTP_addOrganizations,
@@ -183,11 +183,8 @@ export default {
             }
         },
         printRequestError(err) {
-            console.log(err);
-            this.$message({
-                type: "warning",
-                message: i18n.t("error_network")
-            });
+            let errorMessage = catchErrors("update organizations", err);
+            this.$message({ type: "warning", message: errorMessage });
             this.isUpdate = true;
             this.visible = false;
         },
@@ -261,7 +258,10 @@ export default {
                 limit: $ALL_DATA_COUNT
             };
             this.stationListIsLoading = true;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getStationList(params)
@@ -283,7 +283,10 @@ export default {
                 limit: $ALL_DATA_COUNT
             };
             this.tariffListIsLoading = true;
-            if ((this.selectedOrganization.length >= 1  && this.userRole!=='Admin')|| (this.userRole==='Admin' && this.selectedOrganization[0]?.name!=='All')) {
+            if (
+                (this.selectedOrganization.length >= 1 && this.userRole !== "Admin") ||
+                (this.userRole === "Admin" && this.selectedOrganization[0]?.name !== "All")
+            ) {
                 params.OperatorIds = this.selectedOrganization.map((organization) => organization.id);
             }
             $HTTP_getTarrifs(params)

@@ -36,7 +36,7 @@
 
 <script>
 import { $HTTP_getConfiguration, $HTTP_updateConfiguration } from "@/api/api";
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import SwitchComponent from "@/views/setting/switchComponent";
 import InputComponent from "@/views/setting/inputComponent";
 export default {
@@ -82,8 +82,7 @@ export default {
             if (id !== null && id !== "" && id !== undefined) {
                 let params = {};
                 params.chargePointId = id;
-                let configurationLength =
-                    this.filter.selectedConfiguration.length;
+                let configurationLength = this.filter.selectedConfiguration.length;
                 if (configurationLength > 0) {
                     params.keys = this.filter.selectedConfiguration;
                 }
@@ -97,11 +96,8 @@ export default {
                             this.runScrollFunction();
                             // only when filter is empty
                             // reserves all list for filter
-                            if (
-                                this.filter.selectedConfiguration.length === 0
-                            ) {
-                                this.configurationSearchList.data =
-                                    this.sortByKey(res);
+                            if (this.filter.selectedConfiguration.length === 0) {
+                                this.configurationSearchList.data = this.sortByKey(res);
                             }
                         } else {
                             this.configurations = [];
@@ -111,11 +107,8 @@ export default {
                     .catch((err) => {
                         this.configurations = [];
                         this.isLoading = false;
-                        console.log(err);
-                        this.$message({
-                            type: "warning",
-                            message: i18n.t("error_network")
-                        });
+                        let errorMessage = catchErrors("configurations", err);
+                        this.$message({ type: "warning", message: errorMessage });
                     });
             }
         },
@@ -153,11 +146,8 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("configurations", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         forceRerender() {
@@ -169,8 +159,7 @@ export default {
         },
         runScrollFunction() {
             const that = this;
-            that.$jQuery(".formVertical").length > 0 &&
-                this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+            that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
             that.$nextTick(() => {
                 setScrollBar(".formVertical", that);
             });

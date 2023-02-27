@@ -223,3 +223,24 @@ export const convertToAMorPM = (time, format = "hh:mm:ss A") => {
     }
     return newTime;
 };
+
+// catching errors in the api call
+// only console errors in development
+export const catchErrors = (errorFunction, err) => {
+    let environment = process?.env?.NODE_ENV;
+    if (environment === "development") {
+        console.log(errorFunction, err);
+    }
+    // return the message popup to be displayed
+    let _errors;
+    if (err?.data?.errors) {
+        _errors = Object.values(err?.data?.errors);
+    } else if (err?.data && err?.data !== "") {
+        _errors = err?.data;
+    } else if (err && err?.data !== "") {
+        _errors = err;
+    } else {
+        _errors = i18n.t("error_network");
+    }
+    return _errors.toString();
+};

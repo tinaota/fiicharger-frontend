@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { setScrollBar } from "@/utils/function";
+import { setScrollBar, catchErrors } from "@/utils/function";
 import { validateIsEmpty } from "@/utils/validation";
 import { $HTTP_createIdTags, $HTTP_updateIdTags } from "@/api/api";
 import { $HTTP_getIdTagsList } from "@/api/api";
@@ -105,8 +105,7 @@ export default {
 
         this.getParentIdTagList();
 
-        that.$jQuery(".formVertical").length > 0 &&
-            this.$jQuery(".formVertical").mCustomScrollbar("destroy");
+        that.$jQuery(".formVertical").length > 0 && this.$jQuery(".formVertical").mCustomScrollbar("destroy");
         that.$nextTick(() => {
             setScrollBar(".formVertical", that);
         });
@@ -124,12 +123,9 @@ export default {
                     }
                 })
                 .catch((err) => {
-                    console.log("idTagListError", err);
                     this.parentIdTagListLoading = false;
-                    this.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("idTagListError", err);
+                    this.$message({ type: "warning", message: errorMessage });
                 });
         },
         udpateIdTags() {
@@ -144,18 +140,11 @@ export default {
                         params = { ...that.dialog };
                     }
 
-                    let _expiryDate =
-                        params?.expiryDate !== null
-                            ? new Date(params?.expiryDate).toISOString()
-                            : null;
+                    let _expiryDate = params?.expiryDate !== null ? new Date(params?.expiryDate).toISOString() : null;
                     // convert to universal date and time
                     params.expiryDate = _expiryDate;
-                    params.isBlocked =
-                        params.isBlocked === "true" ? true : false;
-                    params.parentIdTagId =
-                        params.parentIdTagId === ""
-                            ? null
-                            : params.parentIdTagId;
+                    params.isBlocked = params.isBlocked === "true" ? true : false;
+                    params.parentIdTagId = params.parentIdTagId === "" ? null : params.parentIdTagId;
                     this.$API(params)
                         .then((res) => {
                             that.isLoading = false;
@@ -169,15 +158,9 @@ export default {
                             }
                         })
                         .catch((err) => {
-                            console.log(err);
                             that.visible = false;
-                            let _errors = err?.data?.errors
-                                ? Object.values(err?.data?.errors)
-                                : err?.data;
-                            that.$message({
-                                type: "warning",
-                                message: _errors.toString()
-                            });
+                            let errorMessage = catchErrors("idTagListError", err);
+                            this.$message({ type: "warning", message: errorMessage });
                         });
                 } else {
                     console.log("error submit!!");

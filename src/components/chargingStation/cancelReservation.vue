@@ -20,6 +20,7 @@
 <script>
 import { $HTTP_cancelReservation } from "@/api/api";
 import CommonList from "@/components/commonList.vue";
+import { catchErrors } from "@/utils/function";
 export default {
     components: {
         CommonList
@@ -84,14 +85,11 @@ export default {
                     that.visible = false;
                 })
                 .catch((err) => {
-                    console.log("cancelReservation", err);
                     that.isLoading = false;
                     that.isUpdate = false;
                     that.visible = false;
-                    that.$message({
-                        type: "warning",
-                        message: i18n.t("error_network")
-                    });
+                    let errorMessage = catchErrors("cancelReservation", err);
+                    that.$message({ type: "warning", message: errorMessage });
                 });
         },
         closeDialog() {

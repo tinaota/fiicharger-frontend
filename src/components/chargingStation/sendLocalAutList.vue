@@ -54,6 +54,7 @@
 import {$HTTP_getIdTagsList,$HTTP_sendAuthLocalList} from "@/api/api";
 import i18n from '../../lang/lang';
 import CommonPopup from "@/components/commonPopup";
+import { catchErrors } from "@/utils/function";
 export default {
     components: {
         CommonPopup
@@ -177,10 +178,11 @@ export default {
                             break;
                     }
                 })
-                .catch( () => {
+                .catch( (err) => {
                     that.isLoading = false;
-                    that.$message({ type: "warning", message: i18n.t("error_network") });
-                })
+                    let errorMessage = catchErrors("getCompositeSchedule", err);
+                    that.$message({ type: "warning", message: errorMessage });
+                    })
         },
         closeDialog() {
             this.initData();
