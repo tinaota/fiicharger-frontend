@@ -23,7 +23,7 @@
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
                 <el-select class="select-small info" v-model="param.connectorId" v-loading="connectorData.isLoading">
                     <el-option :value="0" :label="'0 ' + $t('general.all')"></el-option>
-                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + item.type" :key="item.id" :value="item.id"></el-option>
+                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + getConnectorType(item.type)" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
             <div class="item">
@@ -46,6 +46,7 @@
 
 <script>
 import { $HTTP_getChargingProfilesTemplate, $HTTP_getConnectorStatusesById, $HTTP_setChargingProfile } from "@/api/api";
+import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
 
 export default {
     props: {
@@ -75,8 +76,17 @@ export default {
                 data: ["ChargePointMaxProfile", "TxDefaultProfile"]
             },
             chargingProfilePurpose: "TxDefaultProfile",
-            stackLevel: null
+            stackLevel: null,
+            connectorTypeList: $CONNECTOR_TYPE_LIST
         };
+    },
+    computed: {
+        getConnectorType() {
+            return (item) => {
+                let convertedValue = this.connectorTypeList.filter((powerType) => powerType.value === item);
+                return convertedValue[0].name;
+            };
+        }
     },
     watch: {
         show: {

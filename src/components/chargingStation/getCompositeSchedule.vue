@@ -13,7 +13,7 @@
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
                 <el-select class="select-small info" v-model="param.connectorId" v-loading="connectorData.isLoading">
                     <el-option :value="0" :label="'0 ' + $t('general.default')"></el-option>
-                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + item.type" :key="item.id" :value="item.id"></el-option>
+                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + getConnectorType(item.type)" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
             <div class="item">
@@ -39,11 +39,9 @@
 </template>
 
 <script>
-import {
-    $HTTP_getCompositeSchedule,
-    $HTTP_getConnectorStatusesById
-} from "@/api/api";
+import { $HTTP_getCompositeSchedule, $HTTP_getConnectorStatusesById } from "@/api/api";
 import ShowCompositeSchedule from "@/components/chargingStation/showCompositeSchedule";
+import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
 export default {
     components: {
         ShowCompositeSchedule
@@ -74,8 +72,17 @@ export default {
                     { name: "Watt", label: "W" },
                     { name: "Ampere", label: "A" }
                 ]
-            }
+            },
+            connectorTypeList: $CONNECTOR_TYPE_LIST
         };
+    },
+    computed: {
+        getConnectorType() {
+            return (item) => {
+                let convertedValue = this.connectorTypeList.filter((powerType) => powerType.value === item);
+                return convertedValue[0].name;
+            };
+        }
     },
     watch: {
         show: {
@@ -133,20 +140,15 @@ export default {
                     if (res.status === "Accepted") {
                         that.visible = true;
                         that.showCompositeScheduleDialog.data = { ...res };
-                        that.showCompositeScheduleDialog.data.name =
-                            that.data.name;
-                        that.showCompositeScheduleDialog.data.chargePointId =
-                            that.data.chargePointId;
-                        that.showCompositeScheduleDialog.data.ocppId =
-                            that.data.ocppId;
+                        that.showCompositeScheduleDialog.data.name = that.data.name;
+                        that.showCompositeScheduleDialog.data.chargePointId = that.data.chargePointId;
+                        that.showCompositeScheduleDialog.data.ocppId = that.data.ocppId;
                         that.showCompositeScheduleDialog.visible = true;
                     } else {
                         that.visible = false;
                         that.$message({
                             type: "warning",
-                            message: i18n.t(
-                                "actions.getCompositeScheduleFaulted"
-                            )
+                            message: i18n.t("actions.getCompositeScheduleFaulted")
                         });
                     }
                 })
@@ -154,9 +156,7 @@ export default {
                     console.log("getCompositeSchedule", err);
                     that.visible = false;
                     that.isLoading = false;
-                    let _errors = err?.data?.errors
-                        ? Object.values(err?.data?.errors)
-                        : err?.data;
+                    let _errors = err?.data?.errors ? Object.values(err?.data?.errors) : err?.data;
 
                     that.$message({
                         type: "warning",

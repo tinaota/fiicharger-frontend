@@ -13,7 +13,7 @@
                 <div class="label">{{ $t('chargingStation.connector') }}</div>
                 <el-select class="select-small info" v-model="param.connectorId" v-loading="connectorData.isLoading">
                     <el-option :value="0" :label="'0 ' + $t('general.default')"></el-option>
-                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + item.type" :key="item.id" :value="item.id"></el-option>
+                    <el-option v-for="item in connectorData.data" :label="item.id + ' ' + getConnectorType(item.type)" :key="item.id" :value="item.id"></el-option>
                 </el-select>
             </div>
             <div class="item">
@@ -37,6 +37,8 @@
 <script>
 import { $HTTP_getIdTagsList, $HTTP_reserveNow } from "@/api/api";
 import { setScrollBar } from "@/utils/function";
+import { $CONNECTOR_TYPE_LIST } from "@/utils/global";
+
 export default {
     props: {
         show: Boolean,
@@ -62,49 +64,62 @@ export default {
                 disabledDate(time) {
                     return time.getTime() + 86400000 < Date.now();
                 },
-                shortcuts: [{
-                    text: i18n.t('chargingStation.timeOpt.1Min'),
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() + 1 * 60 * 1000);
-                        picker.$emit('pick', date);
+                shortcuts: [
+                    {
+                        text: i18n.t("chargingStation.timeOpt.1Min"),
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() + 1 * 60 * 1000);
+                            picker.$emit("pick", date);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.5Mins"),
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() + 5 * 60 * 1000);
+                            picker.$emit("pick", date);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.10Mins"),
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() + 10 * 60 * 1000);
+                            picker.$emit("pick", date);
+                        }
+                    },
+                    {
+                        text: i18n.t("chargingStation.timeOpt.30Mins"),
+                        onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() + 30 * 60 * 1000);
+                            picker.$emit("pick", date);
+                        }
                     }
-                }, {
-                    text: i18n.t('chargingStation.timeOpt.5Mins'),
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() + 5 * 60 * 1000);
-                        picker.$emit('pick', date);
-                    }
-                }, {
-                    text: i18n.t('chargingStation.timeOpt.10Mins'),
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() + 10 * 60 * 1000);
-                        picker.$emit('pick', date);
-                    }
-                }, {
-                    text: i18n.t('chargingStation.timeOpt.30Mins'),
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() + 30 * 60 * 1000);
-                        picker.$emit('pick', date);
-                    }
-                }]
-            }
+                ]
+            },
+            connectorTypeList: $CONNECTOR_TYPE_LIST
         };
+    },
+    computed: {
+        getConnectorType() {
+            return (item) => {
+                let convertedValue = this.connectorTypeList.filter((powerType) => powerType.value === item);
+                return convertedValue[0].name;
+            };
+        }
     },
     watch: {
         show: {
             handler() {
                 this.visible = this.show;
                 if (this.visible) {
-                    this.fetchIdTags()
+                    this.fetchIdTags();
                     const date = new Date();
                     date.setTime(date.getTime() + 30 * 60 * 1000);
                     this.param.expiryDate = date;
-                    this.$jQuery(".dialogForm").length > 0 &&
-                        this.$jQuery(".dialogForm").mCustomScrollbar("destroy");
+                    this.$jQuery(".dialogForm").length > 0 && this.$jQuery(".dialogForm").mCustomScrollbar("destroy");
                     this.$nextTick(() => {
                         setScrollBar(".dialogForm", this);
                     });
