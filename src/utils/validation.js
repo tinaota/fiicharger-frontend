@@ -16,15 +16,37 @@ export const validateNonEmptyImageUrl = (rule, value, callback) => {
     }
 };
 
+// check if image exists in the url
+export const checkIfImageExists = (url, callback) => {
+    const img = new Image();
+    img.src = url;
+    if (img.complete) {
+        callback(true);
+    } else {
+        img.onload = () => {
+            callback(true);
+        };
+        img.onerror = () => {
+            console.log("cannot get image");
+            callback(false);
+        };
+    }
+};
+
 export const validateImageUrl = (rule, value, callback) => {
     if (typeof value !== "string") {
         callback(new Error(i18n.t("validation.urlValidation")));
-    } else if (
-        /^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)
-    ) {
+    } else if (/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim.test(value)) {
         callback();
     } else {
-        callback(new Error(i18n.t("validation.urlValidation")));
+        // check if the url is a proper image
+        checkIfImageExists(value, (exists) => {
+            if (exists) {
+                callback();
+            } else {
+                callback(new Error(i18n.t("validation.urlValidation")));
+            }
+        });
     }
 };
 
