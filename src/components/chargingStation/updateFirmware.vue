@@ -4,10 +4,6 @@
         :visible.sync="visible"
         width="600px"
         @close="closeDialog()">
-        <!-- <h3 class="title">
-            {{ $t('chargingStation.currentFirmwareVersion') }}:
-            <span v-if="currentVersion"> {{ currentVersion }} </span>
-        </h3> -->
         <p v-show="lastFirmwareFileName">
             <span class="title">{{ $t('chargingStation.fileName') }}: </span>
             {{ lastFirmwareFileName }}
@@ -18,6 +14,7 @@
             <span v-else-if="updateStatus == 'Installed' || updateStatus == 'Idle' " class="updateSuccess"><i class="el-icon-check"></i>{{ updateStatus }}</span>
             <span v-else-if="updateStatus == 'DownloadFailed' || updateStatus == 'InstallationFailed'" class="updateFailed"><i class="el-icon-close"></i>{{ updateStatus }}</span>
         </p>
+        <div class="firmware"> {{ $t('general.FirmwareVersion') }} = {{firmwareversion}}</div>
         <br/>
         <div class="content-warp" v-loading="isLoading">
             <div class="result-content">
@@ -75,7 +72,8 @@ import moment from "moment";
 export default {
     props: {
         chargePointId: String,
-        show: Boolean
+        show: Boolean,
+        firmwareversion: String
     },
     data() {
         return {
@@ -264,5 +262,10 @@ export default {
         bottom: 0;
         right: 0;
     }
+}
+.firmware{
+   font-size: 1rem;
+   font-weight:500;
+   color:#151E25; 
 }
 </style>

@@ -320,7 +320,8 @@
         "cumulative": "Cumulative %",
         "nTariffs": "Number of Prices",
         "website": "Website",
-        "organizationName": "Organization Name"
+        "organizationName": "Organization Name",
+        "FirmwareVersion": "Firmware Version"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

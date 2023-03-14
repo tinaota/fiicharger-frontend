@@ -320,7 +320,9 @@
         "cumulative": "累计 %",
         "nTariffs": "价格数量",
         "website": "网站",
-        "organizationName": "机构名称"
+        "organizationName": "机构名称",
+        "FirmwareVersion": "固件版本"
+        
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

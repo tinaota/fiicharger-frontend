@@ -320,7 +320,8 @@
         "cumulative": "Tích lũy %",
         "nTariffs": "Số lượng giá",
         "website": "Trang mạng",
-        "organizationName": "tên tổ chức"
+        "organizationName": "tên tổ chức",
+        "FirmwareVersion": "phiên bản phần mềm"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
