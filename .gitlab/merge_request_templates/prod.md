@@ -9,5 +9,5 @@
 - [ ] I have verified that all issues for the above milestone have been integrated
 
 #### Reviewers
-- @alexander.gangwish 
-- @louis.krueger
+- @kshitij.lingthep
+- @eric.lin
