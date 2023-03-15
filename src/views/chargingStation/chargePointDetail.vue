@@ -61,8 +61,21 @@
                         <Connector :dataObj="connectorStatuses.data" :chargerStatus="chargePointById[0].connectionStatus" :isBreak="true"></Connector>
                     </div>
                     <div class="item">
-                        <div class="label"> {{ $t('general.FirmwareVersion') }} </div>
-                        <div class="content"> {{ firmwareversion}}</div>
+                        <div class="label"> {{ $t('general.firmwareVersion') }} </div>
+                        <div class="content">  {{chargePointById[0].firmwareVersion }}</div>
+                    </div>
+                         <div class="item">
+       
+                        <div class="label"> {{ $t('general.chargePointVendor') }} </div>
+                        <div class="content">  {{chargePointById[0].chargePointVendor }}</div>
+                    </div>
+                            <div class="item">
+                        <div class="label"> {{ $t('general.chargePointSerialNumber') }} </div>
+                        <div class="content">  {{chargePointById[0].chargePointSerialNumber }}</div>
+                    </div>
+                                <div class="item">
+                        <div class="label"> {{ $t('general.chargePointModel') }} </div>
+                        <div class="content">  {{chargePointById[0].chargePointModel }}</div>
                     </div>
                 </div>
                 <div class="card-8 rank-area">
@@ -208,7 +221,7 @@
             <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
             <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
             <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
-            <UpdateFirmware :firmwareversion="firmwareversion" :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
+            <UpdateFirmware :firmwareVersion="chargePointById[0].firmwareVersion" :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
             <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
             <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
@@ -233,7 +246,7 @@ import CancelReservation from "@/components/chargingStation/cancelReservation";
 import ChargingProfile from "@/components/chargingStation/chargingProfile";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
-import { $HTTP_getAllChargeBoxList, $HTTP_getConnectorStatusesById, $HTTP_getTransactionsStatistics, $HTTP_getChargeBoxTariff,$HTTP_getfirmware } from "@/api/api";
+import { $HTTP_getAllChargeBoxList, $HTTP_getConnectorStatusesById, $HTTP_getTransactionsStatistics, $HTTP_getChargeBoxTariff,$HTTP_getFirmwareVersion } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import SetConfiguration from "@/views/setting/setConfigurationDialog";
@@ -282,7 +295,6 @@ export default {
     },
     data() {
         return {
-            firmwareversion: null,
             // costRevenueUrl: costRevenueUrl,
             isDark: this.$store.state.darkTheme,
             changeConnectorType: {
@@ -511,8 +523,6 @@ export default {
             this.getConnectorStatusesById(this.curRouteParam.chargeBoxId);
         }, $GLOBAL_REFRESH);
         setScrollBar(".scroll", this);
-        // firmware version
-        this.getFrimwareversion(this.curRouteParam.chargeBoxId);
     },
     beforeDestroy() {
         window.sessionStorage.removeItem("fiics-chargePointInfo");
@@ -521,19 +531,6 @@ export default {
         clearInterval(this.connectorTimer);
     },
     methods: {
-        getFrimwareversion(chargeBoxId){
-            let params = {
-                chargePointId: chargeBoxId
-            };
-            $HTTP_getfirmware(params)
-                .then((res) => {
-                    this.firmwareversion=res
-                })
-                .catch((err) => {
-                    let errorMessage = catchErrors("firmware", err);
-                    this.$message({ type: "warning", message: errorMessage });
-                });
-        },
         openActionDialog(row, type, action = "") {
             let data = row;
             if (type === "commonpopup") {

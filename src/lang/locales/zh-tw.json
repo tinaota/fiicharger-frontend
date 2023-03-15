@@ -187,7 +187,7 @@
         "boundToStation": "開往車站",
         "descending": "降序",
         "generate": "產生",
-        "firmwareStatus": "固件狀態",
+        "firmwareStatus": "韌體狀態",
         "diagnosticsStatus": "診斷狀態",
         "downloadCSV": "下載 CSV",
         "downloadPDF": "下載PDF",
@@ -321,7 +321,10 @@
         "nTariffs": "價格數量",
         "website": "網站",
         "organizationName": "機構名稱",
-        "FirmwareVersion": "固件版本"
+        "firmwareVersion": "韌體版本",
+        "chargePointVendor":"供應商",
+        "chargePointSerialNumber":"序列號",
+        "chargePointModel":"型號"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",

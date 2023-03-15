@@ -464,6 +464,6 @@ export const $HTTP_inviteUsersByEmail = params => {
     return post(`${base_charger}/api/operators/${params.operatorId}/invite`, `${params.email}`, { headers: { 'Content-Type': 'application/json' } })
 }
 
-export const $HTTP_getfirmware = params => {
+export const $HTTP_getFirmwareVersion = params => {
     return fetch(`${base_charger}/api/charge-points/${params.chargePointId}/firmware-version`)
 }

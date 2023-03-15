@@ -321,7 +321,10 @@
         "nTariffs": "Số lượng giá",
         "website": "Trang mạng",
         "organizationName": "tên tổ chức",
-        "FirmwareVersion": "phiên bản phần mềm"
+        "firmwareVersion": "phiên bản phần mềm",
+        "chargePointVendor":"người bán",
+        "chargePointSerialNumber":"số seri",
+        "chargePointModel":"người mẫu"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

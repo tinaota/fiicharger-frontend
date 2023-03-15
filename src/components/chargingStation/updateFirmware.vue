@@ -14,7 +14,7 @@
             <span v-else-if="updateStatus == 'Installed' || updateStatus == 'Idle' " class="updateSuccess"><i class="el-icon-check"></i>{{ updateStatus }}</span>
             <span v-else-if="updateStatus == 'DownloadFailed' || updateStatus == 'InstallationFailed'" class="updateFailed"><i class="el-icon-close"></i>{{ updateStatus }}</span>
         </p>
-        <div class="firmware"> {{ $t('general.FirmwareVersion') }} = {{firmwareversion}}</div>
+        <div class="firmware">  <h3>{{ $t('general.firmwareVersion') }}</h3> : {{firmwareVersion}}</div>
         <br/>
         <div class="content-warp" v-loading="isLoading">
             <div class="result-content">
@@ -73,7 +73,7 @@ export default {
     props: {
         chargePointId: String,
         show: Boolean,
-        firmwareversion: String
+        firmwareVersion: String
     },
     data() {
         return {
@@ -264,8 +264,12 @@ export default {
     }
 }
 .firmware{
-   font-size: 1rem;
-   font-weight:500;
-   color:#151E25; 
+   font-size: 14px;
+}
+.firmware h3{
+  font-weight:bold;
+  display: inline;
+   font-size: 1.17rem;
+
 }
 </style>

@@ -321,7 +321,10 @@
         "nTariffs": "Number of Prices",
         "website": "Website",
         "organizationName": "Organization Name",
-        "FirmwareVersion": "Firmware Version"
+        "firmwareVersion": "Firmware Version",
+        "chargePointVendor":"Vendor",
+        "chargePointSerialNumber":"Serial Number",
+        "chargePointModel":"Model"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
