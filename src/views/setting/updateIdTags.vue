@@ -5,7 +5,7 @@
                 <div class="form-item">
                     <el-form-item prop="id">
                         <div class="label">ID</div>
-                        <el-input v-model="dialog.value" :disabled="dialogType==='edit'" minlength="3" maxlength="20" required></el-input>
+                        <el-input v-model="dialog.value" :disabled="dialogType==='edit'" maxlength="20" required></el-input>
                     </el-form-item>
                 </div>
                 <div class="form-item">
