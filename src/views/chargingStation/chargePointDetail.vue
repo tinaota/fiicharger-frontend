@@ -221,7 +221,7 @@
             <ReserveNow :show="reserveNow.visible" :data="reserveNow.data" :connectorData="connectorStatuses" @close="isUpdate => { closeDialog('reserveNow', isUpdate) }"></ReserveNow>
             <CancelReservation :show="cancelReservation.visible" :data="cancelReservation.data" @close="isUpdate => { closeDialog('cancelReservation', isUpdate) }"></CancelReservation>
             <RemoteTrigger :show="remoteTrigger.visible" :data="remoteTrigger.data" @close="closeDialog('remoteTrigger')"></RemoteTrigger>
-            <UpdateFirmware :firmwareVersion="chargePointById[0].firmwareVersion" :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
+            <UpdateFirmware :firmwareVersion="chargePointById[0]?.firmwareVersion" :chargePointId="updateDialog.chargePointId" :show="updateDialog.visible" @close="closeDialog('updateDialog')"></UpdateFirmware>
             <GetLocalAuthListVersion :chargePointId="getAuthVersionDialog.chargePointId" :show="getAuthVersionDialog.visible" @close="closeDialog('getAuthVersionDialog')"></GetLocalAuthListVersion>
             <SendLocalAutList :chargePointId="sendAutDialog.chargePointId" :show="sendAutDialog.visible" @close="closeDialog('sendAutDialog')"></SendLocalAutList>
             <GetDiagnostics :chargePointId="diagnosticsDialog.chargePointId" :show="diagnosticsDialog.visible" @close="closeDialog('diagnosticsDialog')"></GetDiagnostics>
@@ -246,7 +246,7 @@ import CancelReservation from "@/components/chargingStation/cancelReservation";
 import ChargingProfile from "@/components/chargingStation/chargingProfile";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
 import ClearChargingProfile from "@/components/chargingStation/clearChargingProfile";
-import { $HTTP_getAllChargeBoxList, $HTTP_getConnectorStatusesById, $HTTP_getTransactionsStatistics, $HTTP_getChargeBoxTariff,$HTTP_getFirmwareVersion } from "@/api/api";
+import { $HTTP_getAllChargeBoxList, $HTTP_getConnectorStatusesById, $HTTP_getTransactionsStatistics, $HTTP_getChargeBoxTariff } from "@/api/api";
 import UpdateConnectorType from "@/components/chargingStation/updateConnectorType";
 import Configuration from "@/views/setting/configuration";
 import SetConfiguration from "@/views/setting/setConfigurationDialog";
@@ -767,6 +767,8 @@ export default {
             } else if (type === "updateDialog") {
                 this[type].visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");
+                // get new chargepoint data
+                this.getChargePointsById(this.curRouteParam.ocppId)
             } else if (type === "getAuthVersionDialog") {
                 this.getAuthVersionDialog.visible = false;
                 this.$jQuery(".scroll").mCustomScrollbar("update");

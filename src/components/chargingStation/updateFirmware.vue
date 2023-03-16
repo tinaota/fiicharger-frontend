@@ -14,7 +14,7 @@
             <span v-else-if="updateStatus == 'Installed' || updateStatus == 'Idle' " class="updateSuccess"><i class="el-icon-check"></i>{{ updateStatus }}</span>
             <span v-else-if="updateStatus == 'DownloadFailed' || updateStatus == 'InstallationFailed'" class="updateFailed"><i class="el-icon-close"></i>{{ updateStatus }}</span>
         </p>
-        <div class="firmware">  <h3>{{ $t('general.firmwareVersion') }}</h3> : {{firmwareVersion}}</div>
+        <div class="firmware">  <h3>{{ $t('general.firmwareVersion') }}</h3> : {{updatedFirmwareVersion}}</div>
         <br/>
         <div class="content-warp" v-loading="isLoading">
             <div class="result-content">
@@ -65,7 +65,8 @@ import {
     $HTTP_getFileList,
     $HTTP_getChargePointById,
     $HTTP_postUpdateFirmware,
-    $HTTP_getUpdateFirmwareStatus
+    $HTTP_getUpdateFirmwareStatus,
+    $HTTP_getFirmwareVersion
 } from "@/api/api";
 import { transformUtcToLocTime, catchErrors } from "@/utils/function";
 import moment from "moment";
@@ -91,7 +92,8 @@ export default {
             page: 1,
             limit: $GLOBAL_PAGE_LIMIT,
             total: 0,
-            loopingStatus: ''
+            loopingStatus: '',
+            updatedFirmwareVersion: ''
         }
     },
     watch: {
@@ -105,6 +107,7 @@ export default {
                         if(!!that.$props.chargePointId){
                             that.getFirmwareList(that.$props.chargePointId);
                             that.getChargePoint(that.$props.chargePointId);
+                            that.updatedFirmwareVersion = that.firmwareVersion
                         }
 
                     });
@@ -151,13 +154,17 @@ export default {
                 .then( res => {
                     that.lastFirmwareFileName = (!!res.lastFirmwareFileName)? res.lastFirmwareFileName: "";
                     that.updateStatus = res.firmwareStatus;
-                    if(res.firmwareStatus == "Downloaded" || res.firmwareStatus == "Downloading" || res.firmwareStatus == "Installing"){
-                        that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
-                        setTimeout(function(){  // Stop Loop for 0.5 hour
-                            that.updateStatus = "Idle";
-                            that.stopLooping(that.loopingStatus);
-                        }, 1800000);
-                    }
+                    that.loopingStatus = setInterval( () => {
+                        if(res.firmwareStatus == "Downloaded" || res.firmwareStatus == "Downloading" || res.firmwareStatus == "Installing"){
+                            that.getStatus(that.$props.chargePointId);
+                        }
+                        that.getFirmwareVersion(that.$props.chargePointId);
+                        }, 5000);
+                    setTimeout(function(){  // Stop Loop for 0.5 hour
+                        that.updateStatus = "Idle";
+                        that.stopLooping(that.loopingStatus);
+                    }, 1800000);
+
                 })
                 .catch( err => {
                     let errorMessage = catchErrors("get chargepoint by id", err);
@@ -180,7 +187,10 @@ export default {
                     if(res === "Accepted"){
                         that.updateStatus = "Waiting";
                         that.lastFirmwareFileName = data.fileName;
-                        that.loopingStatus = setInterval( () => {that.getStatus(that.$props.chargePointId)}, 5000);
+                        that.loopingStatus = setInterval( () => {
+                            that.getStatus(that.$props.chargePointId);
+                            that.getFirmwareVersion(that.$props.chargePointId);
+                            }, 5000);
                         setTimeout(function(){  // Stop Loop for 0.5 hour
                             that.updateStatus = "Idle";
                             that.stopLooping(that.loopingStatus);
@@ -226,6 +236,20 @@ export default {
                     that.$message({ type: "warning", message: errorMessage });
                 });
         },
+        getFirmwareVersion(id){
+            let params = {
+                chargePointId: id
+                };
+                $HTTP_getFirmwareVersion(params)
+                    .then((res) => {
+                        this.updatedFirmwareVersion=res
+                })
+                    .catch((err) => {
+                        let errorMessage = catchErrors("firmware", err);
+                        this.$message({ type: "warning", message: errorMessage
+                });
+            });
+        },
         stopLooping(time){
             clearInterval(time);
         },
@@ -234,6 +258,7 @@ export default {
         },
         closeDialog() {
             this.$emit('close', false);
+            this.stopLooping(this.loopingStatus);
         }
     }
 }
