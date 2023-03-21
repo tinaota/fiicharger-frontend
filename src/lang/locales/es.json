@@ -322,9 +322,9 @@
         "website": "Sitio web",
         "organizationName": "Nombre de la Organización",
         "firmwareVersion": "versión de firmware",
-        "chargePointVendor":"Proveedor",
-        "chargePointSerialNumber":"número de serie",
-        "chargePointModel":"modelo"
+        "chargePointVendor": "Proveedor",
+        "chargePointSerialNumber": "número de serie",
+        "chargePointModel": "modelo"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -775,7 +775,9 @@
         "repeatUsers": "Usuarios repetidos",
         "newUsers": "Usuarios nuevos",
         "totalUsers": "Usuarios totales",
-        "revenueChart": "Ingresos"
+        "revenueChart": "Ingresos",
+        "energyUse": "Energía usada",
+        "totalEnergy": "Energía total"
     },
     "reports": {
         "chargePoints": "Puntos de recarga",

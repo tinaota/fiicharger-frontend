@@ -6,7 +6,7 @@
 
 <script>
 import CommonChart from "@/components/charts/CommonChart";
-import { $HTTP_getTransactionTrafficGraphData } from "@/api/api";
+import { $HTTP_getTransactionEnergyUseGraphData } from "@/api/api";
 import { transformUtcToLocTimeForGraphs } from "@/utils/function";
 import i18n from "../../../lang/lang";
 import moment from "moment";
@@ -31,7 +31,7 @@ export default {
         dateRange: function () {
             // check the length of the dates to verify
             // it has both start/end dates
-            this.fetchTransactionTrafficGraphData(this.dateRange, this.id);
+            this.fetchTransactionEnergyUseGraphData(this.dateRange, this.id);
         },
         isDark: function () {
             this.convertChartOptions(this.responseData);
@@ -43,11 +43,11 @@ export default {
         }
     },
     mounted() {
-        this.fetchTransactionTrafficGraphData(this.dateRange, this.id);
+        this.fetchTransactionEnergyUseGraphData(this.dateRange, this.id);
     },
     beforeDestroy() {},
     methods: {
-        fetchTransactionTrafficGraphData(dateRange, id) {
+        fetchTransactionEnergyUseGraphData(dateRange, id) {
             let params = {};
             params.StartedAfter = dateRange[0];
             params.StartedBefore = dateRange[1];
@@ -56,7 +56,7 @@ export default {
             } else if (this.type === "charger") {
                 params.ChargePointId = id;
             }
-            $HTTP_getTransactionTrafficGraphData(params)
+            $HTTP_getTransactionEnergyUseGraphData(params)
                 .then((res) => {
                     if (res.length > 0) {
                         // convert to chart data
@@ -84,11 +84,8 @@ export default {
                     : transformUtcToLocTimeForGraphs(item.x)
             );
             let transactionsData = data.map((item) => item.y.transactions);
-            let repeatedUsersData = data.map((item) => item.y.repeatUsers);
-            let newUsersData = data.map((item) => item.y.newUsers);
-            let legendData = Object.keys(data[0].y).map((item) =>
-                i18n.t(`graphs.${item}`)
-            );
+            let totalEnergyData = data.map((item) => item.y.totalEnergy);
+            let legendData = Object.keys(data[0].y).map((item) => i18n.t(`graphs.${item}`));
             let option = {
                 tooltip: {
                     trigger: "axis",
@@ -128,7 +125,7 @@ export default {
                 yAxis: [
                     {
                         type: "value",
-                        name: i18n.t("graphs.totalUsers"),
+                        name: i18n.t("graphs.totalEnergy"),
                         min: 0,
                         axisLabel: {
                             formatter: "{value}",
@@ -160,8 +157,21 @@ export default {
                 },
                 series: [
                     {
-                        name: i18n.t("graphs.transactions"),
+                        name: i18n.t("graphs.totalEnergy"),
                         type: "line",
+                        data: totalEnergyData,
+                        tooltip: {
+                            valueFormatter: function (value) {
+                                return value?.toFixed(2) + " kWh";
+                            }
+                        },
+                        itemStyle: {
+                            color: "#FF6601"
+                        }
+                    },
+                    {
+                        name: i18n.t("graphs.transactions"),
+                        type: "bar",
                         yAxisIndex: 1,
                         symbol: "circle",
                         symbolSize: 7,
@@ -173,24 +183,6 @@ export default {
                         data: transactionsData,
                         itemStyle: {
                             color: "#BE92FD"
-                        }
-                    },
-                    {
-                        name: i18n.t("graphs.newUsers"),
-                        type: "bar",
-                        stack: "add",
-                        data: newUsersData,
-                        itemStyle: {
-                            color: "#00B8DC"
-                        }
-                    },
-                    {
-                        name: i18n.t("graphs.repeatUsers"),
-                        type: "bar",
-                        stack: "add",
-                        data: repeatedUsersData,
-                        itemStyle: {
-                            color: "#00667A"
                         }
                     }
                 ]

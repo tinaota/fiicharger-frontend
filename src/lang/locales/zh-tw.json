@@ -322,9 +322,9 @@
         "website": "網站",
         "organizationName": "機構名稱",
         "firmwareVersion": "韌體版本",
-        "chargePointVendor":"供應商",
-        "chargePointSerialNumber":"序列號",
-        "chargePointModel":"型號"
+        "chargePointVendor": "供應商",
+        "chargePointSerialNumber": "序列號",
+        "chargePointModel": "型號"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -775,7 +775,9 @@
         "repeatUsers": "重複用戶",
         "newUsers": "新用戶",
         "totalUsers": "總用戶",
-        "revenueChart": "收入"
+        "revenueChart": "收入",
+        "energyUse": "能源使用",
+        "totalEnergy": "總能量"
     },
     "reports": {
         "chargePoints": "充電點",

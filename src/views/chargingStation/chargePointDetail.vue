@@ -65,7 +65,6 @@
                         <div class="content">  {{chargePointById[0].firmwareVersion }}</div>
                     </div>
                          <div class="item">
-       
                         <div class="label"> {{ $t('general.chargePointVendor') }} </div>
                         <div class="content">  {{chargePointById[0].chargePointVendor }}</div>
                     </div>
@@ -208,6 +207,9 @@
                     <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.chargeBoxId">
                         <TransactionTraffic :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionTraffic>
                     </div>
+                    <div class="graph" v-if="graphSelected==='energyUse' && dateRange.length>1 && curRouteParam.chargeBoxId">
+                        <TransactionEnergyUse :dateRange="dateRange" :id="curRouteParam.chargeBoxId" type="charger"></TransactionEnergyUse>
+                    </div>
                 </div>
                 <Sessions v-if="active==='sessions' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateSessionsData && active==='sessions'" @updated="aleadyUpdateData('sessions')"></Sessions>
                 <Transaction v-if="active==='transaction' && dateRange.length>1" :dateRange="dateRange" :ocppId="curRouteParam.ocppId" :chargerId="curRouteParam.chargeBoxId" :isUpdateData="updateTransactions && active==='transaction'" @updated="aleadyUpdateData('transaction')"></Transaction>
@@ -259,6 +261,7 @@ import { $GLOBAL_REFRESH, $POWER_TYPE_LIST, $CONNECTOR_TYPE_LIST } from "@/utils
 import GetDiagnostics from "@/components/chargingStation/getDiagnostics";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+import TransactionEnergyUse from "@/components/charts/config/TransactionEnergyUse"
 import UploadFirmware from "@/components/chargingStation/uploadFirmware";
 import GetCompositeSchedule from "@/components/chargingStation/getCompositeSchedule";
 import TariffPopup from "@/components/popup/tariffPopup";
@@ -283,6 +286,7 @@ export default {
         SendLocalAutList,
         GetDiagnostics,
         TransactionTraffic,
+        TransactionEnergyUse,
         ChargingProfile,
         AddChargingProfile,
         ClearChargingProfile,
@@ -424,7 +428,7 @@ export default {
                 data: []
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic"],
+            graphList: ["transactionAndTraffic", "energyUse"],
             isUpDateChargingProfileData: true,
             updateSessionsData: true,
             addChargingProfile: {

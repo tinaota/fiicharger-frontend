@@ -322,9 +322,9 @@
         "website": "Trang mạng",
         "organizationName": "tên tổ chức",
         "firmwareVersion": "phiên bản phần mềm",
-        "chargePointVendor":"người bán",
-        "chargePointSerialNumber":"số seri",
-        "chargePointModel":"người mẫu"
+        "chargePointVendor": "người bán",
+        "chargePointSerialNumber": "số seri",
+        "chargePointModel": "người mẫu"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -775,7 +775,9 @@
         "repeatUsers": "Người dùng lặp lại",
         "newUsers": "Những người dùng mới",
         "totalUsers": "Tổng số người dùng",
-        "revenueChart": "Thu"
+        "revenueChart": "Thu",
+        "energyUse": "Sử dụng nang lượng",
+        "totalEnergy": "Tổng năng lượng"
     },
     "reports": {
         "chargePoints": "Điểm tính phí",

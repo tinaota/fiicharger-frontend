@@ -85,6 +85,9 @@
                 <div class="graph" v-if="graphSelected==='revenueChart' && dateRange.length>1 && curRouteParam.stationId">
                     <RevenueChart :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></RevenueChart>
                 </div>
+                <div class="graph" v-if="graphSelected==='energyUse' && dateRange.length>1 && curRouteParam.stationId">
+                    <TransactionEnergyUse :dateRange="dateRange" :id="curRouteParam.stationId" type="station"></TransactionEnergyUse>
+                </div>
             </div>
             <div class="card-8 table-result">
                 <div class="header">{{ $t('menu.chargePoint') }}</div>
@@ -176,6 +179,7 @@ import Connector from "@/components/chargingStation/connector";
 import CommonPopup from "@/components/commonPopup";
 import moment from "moment";
 import TransactionTraffic from "@/components/charts/config/TransactionTraffic";
+import TransactionEnergyUse from "@/components/charts/config/TransactionEnergyUse"
 import RevenueChart from "@/components/charts/config/RevenueChart";
 import UpdateFirmware from "@/components/chargingStation/updateFirmware";
 import AddChargingProfile from "@/components/chargingStation/addChargingProfile";
@@ -193,6 +197,7 @@ export default {
         Connector,
         CommonPopup,
         TransactionTraffic,
+        TransactionEnergyUse,
         RevenueChart,
         UpdateFirmware,
         GetDiagnostics,
@@ -357,7 +362,7 @@ export default {
                 ]
             },
             graphSelected: "transactionAndTraffic",
-            graphList: ["transactionAndTraffic", "revenueChart"],
+            graphList: ["transactionAndTraffic", "revenueChart", "energyUse"],
             powerTypeList: $POWER_TYPE_LIST
         };
     },
