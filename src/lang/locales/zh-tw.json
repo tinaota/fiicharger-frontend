@@ -324,7 +324,14 @@
         "firmwareVersion": "韌體版本",
         "chargePointVendor": "供應商",
         "chargePointSerialNumber": "序列號",
-        "chargePointModel": "型號"
+        "chargePointModel": "型號",
+        "transactionAndTraffic": "交通",
+        "transactions": "交易",
+        "repeatUsers": "重複用戶",
+        "newUsers": "新用戶",
+        "totalUsers": "總用戶",
+        "revenueChart": "收入",
+        "energyUse": "能源使用"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -768,16 +775,6 @@
         "downloadFileSuccess": "檔案下載完成",
         "downloadFileFiled": "檔案下載失敗",
         "fileListErrorMsg": "檔案列表加載失敗"
-    },
-    "graphs": {
-        "transactionAndTraffic": "交易與流量",
-        "transactions": "交易",
-        "repeatUsers": "重複用戶",
-        "newUsers": "新用戶",
-        "totalUsers": "總用戶",
-        "revenueChart": "收入",
-        "energyUse": "能源使用",
-        "totalEnergy": "總能量"
     },
     "reports": {
         "chargePoints": "充電點",

@@ -324,7 +324,14 @@
         "firmwareVersion": "Firmware Version",
         "chargePointVendor": "Vendor",
         "chargePointSerialNumber": "Serial Number",
-        "chargePointModel": "Model"
+        "chargePointModel": "Model",
+        "transactionAndTraffic": "Traffic",
+        "transactions": "Transactions",
+        "repeatUsers": "Repeated Users",
+        "newUsers": "New Users",
+        "totalUsers": "Total Users",
+        "revenueChart": "Revenue",
+        "energyUse": "Energy Use"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -768,16 +775,6 @@
         "downloadFileSuccess": "File download complete.",
         "downloadFileFiled": "File download failed.",
         "fileListErrorMsg": "File list failed to load."
-    },
-    "graphs": {
-        "transactionAndTraffic": "Transactions & Traffic",
-        "transactions": "Transactions",
-        "repeatUsers": "Repeated Users",
-        "newUsers": "New Users",
-        "totalUsers": "Total Users",
-        "revenueChart": "Revenue",
-        "energyUse": "Energy Use",
-        "totalEnergy": "Total Energy"
     },
     "reports": {
         "chargePoints": "Charge Points",

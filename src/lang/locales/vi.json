@@ -324,7 +324,14 @@
         "firmwareVersion": "phiên bản phần mềm",
         "chargePointVendor": "người bán",
         "chargePointSerialNumber": "số seri",
-        "chargePointModel": "người mẫu"
+        "chargePointModel": "người mẫu",
+        "transactionAndTraffic": "Giao thông",
+        "transactions": "Giao dịch",
+        "repeatUsers": "Người dùng lặp lại",
+        "newUsers": "Những người dùng mới",
+        "totalUsers": "Tổng số người dùng",
+        "revenueChart": "Thu",
+        "energyUse": "Sử dụng nang lượng"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -768,16 +775,6 @@
         "downloadFileSuccess": "Tệp tải xuống hoàn tất.",
         "downloadFileFiled": "Tải xuống tệp không thành công.",
         "fileListErrorMsg": "Không tải được danh sách tệp."
-    },
-    "graphs": {
-        "transactionAndTraffic": "Giao dịch & Lưu lượng truy cập",
-        "transactions": "Giao dịch",
-        "repeatUsers": "Người dùng lặp lại",
-        "newUsers": "Những người dùng mới",
-        "totalUsers": "Tổng số người dùng",
-        "revenueChart": "Thu",
-        "energyUse": "Sử dụng nang lượng",
-        "totalEnergy": "Tổng năng lượng"
     },
     "reports": {
         "chargePoints": "Điểm tính phí",

@@ -87,7 +87,7 @@ export default {
             let repeatedUsersData = data.map((item) => item.y.repeatUsers);
             let newUsersData = data.map((item) => item.y.newUsers);
             let legendData = Object.keys(data[0].y).map((item) =>
-                i18n.t(`graphs.${item}`)
+                i18n.t(`general.${item}`)
             );
             let option = {
                 tooltip: {
@@ -128,7 +128,7 @@ export default {
                 yAxis: [
                     {
                         type: "value",
-                        name: i18n.t("graphs.totalUsers"),
+                        name: i18n.t("general.totalUsers"),
                         min: 0,
                         axisLabel: {
                             formatter: "{value}",
@@ -140,7 +140,7 @@ export default {
                     },
                     {
                         type: "value",
-                        name: i18n.t("graphs.transactions"),
+                        name: i18n.t("general.transactions"),
                         min: 0,
                         axisLabel: {
                             formatter: "{value}",
@@ -160,7 +160,7 @@ export default {
                 },
                 series: [
                     {
-                        name: i18n.t("graphs.transactions"),
+                        name: i18n.t("general.transactions"),
                         type: "line",
                         yAxisIndex: 1,
                         symbol: "circle",
@@ -176,7 +176,7 @@ export default {
                         }
                     },
                     {
-                        name: i18n.t("graphs.newUsers"),
+                        name: i18n.t("general.newUsers"),
                         type: "bar",
                         stack: "add",
                         data: newUsersData,
@@ -185,7 +185,7 @@ export default {
                         }
                     },
                     {
-                        name: i18n.t("graphs.repeatUsers"),
+                        name: i18n.t("general.repeatUsers"),
                         type: "bar",
                         stack: "add",
                         data: repeatedUsersData,

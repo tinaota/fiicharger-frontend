@@ -85,7 +85,7 @@ export default {
             );
             let transactionsData = data.map((item) => item.y.transactions);
             let totalEnergyData = data.map((item) => item.y.totalEnergy);
-            let legendData = Object.keys(data[0].y).map((item) => i18n.t(`graphs.${item}`));
+            let legendData = Object.keys(data[0].y).map((item) => i18n.t(`general.${item}`));
             let option = {
                 tooltip: {
                     trigger: "axis",
@@ -125,7 +125,7 @@ export default {
                 yAxis: [
                     {
                         type: "value",
-                        name: i18n.t("graphs.totalEnergy"),
+                        name: i18n.t("general.totalEnergy"),
                         min: 0,
                         axisLabel: {
                             formatter: "{value}",
@@ -137,7 +137,7 @@ export default {
                     },
                     {
                         type: "value",
-                        name: i18n.t("graphs.transactions"),
+                        name: i18n.t("general.transactions"),
                         min: 0,
                         axisLabel: {
                             formatter: "{value}",
@@ -157,7 +157,7 @@ export default {
                 },
                 series: [
                     {
-                        name: i18n.t("graphs.totalEnergy"),
+                        name: i18n.t("general.totalEnergy"),
                         type: "line",
                         data: totalEnergyData,
                         tooltip: {
@@ -170,7 +170,7 @@ export default {
                         }
                     },
                     {
-                        name: i18n.t("graphs.transactions"),
+                        name: i18n.t("general.transactions"),
                         type: "bar",
                         yAxisIndex: 1,
                         symbol: "circle",

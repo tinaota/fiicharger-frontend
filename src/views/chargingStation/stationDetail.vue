@@ -76,7 +76,7 @@
             <div class="card-8">
                 <div class="header">
                     <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')">
-                        <el-option v-for="item in graphList" :label="$t(`graphs.${item}`)" :key="item" :value="item"></el-option>
+                        <el-option v-for="item in graphList" :label="$t(`general.${item}`)" :key="item" :value="item"></el-option>
                     </el-select>
                 </div>
                 <div class="graph" v-if="graphSelected==='transactionAndTraffic' && dateRange.length>1 && curRouteParam.stationId">
