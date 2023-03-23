@@ -135,14 +135,15 @@ axios.interceptors.response.use(
     }
 );
 
-export function fetch(url, params = {}) {
+export function fetch(url, params = {}, responseType = "") {
     return new Promise((resolve, reject) => {
         axios
             .get(url, {
                 params: params,
                 paramsSerializer: (params) => {
                     return qs.stringify(params);
-                }
+                },
+                responseType: responseType
             })
             .then((response) => {
                 if (response) {
@@ -157,7 +158,7 @@ export function fetch(url, params = {}) {
                 }
                 err.status && err !== 204 && reject(err);
             });
-    })
+    });
 }
 
 export function fetchImg(url) {

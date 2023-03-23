@@ -265,19 +265,19 @@ export default {
                 filename: (!!data.fileName)? data.fileName:this.currentFile.fileName
             }
             $HTTP_getDownloadFile(params)
-                .then( res => {
-                    let blob = new Blob([res], { type: "text/plain"});
-                    let _href = URL.createObjectURL(blob);
-                    let _link = document.createElement("a");
-                    document.body.appendChild(_link);
-                    _link.href = _href;
-                    _link.download = (!!data.fileName)? data.fileName:this.currentFile.fileName;
-                    _link.click();
-                    document.body.removeChild(_link);
-                    URL.revokeObjectURL(_href);
+               .then(blob => {
+                    const url = window.URL.createObjectURL(new Blob([blob]));
+                    const link = document.createElement("a");
+                    link.href = url;
+                    link.setAttribute("download", `${params.filename}`);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
                     that.isLoading = false;
                 })
                 .catch( err => {
+                    console.log(err)
                     that.isLoading = false;
                     that.$message({ type: "warning", message: i18n.t("diagnostic.downloadFileFiled") });
                 });

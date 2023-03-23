@@ -281,7 +281,9 @@ export const $HTTP_getDiagnosticsStatus = params => { return fetch(`${base_charg
 export const $HTTP_getFileList = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}`, params.param) }
 
 //get Diagnostics Download File
-export const $HTTP_getDownloadFile = params => { return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}/${params.filename}`) }
+export const $HTTP_getDownloadFile = (params) => {
+    return fetch(`${base_charger}/api/files/${params.category}/${params.chargePointId}/${params.filename}`, {}, "blob");
+};
 
 // get charge point by id
 export const $HTTP_getChargePointById = params => { return fetch(`${base_charger}/api/charge-points/${params.chargePointId}`) }
