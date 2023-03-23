@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="$t('chargingStation.updates')"
+        :title="$t('general.updateFirmware')"
         :visible.sync="visible"
         width="600px"
         @close="closeDialog()">
@@ -55,7 +55,20 @@
                 v-show="total > 0">
             </el-pagination>
         </div>
-
+          <hr/>
+            <el-upload
+            ref="uploadFile"
+            class="upload-demo"
+            :action="apiUrl"
+            :data="uploadParams"
+            :limit="1"
+            :auto-upload="false"
+            :on-exceed="handleExceed"
+            :on-error="handleError"
+            :on-change="handleFileChange"
+            :file-list="fileList">
+            <el-button size="small" type="primary">{{ $t('general.addNewFirmware') }}</el-button>
+        </el-upload>
     </el-dialog>
 </template>
 
@@ -66,7 +79,8 @@ import {
     $HTTP_getChargePointById,
     $HTTP_postUpdateFirmware,
     $HTTP_getUpdateFirmwareStatus,
-    $HTTP_getFirmwareVersion
+    $HTTP_getFirmwareVersion,
+    $HTTP_uploadFirmwareFile 
 } from "@/api/api";
 import { transformUtcToLocTime, catchErrors } from "@/utils/function";
 import moment from "moment";
@@ -93,9 +107,13 @@ export default {
             limit: $GLOBAL_PAGE_LIMIT,
             total: 0,
             loopingStatus: '',
-            updatedFirmwareVersion: ''
+            updatedFirmwareVersion: '',
+            apiUrl: "",
+            uploadParams: {},
+            fileList: []
         }
     },
+
     watch: {
         show: {
             deep: true,
@@ -259,7 +277,44 @@ export default {
         closeDialog() {
             this.$emit('close', false);
             this.stopLooping(this.loopingStatus);
-        }
+        },
+                handleExceed() {
+            this.$message.warning(i18n.t("general.onlyOneFile"));
+        },
+        handleError() {
+            this.isLoading = false;
+            this.$refs.uploadFile.clearFiles();
+            this.$message({ type: "error", message: i18n.t("error_network") });
+        },
+        handleFileChange(file, fileList) {
+            this.fileList = fileList;
+            this.uploadFileData()
+        },
+        uploadFileData(){
+            this.isLoading = true;
+            const formData = new FormData();
+            formData.append('file', this.fileList[0]?.raw)
+            const params = {
+                category: "Firmware",
+                chargePointId: this.$props.chargePointId,
+                formData: formData,
+                config: this.fileList[0]?.raw?.type
+            };
+            $HTTP_uploadFirmwareFile(params)
+                .then( res => {
+                    this.isLoading = false;
+                    this.$message({type: "success", message: i18n.t("general.sucAddMsg")})
+                    this.fileList = [];
+                    this.$refs.uploadFile.clearFiles();
+                    this.closeDialog();
+                })
+                .catch( err => {
+                    this.isLoading = false;
+                    this.$message({ type: "warning", message: this.lang === "en" ? response.message : response.reason });
+                    this.fileList = [];
+                })
+        },
+
     }
 }
 </script>
@@ -288,13 +343,6 @@ export default {
         right: 0;
     }
 }
-.firmware{
-   font-size: 14px;
-}
-.firmware h3{
-  font-weight:bold;
-  display: inline;
-   font-size: 1.17rem;
 
-}
+
 </style>

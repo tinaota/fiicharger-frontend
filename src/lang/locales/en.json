@@ -335,7 +335,14 @@
         "power": "Power",
         "currentVoltage": "Current & Voltage",
         "voltage": "Voltage",
-        "batteryLevel": "Battery Level"
+        "batteryLevel": "Battery Level",
+        "general": "General",
+        "ChargingProfile": "Charging Profile",
+        "LocalList":"Local list",
+        "Firmware":"Firmware",
+        "resetType":"Reset Type",
+        "updateFirmware": "Firmware Update",
+        "addNewFirmware": "Add New Firmware"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -661,6 +668,8 @@
         "clearCacheQuestion": "Are you sure you wish to clear cache for charger {item}?",
         "clearCacheSuccess": "Request to clear cache succeeded",
         "clearCacheRejected": "Request to clear cache has been rejected by charger",
+        "reset":"Reset",
+        "resetQuestion":"Are you sure you want to reset this charger {item}?",
         "hardReset": "Hard Reset",
         "hardResetQuestion": "Are you sure you wish to hard reset charger {item}?",
         "hardResetSuccess": "Request to hard reset succeeded",

@@ -7,6 +7,12 @@
             <div v-if="action==='startConnectorTransaction'">
                 <StartTransactionPopup @update="updateParams"></StartTransactionPopup>
             </div>
+            <div v-if="action==='reset'">
+            <span style="display:block;"> {{ $t('general.resetType') }}</span> 
+        <el-select  class="select-small" v-model="selectedReset" @change="updateResetValue"  clearable>
+            <el-option v-for="item in reset" :label="$t(`actions.${item}`)" :key="item" :value="item"></el-option>
+        </el-select>           
+         </div>
             <div v-if="action==='stopConnectorTransaction'" class="item">
                 <div class="label">{{ $t('chargingStation.transactionId') }}</div>
                 <div class="info">
@@ -62,7 +68,12 @@ export default {
                 type: "",
                 connectorId: null,
                 transactionId: null
-            }
+            },
+            selectedReset:"softReset",
+            reset:[
+           "softReset",
+           "hardReset"
+            ]
         };
     },
     mounted() {
@@ -72,10 +83,7 @@ export default {
         this.params.chargePointId = this.chargePointId;
         if (this.action === "clearCache") {
             this.$API = $HTTP_clearCache;
-        } else if (this.action === "hardReset") {
-            this.$API = $HTTP_resetChargers;
-            this.params.type = "Hard";
-        } else if (this.action === "softReset") {
+        } else if (this.action === "reset") {
             this.$API = $HTTP_resetChargers;
             this.params.type = "Soft";
         } else if (this.action === "disableConnector") {
@@ -103,6 +111,13 @@ export default {
         }
     },
     methods: {
+        updateResetValue(value){
+        if(value==="hardReset"){
+            this.params.type = "Hard";
+        }else{
+            this.params.type = "Soft"
+        }
+        },
         callApi() {
             this.$API(this.params)
                 .then((res) => {

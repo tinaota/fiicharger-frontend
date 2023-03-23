@@ -1,9 +1,10 @@
 <template>
     <el-dialog
+       
         :title="$t('chargingStation.getLocalAuthListVersion')"
         :visible.sync="visible"
         @close="closeDialog()">
-        <hr/>
+      
         <div class="result-content" v-loading="isLoading">
             <p>{{ $t('sendLocalList.localAuthListVersion') }}: <span>{{ versionData }}</span></p>
         </div>

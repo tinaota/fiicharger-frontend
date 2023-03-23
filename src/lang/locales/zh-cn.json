@@ -50,7 +50,13 @@
         "tariff": "价格",
         "sessions": "充电纪录",
         "reportIssues": "报告问题",
-        "organization": "组织"
+        "organization": "组织",
+        "general": "一般的",
+        "ChargingProfile": "充电配置文件",
+        "LocalList":"本地列表",
+        "Firmware":"Firmware",
+        "resetType":"固件"  
+
     },
     "login": {
         "login": "登入",
@@ -661,6 +667,8 @@
         "clearCacheQuestion": "确定要清除充电桩{item}缓存吗",
         "clearCacheSuccess": "清除缓存成功",
         "clearCacheRejected": "清除缓存失败",
+        "reset":"重置",
+        "resetQuestion":"您确定要重置此充电器吗 {item}?",
         "hardReset": "硬复位",
         "hardResetQuestion": "确定要硬复位充电桩{item}吗？",
         "hardResetSuccess": "硬复位成功",

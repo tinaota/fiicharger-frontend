@@ -1,9 +1,24 @@
 <template>
 <div>
+  
+       
+
+
     <el-dialog
-    :title="$t('chargingStation.sendLocalAuthList')"
+    
+    :title="$t('chargingStation.getLocalAuthListVersion')"
     :visible.sync="visible"
     @close="closeDialog()">
+           <div class="result-content" v-loading="isLoading">
+            <div class="firmware"> <h3>{{ $t('sendLocalList.localAuthListVersion') }}:</h3> <span>{{ versionData }}</span></div>
+        </div>
+            <hr/>
+            <div class="el-dialog__header2">
+              <span class="el-dialog__title2">
+                        {{ $t('chargingStation.sendLocalAuthList') }}
+                    </span>
+                    </div>
+
         <el-form ref="form">
                 <el-form-item>
                     <div class="label">
@@ -52,6 +67,7 @@
 
 <script>
 import {$HTTP_getIdTagsList,$HTTP_sendAuthLocalList} from "@/api/api";
+import { $HTTP_getLocalAuthListVersion } from "@/api/api";
 import i18n from '../../lang/lang';
 import CommonPopup from "@/components/commonPopup";
 import { catchErrors } from "@/utils/function";
@@ -65,6 +81,7 @@ export default {
     },
     data() {
         return {
+            versionData: "",
             visible: false,
             isLoading: false,
             logTimeRange: [],
@@ -111,7 +128,9 @@ export default {
                 that.visible = that.show;
                 if (that.visible) {
                     this.getIdtagList();
-                    that.$nextTick(() => {});
+                      that.$nextTick(() => {
+                        this.getVersion(this.$props.chargePointId)
+                    });
                 }
             }
         },
@@ -138,6 +157,23 @@ export default {
                 clearList: false
             }
         },
+               getVersion(id){
+            this.isLoading = true;
+            const that = this;
+            const param = {
+                chargePointId: id
+            }
+            $HTTP_getLocalAuthListVersion(param)
+                .then( res => {
+                    this.isLoading = false;
+                    this.versionData = res;
+                })
+                .catch( err => {
+                    this.isLoading = false;
+                    let errorMessage = catchErrors("get local auth list", err);
+                    this.$message({ type: "warning", message: errorMessage });
+                })
+            },
         getIdtagList(){
             $HTTP_getIdTagsList()
                 .then(res =>{
@@ -208,6 +244,7 @@ export default {
     .el-select{
         width: 100%;
     }
+
     .dialog-footer{
         clear: both;
         .btn-left{

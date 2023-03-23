@@ -50,7 +50,12 @@
         "tariff": "El Precio",
         "sessions": "Sesiones",
         "reportIssues": "Informar problemas",
-        "organization": "Organización"
+        "organization": "Organización",
+        "general": "General",
+        "ChargingProfile": "Perfil de Carga",
+        "LocalList":"Lista Local",
+        "Firmware":"Firmware",
+        "resetType":"Tipo De Reinicio"
     },
     "login": {
         "login": "Acceso",
@@ -335,7 +340,9 @@
         "power": "Energía",
         "currentVoltage": "Voltaje de corriente",
         "voltage": "Voltaje",
-        "batteryLevel": "Nivel de bateria"
+        "chargingState": "Estado de Carga",
+        "updateFirmware": "Actualización de firmware",
+        "addNewFirmware": "Agregar nuevo firmware"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -661,6 +668,8 @@
         "clearCacheQuestion": "¿Estás seguro de que deseas borrar el caché del cargador {item}?",
         "clearCacheSuccess": "Solicitud para borrar caché exitosa",
         "clearCacheRejected": "El cargador ha rechazado la solicitud para borrar el caché",
+        "reset":"reiniciar",
+        "resetQuestion":"¿Estás seguro de que quieres restablecer este cargador {item}?",
         "hardReset": "Restablecimiento completo",
         "hardResetQuestion": "¿Estás seguro de que deseas reiniciar el cargador {item}?",
         "hardResetSuccess": "Solicitud de restablecimiento completo exitosa",

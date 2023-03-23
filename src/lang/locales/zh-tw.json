@@ -335,7 +335,12 @@
         "power": "功率",
         "currentVoltage": "電流電壓",
         "voltage": "電壓",
-        "batteryLevel": "電池電量"
+        "batteryLevel": "電池電量",
+        "general": "一般的",
+        "ChargingProfile": "充電配置文件",
+        "LocalList":"本地列表",
+        "Firmware":"固件",
+        "resetType":"重置類型"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -661,6 +666,8 @@
         "clearCacheQuestion": "確定清除{item}號充電樁緩存？",
         "clearCacheSuccess": "已成功清除緩存",
         "clearCacheRejected": "清除緩存已被拒絕",
+        "reset":"重置",
+        "resetQuestion":"您確定要重置此充電器嗎 {item}?",
         "hardReset": "強制重啟",
         "hardResetQuestion": "確定強制重啟{item}號充電樁？",
         "hardResetSuccess": "已成功強制重啟",

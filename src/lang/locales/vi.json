@@ -335,7 +335,14 @@
         "power": "Năng lượng",
         "currentVoltage": "Điện áp Hiện tại",
         "voltage": "Điện áp",
-        "batteryLevel": "Mức pin"
+        "batteryLevel": "Mức pin",
+        "general": "Tổng quan",
+        "ChargingProfile": "Hồ sơ sạc",
+        "LocalList":"danh sách cục bộ",
+        "Firmware":"phần sụn",
+        "resetType":"Loại đặt lại",
+        "updateFirmware": "cập nhật firmware",
+        "addNewFirmware": "Thêm chương trình cơ sở mới"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -458,6 +465,7 @@
         "diagnostics": "Chẩn đoán",
         "updates": "Cập nhật",
         "clearCache": "Xóa bộ nhớ cache",
+
         "hardReset": "Hard Reset",
         "softReset": "Đặt lại mềm",
         "chargingProfile": "Hồ sơ sạc",
@@ -661,6 +669,8 @@
         "clearCacheQuestion": "Bạn có chắc chắn muốn xóa bộ nhớ cache cho bộ sạc {item} không?",
         "clearCacheSuccess": "Yêu cầu xóa bộ nhớ cache đã thành công",
         "clearCacheRejected": "Yêu cầu xóa bộ nhớ cache đã bị bộ sạc từ chối",
+        "reset":"Cài lại",
+        "resetQuestion":"Bạn có chắc chắn muốn đặt lại bộ sạc này không {item}?",
         "hardReset": "Hard Reset",
         "hardResetQuestion": "Bạn có chắc chắn muốn khôi phục cài đặt gốc bộ sạc {item} không?",
         "hardResetSuccess": "Yêu cầu khôi phục cài đặt gốc thành công",

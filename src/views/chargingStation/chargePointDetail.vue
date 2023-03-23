@@ -78,31 +78,31 @@
                     </div>
                 </div>
                 <div class="card-8 rank-area">
-                    <div class="settings">
-                        <el-button size="medium" type="primary" @click="openActionDialog(chargePointById[0].id, 'configuration', 'getAllSettings')"> {{ $t('general.settings') }}</el-button>
-                        <el-input class="settingsInput" :placeholder="$t('general.key')" v-model="settingsInput"></el-input>
-                        <el-button size="mini" type="primary" style="padding:8px" @click="openActionDialog(chargePointById[0].id, 'configuration', null)" :disabled="settingsInput.length===0"> {{ $t('general.get') }}</el-button>
-                        <el-button size="mini" type="primary" style="padding:8px" @click="openActionDialog(chargePointById[0].id, 'setConfiguration', null)" :disabled="settingsInput.length===0"> {{ $t('general.modify') }}</el-button>
-                    </div>
-                    <div class="header">
-                        <div class="title">{{ $t('general.action') }}</div>
+                    <div class="item title">
+                        <div class="label">{{ $t('general.action') }}</div>
                     </div>
                     <ul class="rank actions">
-                        <ActionItem buttonName="general.add" actionName="chargingStation.addChargingProfile" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.clear" actionName="chargingStation.clearChargingProfile" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.start" actionName="chargingStation.diagnostics" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.run" actionName="chargingStation.updates" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.clear" dialogType="commonpopup" actionName="chargingStation.clearCache" action="clearCache" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.reset" dialogType="commonpopup" actionName="chargingStation.softReset" action="softReset" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.reset" dialogType="commonpopup" actionName="chargingStation.hardReset" action="hardReset" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.run" actionName="chargingStation.remoteTrigger" action="remoteTrigger" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.start" actionName="chargingStation.startReservation" action="reserveNow" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.get" actionName="chargingStation.getLocalAuthListVersion" action="getLocalAuthListVersion" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.send" actionName="chargingStation.sendLocalAuthList" action="sendLocalAuthList" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.upload" actionName="chargingStation.uploadFirmware" action="uploadFirmware" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                        <ActionItem buttonName="general.run" actionName="chargingStation.getCompositeSchedule" action="getCompositeSchedule" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                     <div class="group_buttons">
+                      <h3>{{ $t('general.general') }} </h3>
+                       <el-button class="btn_setting" type="primary" @click="openActionDialog(chargePointById[0].id, 'configuration', 'getAllSettings')"> {{ $t('general.settings') }}</el-button>
+                        <ActionItem buttonName="chargingStation.remoteTrigger" actionName="" action="remoteTrigger" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="chargingStation.diagnostics" actionName="" action="getDiagnostics" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.Firmware" actionName="" action="updatesFirmware" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="general.reset" dialogType="commonpopup" actionName="" action="reset" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                      </div>
+                        <div class="group_buttons">
+                      <h3>{{ $t('general.ChargingProfile') }} </h3>
+                        <ActionItem buttonName="chargingStation.addChargingProfile" actionName="" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                        <ActionItem buttonName="chargingStation.clearChargingProfile" actionName="" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                         <ActionItem buttonName="chargingStation.getCompositeSchedule" actionName="" action="getCompositeSchedule" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                      </div>
+                          <div class="group_buttons">
+                      <h3>{{ $t('general.LocalList') }} </h3>
+                         <ActionItem buttonName="chargingStation.clearCache" dialogType="commonpopup" actionName="" action="clearCache" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                          <ActionItem buttonName="chargingStation.sendLocalAuthList" actionName="" action="sendLocalAuthList" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                      </div>        
                     </ul>
-                </div>
+                </div> 
 
                 <div class="card-8 connector-area table-result">
                     <div class="header">
@@ -151,7 +151,7 @@
                         <!-- <el-table-column prop="powerKw" :label="$t('chargingStation.maxOutput')" :min-width="5"></el-table-column> -->
                         <el-table-column :label="$t('chargingStation.charging')" :width="146">
                             <template slot-scope="scope">
-                                <el-dropdown trigger="click">
+                                <el-dropdown trigger="click"> 
                                     <el-button class="connectors_chargers">
                                         {{ $t('general.action') }}<i class="el-icon-arrow-down el-icon--right"></i>
                                     </el-button>
@@ -161,6 +161,7 @@
                                         <ActionItem hasIcon isDropdown buttonName="general.unlock" className="fa fa-unlock" color="" action="unlockConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                         <ActionItem hasIcon isDropdown buttonName="general.enable" className="fa fa-toggle-on" color="#61b061" action="enableConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                         <ActionItem hasIcon isDropdown buttonName="general.disable" className="fa fa-toggle-off" color="#fc2e56" action="disableConnector" dialogType="commonpopup" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
+                                         <ActionItem hasIcon isDropdown buttonName="chargingStation.startReservation" className="fa fa-book" color="#61b061" action="reserveNow" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                         <ActionItem hasIcon isDropdown buttonName="chargingStation.cancelReservation" className="fa fa-ban" color="#1E5EFF" action="cancelReservation" @runAction="(action,dialogType)=>openActionDialog(scope.row,dialogType,action)"></ActionItem>
                                     </el-dropdown-menu>
                                 </el-dropdown>
@@ -988,8 +989,9 @@ export default {
             height: 26px;
             list-style: none;
             margin-bottom: 12px;
-            display: flex;
+            display: inline-flex;
             justify-content: space-between;
+            wi
             &:last-child {
                 margin-bottom: 0;
             }
@@ -1011,8 +1013,15 @@ export default {
         .actionFunction {
             -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
             box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.12);
+
         }
     }
+
+
+
+
+ 
+
     .settings {
         display: flex;
         .settingsInput {
@@ -1022,7 +1031,16 @@ export default {
         }
     }
 }
+   .group_buttons{
+       border-bottom:1px solid rgba(96, 98, 102, 0.1);
+       display: block;
+    }
 
+    .btn_setting{
+     min-width: 160px;
+     margin-left: 0px;
+     margin-right: 10px;
+    }
 .connector-area {
     width: calc(44.05% - 32px) !important;
     height: auto;
@@ -1037,6 +1055,11 @@ export default {
 
 .fa-pencil:hover {
     cursor: pointer;
+}
+.group_buttons h3{
+ font-weight: 500;
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;   
 }
 
 @media screen and (max-width: 1500px) {

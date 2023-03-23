@@ -866,6 +866,7 @@ button:disabled {
         .el-dialog__title {
             font-size: 1.25rem;
             color: #151e25;
+            font-weight: bold;
         }
     }
     .el-dialog__body {
@@ -892,6 +893,17 @@ button:disabled {
         }
     }
 }
+
+.el-dialog__header2{
+    padding: 1.5vh 3vw 2vh 0vw;
+
+    .el-dialog__title2{
+     font-weight: bold;
+     font-size: 1.25rem;
+     color: #151e25; 
+    }
+    }
+    
 .formVertical {
     max-height: calc(65vh - 75px);
     .mCustomScrollBox .mCSB_container > .form-item {
@@ -1323,13 +1335,33 @@ input[type="number"] {
     word-break: normal !important;
 }
 
-.actions li {
+.actions{
+     li {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
     .actionFunction {
         min-width: 108px;
     }
+    }
+    .group_buttons{ 
+        li{
+            span{
+                display: none;
+            }
+        .actionFunction{
+
+        min-width: 160px;
+        margin-left: 0px;
+        margin-right: 10px;
+        span{
+            display: block;
+        }
+     
+    }
+}
+    }
+       
 }
 
 .dialogForm {
@@ -1553,3 +1585,15 @@ input[type="number"] {
         }
     }
 }
+
+.firmware h3{
+    font-weight:bold;
+    display: inline;
+     font-size: 1.17rem;
+  
+  }
+
+  .firmware{
+    font-size: 14px;
+ }
+
