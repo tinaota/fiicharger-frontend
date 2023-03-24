@@ -235,7 +235,7 @@
         "pricingConditions": "定价条件",
         "pricingConditionsInfo": "定价条件....",
         "kWh": "千瓦时",
-        "current": "当前的",
+        "current": "电流",
         "days": "一周中的日子",
         "pricingUsage": "定价使用",
         "flat": "固定费用",
@@ -331,7 +331,11 @@
         "newUsers": "新用户",
         "totalUsers": "总用户",
         "revenueChart": "收入",
-        "energyUse": "能源使用"
+        "energyUse": "能源使用",
+        "power": "功率",
+        "currentVoltage": "电流电压",
+        "voltage": "电压",
+        "batteryLevel": "电池电量"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",
@@ -377,7 +381,6 @@
             "2": "次"
         },
         "chargePointName": "充电桩名称",
-        "power": "功率",
         "connector": "充电枪",
         "connectorStatus": "充电枪状态",
         "connectorList": [

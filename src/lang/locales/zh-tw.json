@@ -235,7 +235,7 @@
         "pricingConditions": "定價條件",
         "pricingConditionsInfo": "定價條件....",
         "kWh": "千瓦時",
-        "current": "當前的",
+        "current": "電流",
         "days": "一周中的日子",
         "pricingUsage": "定價使用",
         "flat": "固定費用",
@@ -331,7 +331,11 @@
         "newUsers": "新用戶",
         "totalUsers": "總用戶",
         "revenueChart": "收入",
-        "energyUse": "能源使用"
+        "energyUse": "能源使用",
+        "power": "功率",
+        "currentVoltage": "電流電壓",
+        "voltage": "電壓",
+        "batteryLevel": "電池電量"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
@@ -377,7 +381,6 @@
             "2": "次"
         },
         "chargePointName": "充電樁名稱",
-        "power": "功率",
         "connector": "充電槍",
         "connectorStatus": "充電槍狀態",
         "connectorList": [

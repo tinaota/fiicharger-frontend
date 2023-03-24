@@ -331,7 +331,11 @@
         "newUsers": "Những người dùng mới",
         "totalUsers": "Tổng số người dùng",
         "revenueChart": "Thu",
-        "energyUse": "Sử dụng nang lượng"
+        "energyUse": "Sử dụng nang lượng",
+        "power": "Năng lượng",
+        "currentVoltage": "Điện áp Hiện tại",
+        "voltage": "Điện áp",
+        "batteryLevel": "Mức pin"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",
@@ -377,7 +381,6 @@
             "2": "Lần"
         },
         "chargePointName": "Tên điểm sạc",
-        "power": "Năng lượng",
         "connector": "Đầu nối",
         "connectorStatus": "Trạng thái đầu nối",
         "connectorList": [

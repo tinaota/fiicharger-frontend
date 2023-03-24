@@ -171,7 +171,7 @@ export default {
                                     },
                                     {
                                         text:
-                                            i18n.t("chargingStation.power") +
+                                            i18n.t("general.power") +
                                             " (kW)",
                                         bold: true,
                                         margin: [0, 10, 0, 0]

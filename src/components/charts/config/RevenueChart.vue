@@ -185,7 +185,7 @@ export default {
                                                         <span><b>${hoveredData.x.powerType}</b></span>
                                                     </div>
                                                     <div style="display:flex;margin-top:6px">
-                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t("chargingStation.power")} </span>
+                                                        <span style="margin-right:6px;min-width:120px;">${i18n.t("general.power")} </span>
                                                         <span><b>${hoveredData.x.powerKw + " kW"}</b></span>
                                                     </div>
                                                 </div>`;

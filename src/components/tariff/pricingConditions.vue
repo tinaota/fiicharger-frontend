@@ -23,7 +23,7 @@
                     <PricingConditionsFilter :restrictions="restrictions" :tabSelected="activeTab" @emitPriceConditionsDataFromFilter="getPricingConditionsData"></PricingConditionsFilter>
                 </div>
             </el-tab-pane>
-            <el-tab-pane :label="$t('chargingStation.power')" name="power">
+            <el-tab-pane :label="$t('general.power')" name="power">
                 <div v-if="activeTab==='power'">
                     <PricingConditionsFilter :restrictions="restrictions" :tabSelected="activeTab" @emitPriceConditionsDataFromFilter="getPricingConditionsData"></PricingConditionsFilter>
                 </div>

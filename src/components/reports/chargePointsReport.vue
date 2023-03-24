@@ -5,7 +5,7 @@
             <el-table-column prop="ocppId" :label="$t('chargingStation.chargerId')" width="320" sortable="custom">
             </el-table-column>
             <el-table-column prop="name" :label="$t('general.name')" width="320" sortable="custom"></el-table-column>
-            <el-table-column prop="powerKw" :label="$t('chargingStation.power') + ' (kW)'" width="150" sortable="custom">
+            <el-table-column prop="powerKw" :label="$t('general.power') + ' (kW)'" width="150" sortable="custom">
             </el-table-column>
             <el-table-column prop="currentType" :label="$t('general.type')" width="200" class-name="center" sortable="custom">
                 <template slot-scope="scope">

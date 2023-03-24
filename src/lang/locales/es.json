@@ -331,7 +331,11 @@
         "newUsers": "Usuarios nuevos",
         "totalUsers": "Usuarios totales",
         "revenueChart": "Ingresos",
-        "energyUse": "Energía usada"
+        "energyUse": "Energía usada",
+        "power": "Energía",
+        "currentVoltage": "Voltaje de corriente",
+        "voltage": "Voltaje",
+        "batteryLevel": "Nivel de bateria"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -377,7 +381,6 @@
             "2": "times"
         },
         "chargePointName": "Punto de recarga Nombre",
-        "power": "Energía",
         "connector": "Conector",
         "connectorStatus": "Estado del conector",
         "connectorList": [

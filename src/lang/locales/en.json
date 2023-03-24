@@ -331,7 +331,11 @@
         "newUsers": "New Users",
         "totalUsers": "Total Users",
         "revenueChart": "Revenue",
-        "energyUse": "Energy Use"
+        "energyUse": "Energy Use",
+        "power": "Power",
+        "currentVoltage": "Current & Voltage",
+        "voltage": "Voltage",
+        "batteryLevel": "Battery Level"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",
@@ -377,7 +381,6 @@
             "2": "times"
         },
         "chargePointName": "Charger Name",
-        "power": "Power",
         "connector": "Connector",
         "connectorStatus": "Connector Status",
         "connectorList": [

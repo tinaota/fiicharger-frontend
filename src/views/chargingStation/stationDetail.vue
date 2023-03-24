@@ -98,7 +98,7 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="name" :label="$t('general.name')" width="320"></el-table-column>
-                    <el-table-column :label="$t('chargingStation.power')" width="200">
+                    <el-table-column :label="$t('general.power')" width="200">
                         <template slot-scope="scope">
                             {{ scope.row.powerKw + "kW" }}
                         </template>

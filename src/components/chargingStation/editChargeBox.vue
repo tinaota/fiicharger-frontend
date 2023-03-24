@@ -44,7 +44,7 @@
                     </el-select>
                 </div>
                 <div class="form-item">
-                    <div class="label">{{ $t('chargingStation.power') + ' (kW)' }}</div>
+                    <div class="label">{{ $t('general.power') + ' (kW)' }}</div>
                     <el-input-number v-model="editDialog.info.power" :precision="2" :step="1" :min="0" controls-position="right"></el-input-number>
                 </div>
                 <div class="form-item">

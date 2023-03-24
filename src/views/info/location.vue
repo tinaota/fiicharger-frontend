@@ -39,7 +39,7 @@
                                 <div class="msg">{{ item.ocppId }}</div>
                             </div>
                             <div class="info-item">
-                                <div class="label">{{ $t('chargingStation.power') }} : </div>
+                                <div class="label">{{ $t('general.power') }} : </div>
                                 <div class="msg">{{ item.powerKw }} kW</div>
                             </div>
                             <div class="info-item connectionStatusMain">
