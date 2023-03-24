@@ -304,6 +304,14 @@ export const $HTTP_getTransactionEnergyUseGraphData = (params) => {
     return fetch(`${base_charger}/api/reports/transactions/graphs/energy`, params);
 };
 
+export const $HTTP_getPowerGraphDataByTransactionId = (params) => {
+    return fetch(`${base_charger}/api/reports/transactions/${params.transactionId}/graphs/power`);
+};
+
+export const $HTTP_getCurrentVoltageGraphDataByTransactionId = (params) => {
+    return fetch(`${base_charger}/api/reports/transactions/${params.transactionId}/graphs/current-voltage`);
+};
+
 export const $HTTP_getRevenueWaterfallGraphData = (params) => {
     return fetch(
         `${base_charger}/api/reports/charge-points/graphs/revenue-waterfall`,

@@ -297,6 +297,14 @@
                     font-weight: 700;
                 }
             }
+            &.graphHeader {
+                margin: 1em 0 0 0;
+                .customSelect {
+                    input {
+                        padding: 0;
+                    }
+                }
+            }
         }
         .filter {
             margin-bottom: 12px;
@@ -1522,27 +1530,26 @@ input[type="number"] {
 }
 
 // home page organization
-.organization{
-    .homeOrganizationSelect{
+.organization {
+    .homeOrganizationSelect {
         margin-left: 5px;
-        .el-input{
-            input{
+        .el-input {
+            input {
                 border: none;
                 font-size: 1rem;
                 font-weight: 600;
                 background: transparent;
                 color: #000013;
             }
-            .el-input__suffix{
-                .el-input__suffix-inner{
-                    i{
+            .el-input__suffix {
+                .el-input__suffix-inner {
+                    i {
                         font-size: 1rem;
                         font-weight: 600;
                         color: #000013;
                     }
-                    }
+                }
             }
         }
     }
 }
-

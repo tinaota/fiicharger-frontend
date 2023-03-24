@@ -167,9 +167,19 @@
             <div class="eachRow">
                 <div class="eachColumn mainDetails">
                     <div class="mainDetailsBody statusFlexDirection">
-                        <h3>{{$t('general.status')}}</h3>
-                        <div class="dataColumn">
+                        <div class="header graphHeader">
+                            <el-select class="select-small customSelect" v-model="graphSelected" :placeholder="$t('general.location')">
+                                <el-option v-for="item in graphList" :label="$t(`general.${item}`)" :key="item" :value="item"></el-option>
+                            </el-select>
+                        </div>
+                        <div class="dataColumn" v-if="graphSelected==='status'">
                             <SessionStatus :data="data"></SessionStatus>
+                        </div>
+                        <div class="dataColumn" v-if="graphSelected==='power'">
+                            <Power :data="data"></Power>
+                        </div>
+                        <div class="dataColumn" v-if="graphSelected==='currentVoltage'">
+                            <CurrentVoltage :data="data"></CurrentVoltage>
                         </div>
                         <div class="dataColumn">
                             <div class="item">
@@ -191,7 +201,7 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <div class="label">{{$t('chargingStation.power')}}</div>
+                                <div class="label">{{$t('general.power')}}</div>
                                 <div class="info">
                                     {{data?.chargePointPowerKw}} kW
                                 </div>
@@ -362,6 +372,8 @@
 import { transformUtcToLocTime, transformSecondsToReadableForm } from "@/utils/function";
 import { $HTTP_getCDRInfoById, $HTTP_getAllTransactionsById, $HTTP_getAllReservationById } from "@/api/api";
 import SessionStatus from "@/components/charts/config/SessionStatus";
+import Power from "@/components/charts/config/Power";
+import CurrentVoltage from "@/components/charts/config/CurrentVoltage";
 import { setScrollBar, catchErrors } from "@/utils/function";
 
 export default {
@@ -370,7 +382,9 @@ export default {
         data: Object
     },
     components: {
-        SessionStatus
+        SessionStatus,
+        Power,
+        CurrentVoltage
     },
     emits: ["close"],
 
@@ -383,7 +397,9 @@ export default {
             transactionDataIsLoading: false,
             connectorId: "",
             reservationData: {},
-            reservationDataIsLoading: false
+            reservationDataIsLoading: false,
+            graphSelected: "status",
+            graphList: ["status", "power", "currentVoltage"]
         };
     },
     computed: {
@@ -460,6 +476,7 @@ export default {
         },
         closeDialog() {
             this.connectorId = "";
+            this.graphSelected === "status";
             this.$emit("close", true);
             this.$jQuery(".scroll").mCustomScrollbar("update");
         }
