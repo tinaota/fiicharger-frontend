@@ -341,7 +341,8 @@
         "firmware": "phần sụn",
         "resetType": "Loại đặt lại",
         "updateFirmware": "cập nhật firmware",
-        "addNewFirmware": "Thêm chương trình cơ sở mới"
+        "addNewFirmware": "Thêm chương trình cơ sở mới",
+        "compositeSchedule": "lịch tổng hợp"
     },
     "dashboard": {
         "energyUsedUnit": "Năng lượng tiêu thụ(kWh)",

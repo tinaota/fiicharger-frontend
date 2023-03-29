@@ -338,10 +338,11 @@
         "batteryLevel": "Nivel de bateria",
         "general": "General",
         "localList": "Lista Local",
-        "firmware": "firmware",
+        "firmware": "Firmware",
         "resetType": "Tipo De Reinicio",
-        "updateFirmware": "Actualización de firmware",
-        "addNewFirmware": "Agregar nuevo firmware"
+        "updateFirmware": "Actualización de Firmware",
+        "addNewFirmware": "Agregar nuevo Firmware",
+        "compositeSchedule": "Horario compuesto"
     },
     "dashboard": {
         "energyUsedUnit": "Energía Consumido (kWh)",
@@ -517,8 +518,8 @@
             "6months": "últimos 6 meses",
             "1year": "ultimo 1 año"
         },
-        "getLocalAuthListVersion": "Nhận phiên bản danh sách cục bộ",
-        "sendLocalAuthList": "Gửi danh sách địa phương",
+        "getLocalAuthListVersion": "Obtener la versión de la lista local",
+        "sendLocalAuthList": "Enviar lista local",
         "currentFirmwareVersion": "Versión actual del firmware",
         "totalUsers": "Usuarios totales",
         "newUsers": "Usuarios nuevos",

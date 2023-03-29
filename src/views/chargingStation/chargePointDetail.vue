@@ -94,7 +94,7 @@
                             <h3>{{ $t('chargingStation.chargingProfile') }} </h3>
                             <ActionItem buttonName="chargingStation.addChargingProfile" actionName="" action="addChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
                             <ActionItem buttonName="chargingStation.clearChargingProfile" actionName="" action="clearChargingProfile" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
-                            <ActionItem buttonName="chargingStation.getCompositeSchedule" actionName="" action="getCompositeSchedule" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
+                            <ActionItem buttonName="general.compositeSchedule"  actionName="" action="getCompositeSchedule" @runAction="(action,dialogType)=>openActionDialog(null,dialogType,action)"></ActionItem>
                         </div>
                         <div class="group_buttons">
                             <h3>{{ $t('general.localList') }} </h3>
@@ -986,7 +986,7 @@ export default {
         margin-top: 14px;
         padding-left: 0;
         li {
-            height: 26px;
+            height: auto;
             list-style: none;
             margin-bottom: 12px;
             display: inline-flex;
@@ -1030,9 +1030,12 @@ export default {
 }
 
 .btn_setting {
-    min-width: 160px;
+    min-width: 200px;
     margin-left: 0px;
     margin-right: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    margin-bottom: 10px ;
 }
 .connector-area {
     width: calc(44.05% - 32px) !important;

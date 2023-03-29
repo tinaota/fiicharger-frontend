@@ -338,10 +338,11 @@
         "batteryLevel": "电池电量",
         "general": "一般的",
         "localList": "本地列表",
-        "firmware": "firmware",
-        "resetType": "固件",
+        "firmware": "固件",
+        "resetType": "重置类型",
         "updateFirmware": "固件升级",
-        "addNewFirmware": "添加新固件"
+        "addNewFirmware": "添加新固件",
+        "compositeSchedule": "综合附表"
     },
     "dashboard": {
         "energyUsedUnit": "电耗 (kWh)",

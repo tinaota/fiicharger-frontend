@@ -341,7 +341,8 @@
         "firmware": "Firmware",
         "resetType": "Reset Type",
         "updateFirmware": "Firmware Update",
-        "addNewFirmware": "Add New Firmware"
+        "addNewFirmware": "Add New Firmware",
+        "compositeSchedule": "Composite Schedule"
     },
     "dashboard": {
         "energyUsedUnit": "Energy Consumed(kWh)",

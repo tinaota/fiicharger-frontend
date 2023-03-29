@@ -8,7 +8,7 @@
                 <StartTransactionPopup @update="updateParams"></StartTransactionPopup>
             </div>
             <div v-if="action==='reset'">
-                <span style="display:block;"> {{ $t('general.resetType') }}</span>
+                <span style="display:block;line-height:28px;"> {{ $t('general.resetType') }}</span>
                 <el-select class="select-small" v-model="selectedReset" @change="updateResetValue" clearable>
                     <el-option v-for="item in reset" :label="$t(`actions.${item}`)" :key="item" :value="item"></el-option>
                 </el-select>

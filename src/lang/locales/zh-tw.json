@@ -341,7 +341,8 @@
         "firmware": "固件",
         "resetType": "重置類型",
         "updateFirmware": "固件升級",
-        "addNewFirmware": "添加新固件"
+        "addNewFirmware": "添加新固件",
+        "compositeSchedule": "綜合附表"
     },
     "dashboard": {
         "energyUsedUnit": "電耗 (kWh)",
