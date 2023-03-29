@@ -8,11 +8,11 @@
                 <StartTransactionPopup @update="updateParams"></StartTransactionPopup>
             </div>
             <div v-if="action==='reset'">
-            <span style="display:block;"> {{ $t('general.resetType') }}</span> 
-        <el-select  class="select-small" v-model="selectedReset" @change="updateResetValue"  clearable>
-            <el-option v-for="item in reset" :label="$t(`actions.${item}`)" :key="item" :value="item"></el-option>
-        </el-select>           
-         </div>
+                <span style="display:block;"> {{ $t('general.resetType') }}</span>
+                <el-select class="select-small" v-model="selectedReset" @change="updateResetValue" clearable>
+                    <el-option v-for="item in reset" :label="$t(`actions.${item}`)" :key="item" :value="item"></el-option>
+                </el-select>
+            </div>
             <div v-if="action==='stopConnectorTransaction'" class="item">
                 <div class="label">{{ $t('chargingStation.transactionId') }}</div>
                 <div class="info">
@@ -69,11 +69,8 @@ export default {
                 connectorId: null,
                 transactionId: null
             },
-            selectedReset:"softReset",
-            reset:[
-           "softReset",
-           "hardReset"
-            ]
+            selectedReset: "softReset",
+            reset: ["softReset", "hardReset"]
         };
     },
     mounted() {
@@ -111,12 +108,12 @@ export default {
         }
     },
     methods: {
-        updateResetValue(value){
-        if(value==="hardReset"){
-            this.params.type = "Hard";
-        }else{
-            this.params.type = "Soft"
-        }
+        updateResetValue(value) {
+            if (value === "hardReset") {
+                this.params.type = "Hard";
+            } else {
+                this.params.type = "Soft";
+            }
         },
         callApi() {
             this.$API(this.params)
@@ -158,25 +155,31 @@ export default {
                     });
                 }
             } else {
+                let _action = this.action;
+                if (this.action === "reset" && this.params.type === "Soft") {
+                    _action = "softReset";
+                } else if (this.action === "reset" && this.params.type === "Hard") {
+                    _action = "hardReset";
+                }
                 if (res === "Accepted") {
                     this.$message({
                         type: "success",
-                        message: i18n.t(`actions.${this.action}Success`)
+                        message: i18n.t(`actions.${_action}Success`)
                     });
                 } else if (res === "Scheduled") {
                     this.$message({
                         type: "success",
-                        message: i18n.t(`actions.${this.action}Scheduled`)
+                        message: i18n.t(`actions.${_action}Scheduled`)
                     });
                 } else if (res === "NoAction") {
                     this.$message({
                         type: "success",
-                        message: i18n.t(`actions.${this.action}NoAction`)
+                        message: i18n.t(`actions.${_action}NoAction`)
                     });
                 } else {
                     this.$message({
                         type: "success",
-                        message: i18n.t(`actions.${this.action}Rejected`)
+                        message: i18n.t(`actions.${_action}Rejected`)
                     });
                 }
             }
