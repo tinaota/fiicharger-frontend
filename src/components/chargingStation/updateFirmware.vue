@@ -278,7 +278,7 @@ export default {
                     this.$message({ type: "success", message: i18n.t("general.sucAddMsg") });
                     this.fileList = [];
                     this.$refs.uploadFile.clearFiles();
-                    this.closeDialog();
+                    this.stopLooping(this.loopingStatus);
                 })
                 .catch((err) => {
                     this.isLoading = false;

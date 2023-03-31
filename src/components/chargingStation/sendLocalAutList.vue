@@ -1,17 +1,16 @@
 <template>
     <div>
-        <el-dialog :title="$t('chargingStation.getLocalAuthListVersion')" :visible.sync="visible" @close="closeDialog()">
+        <el-dialog :title="$t('chargingStation.sendLocalAuthList')" :visible.sync="visible" @close="closeDialog()">
             <div class="result-content" v-loading="isLoading">
-                <div class="firmware">
-                    <h3>{{ $t('sendLocalList.localAuthListVersion') }}:</h3> <span>{{ versionData }}</span>
+                <div style="margin-bottom:10px; "class="firmware">
+                    <h3>{{ $t('sendLocalList.localAuthListVersion') }}</h3> : {{ versionData }}
                 </div>
             </div>
-            <hr />
-            <div class="el-dialog__header2">
+           <!-- <div class="el-dialog__header2">
                 <span class="el-dialog__title2">
                     {{ $t('chargingStation.sendLocalAuthList') }}
                 </span>
-            </div>
+            </div> --> 
             <el-form ref="form">
                 <el-form-item>
                     <div class="label">

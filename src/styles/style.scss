@@ -719,6 +719,7 @@ button,
 .el-button {
     cursor: pointer;
     outline: none;
+    font-family: "Roboto Condensed", sans-serif;
     &.no-bg {
         background-color: transparent;
         background-repeat: no-repeat;
