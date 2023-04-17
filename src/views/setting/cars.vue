@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="item">
                                         <div class="label">{{ $t('cars.picture') }}</div>
-                                        <div class="info"><img :src="dialog.info.carTypeInfo.imageUrl" width="360" height="200"></div>
+                                        <div class="info"><img crossorigin="anonymous"  :src="dialog.info.carTypeInfo.imageUrl" width="360" height="200"></div>
                                     </div>
                                 </div>
                             </el-tab-pane>
